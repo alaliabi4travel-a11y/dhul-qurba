@@ -385,6 +385,25 @@ body.famfit .view{gap:10px}
 .qpick{display:flex;flex-direction:column;gap:6px}
 .qpick .row{gap:6px}
 .qpick .chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+/* v11: the open tree lives on the same board; its bar takes the place of the three cards */
+.obar{display:flex;align-items:center;gap:8px;background:var(--accent-soft);border-radius:14px;padding:8px 10px;min-height:52px;box-sizing:border-box}
+.obar[hidden],.sidepick[hidden]{display:none}
+.ob-t{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.35}
+.ob-t small{font-size:11.5px;color:var(--muted)}
+.ob-t b{font-size:15px;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ob-t b small{font-weight:600;color:var(--muted);font-size:12px}
+.ob-b{display:flex;gap:6px;flex:none}
+.ob-b .btn[hidden]{display:none}
+.tn.oc{box-shadow:0 0 0 3px var(--accent)}
+@keyframes hl{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 0 7px color-mix(in srgb,var(--accent) 55%,transparent)}}
+.tn.hl{animation:hl .9s ease-in-out 3}
+.res .acts{display:flex;gap:6px;flex:none}
+.qgs{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+.qgs[hidden]{display:none}
+.qg{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 10px;font:inherit;font-size:13px;cursor:pointer;color:var(--fg)}
+.qg small{color:var(--accent);font-weight:700;margin-inline-start:4px}
+.qg.f small{color:var(--gold)}
+.bk-last{font-size:12.5px}
 </style>
 
 <header class="top">
@@ -434,25 +453,14 @@ body.famfit .view{gap:10px}
         <input type="text" id="ideaIn" class="grow" placeholder="اقترح تطويرًا أو ميزة جديدة للتطبيق" autocomplete="off">
         <button class="btn primary" type="submit">إضافة</button>
       </form>
+      <div class="row" id="ideaSendRow" hidden><button class="btn sm" type="button" id="ideaSend">انسخ الاقتراحات لترسلها لي</button></div>
       <div id="ideas"></div>
     </div>
     </div>
   </section>
   <!-- ذو القربى -->
   <section class="view" id="v-tree">
-    <div class="panel" id="openPanel">
-      <div class="row">
-        <div class="grow" style="min-width:0"><h2 id="tcTitle">شجرتي</h2><div class="sub" id="tcSub" hidden></div></div>
-        <button class="btn sm" type="button" id="tcMe" hidden>العودة إليّ</button>
-        <button class="btn sm" type="button" id="toFam">عائلتي</button>
-      </div>
-      <div class="row"><div class="ac grow" id="tcFind"></div><button class="btn sm" type="button" id="tcTop">من الجد الأعلى</button></div>
-      <div class="tview" id="tview" aria-label="الشجرة المفتوحة"><div class="tworld" id="tworld"></div>
-        <div class="tzoom"><button class="btn" type="button" id="tzIn" aria-label="تكبير">+</button><button class="btn" type="button" id="tzOut" aria-label="تصغير">−</button><button class="btn" type="button" id="tzFit" aria-label="عرض الشجرة كلها">⤢</button><button class="btn" type="button" id="tzFull" aria-label="ملء الشاشة">⛶</button></div>
-      </div>
-      <p class="sub" style="margin:0">أجدادك فوقك (جهة الأب يمينًا والأم يسارًا) وذريتك تحتك. اسحب للتنقل وقرّب بإصبعين، والمس أي اسم لفتح ملفه. الخانات المنقّطة تضيف القريب في مكانه، والرقم الذهبي فوق الجد يُظهر ذريته كلها، و⛶ لملء الشاشة.</p>
-    </div>
-    <div class="panel" id="famPanel" hidden>
+    <div class="panel" id="famPanel">
       <div class="row" id="famHead">
         <h2 class="grow" id="famTitle">عائلتي</h2>
         <button class="btn sm" type="button" id="famBack" hidden>العودة إليّ</button>
@@ -461,12 +469,13 @@ body.famfit .view{gap:10px}
       <div class="fwrap" id="fwrap" hidden>
         <div class="tview fstage fa" id="fview" aria-label="شجرة الجهة المختارة"><div class="tworld" id="fworld"></div>
           <div class="fcap" id="fcap" hidden></div>
-          <button class="fopen" type="button" id="toFull" aria-label="الشجرة المفتوحة: اجعل أي قريب في المركز">الشجرة المفتوحة</button>
+          <button class="fopen" type="button" id="toFull">الشجرة المفتوحة</button>
           <div class="fempty" id="fempty" hidden></div>
           <div class="tzoom"><button class="btn" type="button" id="fzIn" aria-label="تكبير">+</button><button class="btn" type="button" id="fzOut" aria-label="تصغير">−</button><button class="btn" type="button" id="fzFit" aria-label="عرض الجهة كلها">⤢</button><button class="btn" type="button" id="fzFull" aria-label="ملء الشاشة">⛶</button><button class="btn help" type="button" id="fzHelp" aria-label="طريقة الاستخدام">؟</button></div>
           <div class="ftip" id="ftip" hidden><p>المس بطاقة الجهة تحت اللوحة لتملأها. المس أي اسم لفتح ملفه، والرقم تحت الاسم يفتح فرعه، و«أهلها» ينقلك إلى عائلتها. كل زواج له خط، والأبناء ينزلون من خط أبيهم وأمهم. اسحب للتنقل وقرّب بإصبعين.</p><button type="button" id="ftipX" aria-label="إغلاق">✕</button></div>
         </div>
         <div class="sidepick" id="sidepick" role="tablist" aria-label="اختر الجهة"></div>
+        <div class="obar" id="obar" hidden><div class="ob-t"><small>في المركز</small><b><span id="obName"></span> <small id="obRel"></small></b></div><div class="ob-b"><button class="btn sm" type="button" id="obTop">الجد الأعلى</button><button class="btn sm" type="button" id="obMe">أنا في المركز</button></div></div>
       </div>
     </div>
   </section>
@@ -550,6 +559,15 @@ function setSync(t,cls){const el=document.getElementById("sync");if(el){el.textC
 function pushRemote(){if(!remoteRef||!remoteReady)return;clearTimeout(remoteT);setSync("يحفظ...","busy");
   remoteT=setTimeout(async()=>{try{await remoteRef.set({json:JSON.stringify(S),updatedAt:S.updatedAt});setSync("محفوظ في حسابك","ok")}catch(e){setSync("تعذّر الحفظ في الحساب، محفوظ على الجهاز","busy")}},700)}
 const uid=()=>Math.random().toString(36).slice(2,10);
+/* the phone's back button closes what is open (a sheet, the drop-down, full screen, the open tree, another tab) before it leaves the app */
+/* one guard entry in the history stands for everything open; each back press closes the top one and puts the guard back while more is open */
+const BK=[];let bkPend=false;const BKON=(()=>{try{return!!window.DQ||window.top===window}catch(e){return false}})();
+const bkOnG=()=>{try{return!!(history.state&&history.state.dq)}catch(e){return false}};
+function bkArm(){if(BK.length&&!bkPend&&!bkOnG()){try{history.pushState({dq:1},"")}catch(e){}}}
+function bkPush(id,close){if(!BKON||BK.some(b=>b.id===id))return;BK.push({id,close});bkArm()}
+function bkDone(id){const i=BK.findIndex(b=>b.id===id);if(i<0)return;BK.splice(i,1);if(!BK.length&&!bkPend&&bkOnG()){bkPend=true;try{history.back()}catch(e){bkPend=false}}}
+function bkClear(){BK.length=0;if(!bkPend&&bkOnG()){bkPend=true;try{history.back()}catch(e){bkPend=false}}}
+window.addEventListener("popstate",()=>{if(bkPend){bkPend=false;bkArm();return}if(bkOnG())return;const b=BK.pop();if(b)b.close();bkArm()});
 
 /* ---------- sample data (fictional) ---------- */
 function sample(){
@@ -688,7 +706,7 @@ function shortRel(aId,bId){
   }
   return"";
 }
-const norm=s=>String(s||"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ").trim();
+const norm=s=>String(s||"").replace(/[\u064B-\u065F\u0670\u0640]/g,"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ").trim();
 const LOC="ar-u-nu-latn";
 const fmtD=iso=>new Date(iso).toLocaleDateString(LOC,{day:"numeric",month:"long",year:"numeric"});
 const fmtDT=iso=>new Date(iso).toLocaleString(LOC,{day:"numeric",month:"long",hour:"numeric",minute:"2-digit"});
@@ -701,6 +719,21 @@ function nasab(p,depth=4){
   const fam=familyOf(p);if(fam)out+=" "+fam;return out;
 }
 const nameOf=r=>r.personId&&byId(r.personId)?nasab(byId(r.personId),3):(r.name||"—");
+function copyText(t,ok){const fb=()=>{const a=document.createElement("textarea");a.value=t;a.setAttribute("readonly","");a.style.cssText="position:fixed;top:0;opacity:0";document.body.appendChild(a);a.select();let r=false;try{r=document.execCommand("copy")}catch(e){}a.remove();toast(r?ok:"تعذّر النسخ")};
+  try{if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(()=>toast(ok),fb);else fb()}catch(e){fb()}}
+/* a backup is the data as base64 between two marks, so an e-mail app's line breaks or a signature after it do no harm */
+function bkText(){const u=new TextEncoder().encode(JSON.stringify(S));let b="";for(let i=0;i<u.length;i+=8192)b+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return"DQ1:"+btoa(b)+":DQ1"}
+function bkParse(t){t=String(t||"");const m=t.match(/DQ1:([A-Za-z0-9+\/=\s]+?):DQ1/)||t.match(/DQ1:([A-Za-z0-9+\/=\s]+)/);let d=null;
+  if(m){const dec=x=>{const b=atob(x),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return new TextDecoder().decode(u)};
+    let c=m[1].replace(/\s+/g,"");for(let k=0;k<80&&c.length>=4&&!d;k++){try{d=JSON.parse(dec(c.slice(0,c.length-c.length%4)))}catch(e){c=c.slice(0,-1)}}}
+  else{const a=t.indexOf("{"),z=t.lastIndexOf("}");if(a<0||z<a)throw 0;d=JSON.parse(t.slice(a,z+1))}
+  if(!d||!Array.isArray(d.people))throw 0;return d}
+function bkMail(){const now=new Date().toISOString(),txt=bkText(),when=fmtD(now);
+  const body="نسخة احتياطية من «ذو القربى» بتاريخ "+when+" ("+S.people.length+" في الشجرة).\nلاستعادتها: انسخ هذه الرسالة كلها، ثم الصقها في الإعدادات تحت «نسخة احتياطية» واضغط «استعادة».\n\n"+txt;
+  const href="mailto:?subject="+encodeURIComponent("نسخة ذو القربى "+when)+"&body="+encodeURIComponent(body);
+  if(href.length>120000){copyText(body,"النسخة كبيرة على رابط البريد، فنسختها لك. الصقها في رسالة إلى نفسك")}
+  else{const a=document.createElement("a");a.href=href;if(!window.DQ){a.target="_blank";a.rel="noopener"}document.body.appendChild(a);a.click();a.remove()}
+  S.lastBackup=now;save();renderToday()}
 let toastT;function toast(m,act){clearTimeout(toastT);let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}
   t.textContent=m;if(act){const b=document.createElement("button");b.type="button";b.className="tact";b.textContent=act.label;b.onclick=()=>{t.hidden=true;act.fn()};t.appendChild(b)}
   t.hidden=false;toastT=setTimeout(()=>t.hidden=true,act?6000:2200)}
@@ -737,169 +770,23 @@ function makeAC(host,{placeholder,allowFree=true,onPick,filter,preset}){
 
 /* ---------- tabs ---------- */
 const tabs=[...document.querySelectorAll("nav.tabs button")];
-function showTab(v){document.body.classList.remove("famfit");tabs.forEach(t=>{const on=t.dataset.v===v;t.setAttribute("aria-selected",on);$("#"+t.dataset.v).hidden=!on});try{localStorage.setItem(KEY+".tab",v)}catch(e){}window.scrollTo(0,0);if(v==="v-tree")setTimeout(()=>{typeof renderTree==="function"&&renderTree();typeof renderSide==="function"&&renderSide()},0)}
+function showTab(v){document.body.classList.remove("famfit");if(v==="v-tree")bkDone("tab");else bkPush("tab",()=>showTab("v-tree"));tabs.forEach(t=>{const on=t.dataset.v===v;t.setAttribute("aria-selected",on);$("#"+t.dataset.v).hidden=!on});try{localStorage.setItem(KEY+".tab",v)}catch(e){}window.scrollTo(0,0);if(v==="v-tree")setTimeout(()=>{typeof renderSide==="function"&&renderSide()},0)}
 tabs.forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.v)));
 try{const t=localStorage.getItem(KEY+".tab");if(t&&$("#"+t))showTab(t)}catch(e){}
 
 /* ---------- open tree: unlimited, centred on a person ---------- */
 function generationOf(p){let g=1,c=p,guard=0;while(c&&c.father&&byId(c.father)&&guard++<60){g++;c=byId(c.father)}return g}
 function renderStats(){if(!document.getElementById("stats"))return}
-const TW=106,TH=56,THG=12,TVG=42,SW=58,SH=32,SWC=96,SHC=40,SHS=30,PH=26,PW=106,VG2=20,DMAX=4,DROW=TH+VG2+PH+VG2+10;
-let tv={k:0,tx:0,ty:0},tvCenter=null,tvAnchor=null;const expDown=new Set();
 const relToMe=id=>id===S.meId?"أنت":(byId(S.meId)?shortRel(S.meId,id):"");
-function descCount(p){let n=0;const q=[p.id],seen=new Set(q);while(q.length){const id=q.shift();kids(id).forEach(k=>{if(!seen.has(k.id)){seen.add(k.id);n++;q.push(k.id)}})}return n}
-function aTree(pid,depth,side,seen){
-  const p=byId(pid),n={t:"p",id:pid,depth,side,kids:[]};
-  if(!p||depth>60||seen.has(pid)){n.w=TW;return n}
-  seen.add(pid);
-  const F=byId(p.father),M=byId(p.mother),fs=depth===0?"fa":side,ms=depth===0?"mo":side;
-  const f=F?aTree(F.id,depth+1,fs,seen):{t:"s",kind:"father",for:pid,depth:depth+1,side:fs,w:SW};
-  const m=M?aTree(M.id,depth+1,ms,seen):{t:"s",kind:"mother",for:pid,depth:depth+1,side:ms,w:SW};
-  n.kids=[f,m];n.w=Math.max(TW,f.w+THG+m.w);return n;
-}
-function aPlace(n,x0,out,L){ // father to the right, mother to the left; ancestors go up
-  const top=-n.depth*(TH+TVG);
-  if(n.t==="s"){const cx=x0+n.w/2;out.push({t:"s",kind:n.kind,for:n.for,side:n.side,cx,top:top+(TH-SH)/2});return cx}
-  let cx=x0+n.w/2;
-  if(n.kids.length){const [f,m]=n.kids,cw=f.w+THG+m.w,st=x0+(n.w-cw)/2;
-    const mx=aPlace(m,st,out,L),fx=aPlace(f,st+m.w+THG,out,L);cx=(mx+fx)/2;
-    const yb=top-TVG/2,bot=t=>t.t==="s"?top-TVG-(TH-SH)/2:top-TVG;
-    L.push({d:`M${cx} ${top}V${yb}`,c:n.depth?n.side:"n"});
-    L.push({d:`M${cx} ${yb}H${fx}V${bot(f)}`,c:f.side,dash:f.t==="s"});
-    L.push({d:`M${cx} ${yb}H${mx}V${bot(m)}`,c:m.side,dash:m.t==="s"});
-  }
-  out.push({t:"p",id:n.id,side:n.side,depth:n.depth,cx,top,anc:true});return cx;
-}
-function dTree(pid,depth,seen){
-  const p=byId(pid),n={t:"p",id:pid,depth,groups:[],more:0,addSp:false};
-  if(!p||depth>60||seen.has(pid)){n.w=TW;return n}
-  seen.add(pid);
-  const open=depth===0||depth<DMAX||expDown.has(pid),gs=kidGroups(p),hasSp=spousesOf(p).length>0;
-  if(open){
-    gs.forEach(g=>{
-      const ks=g.kids.map(k=>dTree(k.id,depth+1,seen));
-      const pill=g.other?"sp":(hasSp&&ks.length?"unk":"");
-      const addKid=depth===0&&(!!g.other||!hasSp);
-      let kw=ks.reduce((a,k)=>a+k.w,0)+THG*Math.max(0,ks.length-1);if(addKid)kw+=(ks.length?THG:0)+SWC;
-      if(pill||ks.length||addKid)n.groups.push({other:g.other,pill,kids:ks,addKid,w:Math.max(pill?PW:0,kw)});
-    });
-    if(depth===0&&!n.groups.length)n.groups.push({other:null,pill:"",kids:[],addKid:true,w:SWC});
-    n.addSp=depth===0;
-  }else n.more=descCount(p);
-  const gw=n.groups.reduce((a,g)=>a+g.w,0)+THG*Math.max(0,n.groups.length-1)+(n.addSp?(n.groups.length?THG:0)+SWC:0);
-  n.w=Math.max(TW,gw);return n;
-}
-function dPlace(n,x0,top,out,L){ // children hang under each wife; first group on the right
-  const cx=x0+n.w/2;
-  if(n.depth>0)out.push({t:"p",id:n.id,depth:n.depth,cx,top});
-  if(n.more){out.push({t:"more",for:n.id,n:n.more,cx,top:top+TH+8});L.push({d:`M${cx} ${top+TH}V${top+TH+8}`,c:"n",dash:true})}
-  if(!n.groups.length&&!n.addSp)return cx;
-  const pillTop=top+TH+VG2,kidsTop=top+DROW,yb=pillTop-VG2/2,y2=kidsTop-VG2/2;
-  const gw=n.groups.reduce((a,g)=>a+g.w,0)+THG*Math.max(0,n.groups.length-1)+(n.addSp?(n.groups.length?THG:0)+SWC:0);
-  let cur=cx+gw/2;const rowXs=[cx];
-  n.groups.forEach(g=>{
-    const gcx=cur-g.w/2;g.cx=gcx;rowXs.push(gcx);
-    if(g.pill){out.push({t:"pill",kind:g.pill,other:g.other?g.other.id:"",owner:n.id,cx:gcx,top:pillTop});L.push({d:`M${gcx} ${yb}V${pillTop}`,c:"n"})}
-    const kw=g.kids.reduce((a,k)=>a+k.w,0)+THG*Math.max(0,g.kids.length-1)+(g.addKid?(g.kids.length?THG:0)+SWC:0);
-    let kc=gcx+kw/2;const kxs=[];
-    g.kids.forEach(k=>{const kx=dPlace(k,kc-k.w,kidsTop,out,L);kxs.push({x:kx,slot:false});kc-=k.w+THG});
-    if(g.addKid){const sx=kc-SWC/2;out.push({t:"s",kind:"child",for:n.id,other:g.other?g.other.id:"",cx:sx,top:kidsTop+(TH-SHC)/2});kxs.push({x:sx,slot:true})}
-    if(kxs.length){const from=g.pill?pillTop+PH:yb;const xs=kxs.map(k=>k.x).concat(gcx);
-      L.push({d:`M${gcx} ${from}V${y2}`,c:"n"});
-      L.push({d:`M${Math.min(...xs)} ${y2}H${Math.max(...xs)}`,c:"n"});
-      kxs.forEach(k=>L.push({d:`M${k.x} ${y2}V${k.slot?kidsTop+(TH-SHC)/2:kidsTop}`,c:"n",dash:k.slot}))}
-    cur-=g.w+THG;
-  });
-  if(n.addSp){const sx=cur-SWC/2;out.push({t:"s",kind:"spouse",for:n.id,cx:sx,top:pillTop+(PH-SHS)/2});rowXs.push(sx);L.push({d:`M${sx} ${yb}V${pillTop+(PH-SHS)/2}`,c:"n",dash:true})}
-  L.push({d:`M${cx} ${top+TH}V${yb}`,c:"n"});
-  if(rowXs.length>1)L.push({d:`M${Math.min(...rowXs)} ${yb}H${Math.max(...rowXs)}`,c:"n"});
-  return cx;
-}
-function tApply(){const w=$("#tworld");if(w)w.style.transform=`translate(${tv.tx}px,${tv.ty}px) scale(${tv.k})`}
-function renderTree(){
-  const view=$("#tview"),world=$("#tworld");if(!view||!world)return;
-  if($("#v-tree").hidden||$("#openPanel").hidden)return;
-  const me=byId(S.meId);if(!focusId||!byId(focusId))focusId=me?me.id:"";
-  const c=byId(focusId);$("#tcMe").hidden=!me||focusId===S.meId;
-  if(!c){world.innerHTML="";return}
-  const r0=relToMe(c.id);
-  $("#tcTitle").textContent=c.id===S.meId?"شجرتي":"شجرة "+c.name;
-  $("#tcSub").textContent=r0&&c.id!==S.meId?"في المركز: "+r0:"";$("#tcSub").hidden=c.id===S.meId||!r0;
-  const aOut=[],aL=[],dOut=[],dL=[];
-  const ax=aPlace(aTree(c.id,0,null,new Set()),0,aOut,aL);
-  const dx=dPlace(dTree(c.id,0,new Set()),0,0,dOut,dL);
-  const items=aOut.map(o=>Object.assign(o,{cx:o.cx-ax})).concat(dOut.map(o=>Object.assign(o,{cx:o.cx-dx})));
-  const size=o=>o.t==="p"?[TW,TH]:o.t==="s"?(o.kind==="child"?[SWC,SHC]:o.kind==="spouse"?[SWC,SHS]:[SW,SH]):o.t==="pill"?[PW,PH]:[96,24];
-  let x1=Infinity,x2=-Infinity,y1=Infinity,y2=-Infinity;
-  items.forEach(o=>{const [w,h]=size(o);x1=Math.min(x1,o.cx-w/2);x2=Math.max(x2,o.cx+w/2);y1=Math.min(y1,o.top-14);y2=Math.max(y2,o.top+h)});
-  const PAD=40,ox=PAD-x1,oy=PAD-y1,WW=x2-x1+PAD*2,HH=y2-y1+PAD*2;
-  const fem=x=>x&&x.gender==="f";
-  const html=items.map(o=>{const [w,h]=size(o),L=o.cx-w/2+ox,T=o.top+oy,pos=`left:${L}px;top:${T}px;width:${w}px;height:${h}px`;
-    if(o.t==="p"){const p=byId(o.id);if(!p)return"";const isC=o.id===c.id&&(o.anc&&o.depth===0),rl=relToMe(o.id);
-      const cls=["tn",isC?"ctr":"",o.anc&&o.depth>0?o.side:"",o.id===S.meId?"me":"",p.alive?"":"dead"].join(" ");
-      const others=o.anc&&o.depth>0?Math.max(0,kids(o.id).length-1):0;
-      return`<button class="${cls}" type="button" style="${pos}" data-open="${o.id}" aria-label="${esc(p.name+(rl?"، "+rl:""))}"><b>${esc(p.name)}</b>${rl?`<small>${esc(rl)}</small>`:p.alive?"":`<small>${fem(p)?"رحمها الله":"رحمه الله"}</small>`}</button>`
-        +(others?`<button class="tbadge" type="button" style="left:${L-8}px;top:${T-11}px" data-center="${o.id}" title="اجعله في المركز لتظهر ذريته كلها" aria-label="${others} من أبنائه غير ظاهرين، اجعله في المركز">+${others}</button>`:"")}
-    if(o.t==="s"){const t=byId(o.for);const lab=o.kind==="father"?"+ أب":o.kind==="mother"?"+ أم":o.kind==="spouse"?(fem(t)?"+ زوج":(spousesOf(t).length?"+ زوجة أخرى":"+ زوجة")):"+ ابن أو بنت";
-      return`<button class="tslot ${o.side||""}" type="button" style="${pos}" data-slot="${o.kind}" data-for="${o.for}" data-other="${o.other||""}" aria-label="${esc(lab+" لـ"+(t?t.name:""))}">${lab}</button>`}
-    if(o.t==="pill"){const ow=byId(o.owner),x=byId(o.other);
-      if(o.kind==="unk")return`<span class="tpill unk" style="${pos}">${fem(ow)?"الأب غير محدد":"الأم غير محددة"}</span>`;
-      return`<button class="tpill ${x&&!x.alive?"dead":""}" type="button" style="${pos}" data-open="${o.other}"><span>${fem(ow)?"زوجها":"زوجته"}: ${esc(x?x.name:"")}</span></button>`}
-    if(o.t==="more")return`<button class="tmore" type="button" style="${pos}" data-expand="${o.for}">+${o.n} من الذرية</button>`;
-    return"";}).join("");
-  const path=l=>`<path class="tl ${l.c||"n"}${l.dash?" dash":""}" d="${l.d}"/>`;
-  world.style.width=WW+"px";world.style.height=HH+"px";
-  world.innerHTML=`<svg width="${WW}" height="${HH}" viewBox="0 0 ${WW} ${HH}" aria-hidden="true"><g transform="translate(${ox},${oy})"><g transform="translate(${-ax},0)">${aL.map(path).join("")}</g><g transform="translate(${-dx},0)">${dL.map(path).join("")}</g></g></svg>`+html;
-  // keep the centre card where it was on screen; move to the middle only when the centre changes
-  const vw=view.clientWidth,vh=view.clientHeight,ccx=ox,ccy=oy+TH/2;
-  if(!tv.k){const par=items.filter(o=>o.anc&&o.depth===1&&o.t==="p"),far=par.length?Math.max(...par.map(o=>Math.abs(o.cx)))+TW/2+10:TW*1.5;tv.k=Math.max(.5,Math.min(1,(vw/2)/far))}
-  if(tvCenter!==c.id||!tvAnchor){tv.tx=vw/2-ccx*tv.k;tv.ty=vh*.42-ccy*tv.k}
-  else{tv.tx=tvAnchor.sx-ccx*tv.k;tv.ty=tvAnchor.sy-ccy*tv.k}
-  tvCenter=c.id;tvAnchor={get sx(){return tv.tx+ccx*tv.k},get sy(){return tv.ty+ccy*tv.k}};
-  tApply();
-}
-function tZoomAt(sx,sy,f){const k=Math.max(.25,Math.min(2,tv.k*f));const wx=(sx-tv.tx)/tv.k,wy=(sy-tv.ty)/tv.k;tv.k=k;tv.tx=sx-wx*k;tv.ty=sy-wy*k;tApply()}
-function tFit(){const v=$("#tview"),w=$("#tworld");const vw=v.clientWidth,vh=v.clientHeight,W=w.offsetWidth,H=w.offsetHeight;if(!W||!H)return;
-  tv.k=Math.max(.2,Math.min(1.1,(vw-16)/W,(vh-16)/H));tv.tx=(vw-W*tv.k)/2;tv.ty=(vh-H*tv.k)/2;tApply()}
-(function(){
-  const view=$("#tview");if(!view)return;const pts=new Map();let drag=null,pinch=null,moved=false;
-  const rect=()=>view.getBoundingClientRect();
-  view.addEventListener("pointerdown",e=>{if(e.button>0||e.target.closest(".tzoom"))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
-    if(pts.size===1){drag={x:e.clientX,y:e.clientY,tx:tv.tx,ty:tv.ty};moved=false;pinch=null}
-    else if(pts.size===2){const [a,b]=[...pts.values()],r=rect();const mx=(a.x+b.x)/2-r.left,my=(a.y+b.y)/2-r.top;
-      pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,k:tv.k,wx:(mx-tv.tx)/tv.k,wy:(my-tv.ty)/tv.k};drag=null;moved=true}});
-  window.addEventListener("pointermove",e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
-    if(pinch&&pts.size>=2){const [a,b]=[...pts.values()],r=rect();const mx=(a.x+b.x)/2-r.left,my=(a.y+b.y)/2-r.top;
-      tv.k=Math.max(.25,Math.min(2,pinch.k*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d));tv.tx=mx-pinch.wx*tv.k;tv.ty=my-pinch.wy*tv.k;tApply()}
-    else if(drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!moved&&Math.abs(dx)+Math.abs(dy)>7){moved=true;view.classList.add("drag")}
-      if(moved){tv.tx=drag.tx+dx;tv.ty=drag.ty+dy;tApply()}}},{passive:true});
-  const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);
-    if(pts.size===1){const [a]=[...pts.values()];drag={x:a.x,y:a.y,tx:tv.tx,ty:tv.ty};pinch=null}
-    if(!pts.size){drag=null;pinch=null;view.classList.remove("drag");setTimeout(()=>{moved=false},0)}};
-  window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up);
-  view.addEventListener("click",e=>{if(moved){e.stopPropagation();e.preventDefault()}},true);
-  view.addEventListener("wheel",e=>{e.preventDefault();const r=rect();tZoomAt(e.clientX-r.left,e.clientY-r.top,e.deltaY<0?1.12:1/1.12)},{passive:false});
-  const mid=()=>{const r=rect();return[r.width/2,r.height/2]};
-  $("#tzIn").onclick=()=>tZoomAt(...mid(),1.2);$("#tzOut").onclick=()=>tZoomAt(...mid(),1/1.2);$("#tzFit").onclick=tFit;
-  const full=on=>{view.classList.toggle("full",on);$("#tzFull").textContent=on?"✕":"⛶";$("#tzFull").setAttribute("aria-label",on?"إغلاق ملء الشاشة":"ملء الشاشة");tvCenter=null;renderTree()};
-  $("#tzFull").onclick=()=>full(!view.classList.contains("full"));
-  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&view.classList.contains("full")&&!$("#layer").innerHTML)full(false)});
-  $("#tworld").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
-    if(d.open)openPerson(d.open);
-    else if(d.center){focusId=d.center;renderAll()}
-    else if(d.slot)quickAdd(d.slot,d.for,true,d.other||"");
-    else if(d.expand){expDown.add(d.expand);renderTree()}});
-  window.addEventListener("resize",()=>{if(!$("#openPanel").hidden)renderTree()});
-})();
 /* ---------- sheet ---------- */
 function sheet(html,onMount,opts){
-  const prev=$("#layer .sheet"),keep=opts&&opts.keep&&prev?prev.scrollTop:null;
+  const prev=$("#layer .sheet"),keep=opts&&opts.keep&&prev?prev.scrollTop:null;bkPush("sheet",()=>closeSheet());
   $("#layer").innerHTML=`<div class="overlay"><div class="sheet${keep!=null?" noanim":""}" role="dialog" aria-modal="true">${html}</div></div>`;
   const ov=$("#layer .overlay");ov.addEventListener("click",e=>{if(e.target===ov)closeSheet()});
   const sh=$("#layer .sheet");onMount&&onMount(sh);
   if(keep!=null){sh.scrollTop=keep}else{const f=$("#layer .sheet [data-close]");f&&f.focus({preventScroll:true})}
 }
-function closeSheet(){$("#layer").innerHTML=""}
+function closeSheet(){$("#layer").innerHTML="";bkDone("sheet")}
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#layer").innerHTML)closeSheet()});
 
 function relLabel(p,o){return relation(o.id,p.id)}
@@ -950,7 +837,7 @@ function openPerson(id,keep){
     el.querySelectorAll("[data-addrel]").forEach(b=>b.onclick=()=>quickAdd(b.dataset.addrel,p.id));
     el.querySelectorAll("[data-alive]").forEach(b=>b.onclick=()=>{const a=b.dataset.alive==="1";if(a===!!p.alive)return;setAlive(p,a);openPerson(p.id,true)});
     el.querySelector("#pEdit").onclick=()=>editPerson(p.id);
-    el.querySelector("#pFocus").onclick=()=>{focusId=p.id;closeSheet();showTab("v-tree");setTreeMode("open");renderAll()};
+    el.querySelector("#pFocus").onclick=()=>{closeSheet();showTab("v-tree");oGo(p.id,true)};
     const pm=el.querySelector("#pMe");if(pm)pm.onclick=()=>{S.meId=p.id;focusId=p.id;save();closeSheet();renderAll();toast("أنت الآن في مركز الشجرة")};
     const pc2=el.querySelector("#pToContact");if(pc2)pc2.onclick=()=>{addContact(p.id,"");closeSheet();showTab("v-contact")};
     const pg=el.querySelector("#pGoC");if(pg)pg.onclick=()=>{closeSheet();showTab("v-contact")};
@@ -1073,16 +960,19 @@ function renderToday(){
   const ym=ymNow(),day=now.getDate();
   const dueF=S.fixed.filter(r=>day>=r.day&&!r.transfers.some(t=>t.ym===ym));
   const item=(c,extra)=>{const ph=phoneOf(c);return`<li><span class="who"><b>${esc(nameOf(c).split(" ")[0])}</b> <span class="full">${extra}</span></span>${ph?`<a class="btn sm" href="tel:${esc(ph)}">اتصال</a><a class="btn sm" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener">واتساب</a>`:""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></li>`};
-  const total=late.length+appts.length+dueF.length;
+  const lb=S.lastBackup?daysAgo(S.lastBackup):-1,needBk=!S.demo&&S.people.length>=5&&(lb<0||lb>=30);
+  const total=late.length+appts.length+dueF.length+(needBk?1:0);
   $("#today").innerHTML=`<div class="row"><h2 class="grow">اليوم</h2><span class="pill ${total?"warn":"good"}">${total?total+" بانتظارك":"لا شيء متأخر"}</span></div>
   ${appts.length?`<h3>مواعيد اليوم</h3><ul class="today-list">${appts.map(c=>item(c,new Date(c.appt)<now?"فات موعده "+fmtDT(c.appt):"الساعة "+new Date(c.appt).toLocaleTimeString(LOC,{hour:"numeric",minute:"2-digit"}))).join("")}</ul>`:""}
   ${late.length?`<h3>تأخرتَ في التواصل معهم</h3><ul class="today-list">${late.slice(0,8).map(c=>item(c,c.log[0]?"متأخر "+(-dueIn(c))+" يوم ("+FREQ.find(f=>f[0]===freqOf(c))?.[1]+")":"لم يُسجَّل تواصل بعد")).join("")}</ul>`:""}
   ${dueF.length?`<h3>مبالغ مستحقة</h3><ul class="today-list">${dueF.map(r=>`<li><span class="who"><b>${esc(nameOf(r).split(" ")[0])}</b> <span class="full num">${money(r.amount)}</span></span><button class="btn sm gold" type="button" data-gofixed>الإحسان</button></li>`).join("")}</ul>`:""}
+  ${needBk?`<h3>نسخة احتياطية</h3><ul class="today-list"><li><span class="who"><b>بياناتك</b> <span class="full">${lb<0?"لم تحفظ نسخة بعد":"آخر نسخة قبل "+lb+" يوم"}</span></span><button class="btn sm primary" type="button" data-gobk>أرسلها إلى بريدي</button></li></ul>`:""}
   ${!total?`<p class="sub" style="margin:0">أحسنت، كل أقاربك في الجدول ضمن موعد التواصل.</p>`:""}`;
 }
 $("#today").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   if(b.dataset.done){const r=S.contacts.find(x=>x.id===b.dataset.done);logContact(r)}
-  if("gofixed" in b.dataset)showTab("v-ihsan")});
+  if("gofixed" in b.dataset)showTab("v-ihsan");
+  if("gobk" in b.dataset)bkMail()});
 function logContact(r){const iso=new Date().toISOString();r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;metaRow=r.id;save();renderContacts();toast("سُجِّل التواصل مع "+nameOf(r).split(" ")[0])}
 function renderContacts(){
   renderToday();
@@ -1289,20 +1179,26 @@ $("#btnSettings").onclick=()=>{
   </div>
   <div class="row"><button class="btn primary" type="button" id="s-save">حفظ</button></div>
   <div class="panel" style="background:var(--bg)"><h3>نسخة احتياطية</h3>
-    <p class="sub" style="margin:0">بياناتك محفوظة في هذا المتصفح فقط. انسخ النص واحفظه في مكان آمن، والصقه هنا لاستعادته.</p>
-    <textarea id="s-json" spellcheck="false"></textarea>
-    <div class="row"><button class="btn" type="button" id="s-copy">نسخ النسخة الحالية</button><button class="btn soft" type="button" id="s-import">استعادة من النص الملصق</button></div>
+    <p class="sub" style="margin:0">بياناتك محفوظة على هذا الجهاز وحده، فإن حُذف التطبيق ضاعت. أرسل نسخة إلى بريدك كل شهر، وإن احتجتها فالصقها هنا واضغط «استعادة».</p>
+    <p class="sub bk-last" id="s-last" style="margin:0">${S.lastBackup?"آخر نسخة: "+fmtD(S.lastBackup)+" (قبل "+daysAgo(S.lastBackup)+" يوم)":"لم تحفظ نسخة بعد."}</p>
+    <div class="row"><button class="btn primary" type="button" id="s-mail">أرسلها إلى بريدي</button><button class="btn" type="button" id="s-copy">انسخها</button></div>
+    <textarea id="s-json" spellcheck="false" placeholder="لاستعادة نسخة: الصق رسالتها هنا"></textarea>
+    <div class="row"><button class="btn soft" type="button" id="s-import">استعادة من النص الملصق</button></div>
   </div>
   <div class="row"><button class="btn" type="button" id="s-demo">تحميل البيانات التجريبية</button><span style="flex:1"></span><button class="btn danger" type="button" id="s-wipe">مسح كل البيانات</button></div>
   <div id="s-conf"></div><p class="sub" style="margin:0;text-align:center">ذو القربى · النسخة ${WEB_BUILD}</p>`,el=>{
-    const ta=el.querySelector("#s-json");ta.value=JSON.stringify(S);
+    const ta=el.querySelector("#s-json");
+    const bkSaid=()=>{const l=el.querySelector("#s-last");if(l)l.textContent="آخر نسخة: "+fmtD(S.lastBackup)+" (اليوم)"};
+    el.querySelector("#s-mail").onclick=()=>{bkMail();bkSaid()};
     el.querySelector("[data-close]").onclick=closeSheet;
     el.querySelector("#s-pinset").onclick=async()=>{const v=el.querySelector("#s-pin").value.trim();if(!/^\d{4,8}$/.test(v)){toast("الرمز من 4 إلى 8 أرقام");return}S.pinHash=await hashPin(v);save();unlocked=true;closeSheet();renderAll();toast("فُعِّل القفل")};
     const off=el.querySelector("#s-pinoff");if(off)off.onclick=()=>{delete S.pinHash;save();closeSheet();renderAll();toast("أُلغي القفل")};
     el.querySelector("#s-veil").onchange=e=>{S.hideAmounts=e.target.checked;veiled=S.hideAmounts;save();renderAll()};
     el.querySelector("#s-save").onclick=()=>{S.currency=el.querySelector("#s-cur").value.trim();S.family=el.querySelector("#s-fam").value.trim();save();renderAll();toast("حُفظت الإعدادات")};
-    el.querySelector("#s-copy").onclick=()=>{ta.value=JSON.stringify(S);navigator.clipboard?.writeText(ta.value).then(()=>toast("نُسخت النسخة الاحتياطية"),()=>{ta.select();toast("حدِّد النص وانسخه")})??(ta.select())};
-    el.querySelector("#s-import").onclick=()=>{try{const d=JSON.parse(ta.value);if(!Array.isArray(d.people))throw 0;S=migrate(Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},d));save();renderAll();closeSheet();toast("استُعيدت البيانات")}catch(e){toast("النص الملصق ليس نسخة احتياطية صالحة")}};
+    el.querySelector("#s-copy").onclick=()=>{copyText("نسخة احتياطية من «ذو القربى» بتاريخ "+fmtD(new Date().toISOString())+"\n"+bkText(),"نُسخت النسخة. الصقها في بريدك أو ملاحظاتك");S.lastBackup=new Date().toISOString();save();renderToday();bkSaid()};
+    el.querySelector("#s-import").onclick=()=>{let d;try{d=bkParse(ta.value)}catch(e){toast("النص الملصق ليس نسخة احتياطية صالحة");return}
+      conf("ستحل النسخة الملصقة ("+d.people.length+" في الشجرة) محل بياناتك الحالية ("+S.people.length+"). أستعيدها؟",()=>{try{S=migrate(Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},d));save();renderAll();closeSheet();toast("استُعيدت البيانات")}catch(e){toast("تعذّرت الاستعادة من هذا النص")}});
+      const c=el.querySelector("#s-conf");c&&c.scrollIntoView({block:"center",behavior:"smooth"})};
     const conf=(msg,fn)=>{const c=el.querySelector("#s-conf");c.innerHTML=`<div class="confirm">${msg}<span style="flex:1"></span><button class="btn sm" type="button" id="k-no">تراجع</button><button class="btn sm danger" type="button" id="k-yes">نعم</button></div>`;c.querySelector("#k-no").onclick=()=>c.innerHTML="";c.querySelector("#k-yes").onclick=fn};
     el.querySelector("#s-demo").onclick=()=>conf("ستحل البيانات التجريبية محل بياناتك الحالية.",()=>{S=migrate(sample());save();renderAll();closeSheet()});
     el.querySelector("#s-wipe").onclick=()=>conf("مسح الشجرة والتواصل والإحسان كلها؟",()=>{S={demo:false,schema:2,currency:S.currency||"ريال",family:"",people:[],contacts:[],fixed:[],variable:[]};save();renderAll();closeSheet();toast("مُسحت البيانات")});
@@ -1317,7 +1213,7 @@ if(!Array.isArray(S.ideas)){S.ideas=DEFAULT_IDEAS.map(t=>({id:uid(),text:t,date:
 // the top bar: one line; search results, «اسأل» and «تطوير» drop down under it and close with a tap outside
 const tbBtns=[$("#s-ask"),$("#s-dev")];let tbPane="";
 function tbShow(p){tbPane=p||"";["p-search","p-ask","p-dev"].forEach(id=>{$("#"+id).hidden=id!==tbPane});$("#tbDrop").hidden=!tbPane;
-  tbBtns.forEach(b=>b.setAttribute("aria-expanded",String(b.dataset.p===tbPane)));if(tbPane==="p-ask")initAsk()}
+  tbBtns.forEach(b=>b.setAttribute("aria-expanded",String(b.dataset.p===tbPane)));if(tbPane==="p-ask")initAsk();if(tbPane)bkPush("drop",()=>tbShow(""));else bkDone("drop")}
 tbBtns.forEach(b=>b.addEventListener("click",()=>tbShow(tbPane===b.dataset.p?"":b.dataset.p)));
 $("#tbX").addEventListener("click",()=>tbShow(""));
 $("#gq").addEventListener("input",()=>{if($("#gq").value.trim())tbShow("p-search");else if(tbPane==="p-search")tbShow("")});
@@ -1331,30 +1227,41 @@ if(window.DQ&&!window.claude){$("#s-ask").hidden=true;$("#sync").hidden=true} //
 function gSearch(){
   const q=norm($("#gq").value);const out=$("#gRes");
   if(!q){out.innerHTML="";return}
-  const hitsG=S.people.filter(p=>norm(nasab(p,6)+" "+p.city+" "+spousesOf(p).map(x=>x.name).join(" ")).includes(q)||(p.phone&&p.phone.replace(/\D/g,"").includes(q.replace(/\D/g,"")||"#"))).slice(0,12);
-  out.innerHTML=hitsG.length?hitsG.map(p=>{const c=S.contacts.find(x=>x.personId===p.id);const last=c&&c.log[0];
-    return`<div class="res"><div class="who"><b>${esc(p.name)}</b><span class="full">${esc(nasab(p,4))}${p.city?" · "+esc(p.city):""}</span></div>
+  const dq=q.replace(/\D/g,""),hits=[];
+  S.people.forEach(p=>{const nv=norm(p.name);let r=-1,why="";
+    if(nv.startsWith(q))r=0;else if(nv.includes(q))r=1;else if(norm(nasab(p,6)+" "+familyOf(p)).includes(q))r=2;
+    else{const sp=spousesOf(p).find(x=>norm(x.name).includes(q));
+      if(sp){r=3;why=(p.gender==="f"?"زوجة ":"زوج ")+sp.name}
+      else if(p.city&&norm(p.city).includes(q)){r=4;why=p.city}
+      else if(dq.length>=2&&p.phone&&p.phone.replace(/\D/g,"").includes(dq)){r=5;why=p.phone}}
+    if(r>=0)hits.push({p,r,why})});
+  hits.sort((a,b)=>a.r-b.r);
+  out.innerHTML=hits.length?hits.slice(0,12).map(({p,why})=>{const c=S.contacts.find(x=>x.personId===p.id);const last=c&&c.log[0];const rl=relToMe(p.id);
+    const ns=nasab(p,4),sub=[why||(ns!==p.name?ns:""),rl,!why&&p.city?p.city:""].filter(Boolean).join(" · ");
+    return`<div class="res"><div class="who"><b>${esc(p.name)}</b><span class="full">${esc(sub)}</span></div>
     ${last?`<span class="pill ${daysAgo(last)<=14?"good":daysAgo(last)<=45?"warn":"bad"}">${daysAgo(last)===0?"اليوم":"قبل "+daysAgo(last)+" يوم"}</span>`:""}
-    <button class="btn sm soft" type="button" data-gopen="${p.id}">الملف</button></div>`}).join(""):`<div class="empty">لا يوجد قريب بهذا الاسم في الشجرة.</div>`;
+    <span class="acts"><button class="btn sm" type="button" data-gtree="${p.id}" aria-label="${esc("أظهر "+p.name+" في الشجرة")}">الشجرة</button><button class="btn sm soft" type="button" data-gopen="${p.id}">الملف</button></span></div>`}).join(""):`<div class="empty">لا يوجد قريب بهذا الاسم في الشجرة.</div>`;
 }
 $("#gq").addEventListener("input",gSearch);
-$("#gRes").addEventListener("click",e=>{const b=e.target.closest("[data-gopen]");if(b)openPerson(b.dataset.gopen)});
+$("#gRes").addEventListener("click",e=>{const t=e.target.closest("[data-gtree]");if(t){const id=t.dataset.gtree;tbShow("");$("#gq").blur();showTab("v-tree");oGo(id,true);return}
+  const b=e.target.closest("[data-gopen]");if(b)openPerson(b.dataset.gopen)});
 // ideas
 function renderIdeas(){
-  const open=S.ideas.filter(i=>!i.done).length;$("#ideaCount").textContent=open;$("#ideaCount").hidden=!open;
+  const open=S.ideas.filter(i=>!i.done).length;$("#ideaSendRow").hidden=!open||!!window.claude;$("#ideaCount").textContent=open;$("#ideaCount").hidden=!open;
   const list=S.ideas.slice().sort((a,b)=>a.done-b.done);
   $("#ideas").innerHTML=list.length?list.map(i=>`<div class="idea ${i.done?"done":""}"><input type="checkbox" ${i.done?"checked":""} data-idone="${i.id}" aria-label="تم التنفيذ" style="margin-top:6px"><div class="tx"><b>${esc(i.text)}</b><div class="full">${fmtD(i.date)}${i.done?" · نُفِّذ":""}</div></div><button class="btn sm danger" type="button" data-idel="${i.id}">حذف</button></div>`).join(""):`<div class="empty">لا اقتراحات بعد.</div>`;
 }
+$("#ideaSend").onclick=()=>{const t="اقتراحاتي لتطبيق «ذو القربى»:\n"+S.ideas.filter(i=>!i.done).map((i,n)=>(n+1)+". "+i.text).join("\n");copyText(t,"نُسخت الاقتراحات. الصقها لي في المحادثة")};
 $("#ideaForm").addEventListener("submit",e=>{e.preventDefault();const t=$("#ideaIn").value.trim();if(!t)return;S.ideas.unshift({id:uid(),text:t,date:new Date().toISOString(),done:false});$("#ideaIn").value="";save();renderIdeas();toast("أُضيف الاقتراح")});
 $("#ideas").addEventListener("change",e=>{const id=e.target.dataset.idone;if(!id)return;const i=S.ideas.find(x=>x.id===id);i.done=e.target.checked;save();renderIdeas()});
 $("#ideas").addEventListener("click",e=>{const id=e.target.closest("[data-idel]")?.dataset.idel;if(!id)return;S.ideas=S.ideas.filter(x=>x.id!==id);save();renderIdeas()});
 // ask Claude
 let sampleFn,askReady=false,turns=[],askCtl=null,hasTools=false;
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
-1) ذو القربى: «الشجرة المفتوحة» بلا حدود، والمستخدم في المركز: الأجداد فوقه (جهة الأب يمينًا وجهة الأم يسارًا) والزوجات والذرية تحته، وخانات منقطة لإضافة أي أب أو أم ناقص أو زوجة أو ابن. السحب بإصبع والتقريب بإصبعين. الرقم الذهبي فوق الجد يجعله في المركز فتظهر ذريته. ولمس الاسم يفتح ملفه (تعديل، خانات الأقارب، الحالة حي أو متوفى، ما صلته بقريب آخر). و«عائلتي» (الواجهة الأولى) لوحة تملأ الشاشة تحتها ثلاث بطاقات: جهة الأب يمينًا، وجهة الأم يسارًا، والزوجة وأهلها تحتهما؛ لمس البطاقة يملأ اللوحة بشجرة تلك الجهة وحدها (جهة الأب فيها الأب وحده والمستخدم تحته بلا الأم، وجهة الأم كذلك). لأي شخص أكثر من زوجة أو زوج: كل زواج له خط، والأبناء ينزلون من خط أبيهم وأمهم، وزوج المرأة الآخر يظهر بجانبها مع أبنائها منه. تحت كل زواج في خط الأجداد خانة «+ عم أو عمة» أو «+ خال أو خالة» تربط المضاف بأبيه وأمه، وبجانب الجد خانة «+ زوجة»، وفي «تعديل البيانات» تُختار الأم من زوجات الأب بلمسة. الرقم تحت أي اسم يفتح فرعه، و«أهلها» فوق الجدة ينقل إلى عائلتها، وأزرار التكبير و⛶ و؟ في أعلى اللوحة. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك.
+1) ذو القربى: «الشجرة المفتوحة» (زرها أعلى اللوحة) ترسم بالطريقة نفسها أي قريب في المركز: خط أجداده من الجد الأعلى نازلًا إليه، ومعه كل زيجاته، وأبناؤه وأحفاده مفتوحون تحته، وتحت اللوحة «الجد الأعلى» و«أنا في المركز»، و«أهلها» على أي زوجة يجعلها في المركز. والبحث في الأعلى يقفز بزر «الشجرة» إلى القريب ويضيء بطاقته. السحب بإصبع والتقريب بإصبعين. ولمس الاسم يفتح ملفه (تعديل، خانات الأقارب، الحالة حي أو متوفى، ما صلته بقريب آخر). و«عائلتي» (الواجهة الأولى) لوحة تملأ الشاشة تحتها ثلاث بطاقات: جهة الأب يمينًا، وجهة الأم يسارًا، والزوجة وأهلها تحتهما؛ لمس البطاقة يملأ اللوحة بشجرة تلك الجهة وحدها (جهة الأب فيها الأب وحده والمستخدم تحته بلا الأم، وجهة الأم كذلك). لأي شخص أكثر من زوجة أو زوج: كل زواج له خط، والأبناء ينزلون من خط أبيهم وأمهم، وزوج المرأة الآخر يظهر بجانبها مع أبنائها منه. تحت كل زواج في خط الأجداد خانة «+ عم أو عمة» أو «+ خال أو خالة» تربط المضاف بأبيه وأمه، وبجانب الجد خانة «+ زوجة»، وفي «تعديل البيانات» تُختار الأم من زوجات الأب بلمسة. الرقم تحت أي اسم يفتح فرعه، و«أهلها» فوق الجدة ينقل إلى عائلتها، وأزرار التكبير و⛶ و؟ في أعلى اللوحة. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك.
 2) التواصل: جدول. اكتب الاسم الأول فيظهر الاسم الكامل من الشجرة ثم «إضافة للجدول». «تم التواصل» يحفظ التاريخ والوقت تلقائيًا. «موعد تواصل» تختار تاريخًا ووقتًا ثم «حفظ الموعد»، ويظهر زر «تقويم Google» لإضافته إلى التقويم. «السجل» يعرض مرات التواصل.
 3) الإحسان: «المبالغ الثابتة» اسم ومبلغ ويوم الاستحقاق، وزر «تم التحويل» يسجل التحويل بتاريخ اليوم، والمبلغ قابل للتعديل من خانته. «حوالات غير ثابتة» اسم ومبلغ ثم «حفظ» والتاريخ يُسجَّل تلقائيًا. في الأعلى مجموع الشهر والمتبقي ومجموع السنة.
-الشريط العلوي سطر واحد: خانة البحث عن قريب، و«اسأل» (داخل Claude)، و«تطوير» لقائمة الاقتراحات. الإعدادات: العملة، اسم العائلة، النسخة الاحتياطية. ملف كل قريب فيه خانات لإضافة أبيه وأمه وزوجاته وأبنائه وإخوته، وتغيير حالته (حي / متوفى)، و«تعديل» في كل صف من الجداول يفتح كل بياناته مع الحذف.`;
+الشريط العلوي سطر واحد: خانة البحث عن قريب، و«اسأل» (داخل Claude)، و«تطوير» لقائمة الاقتراحات. الإعدادات: العملة، اسم العائلة، والنسخة الاحتياطية («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، وتذكير في «اليوم» إذا مر شهر بلا نسخة. زر الرجوع في الجوال يغلق الملف أو ملء الشاشة أو الشجرة المفتوحة أولًا. ملف كل قريب فيه خانات لإضافة أبيه وأمه وزوجاته وأبنائه وإخوته، وتغيير حالته (حي / متوفى)، و«تعديل» في كل صف من الجداول يفتح كل بياناته مع الحذف.`;
 function familyData(){
   const cmap=new Map(S.contacts.map(c=>[c.personId,c]));
   const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id);return[p.id,nasab(p,5),p.gender==="f"?"أنثى":"ذكر",p.alive?"حي":"متوفى",p.city||"",spousesOf(p).map(x=>x.name).join("، "),c&&c.log[0]?c.log[0].slice(0,10):"",c&&c.appt?c.appt.slice(0,16):""].join(" | ")}).join("\n");
@@ -1433,6 +1340,8 @@ function renderFam(){
 const FW=88,FH=58,FG=8,FGG=18,FMG=12,FVG=50,FSW=80,FSH=36,FWS=36;
 let fSide="fa",fOf="",fSibs=false,fCamKey="",fAnchor=null,fBottomId="",fBefore=null,fReveal=null;try{fSide=localStorage.getItem(KEY+".side")||"fa"}catch(e){}
 const fExp=new Set(),fv={k:0,tx:0,ty:0},fLast=new Map();let fUserCam=false,fFitAll=false;
+let treeMode="fam"; // «عائلتي» (the sides) or the open tree around any relative; the app always opens on «عائلتي»
+const oCol=new Set(),ODEP=4;let fHL=""; // the open tree: branches you folded, how many generations open under the centre, the card to light up
 const upOf=p=>p?(byId(p.father)||byId(p.mother)||null):null;
 const wivesOfMe=()=>{const me=byId(S.meId);return me?spousesOf(me):[]};
 const sideCls=s=>s==="mo"?"mo":s.startsWith("w")?"in":"fa";
@@ -1444,7 +1353,7 @@ const aqarib=n=>n===0?"لا أحد بعد":n===1?"قريب واحد":n===2?"قر
 function sideCount(a){if(!a)return 0;const r=topOf(a),set=new Set([r.id]),q=[r.id]; // your father's side does not count your mother, and the other way round
   while(q.length){const id=q.shift();if(id===S.meId)continue;if(id!==a.id)spousesOf(byId(id)).forEach(x=>set.add(x.id));kids(id).forEach(k=>{if(!set.has(k.id)){set.add(k.id);q.push(k.id)}})}
   set.delete(S.meId);return set.size}
-function setSide(s){fSide=s;fOf="";fSibs=false;fCamKey="";fFitAll=false;fUserCam=false;try{localStorage.setItem(KEY+".side",s)}catch(e){}renderSidePick();renderSide()}
+function setSide(s){fSide=s;fOf="";bkDone("fof");fSibs=false;fCamKey="";fFitAll=false;fUserCam=false;try{localStorage.setItem(KEY+".side",s)}catch(e){}renderSidePick();renderSide()}
 function fAddFor(s){fBefore=new Set(S.people.map(x=>x.id));quickAdd(s==="fa"?"father":s==="mo"?"mother":"spouse",S.meId,true)}
 function renderSidePick(){
   const me=byId(S.meId),host=$("#sidepick");if(!me||!host)return;
@@ -1472,17 +1381,17 @@ function fTrunk(a,toSp){ // the line from the side's top ancestor down to you (o
    a husband to the woman's right), the second on the other side, more of them further out. Each wife's other husbands stand
    just outside her. Every marriage has its own line, and its children drop from that line, so each child hangs from both parents. */
 function fBuild(T){
-  const me=byId(S.meId),N=T.nodes,last=N.length-1;let count=0;
+  const me=byId(S.meId),N=T.nodes,last=N.length-1,O=!!T.open,OP=T.path||new Set();let count=0;
   const sortK=ks=>ks.length>1&&ks.every(k=>parseInt(k.born,10))?ks.slice().sort((a,b)=>parseInt(a.born,10)-parseInt(b.born,10)):ks;
-  const childLbl=nx=>nx.id===me.father?"+ عم أو عمة":nx.id===me.mother?"+ خال أو خالة":T.endSp&&nx.id===T.endSp.id?"+ أخ أو أخت":"+ ابن أو بنت";
+  const childLbl=nx=>nx.id===S.meId?"+ أخ أو أخت":nx.id===me.father?"+ عم أو عمة":nx.id===me.mother?"+ خال أو خالة":T.endSp&&nx.id===T.endSp.id?"+ أخ أو أخت":"+ ابن أو بنت";
   const leaf=o=>Object.assign({cards:[],groups:[],mars:[]},o);
-  function node(p,ti,depth){
-    count++;const isT=ti>=0,next=isT&&ti<last?N[ti+1]:null,fem=p.gender==="f";
+  function node(p,ti,depth,dd=-1){ // dd: generations under the centre of the open tree (-1: not under it)
+    count++;const isT=ti>=0,next=isT&&ti<last?N[ti+1]:null,fem=p.gender==="f",isC=O&&isT&&ti===last;
     const n={id:p.id,isT,depth,cards:[],mars:[],groups:[],hubI:0,chip:null,col:false};
     const hub={t:"p",id:p.id,hub:true};
-    if((isT&&p.id===S.meId&&!T.endSp)||depth>40||count>500){n.cards=[hub];return n}
-    const isEnd=isT&&ti===last&&!!T.endSp,exp=(isT&&!isEnd)||fExp.has(p.id);
-    const egoLvl=!!next&&next.id===S.meId&&!T.endSp;
+    if((!O&&isT&&p.id===S.meId&&!T.endSp)||depth>40||count>600){n.cards=[hub];return n}
+    const isEnd=!O&&isT&&ti===last&&!!T.endSp,auto=O&&dd>0&&!oCol.has(p.id)&&(dd<ODEP||OP.has(p.id)),exp=(isT&&!isEnd)||fExp.has(p.id)||auto;
+    const egoLvl=!O&&!!next&&next.id===S.meId&&!T.endSp;
     if(!exp&&!isEnd){const nk=kids(p.id).length,ns=spousesOf(p).length;if(nk||ns)n.chip={n:nk,lab:nk?"+"+nk:fem?"زوجها":"زوجته"};n.cards=[hub];return n}
     let prim=null,pslot=null,sps=spousesOf(p);
     if(isEnd)prim=me;
@@ -1491,11 +1400,11 @@ function fBuild(T){
       const gs=kidGroups(p).filter(g=>g.kids.length);sps=fSibs&&gs.length>1?gs.filter(g=>g.other).map(g=>g.other):[]}
     else if(next){prim=byId(fem?next.father:next.mother)||null;if(!prim)pslot={t:"slot",kind:fem?"father":"mother",for:next.id,label:(fem?"+ أبو ":"+ أم ")+next.name}}
     if(prim&&sps.some(x=>x.id===prim.id))sps=[prim,...sps.filter(x=>x.id!==prim.id)];
-    const list=sps.map(x=>({c:{t:"p",id:x.id,inlaw:isT&&!isEnd&&!egoLvl&&!!prim&&x.id===prim.id},outs:[]}));
+    const list=sps.map(x=>({c:{t:"p",id:x.id,inlaw:(isT&&!isEnd&&!egoLvl&&!!prim&&x.id===prim.id)||(isC&&x.id!==S.meId)},outs:[]}));
     if(pslot)list.unshift({c:pslot,outs:[]});
     if(!egoLvl&&!isEnd&&exp)list.forEach(s=>{if(s.c.t!=="p"||s.c.id===S.meId)return; // her husband before or after him, with her children from him
       s.outs=spousesOf(byId(s.c.id)).filter(y=>y.id!==p.id&&y.id!==S.meId).map(y=>({c:{t:"p",id:y.id,step:true,of:s.c.id}}))});
-    const extra=isT&&next&&!egoLvl&&!isEnd&&!fem&&!pslot?{t:"slot",kind:"spouse",for:p.id,label:"+ زوجة",w:FWS,sm:true}:null;
+    const extra=isC?{t:"slot",kind:"spouse",for:p.id,label:fem?"+ زوج":"+ زوجة",w:sps.length?FWS:FSW,sm:!!sps.length}:isT&&next&&!egoLvl&&!isEnd&&!fem&&!pslot?{t:"slot",kind:"spouse",for:p.id,label:"+ زوجة",w:FWS,sm:true}:null;
     const Ls=[],Rs=[];list.forEach((s,i)=>((fem?i%2===1:i%2===0)?Ls:Rs).push(s));
     const extraL=!!extra&&(fem?list.length%2===1:list.length%2===0);
     const cards=[],put=c=>cards.push(c)-1;let ei=-1;
@@ -1513,12 +1422,15 @@ function fBuild(T){
     let ks=sortK(kids(p.id));if(egoLvl&&!fSibs)ks=ks.filter(k=>k.id===S.meId);
     ks.forEach(k=>{const o=fem?k.father:k.mother,s=o?byS.get(o):null;
       const g=s?grp("m"+s.mi,{m:s.mi}):!o&&pslot?grp("m"+list[0].mi,{m:list[0].mi}):grp("h",{c:hubI});
-      g.kids.push(node(k,next&&k.id===next.id?ti+1:-1,depth+1))});
+      g.kids.push(node(k,next&&k.id===next.id?ti+1:-1,depth+1,isC?1:dd>0?dd+1:-1))});
     if(!egoLvl&&!isEnd)list.forEach(s=>{if(s.c.t!=="p"||s.c.id===S.meId)return;const x=byId(s.c.id),xf=x.gender==="f";
       sortK(kids(x.id)).forEach(k=>{const o=xf?k.father:k.mother;if(o===p.id)return;const oo=o?s.outs.find(y=>y.c.id===o):null;if(o&&!oo)return;
         (oo?grp("m"+oo.mi,{m:oo.mi}):grp("c"+s.i,{c:s.i})).kids.push(node(k,-1,depth+1))})});
     if(isT&&next&&!egoLvl&&!isEnd){const lab=childLbl(next); // a place under every marriage on your line: the one you add hangs from his father and his mother
       list.forEach(s=>grp("m"+s.mi,{m:s.mi}).kids.push(leaf({leaf:"slot",kind:"child",for:p.id,other:s.c.t==="p"?s.c.id:"",label:lab,w:FSW,h:FSH})))}
+    if(isC){const ms=list.filter(s=>s.c.t==="p"); // the centre of the open tree: a place for a child under each of his marriages
+      if(ms.length)ms.forEach(s=>grp("m"+s.mi,{m:s.mi}).kids.push(leaf({leaf:"slot",kind:"child",for:p.id,other:s.c.id,label:"+ ابن أو بنت",w:FSW,h:FSH})));
+      else grp("h",{c:hubI}).kids.push(leaf({leaf:"slot",kind:"child",for:p.id,other:"",label:"+ ابن أو بنت",w:FSW,h:FSH}))}
     if(egoLvl){const others=kids(p.id).filter(k=>k.id!==S.meId),eg=[...gm.values()].find(g=>g.kids.some(k=>k.id===S.meId));
       if(eg&&!fSibs&&others.length)eg.kids.push(leaf({leaf:"sibs",n:others.length,g:others.every(k=>k.gender==="f")?"f":"m",w:84,h:30}));
       if(eg&&fSibs)eg.kids.push(leaf({leaf:"slot",kind:"sib",for:S.meId,label:"+ أخ أو أخت",w:FSW,h:FSH}),leaf({leaf:"hide",w:92,h:30}))}
@@ -1580,6 +1492,13 @@ function fPos(n,x0,out,L,cls){
     L.push(tk?{d:`M${ax} ${ay}V${yb}H${kx(tk)}V${kt}`,c:cls,w:"trunk"}:{d:`M${ax} ${ay}V${yb}`,c:"n"});
   });
 }
+function oTrunk(c){ // from the top ancestor (by the father, else the mother) down to the centre; the line from the centre down to you stays open
+  const up=[];let x=c,g=0;while(x&&g++<60&&!up.includes(x)){up.unshift(x);x=upOf(x)}
+  const path=new Set(),me=byId(S.meId);
+  if(me&&me.id!==c.id){const st=ancPath(me.id,c.id);if(st){let cur=me;path.add(me.id);for(const k of st){cur=byId(k==="f"?cur.father:cur.mother);if(!cur)break;path.add(cur.id)}}}
+  return{nodes:up,endSp:null,solo:up.length===1,open:true,path}}
+function renderObar(c){const r=c.id===S.meId?"أنت":relToMe(c.id),t=topOf(c);
+  $("#obName").textContent=c.name;$("#obRel").textContent=r?"· "+r:"";$("#obMe").hidden=c.id===S.meId;$("#obTop").hidden=!t||t.id===c.id}
 function fOfTarget(x){if(!x)return{};const me=byId(S.meId);
   const chain=a=>{const st=new Set();let c=a,g=0;while(c&&g++<60&&!st.has(c.id)){st.add(c.id);c=upOf(c)}return st};
   if(byId(me.father)&&chain(byId(me.father)).has(x.id))return{side:"fa"};
@@ -1592,20 +1511,23 @@ function fSize(){ // the board and its three cards fill the screen between the t
   if(wrap.classList.contains("full")){st.style.height="";return}
   const nav=document.querySelector("nav.tabs"),nh=nav?Math.round(nav.getBoundingClientRect().height):0;
   document.documentElement.style.setProperty("--navh",nh+"px");
-  const top=st.getBoundingClientRect().top+window.scrollY,pk=$("#sidepick").offsetHeight;
+  const top=st.getBoundingClientRect().top+window.scrollY,pk=(treeMode==="open"?$("#obar"):$("#sidepick")).offsetHeight;
   st.style.height=Math.max(330,Math.min(1100,Math.floor(window.innerHeight-top-8-pk-13-nh-10)))+"px"}
 function renderSide(){
   const view=$("#fview"),world=$("#fworld"),cap=$("#fcap"),emp=$("#fempty");
   if(!view||$("#fwrap").hidden||$("#famPanel").hidden||$("#v-tree").hidden)return;
   const me=byId(S.meId);if(!me)return;
+  const O=treeMode==="open";$("#sidepick").hidden=O;$("#obar").hidden=!O;
+  if(O){const c0=byId(focusId)||me;focusId=c0.id;renderObar(c0)}
   fSize();
-  const base=fSide,cls=sideCls(base),fem=me.gender==="f";
-  let a=fOf?byId(fOf):null;if(!a){fOf="";a=sideAnchor(base)}
-  const key=base+"|"+fOf+"|"+(a?a.id:"");
+  const base=O?"fa":fSide,cls=sideCls(base),fem=me.gender==="f";
+  let a=O?byId(focusId):fOf?byId(fOf):null;if(!a&&!O){fOf="";a=sideAnchor(base)}
+  const key=O?"open|"+a.id:base+"|"+fOf+"|"+(a?a.id:"");
   view.className="tview fstage "+cls+(view.classList.contains("drag")?" drag":"");cap.className="fcap "+cls;
   const bt=base==="fa"?"جهة الأب":base==="mo"?"جهة الأم":fem?"الزوج وأهله":"الزوجة وأهلها";
-  cap.hidden=!fOf;$("#toFull").hidden=!!fOf;
-  if(fOf){const r=relToMe(a.id);cap.innerHTML=`<button type="button" data-fback aria-label="${esc("العودة إلى "+bt)}" title="${esc("العودة إلى "+bt)}">→</button><span title="${esc("أهل "+(r?r+" ":"")+a.name)}">أهل ${esc(a.name)}</span>`}
+  cap.hidden=O||!fOf;$("#toFull").hidden=!O&&!!fOf;$("#toFull").textContent=O?"عائلتي":"الشجرة المفتوحة";
+  $("#toFull").setAttribute("aria-label",O?"العودة إلى عائلتي":"الشجرة المفتوحة: اجعل أي قريب في المركز");
+  if(fOf&&!O){const r=relToMe(a.id);cap.innerHTML=`<button type="button" data-fback aria-label="${esc("العودة إلى "+bt)}" title="${esc("العودة إلى "+bt)}">→</button><span title="${esc("أهل "+(r?r+" ":"")+a.name)}">أهل ${esc(a.name)}</span>`}
   else cap.innerHTML="";
   if(!a){world.innerHTML="";world.style.width=world.style.height="0px";fLast.clear();fCamKey="";
     const t=base==="fa"?["أضف أباك","ثم يظهر هنا أجدادك لأبيك وأعمامك وعماتك وفروعهم، كلٌّ في مكانه من الشجرة."]:base==="mo"?["أضف أمك","ثم يظهر هنا أجدادك لأمك وأخوالك وخالاتك وفروعهم، كلٌّ في مكانه من الشجرة."]:fem?["أضف زوجك","ثم يظهر هنا أهله: أبوه وأمه وإخوته وأخواته."]:["أضف زوجتك","ثم يظهر هنا أهلها: أبوها وأمها وإخوتها وأخواتها."];
@@ -1613,7 +1535,7 @@ function renderSide(){
   emp.hidden=true;emp.innerHTML="";
   const vw=view.clientWidth,vh=view.clientHeight;if(!vw||!vh)return;
   if(!fAnchor&&key===fCamKey&&fBottomId&&fUserCam){const p=fLast.get(fBottomId);if(p)fAnchor={id:fBottomId,sx:fv.tx+p[0]*fv.k,sy:fv.ty+p[1]*fv.k}}
-  const T=fTrunk(a,base.startsWith("w")&&!fOf),root=fBuild(T);root.depth=0;fLay(root);
+  const T=O?oTrunk(a):fTrunk(a,base.startsWith("w")&&!fOf),root=fBuild(T);root.depth=0;fLay(root);
   const out=[],L=[];fPos(root,0,out,L,cls);
   const N0=T.nodes[0],rh=out.find(o=>o.t==="card"&&o.n===root&&o.c.hub);
   if(!T.solo&&rh){out.push({t:"rslot",x:rh.x,y:-FSH-22,w:FW,h:FSH,sl:{kind:"father",for:N0.id,label:"+ أبو "+N0.name}});L.push({d:`M${rh.x+FW/2} -22V0`,c:cls,dash:true})}
@@ -1625,7 +1547,7 @@ function renderSide(){
   const html=out.map(o=>{const X=o.x+ox,Y=o.y+oy,pos=`left:${X}px;top:${Y}px;width:${o.w}px;height:${o.h}px`;
     if(o.t==="card"){const p=byId(o.c.id);if(!p)return"";const isMe=p.id===S.meId,dead=!p.alive,sw=o.c.of&&byId(o.c.of);let rl=isMe?"أنت":relToMe(p.id);if(!rl&&sw)rl=(p.gender==="f"?"زوجة ":"زوج ")+sw.name; // her other husband: named by her
       fLast.set(p.id,[X+FW/2,Y+FH/2]);
-      const cl=["tn",o.c.hub&&!isMe?cls:"",isMe?"ctr me":"",dead?"dead":""].filter(Boolean).join(" ");
+      const cl=["tn",o.c.hub&&!isMe?cls:"",isMe?"ctr me":"",O&&p.id===a.id&&!isMe?"oc":"",fHL===p.id?"hl":"",dead?"dead":""].filter(Boolean).join(" ");
       let h=`<button class="${cl}" type="button" style="${pos}" data-open="${p.id}" aria-label="${esc(p.name+(rl?"، "+rl:"")+(dead?"، "+rip(p):""))}"><b>${esc(p.name)}</b>${rl?`<small${dead?' class="one"':""}>${esc(rl)}</small>`:""}${dead?`<small class="rip">${rip(p)}</small>`:""}</button>`;
       if(o.c.inlaw){const tw=46,tx=o.i>o.n.hubI?X+FW-tw-4:X+4,f2=p.gender==="f";
         h+=`<button class="ftab" type="button" style="left:${tx}px;top:${Y-17}px;width:${tw}px" data-fof="${p.id}" aria-label="${esc((f2?"أهلها: عائلة ":"أهله: عائلة ")+p.name)}">${f2?"أهلها":"أهله"}</button>`}
@@ -1657,6 +1579,7 @@ function renderSide(){
     if(sl<12)fv.tx+=12-sl;else if(sr>vw-12)fv.tx-=sr-(vw-12);
     if(st<46)fv.ty+=46-st;else if(sb>vh-12)fv.ty-=sb-(vh-12)}
   fCamKey=key;fAnchor=null;fApply();
+  if(fHL){const h=fHL;setTimeout(()=>{if(fHL===h)fHL=""},2800)}
 }
 function bindPZ(o){ // drag with one finger, pinch with two, wheel, zoom buttons, full screen
   const {view,world,st}=o;const pts=new Map();let drag=null,pinch=null,moved=false;
@@ -1687,21 +1610,21 @@ function bindPZ(o){ // drag with one finger, pinch with two, wheel, zoom buttons
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&fullEl.classList.contains("full")&&!$("#layer").innerHTML)full(false)});
   return{apply,zoomAt,fit,full};
 }
-bindPZ({view:$("#fview"),world:$("#fworld"),st:fv,bIn:$("#fzIn"),bOut:$("#fzOut"),bFit:$("#fzFit"),bFull:$("#fzFull"),fullEl:$("#fwrap"),skip:".tzoom,.fcap,.fempty,.ftip,.fopen",onFull:()=>{fCamKey="";renderSide()},onUser:()=>{fUserCam=true;fFitAll=false},onFit:()=>{fFitAll=true;fUserCam=false;fCamKey="";renderSide()}});
+const fPZ=bindPZ({view:$("#fview"),world:$("#fworld"),st:fv,bIn:$("#fzIn"),bOut:$("#fzOut"),bFit:$("#fzFit"),bFull:$("#fzFull"),fullEl:$("#fwrap"),skip:".tzoom,.fcap,.fempty,.ftip,.fopen",onFull:on=>{fCamKey="";renderSide();if(on)bkPush("full",()=>fPZ.full(false));else bkDone("full")},onUser:()=>{fUserCam=true;fFitAll=false},onFit:()=>{fFitAll=true;fUserCam=false;fCamKey="";renderSide()}});
 function ftipShow(on){$("#ftip").hidden=!on;if(!on)try{localStorage.setItem(KEY+".ftip","1")}catch(e){}if(!fUserCam){fCamKey="";renderSide()}}
 $("#fzHelp").onclick=()=>ftipShow($("#ftip").hidden);$("#ftipX").onclick=()=>ftipShow(false);
 document.fonts&&document.fonts.ready.then(()=>{fCamKey="";renderSide()});
 $("#fworld").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
   const anc=id=>{if(!fUserCam)return;const p=fLast.get(id);if(p)fAnchor={id,sx:fv.tx+p[0]*fv.k,sy:fv.ty+p[1]*fv.k}};
   if(d.open)openPerson(d.open);
-  else if(d.fexp){anc(d.fexp);fExp.add(d.fexp);const q=byId(d.fexp);fReveal=[d.fexp,...kids(d.fexp).map(k=>k.id),...spousesOf(q).map(x=>x.id)];renderSide()}
-  else if(d.fcol){anc(d.fcol);fExp.delete(d.fcol);renderSide()}
+  else if(d.fexp){anc(d.fexp);fExp.add(d.fexp);oCol.delete(d.fexp);const q=byId(d.fexp);fReveal=[d.fexp,...kids(d.fexp).map(k=>k.id),...spousesOf(q).map(x=>x.id)];renderSide()}
+  else if(d.fcol){anc(d.fcol);fExp.delete(d.fcol);oCol.add(d.fcol);renderSide()}
   else if(d.fsibs){anc(S.meId);fSibs=d.fsibs==="1";if(fSibs)fReveal=[S.meId,...sibsOf(byId(S.meId)).map(x=>x.id)];renderSide()}
-  else if(d.fof){const t=fOfTarget(byId(d.fof));if(t.side)setSide(t.side);else if(t.of){fOf=t.of;fSibs=false;fCamKey="";renderSide()}}
+  else if(d.fof){if(treeMode==="open"){oGo(d.fof);return}const t=fOfTarget(byId(d.fof));if(t.side)setSide(t.side);else if(t.of){fOf=t.of;fSibs=false;fCamKey="";renderSide();bkPush("fof",()=>{fOf="";fCamKey="";renderSide()})}}
   else if(d.fslot){fBefore=new Set(S.people.map(x=>x.id));quickAdd(d.fslot,d.for,true,d.other||"")}
 });
 $("#fview").addEventListener("click",e=>{const b=e.target.closest("[data-fback],[data-fadd]");if(!b)return;
-  if(b.hasAttribute("data-fback")){fOf="";fCamKey="";renderSide()}else fAddFor(b.dataset.fadd)});
+  if(b.hasAttribute("data-fback")){fOf="";fCamKey="";renderSide();bkDone("fof")}else fAddFor(b.dataset.fadd)});
 window.addEventListener("resize",()=>{const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))return; // the phone keyboard opening is not a new screen size
   if(!$("#famPanel").hidden)renderSide()});
 $("#fam").addEventListener("click",e=>{
@@ -1709,14 +1632,17 @@ $("#fam").addEventListener("click",e=>{
   const a=e.target.closest("[data-add]");if(a)quickAdd(a.dataset.add);
 });
 $("#famBack").onclick=()=>{focusId=S.meId;renderFam()};
-let treeMode="fam";try{treeMode=localStorage.getItem(KEY+".tmode2")||"fam"}catch(e){}
-function setTreeMode(m){treeMode=m;try{localStorage.setItem(KEY+".tmode2",m)}catch(e){}applyTreeMode()}
-function applyTreeMode(){const open=treeMode==="open"&&!!byId(S.meId);$("#openPanel").hidden=!open;$("#famPanel").hidden=open;if(open){document.body.classList.remove("famfit");renderTree()}else renderFam()}
-$("#toFull").onclick=()=>setTreeMode("open");
-$("#toFam").onclick=()=>setTreeMode("fam");
-$("#tcMe").onclick=()=>{focusId=S.meId;renderAll()};
-$("#tcTop").onclick=()=>{let t=byId(focusId)||byId(S.meId),g=0;while(t&&byId(t.father)&&g++<80)t=byId(t.father);if(t){focusId=t.id;renderAll();toast("في المركز: "+t.name)}};
-let tcAC=null;tcAC=makeAC($("#tcFind"),{placeholder:"ابحث عن قريب وانتقل إليه",allowFree:false,onPick:st=>{focusId=st.personId;renderAll();setTimeout(()=>tcAC&&tcAC.clear(),60)}});
+let famFit=false; // «⤢» on «عائلتي» stays when you come back from the open tree
+function setTreeMode(m){const was=treeMode;if(m==="open"&&was!=="open")famFit=fFitAll;treeMode=m;fCamKey="";fFitAll=m!=="open"&&was==="open"&&famFit;fUserCam=false;
+  if(m==="open"){if(was!=="open"){oCol.clear();bkPush("open",()=>setTreeMode("fam"))}}else bkDone("open");applyTreeMode()}
+function applyTreeMode(){$("#famPanel").hidden=false;renderFam()}
+function oGo(id,hl){if(!byId(id))return;focusId=id;fHL=hl?id:"";oCol.clear();if(treeMode!=="open")setTreeMode("open");else{fCamKey="";fUserCam=false;fFitAll=false;renderSide()}}
+$("#toFull").onclick=()=>{if(treeMode==="open")setTreeMode("fam");else oGo(S.meId)};
+$("#obMe").onclick=()=>oGo(S.meId);
+$("#obTop").onclick=()=>{const c=byId(focusId)||byId(S.meId),t=c&&topOf(c);if(t&&t.id!==c.id){oGo(t.id);toast("في المركز: "+t.name)}};
+const FEM_N=new Set("مريم زينب هند سعاد وداد ايمان امل امال اماني نجلاء هيفاء شيماء علياء رغد جود لمي سلمي دعاء الاء اسراء رنا دانا دينا لينا رهف شهد ابتسام الهام احلام سهام وئام اريج عبير نسرين ياسمين جيهان حنان خلود وعد روان جني مها لبني ندي ضحي سجي رؤي هدي مني ليلي سارا اسماء رحاب نوال منال تهاني بشري سلوي نجوي عفاف وصال كوثر سوسن ريم غدير عهد رزان لجين لميس ميس ريتاج تسنيم اسيل حلا ملاك غلا دلال نهي رشا ربي بتول زهراء نور فاطمه عائشه عايشه خديجه نوره ساره حصه لطيفه منيره شيخه موزه هيله رقيه صفيه سميه رحمه نعيمه جميله فريده حميده سعيده بدريه فوزيه زكيه صالحه عزيزه شريفه حليمه اميره سميره نبيله عاليه غاليه جوهره مزنه نجمه وضحه حمده لولوه غاده هاله منيره اميمه هيا نوف عنود بدور اروي ريما رانيا وفاء صفاء رجاء هناء ثناء سناء لمياء ميار ليان لين يارا تالا ديما فرح هاجر مرام ريهام عبله".split(" "));
+const MALE_T=new Set("حمزه اسامه طلحه عبيده معاويه عروه قتاده عكرمه حذيفه خزيمه جبله ثعلبه ميسره عنتره مسلمه شيبه عتبه اميه قدامه عماره سلمه عطيه حارثه عقبه كنانه".split(" "));
+function guessG(n){const raw=String(n||"").trim().split(/\s+/)[0]||"",y=norm(raw),x=y.replace(/^ال/,"");if(!x)return"";if(MALE_T.has(y)||MALE_T.has(x))return"m";if(FEM_N.has(y)||FEM_N.has(x)||/ة$/.test(raw))return"f";return""}
 function quickAdd(kind,targetId,stay,preOther){
   const focus=byId(focusId);let T=targetId?byId(targetId):focus;if(!T)return;
   let base=kind,needT=null;
@@ -1746,6 +1672,7 @@ function quickAdd(kind,targetId,stay,preOther){
     <form id="qa" class="grid2">
       ${choose?`<div class="gender-pick" style="grid-column:1/-1"><button class="btn" type="button" data-g="m" aria-pressed="true">${choose[0]}</button><button class="btn" type="button" data-g="f" aria-pressed="false">${choose[1]}</button></div>`:""}
       <label class="f" style="grid-column:1/-1"><span>${multi?"الأسماء (افصل بينها بفاصلة لإضافة أكثر من واحد)":"الاسم"}</span><input type="text" id="qaN" placeholder="${multi?"مثل: خالد، فهد، نورة":"الاسم الأول"}" autocomplete="off"></label>
+      ${choose?`<div class="qgs" id="qaGs" hidden aria-label="المس الاسم لتغيير ${choose[0]} أو ${choose[1]}"></div>`:""}
       ${need.map(([id,l])=>`<label class="f"><span>${esc(l)}</span><input type="text" id="${id}" autocomplete="off"></label>`).join("")}
       ${base==="child"&&sps.length?`<label class="f" style="grid-column:1/-1"><span>${fem?"الأب":"الأم"}</span><select id="qaO">${sps.map((x,i)=>`<option value="${x.id}" ${(preOther?x.id===preOther:i===0&&sps.length===1)?"selected":""}>${esc(x.name)}</option>`).join("")}<option value="" ${!preOther&&sps.length>1?"selected":""}>غير محدد</option></select></label>`:""}
       ${sibsFix.length?`<label class="chk" style="grid-column:1/-1"><input type="checkbox" id="qaFix" ${fixDefault?"checked":""}> ${base==="mother"?"وهي أم":"وهو أب"} إخوته أيضًا: ${esc(sibsFix.map(x=>x.name).join("، "))}</label>`:""}
@@ -1753,8 +1680,16 @@ function quickAdd(kind,targetId,stay,preOther){
       <div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">حفظ</button></div>
     </form>`,el=>{
     el.querySelector("[data-close]").onclick=()=>{targetId&&!stay?openPerson(targetId):closeSheet()};setTimeout(()=>el.querySelector("#qaN").focus(),30);
-    let g=base==="mother"?"f":base==="father"?"m":"m";
-    el.querySelectorAll(".gender-pick button").forEach(b=>b.onclick=()=>{g=b.dataset.g;el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+    let g=base==="mother"?"f":base==="father"?"m":"m",gSet=false;const gOver=new Map();
+    const split=()=>el.querySelector("#qaN").value.split(multi?/[،,\n]+/:/\n/).map(x=>x.trim()).filter(Boolean);
+    const gOf=n=>gOver.has(n)?gOver.get(n):gSet?g:(guessG(n)||g);
+    const drawG=()=>{const box=el.querySelector("#qaGs");if(!box)return;const ns=split();box.hidden=!ns.length;
+      box.innerHTML=ns.map((n,i)=>{const x=gOf(n);return`<button type="button" class="qg ${x}" data-qg="${i}">${esc(n)}<small>${x==="f"?choose[1]:choose[0]}</small></button>`}).join("");
+      const gs=[...new Set(ns.map(gOf))],on=!ns.length?g:gs.length===1?gs[0]:""; // the two buttons show the names' choice; mixed names press neither
+      el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.g===on)))};
+    el.querySelectorAll(".gender-pick button").forEach(b=>b.onclick=()=>{g=b.dataset.g;gSet=true;gOver.clear();el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",x===b));drawG()});
+    el.querySelector("#qaN").addEventListener("input",drawG);
+    const gBox=el.querySelector("#qaGs");if(gBox)gBox.addEventListener("click",e=>{const b=e.target.closest("[data-qg]");if(!b)return;const n=split()[+b.dataset.qg];if(n==null)return;gOver.set(n,gOf(n)==="f"?"m":"f");drawG()});
     el.querySelector("#qa").onsubmit=e=>{e.preventDefault();
       const names=el.querySelector("#qaN").value.split(multi?/[،,\n]+/:/\n/).map(x=>x.trim()).filter(Boolean);if(!names.length){el.querySelector("#qaN").focus();return}
       const v=id=>{const i=el.querySelector("#"+id);return i?i.value.trim():""};
@@ -1765,8 +1700,8 @@ function quickAdd(kind,targetId,stay,preOther){
       if(base==="father"){const id=add1(names[0],"m");T.father=id;if(el.querySelector("#qaFix")?.checked)sibsFix.forEach(x=>x.father=id)}
       else if(base==="mother"){const id=add1(names[0],"f");T.mother=id;if(el.querySelector("#qaFix")?.checked)sibsFix.forEach(x=>x.mother=id)}
       else if(base==="spouse"){names.forEach(n=>linkSpouse(T,byId(add1(n,fem?"m":"f"))))}
-      else if(base==="child"){const o=v("qaO");names.forEach(n=>add1(n,g,fem?o:T.id,fem?T.id:o))}
-      else if(base==="sib"){if(!T.father&&!T.mother)T.father=mk(v("pP"),"m");names.forEach(n=>add1(n,g,T.father,T.mother))}
+      else if(base==="child"){const o=v("qaO");names.forEach(n=>add1(n,gOf(n),fem?o:T.id,fem?T.id:o))}
+      else if(base==="sib"){if(!T.father&&!T.mother)T.father=mk(v("pP"),"m");names.forEach(n=>add1(n,gOf(n),T.father,T.mother))}
       if(!fBefore)fBefore=new Set(S.people.filter(x=>!made.includes(x.id)).map(x=>x.id));
       save();renderAll();fBefore=null;toast(made.length>1?`أُضيف ${made.length} أقارب`:"أُضيف "+names[0]);
       if(targetId&&!stay)openPerson(T.id);else closeSheet();
@@ -1809,9 +1744,16 @@ async function initRemote(){
   }catch(e){setSync("على هذا الجهاز فقط");remoteRef=null}
 }
 /* ---------- app update (Android app only) ---------- */
-const WEB_BUILD=10;
+const WEB_BUILD=11;
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={10:[
+const CHANGES={11:[
+  "«الشجرة المفتوحة» صارت بالرسم الجديد: كل زواج بخطه، وزوجات الجد وأبناؤهن ظاهرون، وتملأ الشاشة بأدوات اللوحة نفسها. تحتها «الجد الأعلى» و«أنا في المركز»، و«أهلها» يجعل الزوجة في المركز",
+  "البحث يقدّم من يطابق اسمه، ويكتب سبب ظهور غيره مثل «زوجة محمد»، وزر «الشجرة» ينقلك إلى القريب ويضيء بطاقته",
+  "زر الرجوع في الجوال يغلق الملف أو ملء الشاشة أو الشجرة المفتوحة أولًا، ولا يخرج من التطبيق إلا من الشاشة الرئيسية",
+  "نسخة احتياطية بلمسة: «أرسلها إلى بريدي» في الإعدادات، والاستعادة بلصق الرسالة، وتذكير في «اليوم» إذا مر شهر بلا نسخة",
+  "إضافة أبناء وبنات معًا: يظهر تحت الأسماء كل اسم وحده، فالمسه لتجعله ابنًا أو بنتًا (نورة ومريم بنت من أول مرة)",
+  "«تطوير»: زر ينسخ اقتراحاتك لترسلها لي"],
+10:[
   "كل جهة بخطها: في جهة الأب أبوك وحده وأنت تحته، وفي جهة الأم أمك وحدها وأنت تحتها",
   "أكثر من زوجة أو زوج لأي شخص: كل زواج له خط، والأبناء ينزلون من خط أبيهم وأمهم. الزوجة الثانية على الجانب الآخر، وزوج المرأة الآخر بجانبها مع أبنائها منه",
   "خانة «+ عم أو عمة» تحت كل زواج تربط المضاف بأبيه وأمه، وخانة «+ زوجة» بجانب الجد، وفي «تعديل البيانات» تختار الأم من زوجات الأب بلمسة",
@@ -1850,7 +1792,7 @@ if(window.DQ){
   ub.onclick=()=>{setU("busy");try{window.DQ.update()}catch(e){window.dqUpd("error")}};
   window.dqUpd=st=>{
     if(st==="latest"){setU("ok");toast("لديك آخر نسخة")}
-    else if(st==="done"){ub.textContent="يُعاد الفتح...";toast("نُزِّل التحديث، يُعاد فتح التطبيق")}
+    else if(st==="done"){ub.textContent="يُعاد الفتح...";toast("نُزِّل التحديث، يُعاد فتح التطبيق");bkClear()}
     else{setU(remote>WEB_BUILD?"has":"");toast("تعذّر التحديث. تأكد من الاتصال بالإنترنت")}};
   let seen=0;try{seen=parseInt(localStorage.getItem(KEY+".build"),10)||0}catch(e){}
   if(!seen&&!S.demo&&S.people.length)seen=6;
