@@ -7,7 +7,7 @@
 :root{
   --bg:#f3f5f2; --surface:#ffffff; --sunk:#e8ece6; --fg:#1d2621; --muted:#5f6b64; --line:#c9d2cb;
   --accent:#23614f; --accent-ink:#ffffff; --accent-soft:#dcebe4; --gold:#9a6b12; --gold-soft:#f5ead3;
-  --good:#2f7a44; --warn:#a4590c; --bad:#b3362f;
+  --good:#2f7a44; --warn:#a4590c; --bad:#b3362f; --brick:#a8462a; --brick-soft:#f7e1d7;
   --display:"Reem Kufi","IBM Plex Sans Arabic",Tahoma,sans-serif;
   --body:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",sans-serif;
   --r:12px;
@@ -15,11 +15,11 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#121814; --surface:#1a221d; --sunk:#232d27; --fg:#e4ebe6; --muted:#9aa8a0; --line:#35423a;
   --accent:#5fb597; --accent-ink:#0d1a14; --accent-soft:#1f3a30; --gold:#e0b35a; --gold-soft:#3a2f18;
-  --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; color-scheme:dark}}
+  --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; --brick:#f2946f; --brick-soft:#3e2219; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#121814; --surface:#1a221d; --sunk:#232d27; --fg:#e4ebe6; --muted:#9aa8a0; --line:#35423a;
   --accent:#5fb597; --accent-ink:#0d1a14; --accent-soft:#1f3a30; --gold:#e0b35a; --gold-soft:#3a2f18;
-  --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; color-scheme:dark}
+  --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; --brick:#f2946f; --brick-soft:#3e2219; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;direction:rtl;margin:0}
@@ -61,9 +61,9 @@ h3{font-size:15px;font-weight:600;margin:0}
 .btn.danger{color:var(--bad)}
 .btn.sm{padding:4px 9px;font-size:13px}
 .btn:disabled{opacity:.5;cursor:default}
-a.btn{text-decoration:none;display:inline-block}
+a.btn{text-decoration:none;display:inline-block;color:inherit}
 
-input[type=text],input[type=number],input[type=date],input[type=time],input[type=search],select,textarea{
+input[type=text],input[type=number],input[type=date],input[type=time],input[type=datetime-local],input[type=password],input[type=search],select,textarea{
   border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 10px;width:100%;min-width:0}
 textarea{min-height:90px;resize:vertical;direction:ltr;font-size:12px}
 label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
@@ -196,7 +196,7 @@ td .acts{display:flex;flex-wrap:wrap;gap:6px}
   .tbl-wrap td[colspan]{grid-column:1/-1}
 }
 .totals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-@media (max-width:480px){.totals{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.totals{gap:6px}.totals .stat{padding:8px 9px}.totals .stat b{font-size:15.5px}}
 
 /* autocomplete */
 .ac{position:relative}
@@ -231,6 +231,41 @@ nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-4p
 .rel-out{background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:15px}
 .toast{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:14px;z-index:50;max-width:90vw}
 @media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
+/* v7: edit sheets, family slots, update badge */
+.toast{display:flex;align-items:center;gap:14px}
+.toast[hidden]{display:none}
+.toast .tact{all:unset;cursor:pointer;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.sheet .hd{position:sticky;top:-16px;z-index:3;background:var(--surface);margin-top:-16px;padding-top:16px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.sheet.noanim{animation:none!important}
+#btnUpd.has{background:var(--brick-soft);color:var(--brick);border-color:var(--brick);font-weight:700;display:inline-flex;align-items:center;gap:6px}
+#btnUpd.has::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--brick);flex:none}
+@media (prefers-reduced-motion:no-preference){#btnUpd.has::before{animation:dqpulse 1.6s ease-in-out infinite}@keyframes dqpulse{50%{opacity:.25}}}
+#btnUpd.ok{background:var(--accent-soft);color:var(--accent);border-color:transparent;font-weight:600}
+.relme{color:var(--accent);font-weight:600;font-size:14px;margin-top:2px}
+.seg2{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--bg)}
+.seg2 button{all:unset;cursor:pointer;padding:5px 12px;font-size:13px;font-weight:500;color:var(--muted)}
+.seg2 button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.seg2 button.dead[aria-pressed="true"]{background:var(--muted);color:var(--surface)}
+.seg2 button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.fam-grid{display:grid;grid-template-columns:auto 1fr;gap:10px 12px;margin:0;align-items:start}
+.fam-grid dt{color:var(--muted);font-size:13px;font-weight:500;padding-top:4px;white-space:nowrap}
+.fam-grid dd{margin:0;min-width:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.fam-grid dd .chips,.fam-grid dd .kgrp{align-self:stretch}
+.chip small{font-size:11px;color:var(--muted)}
+.chip.dead{border-style:dashed;color:var(--muted)}
+.slot{border:1.5px dashed var(--line);border-radius:999px;padding:2px 10px;font-size:13px;background:transparent;color:var(--muted)}
+.slot:hover,.slot:focus-visible{border-color:var(--accent);color:var(--accent)}
+.kgrp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.mgrp{font-size:12px;color:var(--muted)}
+details.more{border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg)}
+details.more summary{cursor:pointer;font-weight:600;font-size:14px}
+.erow{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+.erow:last-child{border-bottom:0}
+.erow .f2{flex:1;display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.erow .f2 input[type=text]{flex:1;min-width:120px}
+.erow .f2 input[type=datetime-local],.erow .f2 input[type=date],.erow .f2 select{width:auto;flex:none}
+.news{margin:0;padding-inline-start:20px;display:flex;flex-direction:column;gap:6px}
+.btn.sm{min-height:32px}
 </style>
 
 <header class="top">
@@ -263,7 +298,7 @@ nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-4p
     <div id="p-ask" class="pane" hidden>
       <div class="chat" id="chat"></div>
       <div class="chips" id="askChips">
-        <button class="chip" type="button">ما صلة عمر بحمزة؟</button>
+        <button class="chip" type="button">من أقاربي من جهة أمي؟</button>
         <button class="chip" type="button">من لم أتواصل معه منذ شهر؟</button>
         <button class="chip" type="button">كيف أضيف موعد تواصل؟</button>
       </div>
@@ -427,8 +462,32 @@ function sample(){
       {id:uid(),personId:"p10",name:"",amount:200,date:d(5)},
       {id:uid(),personId:"",name:"جمعية البر",amount:150,date:d(12)}]};
 }
+function migrate(D){
+  if(!D||!Array.isArray(D.people))return D;
+  D.contacts=D.contacts||[];D.fixed=D.fixed||[];D.variable=D.variable||[];
+  const P=D.people;
+  P.forEach(p=>{if(!Array.isArray(p.spouses))p.spouses=[];if(p.family==null)p.family="";if(p.alive==null)p.alive=true});
+  if((D.schema||1)<2){
+    const nm=x=>String(x||"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ").trim();
+    const link=(a,b)=>{if(!a.spouses.includes(b.id))a.spouses.push(b.id);if(!b.spouses.includes(a.id))b.spouses.push(a.id)};
+    P.slice().forEach(p=>{
+      const names=String(p.spouse||"").split(/[،,]+/).map(x=>x.trim()).filter(Boolean);
+      names.forEach(name=>{
+        const og=p.gender==="f"?"m":"f";const ks=P.filter(k=>k.father===p.id||k.mother===p.id);
+        let c=P.find(q=>q.id!==p.id&&q.gender===og&&nm(q.name)===nm(name)&&(ks.some(k=>k.father===q.id||k.mother===q.id)||nm(q.spouse)===nm(p.name)||q.spouses.includes(p.id)));
+        if(!c){c={id:Math.random().toString(36).slice(2,10),name,gender:og,father:"",mother:"",spouse:"",spouses:[],family:"",alive:true,city:"",phone:"",born:"",notes:""};P.push(c)}
+        link(p,c);
+        if(names.length===1)ks.forEach(k=>{if(p.gender==="f"){if(!k.father)k.father=c.id}else{if(!k.mother)k.mother=c.id}});
+      });
+    });
+    P.forEach(p=>{p.spouse=""});
+    D.schema=2;
+  }
+  return D;
+}
 let S=load()||sample();
 if(!S.people)S=sample();
+S=migrate(S);
 save();
 
 /* ---------- helpers ---------- */
@@ -436,6 +495,70 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const byId=id=>S.people.find(p=>p.id===id);
 const kids=id=>S.people.filter(p=>p.father===id||p.mother===id);
+const deadC=c=>{const p=c.personId&&byId(c.personId);return !!p&&p.alive===false};
+function spousesOf(p){if(!p)return[];const out=[];const add=x=>{if(x&&x.id!==p.id&&!out.includes(x))out.push(x)};
+  (p.spouses||[]).forEach(id=>add(byId(id)));kids(p.id).forEach(k=>add(byId(p.gender==="f"?k.father:k.mother)));return out}
+function linkSpouse(a,b){a.spouses=a.spouses||[];b.spouses=b.spouses||[];if(!a.spouses.includes(b.id))a.spouses.push(b.id);if(!b.spouses.includes(a.id))b.spouses.push(a.id)}
+function kidGroups(p){const key=k=>p.gender==="f"?k.father:k.mother;const m=new Map();
+  spousesOf(p).forEach(x=>m.set(x.id,[]));
+  kids(p.id).forEach(k=>{const o=byId(key(k))?key(k):"";if(!m.has(o))m.set(o,[]);m.get(o).push(k)});
+  return[...m.entries()].map(([id,list])=>({other:byId(id)||null,kids:list}))}
+function familyOf(p){let c=p,g=0;while(c&&g++<80){if(c.family)return c.family;const f=byId(c.father);if(!f)break;c=f}
+  if(S.family&&S.meId){let m=byId(S.meId),h=0;while(m&&byId(m.father)&&h++<80)m=byId(m.father);if(m&&c&&m.id===c.id)return S.family}
+  return""}
+function sibKind(p,x){const sf=!!p.father&&x.father===p.father,sm=!!p.mother&&x.mother===p.mother;
+  if(sf&&sm)return x.gender==="f"?"شقيقة":"شقيق";
+  if(sf&&p.mother&&x.mother)return"لأب";if(sm&&p.father&&x.father)return"لأم";return""}
+function ancPath(aId,bId){const q=[[aId,[]]],seen=new Set([aId]);
+  while(q.length){const [id,path]=q.shift();if(id===bId)return path;const p=byId(id);if(!p||path.length>40)continue;
+    for(const [k,pid] of [["f",p.father],["m",p.mother]])if(pid&&byId(pid)&&!seen.has(pid)){seen.add(pid);q.push([pid,path.concat(k)])}}
+  return null}
+function ancGen(path){const d=path.length;
+  if(d===1)return path[0]==="f"?"أبيك":"أمك";
+  if(d===2)return(path[1]==="f"?"جدك":"جدتك")+(path[0]==="f"?" لأبيك":" لأمك");
+  if(d>=4&&path[d-1]==="f"&&path[d-2]==="f")return"جد "+ancGen(path.slice(0,d-2));
+  return(path[d-1]==="f"?"والد ":"والدة ")+ancGen(path.slice(0,d-1))}
+const ancName=path=>path.length===1?(path[0]==="f"?"أبوك":"أمك"):ancGen(path);
+const yours=w=>w.replace(/ة$/,"ت")+"ك";
+const uncW=(side,g)=>side==="f"?(g==="f"?"عمة":"عم"):(g==="f"?"خالة":"خال");
+function nodeOn(startId,path,n){let c=byId(startId);for(let i=0;i<n&&c;i++)c=byId(path[i]==="f"?c.father:c.mother);return c}
+function bloodRel(aId,bId){ // what B is to A, addressing A as "you"
+  const A=byId(aId),B=byId(bId);if(!A||!B||aId===bId)return"";const fB=B.gender==="f";
+  const up=ancPath(aId,bId);if(up)return ancName(up);
+  const down=ancPath(bId,aId);
+  if(down){const d=down.length;if(d===1)return fB?"بنتك":"ابنك";const c=nodeOn(bId,down,d-1);const cw=c&&c.gender==="f"?"بنتك":"ابنك";
+    if(d===2)return(fB?"بنت ":"ابن ")+cw;return(fB?"حفيدة ":"حفيد ")+cw+(d>3?` (الجيل ${d})`:"")}
+  const ma=ancestors(aId),mb=ancestors(bId);let best=null;
+  ma.forEach((ia,k)=>{const ib=mb.get(k);if(ib&&ia.d>0&&ib.d>0&&(!best||ia.d+ib.d<best.da+best.db))best={k,da:ia.d,db:ib.d}});
+  if(!best)return"";
+  const {k,da,db}=best,pA=ancPath(aId,k),pB=ancPath(bId,k);if(!pA||!pB)return"";
+  const top=nodeOn(bId,pB,db-1),tg=top?top.gender:"m",pw=pA[0]==="f"?"أبيك":"أمك";
+  if(da===1&&db===1){const sk=sibKind(A,B);return(fB?"أختك":"أخوك")+(sk==="شقيق"||sk==="شقيقة"?(fB?" الشقيقة":" الشقيق"):sk==="لأب"?" لأبيك":sk==="لأم"?" لأمك":"")}
+  if(da===2&&db===1)return yours(uncW(pA[0],B.gender));
+  if(da===1&&db===2)return(fB?"بنت ":"ابن ")+(tg==="f"?"أختك":"أخيك");
+  if(da===2&&db===2)return(fB?"بنت ":"ابن ")+yours(uncW(pA[0],tg));
+  if(da===3&&db===1)return uncW(pA[1],B.gender)+" "+pw;
+  if(da===3&&db===2)return(fB?"بنت ":"ابن ")+uncW(pA[1],tg)+" "+pw;
+  if(da===1&&db===3)return(fB?"حفيدة ":"حفيد ")+(tg==="f"?"أختك":"أخيك");
+  if(da===2&&db===3)return(fB?"حفيدة ":"حفيد ")+yours(uncW(pA[0],tg));
+  if(da===3&&db===3)return(fB?"حفيدة ":"حفيد ")+uncW(pA[1],tg)+" "+pw;
+  if(da===4&&db===1)return uncW(pA[2],B.gender)+" "+ancGen(pA.slice(0,2));
+  if(da===4&&db===2)return(fB?"بنت ":"ابن ")+uncW(pA[2],tg)+" "+ancGen(pA.slice(0,2));
+  const K=byId(k);return`من ذرية ${ancName(pA)}${K?" «"+K.name+"»":""}`;
+}
+function shortRel(aId,bId){
+  const A=byId(aId),B=byId(bId);if(!A||!B||aId===bId)return"";const fB=B.gender==="f",spw=A.gender==="f"?"زوجك":"زوجتك";
+  if(spousesOf(A).includes(B))return fB?"زوجتك":"زوجك";
+  const r=bloodRel(aId,bId);if(r)return r;
+  const gen=w=>w.replace(/^أبوك/,"أبيك").replace(/^أخوك/,"أخيك");
+  for(const x of spousesOf(B)){const rx=bloodRel(aId,x.id);if(rx&&!rx.startsWith("من ذرية"))return(fB?"زوجة ":"زوج ")+gen(rx)}
+  for(const sp of spousesOf(A)){
+    if(sp.father===bId||sp.mother===bId)return(fB?"والدة ":"والد ")+spw;
+    if((sp.father&&B.father===sp.father)||(sp.mother&&B.mother===sp.mother))return(fB?"أخت ":"أخو ")+spw;
+    if(bloodRel(sp.id,bId))return"من أقارب "+spw;
+  }
+  return"";
+}
 const norm=s=>String(s||"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ").trim();
 const LOC="ar-u-nu-latn";
 const fmtD=iso=>new Date(iso).toLocaleDateString(LOC,{day:"numeric",month:"long",year:"numeric"});
@@ -446,13 +569,15 @@ const daysAgo=iso=>Math.floor((Date.now()-new Date(iso).getTime())/864e5);
 function nasab(p,depth=4){
   if(!p)return"";let out=p.name;let cur=p;let first=true;
   for(let i=0;i<depth;i++){const f=byId(cur.father);if(!f)break;out+=(first&&p.gender==="f"?" بنت ":" بن ")+f.name;first=false;cur=f}
-  if(S.family)out+=" "+S.family;return out;
+  const fam=familyOf(p);if(fam)out+=" "+fam;return out;
 }
 const nameOf=r=>r.personId&&byId(r.personId)?nasab(byId(r.personId),3):(r.name||"—");
-let toastT;function toast(m){clearTimeout(toastT);let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;t.hidden=false;toastT=setTimeout(()=>t.hidden=true,2200)}
+let toastT;function toast(m,act){clearTimeout(toastT);let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}
+  t.textContent=m;if(act){const b=document.createElement("button");b.type="button";b.className="tact";b.textContent=act.label;b.onclick=()=>{t.hidden=true;act.fn()};t.appendChild(b)}
+  t.hidden=false;toastT=setTimeout(()=>t.hidden=true,act?6000:2200)}
 
 /* ---------- autocomplete (first name → full name) ---------- */
-function makeAC(host,{placeholder,allowFree=true,onPick}){
+function makeAC(host,{placeholder,allowFree=true,onPick,filter,preset}){
   host.innerHTML=`<input type="text" placeholder="${esc(placeholder)}" autocomplete="off"><div class="ac-list" hidden></div><div class="picked" hidden></div>`;
   const inp=host.querySelector("input"),list=host.querySelector(".ac-list"),picked=host.querySelector(".picked");
   inp.id="ac-"+host.id;
@@ -460,13 +585,14 @@ function makeAC(host,{placeholder,allowFree=true,onPick}){
   function render(){
     const q=norm(inp.value);st.text=inp.value.trim();st.personId="";picked.hidden=true;
     if(!q){list.hidden=true;return}
-    items=S.people.map(p=>({p,full:nasab(p)})).filter(x=>norm(x.full).startsWith(q)||norm(x.p.name).startsWith(q)||norm(x.full).includes(" "+q)).slice(0,8);
+    items=S.people.filter(p=>!filter||filter(p)).map(p=>({p,full:nasab(p)})).filter(x=>norm(x.full).startsWith(q)||norm(x.p.name).startsWith(q)||norm(x.full).includes(" "+q)).slice(0,8);
     hi=items.length?0:-1;
     if(!items.length){list.hidden=true;return}
     list.innerHTML=items.map((x,i)=>`<button type="button" data-i="${i}" class="${i===hi?"on":""}">${esc(x.p.name)}<span class="full">${esc(x.full)}</span></button>`).join("");
     list.hidden=false;
   }
   function pick(i){const x=items[i];if(!x)return;inp.value=x.full;st.personId=x.p.id;st.text=x.full;list.hidden=true;picked.textContent="✓ من الشجرة";picked.hidden=false;onPick&&onPick(st)}
+  if(preset){inp.value=preset.text||"";st.personId=preset.personId||"";if(st.personId){picked.textContent="✓ من الشجرة";picked.hidden=false}}
   inp.addEventListener("input",render);
   inp.addEventListener("keydown",e=>{
     if(list.hidden)return;
@@ -498,7 +624,7 @@ function nodeHTML(p){
   const isC=collapsed.has(p.id);
   const cls=["node",p.gender==="f"?"f":"m",p.alive?"":"dead",hits.has(p.id)?"hit":""].join(" ");
   let h=`<li><div class="${cls}"><button class="nm" type="button" data-open="${p.id}">${esc(p.name)}</button>`+
-    (p.spouse?`<span class="sp2">${p.gender==="f"?"زوجها":"زوجته"}: ${esc(p.spouse)}</span>`:"")+
+    (spousesOf(p).length?`<span class="sp2">${p.gender==="f"?"زوجها":(spousesOf(p).length>1?"زوجاته":"زوجته")}: ${esc(spousesOf(p).map(x=>x.name).join("، "))}</span>`:"")+
     (!p.alive?`<span class="sp2">متوفى${p.gender==="f"?"ة":""}</span>`:"")+
     (ch.length?`<button class="tg" type="button" data-tg="${p.id}" aria-label="${isC?"فتح":"طي"} فرع ${esc(p.name)}">${isC?"+":"−"}</button>`:"")+`</div>`;
   if(ch.length&&!isC){h+="<ul>"+ch.slice().reverse().map(nodeHTML).join("")+"</ul>"}
@@ -525,73 +651,85 @@ $("#treeSearch").addEventListener("input",e=>{
 });
 
 /* ---------- sheet ---------- */
-function sheet(html,onMount){
-  $("#layer").innerHTML=`<div class="overlay"><div class="sheet" role="dialog" aria-modal="true">${html}</div></div>`;
+function sheet(html,onMount,opts){
+  const prev=$("#layer .sheet"),keep=opts&&opts.keep&&prev?prev.scrollTop:null;
+  $("#layer").innerHTML=`<div class="overlay"><div class="sheet${keep!=null?" noanim":""}" role="dialog" aria-modal="true">${html}</div></div>`;
   const ov=$("#layer .overlay");ov.addEventListener("click",e=>{if(e.target===ov)closeSheet()});
-  onMount&&onMount($("#layer .sheet"));
-  const f=$("#layer .sheet [data-close]");f&&f.focus();
+  const sh=$("#layer .sheet");onMount&&onMount(sh);
+  if(keep!=null){sh.scrollTop=keep}else{const f=$("#layer .sheet [data-close]");f&&f.focus({preventScroll:true})}
 }
 function closeSheet(){$("#layer").innerHTML=""}
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#layer").innerHTML)closeSheet()});
 
-function relLabel(p,o){const r=relation(o.id,p.id);return r}
-function openPerson(id){
+function relLabel(p,o){return relation(o.id,p.id)}
+function setAlive(p,alive){
+  p.alive=alive;let removed=[];
+  if(!alive){removed=S.contacts.filter(c=>c.personId===p.id);S.contacts=S.contacts.filter(c=>c.personId!==p.id)}
+  save();renderAll();
+  if(removed.length)toast((p.gender==="f"?"رحمها الله":"رحمه الله")+". أُزيل من جدول التواصل",{label:"تراجع",fn:()=>{p.alive=true;S.contacts.unshift(...removed);save();renderAll();if($("#layer").innerHTML)openPerson(p.id,true)}});
+}
+function openPerson(id,keep){
   const p=byId(id);if(!p)return;
-  const f=byId(p.father),m=byId(p.mother);
-  const ch=kids(p.id);const sib=p.father?S.people.filter(x=>x.father===p.father&&x.id!==p.id):[];
-  const lastC=S.contacts.find(c=>c.personId===p.id);
-  const gen=generationOf(p);
-  const chip=x=>`<button class="chip" type="button" data-open="${x.id}">${esc(x.name)}</button>`;
-  sheet(`<div class="hd"><div style="flex:1"><h2>${esc(p.name)}</h2><div class="full">${esc(nasab(p,6))}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
-  <div class="row"><span class="pill ${p.alive?"good":"mute"}">${p.alive?(p.gender==="f"?"على قيد الحياة":"على قيد الحياة"):(p.gender==="f"?"متوفاة":"متوفى")}</span><span class="pill mute">الجيل ${gen}</span>${p.city?`<span class="pill mute">${esc(p.city)}</span>`:""}</div>
-  <dl class="kv">
-    <dt>الأب</dt><dd>${f?chip(f):"—"}</dd>
-    <dt>الأم</dt><dd>${m?chip(m):esc(p.motherName||"—")}</dd>
-    <dt>${p.gender==="f"?"الزوج":"الزوجة"}</dt><dd>${esc(p.spouse||"—")}</dd>
+  const f=byId(p.father),m=byId(p.mother),sp=spousesOf(p),groups=kidGroups(p),sib=sibsOf(p),nk=kids(p.id).length;
+  const isMe=p.id===S.meId,rel=!isMe&&byId(S.meId)?shortRel(S.meId,p.id):"";
+  const nas=nasab(p,6),gen=generationOf(p),inC=S.contacts.find(c=>c.personId===p.id),fem=p.gender==="f";
+  const chip=(x,extra)=>`<button class="chip ${x.alive?"":"dead"}" type="button" data-open="${x.id}">${esc(x.name)}${extra?` <small>${esc(extra)}</small>`:""}</button>`;
+  const slot=(kind,label)=>`<button class="slot" type="button" data-addrel="${kind}">+ ${esc(label)}</button>`;
+  const spL=fem?"الزوج":"الزوجة";
+  const kidsHTML=groups.filter(g=>g.kids.length).map(g=>{
+    const lbl=groups.filter(x=>x.kids.length).length>1||(g.other&&sp.length>1)?(g.other?"من "+g.other.name:(fem?"الأب غير محدد":"الأم غير محددة")):"";
+    return`<div class="kgrp">${lbl?`<span class="mgrp">${esc(lbl)}:</span>`:""}${g.kids.map(k=>chip(k)).join("")}</div>`}).join("");
+  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>${esc(p.name)}</h2>${nas!==p.name?`<div class="full">${esc(nas)}</div>`:""}${isMe?`<div class="relme">أنت</div>`:rel?`<div class="relme">${esc(rel)}</div>`:""}</div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+  <div class="row"><div class="seg2" role="group" aria-label="الحالة"><button type="button" data-alive="1" aria-pressed="${!!p.alive}">على قيد الحياة</button><button type="button" class="dead" data-alive="0" aria-pressed="${!p.alive}">${fem?"متوفاة":"متوفى"}</button></div><span class="pill mute">الجيل ${gen}</span>${p.city?`<span class="pill mute">${esc(p.city)}</span>`:""}</div>
+  <dl class="fam-grid">
+    <dt>الأب</dt><dd>${f?chip(f):slot("father","أضف الأب")}</dd>
+    <dt>الأم</dt><dd>${m?chip(m):(p.motherName?`<span class="chip">${esc(p.motherName)}</span>`:"")+slot("mother","أضف الأم")}</dd>
+    <dt>${sp.length>1?(fem?"الأزواج":"الزوجات"):spL}</dt><dd><div class="chips">${sp.map(x=>chip(x)).join("")}${slot("spouse",sp.length?(fem?"زوج آخر":"زوجة أخرى"):"أضف "+spL)}</div></dd>
+    <dt>الأبناء${nk?` (${nk})`:""}</dt><dd>${kidsHTML}<div class="chips">${slot("child","ابن أو بنت")}</div></dd>
+    <dt>الإخوة${sib.length?` (${sib.length})`:""}</dt><dd><div class="chips">${sib.map(x=>chip(x,sibKind(p,x))).join("")}${slot("sib","أخ أو أخت")}</div></dd>
+  </dl>
+  ${p.born||p.phone||p.notes||p.alive?`<dl class="kv">
     ${p.born?`<dt>سنة الميلاد</dt><dd class="num">${esc(p.born)}</dd>`:""}
     ${p.phone?`<dt>الجوال</dt><dd class="num" style="direction:ltr;text-align:right;user-select:all">${esc(p.phone)}</dd>`:""}
     ${p.notes?`<dt>ملاحظات</dt><dd>${esc(p.notes)}</dd>`:""}
-    <dt>آخر تواصل</dt><dd>${lastC&&lastC.log.length?fmtD(lastC.log[0]):"لم يُسجَّل"}</dd>
-  </dl>
-  <div><h3>الأبناء (${ch.length})</h3><div class="chips" style="margin-top:6px">${ch.map(chip).join("")||'<span class="sub">لا يوجد</span>'}</div></div>
-  ${sib.length?`<div><h3>الإخوة (${sib.length})</h3><div class="chips" style="margin-top:6px">${sib.map(chip).join("")}</div></div>`:""}
-  <div class="panel" style="background:var(--bg)">
-    <h3>إضافة الأبناء دفعة واحدة</h3>
-    <input type="text" id="quickKids" placeholder="اكتب الأسماء مفصولة بفاصلة: خالد، نورة، فهد">
-    <div class="row"><label class="chk"><input type="checkbox" id="quickF"> كلهن بنات</label><span class="sp" style="flex:1"></span><button class="btn soft" type="button" id="quickGo">إضافة</button></div>
+    ${p.alive?`<dt>آخر تواصل</dt><dd>${inC&&inC.log.length?fmtD(inC.log[0]):"لم يُسجَّل"}</dd>`:""}
+  </dl>`:""}
+  <div class="row">
+    <button class="btn soft" type="button" id="pFocus">اجعله مركز الشجرة</button>
+    <button class="btn primary" type="button" id="pEdit">تعديل البيانات</button>
+    ${p.alive?(inC?`<button class="btn" type="button" id="pGoC">في جدول التواصل</button>`:`<button class="btn" type="button" id="pToContact">إضافة للتواصل</button>`):""}
+    ${!isMe?'<button class="btn" type="button" id="pMe">هذا أنا</button>':""}
   </div>
-  <div class="row"><button class="btn primary" type="button" id="pEdit">تعديل البيانات</button><button class="btn" type="button" id="pToContact">إضافة للتواصل</button><button class="btn soft" type="button" id="pFocus">عرض عائلته</button>${S.meId!==p.id?'<button class="btn" type="button" id="pMe">هذا أنا</button>':""}<span style="flex:1"></span><button class="btn danger" type="button" id="pDel">حذف</button></div>
-  <div class="panel" style="background:var(--bg)"><h3>ما صلته بـ</h3><div class="ac" id="pRel"></div><div class="rel-out" id="pRelOut" hidden></div></div>
+  <details class="more"><summary>ما صلته بقريب آخر؟</summary><div class="ac" id="pRel" style="margin-top:8px"></div><div class="rel-out" id="pRelOut" hidden style="margin-top:8px"></div></details>
+  <div class="row" style="justify-content:flex-end"><button class="btn sm danger" type="button" id="pDel">حذف من الشجرة</button></div>
   <div id="pConfirm"></div>`,el=>{
     makeAC(el.querySelector("#pRel"),{placeholder:"اكتب اسم قريب آخر",allowFree:false,onPick:st=>{const o=el.querySelector("#pRelOut");o.innerHTML=relation(st.personId,p.id);o.hidden=false}});
     el.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheet);
     el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openPerson(b.dataset.open));
+    el.querySelectorAll("[data-addrel]").forEach(b=>b.onclick=()=>quickAdd(b.dataset.addrel,p.id));
+    el.querySelectorAll("[data-alive]").forEach(b=>b.onclick=()=>{const a=b.dataset.alive==="1";if(a===!!p.alive)return;setAlive(p,a);openPerson(p.id,true)});
     el.querySelector("#pEdit").onclick=()=>editPerson(p.id);
-    el.querySelector("#pFocus").onclick=()=>{focusId=p.id;closeSheet();showTab("v-tree");renderFam()};
+    el.querySelector("#pFocus").onclick=()=>{focusId=p.id;closeSheet();showTab("v-tree");$("#famPanel").hidden=false;$("#fullPanel").hidden=true;renderFam()};
     const pm=el.querySelector("#pMe");if(pm)pm.onclick=()=>{S.meId=p.id;focusId=p.id;save();closeSheet();renderAll();toast("أنت الآن في مركز الشجرة")};
-    el.querySelector("#pToContact").onclick=()=>{addContact(p.id,"");closeSheet();showTab("v-contact")};
-    el.querySelector("#quickGo").onclick=()=>{
-      const names=el.querySelector("#quickKids").value.split(/[،,\n]+/).map(s=>s.trim()).filter(Boolean);
-      if(!names.length)return;const g=el.querySelector("#quickF").checked?"f":"m";
-      const asFather=p.gender!=="f";
-      names.forEach(n=>S.people.push({id:uid(),name:n,gender:g,father:asFather?p.id:"",mother:asFather?"":p.id,spouse:"",alive:true,city:"",phone:"",born:"",notes:""}));
-      save();renderAll();toast(`أُضيف ${names.length} إلى أبناء ${p.name}`);openPerson(p.id);
-    };
+    const pc2=el.querySelector("#pToContact");if(pc2)pc2.onclick=()=>{addContact(p.id,"");closeSheet();showTab("v-contact")};
+    const pg=el.querySelector("#pGoC");if(pg)pg.onclick=()=>{closeSheet();showTab("v-contact")};
     el.querySelector("#pDel").onclick=()=>{
       const n=kids(p.id).length;
-      el.querySelector("#pConfirm").innerHTML=`<div class="confirm"><span>حذف «${esc(p.name)}» من الشجرة؟${n?` أبناؤه (${n}) يبقون ويصيرون بلا أب في الشجرة.`:""}</span><span style="flex:1"></span><button class="btn sm" type="button" id="cNo">تراجع</button><button class="btn sm danger" type="button" id="cYes">نعم، احذف</button></div>`;
+      el.querySelector("#pConfirm").innerHTML=`<div class="confirm"><span>حذف «${esc(p.name)}» من الشجرة؟${n?` أبناؤه (${n}) يبقون في الشجرة بلا ${fem?"أم":"أب"}.`:""}</span><span style="flex:1"></span><button class="btn sm" type="button" id="cNo">تراجع</button><button class="btn sm danger" type="button" id="cYes">نعم، احذف</button></div>`;
+      el.querySelector("#pConfirm").scrollIntoView({block:"nearest"});
       el.querySelector("#cNo").onclick=()=>el.querySelector("#pConfirm").innerHTML="";
       el.querySelector("#cYes").onclick=()=>{
-        S.people.forEach(x=>{if(x.father===p.id)x.father="";if(x.mother===p.id)x.mother=""});
+        S.people.forEach(x=>{if(x.father===p.id)x.father="";if(x.mother===p.id)x.mother="";x.spouses=(x.spouses||[]).filter(i=>i!==p.id)});
         S.people=S.people.filter(x=>x.id!==p.id);
         [...S.contacts,...S.fixed,...S.variable].forEach(r=>{if(r.personId===p.id){r.name=nasab(p,3);r.personId=""}});
+        if(S.meId===p.id)S.meId="";if(focusId===p.id)focusId=S.meId;
         save();closeSheet();renderAll();toast(`حُذف ${p.name}`);
       };
     };
-  });
+  },{keep});
 }
 function editPerson(id,preset={}){
-  const p=id?byId(id):Object.assign({id:"",name:"",gender:"m",father:"",mother:"",spouse:"",alive:true,city:"",phone:"",born:"",notes:"",motherName:""},preset);
+  const p=id?byId(id):Object.assign({id:"",name:"",gender:"m",father:"",mother:"",spouse:"",spouses:[],family:"",alive:true,city:"",phone:"",born:"",notes:"",motherName:""},preset);
   const men=S.people.filter(x=>x.gender==="m"&&x.id!==p.id),wom=S.people.filter(x=>x.gender==="f"&&x.id!==p.id);
   const opt=(arr,sel)=>`<option value="">— لا يوجد في الشجرة —</option>`+arr.map(x=>`<option value="${x.id}" ${x.id===sel?"selected":""}>${esc(nasab(x,3))}</option>`).join("");
   sheet(`<div class="hd"><h2>${id?"تعديل بيانات "+esc(p.name):"إضافة فرد"}</h2><button class="btn sm" type="button" data-close>إلغاء</button></div>
@@ -601,7 +739,7 @@ function editPerson(id,preset={}){
     <label class="f"><span>الأب</span><select id="e-f">${opt(men,p.father)}</select></label>
     <label class="f"><span>الأم (من الشجرة)</span><select id="e-m">${opt(wom,p.mother)}</select></label>
     <label class="f"><span>اسم الأم إن لم تكن في الشجرة</span><input type="text" id="e-mn" value="${esc(p.motherName||"")}"></label>
-    <label class="f"><span>الزوج / الزوجة</span><input type="text" id="e-sp" value="${esc(p.spouse)}"></label>
+    <label class="f"><span>اسم العائلة (إن اختلف عن عائلة أبيه)</span><input type="text" id="e-fam" value="${esc(p.family||"")}"></label>
     <label class="f"><span>المدينة</span><input type="text" id="e-city" value="${esc(p.city)}"></label>
     <label class="f"><span>الجوال</span><input type="text" id="e-ph" value="${esc(p.phone)}" inputmode="tel" style="direction:ltr;text-align:right"></label>
     <label class="f"><span>سنة الميلاد</span><input type="text" id="e-born" value="${esc(p.born)}" inputmode="numeric"></label>
@@ -614,10 +752,12 @@ function editPerson(id,preset={}){
       e.preventDefault();
       const v=k=>el.querySelector(k).value.trim();
       if(!v("#e-name"))return;
-      const np={id:p.id||uid(),name:v("#e-name"),gender:v("#e-g"),father:v("#e-f"),mother:v("#e-m"),motherName:v("#e-mn"),spouse:v("#e-sp"),city:v("#e-city"),phone:v("#e-ph"),born:v("#e-born"),alive:el.querySelector("#e-alive").checked,notes:v("#e-notes")};
+      const np={id:p.id||uid(),name:v("#e-name"),gender:v("#e-g"),father:v("#e-f"),mother:v("#e-m"),motherName:v("#e-mn"),family:v("#e-fam"),spouses:p.spouses||[],spouse:"",city:v("#e-city"),phone:v("#e-ph"),born:v("#e-born"),alive:el.querySelector("#e-alive").checked,notes:v("#e-notes")};
       // prevent cycles
       let c=byId(np.father),g=0;while(c&&g++<80){if(c.id===np.id){toast("لا يصح أن يكون الشخص جدًّا لنفسه");return}c=byId(c.father)}
+      const wasAlive=id?p.alive!==false:true;
       if(id){Object.assign(p,np)}else S.people.push(np);
+      if(wasAlive&&!np.alive&&S.contacts.some(c=>c.personId===np.id)){setAlive(byId(np.id),false);openPerson(np.id);return}
       save();renderAll();openPerson(np.id);toast("حُفظ");
     });
   });
@@ -658,9 +798,10 @@ function relation(aId,bId){ // describe B relative to A
 function relUpdate(){}
 
 /* ---------- contact ---------- */
-const acC=makeAC($("#cName"),{placeholder:"اكتب الاسم الأول، مثل: أحمد"});
+const acC=makeAC($("#cName"),{placeholder:"اكتب الاسم الأول، مثل: أحمد",filter:p=>p.alive!==false});
 function addContact(personId,name){
   if(personId&&S.contacts.some(c=>c.personId===personId)){toast("موجود في الجدول");return}
+  {const pp=personId&&byId(personId);if(pp&&pp.alive===false){toast((pp.gender==="f"?"رحمها الله":"رحمه الله")+". المتوفى لا يُضاف إلى جدول التواصل، ويمكنك تسجيل صدقة عنه في الإحسان.");return}}
   S.contacts.unshift({id:uid(),personId,name,log:[],appt:null});save();renderContacts();toast("أُضيف إلى جدول التواصل");
 }
 $("#cAdd").onclick=()=>{const v=acC.get();if(!acC.valid()){acC.input.focus();return}addContact(v.personId,v.personId?"":v.text);acC.clear()};
@@ -676,11 +817,11 @@ const freqOf=c=>c.freq||defaultFreq(c);
 function dueIn(c){const last=c.log[0];if(!last)return -1;return freqOf(c)-daysAgo(last)} // <0 overdue
 const phoneOf=c=>{const p=c.personId&&byId(c.personId);return p&&p.phone?p.phone:""};
 const waNum=ph=>{let d=ph.replace(/\D/g,"");if(d.startsWith("00"))d=d.slice(2);else if(d.startsWith("0"))d="966"+d.slice(1);return d};
-const TYPES=["اتصال","زيارة","رسالة"];
+const TYPES=["اتصال","زيارة","رسالة","واتساب"];
 function renderToday(){
-  const late=S.contacts.filter(c=>dueIn(c)<0).sort((a,b)=>dueIn(a)-dueIn(b));
+  const live=S.contacts.filter(c=>!deadC(c));const late=live.filter(c=>dueIn(c)<0).sort((a,b)=>dueIn(a)-dueIn(b));
   const now=new Date(),end=new Date();end.setHours(23,59,59);
-  const appts=S.contacts.filter(c=>c.appt&&new Date(c.appt)<=end);
+  const appts=live.filter(c=>c.appt&&new Date(c.appt)<=end);
   const ym=ymNow(),day=now.getDate();
   const dueF=S.fixed.filter(r=>day>=r.day&&!r.transfers.some(t=>t.ym===ym));
   const item=(c,extra)=>{const ph=phoneOf(c);return`<li><span class="who"><b>${esc(nameOf(c).split(" ")[0])}</b> <span class="full">${extra}</span></span>${ph?`<a class="btn sm" href="tel:${esc(ph)}">اتصال</a><a class="btn sm" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener">واتساب</a>`:""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></li>`};
@@ -697,25 +838,66 @@ $("#today").addEventListener("click",e=>{const b=e.target.closest("button");if(!
 function logContact(r){const iso=new Date().toISOString();r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;metaRow=r.id;save();renderContacts();toast("سُجِّل التواصل مع "+nameOf(r).split(" ")[0])}
 function renderContacts(){
   renderToday();
-  const rows=S.contacts.slice().sort((a,b)=>dueIn(a)-dueIn(b));
-  $("#cBody").innerHTML=rows.length?rows.map(c=>{
+  const all=S.contacts.filter(c=>!deadC(c)),nDead=S.contacts.length-all.length;
+  const rows=all.slice().sort((a,b)=>dueIn(a)-dueIn(b));
+  const times=n=>n===1?"مرة واحدة":n===2?"مرتين":n<=10?n+" مرات":n+" مرة";
+  $("#cBody").innerHTML=(rows.length?rows.map(c=>{
     const last=c.log[0];const dAgo=last?daysAgo(last):null;
-    const di=dueIn(c);const lastPill=(!last?`<span class="pill bad">لا يوجد</span>`:`<span class="num">${fmtD(last)}</span><br><span class="pill ${di>=3?"good":di>=0?"warn":"bad"}">${dAgo===0?"اليوم":"قبل "+dAgo+" يوم"}${di<0?" · متأخر":""}</span>`)+
-      `<br><select class="freq" data-freq="${c.id}" aria-label="تواصل كل">${FREQ.map(([v,l])=>`<option value="${v}" ${v===freqOf(c)?"selected":""}>${l}</option>`).join("")}</select>`;
+    const di=dueIn(c);const lastPill=!last?`<span class="pill bad">لا يوجد</span>`:`<span class="num">${fmtD(last)}</span><br><span class="pill ${di>=3?"good":di>=0?"warn":"bad"}">${dAgo===0?"اليوم":"قبل "+dAgo+" يوم"}${di<0?" · متأخر":""}</span>`;
     const ph=phoneOf(c);const m=(c.meta||{});
     let appt="—";
     if(c.appt){const late=new Date(c.appt)<new Date();appt=`<span class="num">${fmtDT(c.appt)}</span><br>${late?'<span class="pill bad">فات موعده</span>':'<span class="pill good">قادم</span>'} <a class="btn sm" href="${gcalLink("تواصل مع "+nameOf(c),c.appt)}" target="_blank" rel="noopener">تقويم Google</a>`}
-    const full=nameOf(c);const first=full.split(" ")[0];
-    return `<tr><td><b>${esc(first)}</b><div class="full">${esc(full)}</div>
-      ${openRow===c.id?`<ul class="hist">${c.log.map(l=>`<li class="num">✓ ${fmtDT(l)} <span>· ${hijri(l)}</span>${m[l]?` · ${esc(m[l].type)}${m[l].note?": "+esc(m[l].note):""}`:""}</li>`).join("")||"<li>لا سجل بعد</li>"}</ul>`:""}
-      <button class="btn sm" type="button" data-hist="${c.id}" style="margin-top:4px">${openRow===c.id?"إخفاء السجل":"السجل ("+c.log.length+")"}</button></td>
+    const full=nameOf(c);const first=full.split(" ")[0];const fq=(FREQ.find(f=>f[0]===freqOf(c))||[])[1]||"";
+    return `<tr><td><b>${esc(first)}</b><div class="full">${esc(full)}</div><div class="full">${c.log.length?"تواصلتَ "+times(c.log.length):"لا سجل بعد"} · ${fq}</div></td>
       <td data-l="آخر تواصل">${lastPill}</td><td data-l="الموعد القادم">${appt}</td>
-      <td class="wide"><div class="acts">${ph?`<a class="btn sm" href="tel:${esc(ph)}">اتصال</a><a class="btn sm" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener">واتساب</a>`:""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button><button class="btn sm soft" type="button" data-appt="${c.id}">موعد تواصل</button><button class="btn sm danger" type="button" data-rm="${c.id}" aria-label="إزالة">إزالة</button></div>
+      <td class="wide"><div class="acts">${ph?`<a class="btn sm" href="tel:${esc(ph)}">اتصال</a><a class="btn sm" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener">واتساب</a>`:""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button><button class="btn sm soft" type="button" data-appt="${c.id}">موعد تواصل</button><button class="btn sm" type="button" data-cedit="${c.id}">تعديل</button></div>
       ${metaRow===c.id&&c.log[0]?`<div class="row" style="margin-top:8px"><span class="sub">نوع التواصل:</span>${TYPES.map(t=>`<button class="btn sm ${(m[c.log[0]]||{}).type===t?"soft":""}" type="button" data-mtype="${t}" data-mid="${c.id}">${t}</button>`).join("")}<input type="text" class="grow" id="mn-${c.id}" placeholder="ملاحظة قصيرة (اختياري)" value="${esc((m[c.log[0]]||{}).note||"")}"><button class="btn sm primary" type="button" data-mok="${c.id}">تم</button></div>`:""}
-      ${apptRow===c.id?`<div class="row" style="margin-top:8px"><input type="date" id="ad-${c.id}" style="width:auto"><input type="time" id="at-${c.id}" value="19:00" style="width:auto"><button class="btn sm primary" type="button" data-apsave="${c.id}">حفظ الموعد</button>${c.appt?`<button class="btn sm" type="button" data-apclr="${c.id}">إلغاء الموعد</button>`:""}</div>`:""}
-      ${confirmRm===c.id?`<div class="confirm" style="margin-top:8px">إزالة «${esc(first)}» من الجدول؟ <button class="btn sm" type="button" data-rmno>تراجع</button><button class="btn sm danger" type="button" data-rmyes="${c.id}">نعم</button></div>`:""}</td></tr>`;
-  }).join(""):`<tr><td colspan="4"><div class="empty">الجدول فارغ. اكتب اسم قريب في الأعلى لإضافته.</div></td></tr>`;
+      ${apptRow===c.id?`<div class="row" style="margin-top:8px"><input type="date" id="ad-${c.id}" style="width:auto"><input type="time" id="at-${c.id}" value="19:00" style="width:auto"><button class="btn sm primary" type="button" data-apsave="${c.id}">حفظ الموعد</button>${c.appt?`<button class="btn sm" type="button" data-apclr="${c.id}">إلغاء الموعد</button>`:""}</div>`:""}</td></tr>`;
+  }).join(""):`<tr><td colspan="4"><div class="empty">الجدول فارغ. اكتب اسم قريب في الأعلى لإضافته.</div></td></tr>`)
+  +(nDead?`<tr><td colspan="4"><div class="sub">أُخفي من الجدول ${nDead} ${nDead===1?"متوفى":"متوفين"}، رحمهم الله. <button class="btn sm" type="button" data-cleardead>إزالتهم من الجدول</button></div></td></tr>`:"");
   if(apptRow){const c=S.contacts.find(x=>x.id===apptRow);const di=$("#ad-"+apptRow);if(di){const base=c&&c.appt?new Date(c.appt):new Date(Date.now()+864e5);di.value=new Date(base.getTime()-base.getTimezoneOffset()*6e4).toISOString().slice(0,10);if(c&&c.appt)$("#at-"+apptRow).value=base.toTimeString().slice(0,5)}}
+}
+const locDT=iso=>{const d=new Date(iso);return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,16)};
+const locD=iso=>locDT(iso).slice(0,10);
+function editContact(id,keep){
+  const r=S.contacts.find(x=>x.id===id);if(!r){closeSheet();return}
+  r.meta=r.meta||{};const full=nameOf(r);
+  const base=r.appt?new Date(r.appt):(()=>{const d=new Date(Date.now()+864e5);d.setHours(19,0,0,0);return d})();
+  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل التواصل</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+   <div class="panel" style="background:var(--bg)"><h3>القريب</h3><div class="ac" id="ecName"></div><div class="row"><button class="btn sm soft" type="button" id="ecNameSave">حفظ الاسم</button></div></div>
+   <label class="f"><span>تواصل كل</span><select id="ecFreq">${FREQ.map(([v,l])=>`<option value="${v}" ${v===freqOf(r)?"selected":""}>${l}</option>`).join("")}</select></label>
+   <div class="panel" style="background:var(--bg)"><h3>الموعد القادم</h3>
+     ${r.appt?`<p class="sub" style="margin:0">الموعد الحالي: <span class="num">${fmtDT(r.appt)}</span></p>`:`<p class="sub" style="margin:0">لا يوجد موعد.</p>`}
+     <div class="row"><input type="date" id="ecAd" value="${locD(base.toISOString())}" style="width:auto"><input type="time" id="ecAt" value="${base.toTimeString().slice(0,5)}" style="width:auto"><button class="btn sm primary" type="button" id="ecAsave">${r.appt?"تعديل الموعد":"حفظ الموعد"}</button>${r.appt?`<button class="btn sm danger" type="button" id="ecAdel">حذف الموعد</button><a class="btn sm" href="${gcalLink("تواصل مع "+full,r.appt)}" target="_blank" rel="noopener">تقويم Google</a>`:""}</div>
+   </div>
+   <div class="panel" style="background:var(--bg)"><div class="row"><h3 class="grow">سجل التواصل (${r.log.length})</h3><button class="btn sm soft" type="button" id="ecAddLog">+ تواصل سابق</button></div>
+     ${r.log.length?r.log.map((iso,i)=>{const mm=r.meta[iso]||{};return`<div class="erow"><div class="f2"><input type="datetime-local" data-ldt="${i}" value="${locDT(iso)}" aria-label="التاريخ والوقت"><select data-ltype="${i}" aria-label="النوع">${TYPES.map(t=>`<option ${((mm.type||"اتصال")===t)?"selected":""}>${t}</option>`).join("")}</select><input type="text" data-lnote="${i}" placeholder="ملاحظة" value="${esc(mm.note||"")}" aria-label="ملاحظة"></div><button class="btn sm danger" type="button" data-ldel="${i}">حذف</button></div>`}).join(""):`<p class="sub" style="margin:0">لا سجل بعد.</p>`}
+   </div>
+   <div class="row" style="justify-content:flex-end"><button class="btn danger" type="button" id="ecDel">حذف من جدول التواصل</button></div>
+   <div id="ecConf"></div>`,el=>{
+    const again=()=>{save();renderContacts();editContact(id,true)};
+    el.querySelector("[data-close]").onclick=closeSheet;
+    const ac=makeAC(el.querySelector("#ecName"),{placeholder:"اسم القريب",filter:p=>p.alive!==false,preset:{personId:r.personId,text:full}});
+    el.querySelector("#ecNameSave").onclick=()=>{const v=ac.get();if(!v.personId&&!v.text){ac.input.focus();return}
+      if(v.personId&&S.contacts.some(c=>c!==r&&c.personId===v.personId)){toast("هذا القريب موجود في الجدول");return}
+      r.personId=v.personId;r.name=v.personId?"":v.text;again();toast("حُفظ الاسم")};
+    el.querySelector("#ecFreq").onchange=e=>{r.freq=+e.target.value;save();renderContacts();toast("حُفظ")};
+    el.querySelector("#ecAsave").onclick=()=>{const dv=el.querySelector("#ecAd").value,tv=el.querySelector("#ecAt").value||"19:00";if(!dv)return;r.appt=new Date(dv+"T"+tv).toISOString();again();toast("حُفظ الموعد")};
+    const ad=el.querySelector("#ecAdel");if(ad)ad.onclick=()=>{const old=r.appt;r.appt=null;again();toast("حُذف الموعد",{label:"تراجع",fn:()=>{r.appt=old;again()}})};
+    el.querySelector("#ecAddLog").onclick=()=>{const iso=new Date().toISOString();r.log.unshift(iso);r.meta[iso]={type:"اتصال",note:""};r.log.sort((a,b)=>b.localeCompare(a));again();toast("أُضيف سطر بتاريخ الآن، عدّل تاريخه")};
+    el.querySelectorAll("[data-ldt]").forEach(i=>i.onchange=()=>{if(!i.value)return;const k=+i.dataset.ldt,old=r.log[k],nw=new Date(i.value).toISOString();if(nw===old)return;
+      r.log[k]=nw;if(r.meta[old]){r.meta[nw]=r.meta[old];delete r.meta[old]}r.log.sort((a,b)=>b.localeCompare(a));again();toast("عُدِّل التاريخ")});
+    el.querySelectorAll("[data-ltype]").forEach(i=>i.onchange=()=>{const iso=r.log[+i.dataset.ltype];r.meta[iso]=Object.assign(r.meta[iso]||{},{type:i.value});save();renderContacts()});
+    el.querySelectorAll("[data-lnote]").forEach(i=>i.onchange=()=>{const iso=r.log[+i.dataset.lnote];r.meta[iso]=Object.assign(r.meta[iso]||{type:"اتصال"},{note:i.value.trim()});save();renderContacts();toast("حُفظت الملاحظة")});
+    el.querySelectorAll("[data-ldel]").forEach(b=>b.onclick=()=>{const k=+b.dataset.ldel,iso=r.log[k],mt=r.meta[iso];r.log.splice(k,1);delete r.meta[iso];again();
+      toast("حُذف السطر",{label:"تراجع",fn:()=>{r.log.push(iso);r.log.sort((a,b)=>b.localeCompare(a));if(mt)r.meta[iso]=mt;again()}})});
+    el.querySelector("#ecDel").onclick=()=>{const c=el.querySelector("#ecConf");
+      c.innerHTML=`<div class="confirm">حذف «${esc(full.split(" ")[0])}» من جدول التواصل مع سجله؟<span style="flex:1"></span><button class="btn sm" type="button" id="ecNo">تراجع</button><button class="btn sm danger" type="button" id="ecYes">نعم، احذف</button></div>`;
+      c.scrollIntoView({block:"nearest"});
+      c.querySelector("#ecNo").onclick=()=>c.innerHTML="";
+      c.querySelector("#ecYes").onclick=()=>{const idx=S.contacts.indexOf(r);S.contacts.splice(idx,1);save();closeSheet();renderContacts();
+        toast("حُذف من الجدول",{label:"تراجع",fn:()=>{S.contacts.splice(idx,0,r);save();renderContacts()}})}};
+  },{keep});
 }
 let confirmRm=null;
 $("#cBody").addEventListener("click",e=>{
@@ -728,9 +910,8 @@ $("#cBody").addEventListener("click",e=>{
   else if(d.appt){apptRow=apptRow===d.appt?null:d.appt}
   else if(d.apsave){const dv=$("#ad-"+d.apsave).value,tv=$("#at-"+d.apsave).value||"19:00";if(!dv)return;const r=c(d.apsave);r.appt=new Date(dv+"T"+tv).toISOString();apptRow=null;save();toast("حُفظ الموعد. اضغط «تقويم Google» لإضافته هناك")}
   else if(d.apclr){c(d.apclr).appt=null;apptRow=null;save()}
-  else if(d.rm){confirmRm=d.rm}
-  else if("rmno" in d){confirmRm=null}
-  else if(d.rmyes){S.contacts=S.contacts.filter(x=>x.id!==d.rmyes);confirmRm=null;save()}
+  else if(d.cedit){editContact(d.cedit);return}
+  else if("cleardead" in d){const gone=S.contacts.filter(deadC);S.contacts=S.contacts.filter(x=>!deadC(x));save();renderContacts();toast("أُزيلوا من الجدول",{label:"تراجع",fn:()=>{S.contacts.push(...gone);save();renderContacts()}});return}
   renderContacts();
 });
 $("#cBody").addEventListener("change",e=>{const id=e.target.dataset.freq;if(!id)return;S.contacts.find(x=>x.id===id).freq=+e.target.value;save();renderContacts();toast("حُدِّد موعد التواصل الدوري")});
@@ -756,27 +937,80 @@ function renderIhsan(){
   $("#iTotals").innerHTML=[["حُوِّل هذا الشهر",monthF+monthV],["متبقٍّ من الثابت",pending],["مجموع السنة",yearAll]].map(([l,v])=>`<div class="stat"><b class="num">${money(v)}</b><span>${l}</span></div>`).join("");
   const today=new Date().getDate();
   $("#fBody").innerHTML=S.fixed.length?S.fixed.map(r=>{
-    const t=r.transfers.find(x=>x.ym===ym);const full=nameOf(r);
-    const due=!t&&today>=r.day;
-    return `<tr><td><b>${esc(full.split(" ")[0])}</b><div class="full">${esc(full)}</div>
-      ${fHist===r.id?`<ul class="hist">${r.transfers.map(x=>`<li class="num">${fmtD(x.date)} · ${money(x.amount)}</li>`).join("")||"<li>لا تحويلات بعد</li>"}</ul>`:""}
-      <button class="btn sm" type="button" data-fh="${r.id}" style="margin-top:4px">${fHist===r.id?"إخفاء السجل":"السجل ("+r.transfers.length+")"}</button>
-      ${fConfirm===r.id?`<div class="confirm" style="margin-top:6px">حذف المبلغ الثابت لـ«${esc(full.split(" ")[0])}»؟ <button class="btn sm" type="button" data-fno>تراجع</button><button class="btn sm danger" type="button" data-fyes="${r.id}">نعم</button></div>`:""}</td>
+    const t=r.transfers.find(x=>x.ym===ym);const full=nameOf(r);const due=!t&&today>=r.day;
+    return `<tr><td><b>${esc(full.split(" ")[0])}</b><div class="full">${esc(full)}</div><div class="full">التحويلات المسجلة: ${r.transfers.length}</div>
+      <button class="btn sm" type="button" data-fedit="${r.id}" style="margin-top:4px">تعديل</button></td>
       <td data-l="المبلغ"><input type="number" class="amt num" value="${r.amount}" min="0" data-famt="${r.id}" aria-label="المبلغ"></td>
-      <td class="num" data-l="الاستحقاق">يوم ${r.day}<br><button class="btn sm danger" type="button" data-fdel="${r.id}">حذف</button></td>
+      <td class="num" data-l="الاستحقاق">يوم ${r.day}</td>
       <td class="wide" data-l="هذا الشهر">${t?`<span class="pill good">تم التحويل</span><div class="full num">${fmtD(t.date)} · ${money(t.amount)}</div><button class="btn sm" type="button" data-fundo="${r.id}">تراجع</button>`
         :`<span class="pill ${due?"warn":"mute"}">${due?"مستحق":"لم يحن"}</span><br><button class="btn sm gold" type="button" data-fdone="${r.id}" style="margin-top:4px">تم التحويل</button>`}</td></tr>`;
   }).join(""):`<tr><td colspan="4"><div class="empty">لا مبالغ ثابتة بعد. أضف اسمًا ومبلغًا ويوم الاستحقاق.</div></td></tr>`;
-  $("#vBody").innerHTML=S.variable.length?S.variable.map(v=>{const full=nameOf(v);return`<tr><td><b>${esc(full.split(" ")[0])}</b><div class="full">${esc(full)}</div>
-    ${vConfirm===v.id?`<div class="confirm" style="margin-top:6px">حذف هذه الحوالة؟ <button class="btn sm" type="button" data-vno>تراجع</button><button class="btn sm danger" type="button" data-vyes="${v.id}">نعم</button></div>`:""}</td>
+  $("#vBody").innerHTML=S.variable.length?S.variable.map(v=>{const full=nameOf(v);return`<tr><td><b>${esc(full.split(" ")[0])}</b><div class="full">${esc(full)}</div></td>
     <td data-l="المبلغ"><input type="number" class="amt num" value="${v.amount}" min="0" data-vamt="${v.id}" aria-label="المبلغ"></td>
     <td class="num" data-l="التاريخ">${fmtD(v.date)}<div class="full">${hijri(v.date)}</div></td>
-    <td class="wide"><button class="btn sm danger" type="button" data-vdel="${v.id}">حذف</button></td></tr>`}).join(""):`<tr><td colspan="4"><div class="empty">لا حوالات بعد.</div></td></tr>`;
+    <td class="wide"><button class="btn sm" type="button" data-vedit="${v.id}">تعديل</button></td></tr>`}).join(""):`<tr><td colspan="4"><div class="empty">لا حوالات بعد.</div></td></tr>`;
+}
+function editFixed(id,keep){
+  const r=S.fixed.find(x=>x.id===id);if(!r){closeSheet();return}
+  const full=nameOf(r);
+  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل المبلغ الثابت</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+   <div class="panel" style="background:var(--bg)"><h3>المستفيد والمبلغ</h3><div class="ac" id="efName"></div>
+     <div class="grid2"><label class="f"><span>المبلغ</span><input type="number" id="efAmt" min="0" inputmode="decimal" value="${r.amount}"></label><label class="f"><span>يوم الاستحقاق من كل شهر</span><input type="number" id="efDay" min="1" max="31" value="${r.day}"></label></div>
+     <div class="row"><button class="btn primary" type="button" id="efSave">حفظ</button></div></div>
+   <div class="panel" style="background:var(--bg)"><div class="row"><h3 class="grow">سجل التحويلات (${r.transfers.length})</h3><button class="btn sm soft" type="button" id="efAddT">+ تحويل سابق</button></div>
+     ${r.transfers.length?r.transfers.map((t,i)=>`<div class="erow"><div class="f2"><input type="date" data-tdt="${i}" value="${locD(t.date)}" aria-label="تاريخ التحويل"><input type="number" class="amt num" data-tamt="${i}" value="${t.amount}" min="0" inputmode="decimal" aria-label="المبلغ"></div><button class="btn sm danger" type="button" data-tdel="${i}">حذف</button></div>`).join(""):`<p class="sub" style="margin:0">لا تحويلات بعد.</p>`}
+   </div>
+   <div class="row" style="justify-content:flex-end"><button class="btn danger" type="button" id="efDel">حذف المبلغ الثابت</button></div>
+   <div id="efConf"></div>`,el=>{
+    const again=()=>{save();renderIhsan();renderToday();editFixed(id,true)};
+    el.querySelector("[data-close]").onclick=closeSheet;
+    const ac=makeAC(el.querySelector("#efName"),{placeholder:"اسم المستفيد",preset:{personId:r.personId,text:full}});
+    el.querySelector("#efSave").onclick=()=>{const v=ac.get(),a=parseFloat(el.querySelector("#efAmt").value),dd=parseInt(el.querySelector("#efDay").value);
+      if(!v.personId&&!v.text){ac.input.focus();return}if(!(a>=0)){el.querySelector("#efAmt").focus();return}
+      r.personId=v.personId;r.name=v.personId?"":v.text;r.amount=a;r.day=Math.min(31,Math.max(1,dd||1));again();toast("حُفظ")};
+    el.querySelector("#efAddT").onclick=()=>{const d=new Date();const ymOf=x=>x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0");let g=0;
+      while(r.transfers.some(t=>t.ym===ymOf(d))&&g++<120)d.setMonth(d.getMonth()-1);
+      r.transfers.push({date:d.toISOString(),amount:r.amount,ym:ymOf(d)});r.transfers.sort((a,b)=>b.date.localeCompare(a.date));again();toast("أُضيف تحويل، عدّل تاريخه ومبلغه")};
+    el.querySelectorAll("[data-tdt]").forEach(i=>i.onchange=()=>{if(!i.value)return;const t=r.transfers[+i.dataset.tdt];t.date=new Date(i.value+"T12:00").toISOString();t.ym=i.value.slice(0,7);r.transfers.sort((a,b)=>b.date.localeCompare(a.date));again();toast("عُدِّل التاريخ")});
+    el.querySelectorAll("[data-tamt]").forEach(i=>i.onchange=()=>{const a=parseFloat(i.value);if(!(a>=0))return;r.transfers[+i.dataset.tamt].amount=a;save();renderIhsan();toast("عُدِّل المبلغ")});
+    el.querySelectorAll("[data-tdel]").forEach(b=>b.onclick=()=>{const k=+b.dataset.tdel,t=r.transfers[k];r.transfers.splice(k,1);again();
+      toast("حُذف التحويل",{label:"تراجع",fn:()=>{r.transfers.push(t);r.transfers.sort((a,b)=>b.date.localeCompare(a.date));again()}})});
+    el.querySelector("#efDel").onclick=()=>{const c=el.querySelector("#efConf");
+      c.innerHTML=`<div class="confirm">حذف المبلغ الثابت لـ«${esc(full.split(" ")[0])}» مع سجل تحويلاته؟<span style="flex:1"></span><button class="btn sm" type="button" id="efNo">تراجع</button><button class="btn sm danger" type="button" id="efYes">نعم، احذف</button></div>`;
+      c.scrollIntoView({block:"nearest"});
+      c.querySelector("#efNo").onclick=()=>c.innerHTML="";
+      c.querySelector("#efYes").onclick=()=>{const idx=S.fixed.indexOf(r);S.fixed.splice(idx,1);save();closeSheet();renderIhsan();renderToday();
+        toast("حُذف المبلغ الثابت",{label:"تراجع",fn:()=>{S.fixed.splice(idx,0,r);save();renderIhsan();renderToday()}})}};
+  },{keep});
+}
+function editVar(id){
+  const v=S.variable.find(x=>x.id===id);if(!v){closeSheet();return}
+  const full=nameOf(v);
+  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل الحوالة</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+   <div class="panel" style="background:var(--bg)"><div class="ac" id="evName"></div>
+     <div class="grid2"><label class="f"><span>المبلغ</span><input type="number" id="evAmt" min="0" inputmode="decimal" value="${v.amount}"></label><label class="f"><span>التاريخ</span><input type="date" id="evDate" value="${locD(v.date)}"></label></div>
+     <div class="row"><button class="btn primary" type="button" id="evSave">حفظ</button></div></div>
+   <div class="row" style="justify-content:flex-end"><button class="btn danger" type="button" id="evDel">حذف الحوالة</button></div>
+   <div id="evConf"></div>`,el=>{
+    el.querySelector("[data-close]").onclick=closeSheet;
+    const ac=makeAC(el.querySelector("#evName"),{placeholder:"الاسم",preset:{personId:v.personId,text:full}});
+    el.querySelector("#evSave").onclick=()=>{const n=ac.get(),a=parseFloat(el.querySelector("#evAmt").value),dv=el.querySelector("#evDate").value;
+      if(!n.personId&&!n.text){ac.input.focus();return}if(!(a>=0)){el.querySelector("#evAmt").focus();return}
+      v.personId=n.personId;v.name=n.personId?"":n.text;v.amount=a;if(dv&&dv!==locD(v.date))v.date=new Date(dv+"T12:00").toISOString();
+      S.variable.sort((x,y)=>y.date.localeCompare(x.date));save();closeSheet();renderIhsan();renderToday();toast("حُفظت الحوالة")};
+    el.querySelector("#evDel").onclick=()=>{const c=el.querySelector("#evConf");
+      c.innerHTML=`<div class="confirm">حذف هذه الحوالة؟<span style="flex:1"></span><button class="btn sm" type="button" id="evNo">تراجع</button><button class="btn sm danger" type="button" id="evYes">نعم، احذف</button></div>`;
+      c.querySelector("#evNo").onclick=()=>c.innerHTML="";
+      c.querySelector("#evYes").onclick=()=>{const idx=S.variable.indexOf(v);S.variable.splice(idx,1);save();closeSheet();renderIhsan();
+        toast("حُذفت الحوالة",{label:"تراجع",fn:()=>{S.variable.splice(idx,0,v);save();renderIhsan()}})}};
+  });
 }
 $("#v-ihsan").addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;const d=b.dataset;const F=id=>S.fixed.find(x=>x.id===id);const ym=ymNow();
   if(d.fdone){const r=F(d.fdone);r.transfers.unshift({date:new Date().toISOString(),amount:r.amount,ym});save();toast("سُجِّل التحويل بتاريخ اليوم")}
   else if(d.fundo){const r=F(d.fundo);r.transfers=r.transfers.filter(t=>t.ym!==ym);save()}
+  else if(d.fedit){editFixed(d.fedit);return}
+  else if(d.vedit){editVar(d.vedit);return}
   else if(d.fh){fHist=fHist===d.fh?null:d.fh}
   else if(d.fdel){fConfirm=d.fdel}
   else if("fno" in d){fConfirm=null}
@@ -812,7 +1046,7 @@ $("#btnSettings").onclick=()=>{
     <div class="row"><button class="btn" type="button" id="s-copy">نسخ النسخة الحالية</button><button class="btn soft" type="button" id="s-import">استعادة من النص الملصق</button></div>
   </div>
   <div class="row"><button class="btn" type="button" id="s-demo">تحميل البيانات التجريبية</button><span style="flex:1"></span><button class="btn danger" type="button" id="s-wipe">مسح كل البيانات</button></div>
-  <div id="s-conf"></div>`,el=>{
+  <div id="s-conf"></div><p class="sub" style="margin:0;text-align:center">ذو القربى · النسخة ${WEB_BUILD}</p>`,el=>{
     const ta=el.querySelector("#s-json");ta.value=JSON.stringify(S);
     el.querySelector("[data-close]").onclick=closeSheet;
     el.querySelector("#s-pinset").onclick=async()=>{const v=el.querySelector("#s-pin").value.trim();if(!/^\d{4,8}$/.test(v)){toast("الرمز من 4 إلى 8 أرقام");return}S.pinHash=await hashPin(v);save();unlocked=true;closeSheet();renderAll();toast("فُعِّل القفل")};
@@ -820,13 +1054,13 @@ $("#btnSettings").onclick=()=>{
     el.querySelector("#s-veil").onchange=e=>{S.hideAmounts=e.target.checked;veiled=S.hideAmounts;save();renderAll()};
     el.querySelector("#s-save").onclick=()=>{S.currency=el.querySelector("#s-cur").value.trim();S.family=el.querySelector("#s-fam").value.trim();save();renderAll();toast("حُفظت الإعدادات")};
     el.querySelector("#s-copy").onclick=()=>{ta.value=JSON.stringify(S);navigator.clipboard?.writeText(ta.value).then(()=>toast("نُسخت النسخة الاحتياطية"),()=>{ta.select();toast("حدِّد النص وانسخه")})??(ta.select())};
-    el.querySelector("#s-import").onclick=()=>{try{const d=JSON.parse(ta.value);if(!Array.isArray(d.people))throw 0;S=Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},d);save();renderAll();closeSheet();toast("استُعيدت البيانات")}catch(e){toast("النص الملصق ليس نسخة احتياطية صالحة")}};
+    el.querySelector("#s-import").onclick=()=>{try{const d=JSON.parse(ta.value);if(!Array.isArray(d.people))throw 0;S=migrate(Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},d));save();renderAll();closeSheet();toast("استُعيدت البيانات")}catch(e){toast("النص الملصق ليس نسخة احتياطية صالحة")}};
     const conf=(msg,fn)=>{const c=el.querySelector("#s-conf");c.innerHTML=`<div class="confirm">${msg}<span style="flex:1"></span><button class="btn sm" type="button" id="k-no">تراجع</button><button class="btn sm danger" type="button" id="k-yes">نعم</button></div>`;c.querySelector("#k-no").onclick=()=>c.innerHTML="";c.querySelector("#k-yes").onclick=fn};
-    el.querySelector("#s-demo").onclick=()=>conf("ستحل البيانات التجريبية محل بياناتك الحالية.",()=>{S=sample();save();renderAll();closeSheet()});
-    el.querySelector("#s-wipe").onclick=()=>conf("مسح الشجرة والتواصل والإحسان كلها؟",()=>{S={demo:false,currency:S.currency||"ريال",family:"",people:[],contacts:[],fixed:[],variable:[]};save();renderAll();closeSheet();toast("مُسحت البيانات")});
+    el.querySelector("#s-demo").onclick=()=>conf("ستحل البيانات التجريبية محل بياناتك الحالية.",()=>{S=migrate(sample());save();renderAll();closeSheet()});
+    el.querySelector("#s-wipe").onclick=()=>conf("مسح الشجرة والتواصل والإحسان كلها؟",()=>{S={demo:false,schema:2,currency:S.currency||"ريال",family:"",people:[],contacts:[],fixed:[],variable:[]};save();renderAll();closeSheet();toast("مُسحت البيانات")});
   });
 };
-$("#btnStartReal").onclick=()=>{S={demo:false,currency:S.currency||"ريال",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[]};save();renderAll();toast("ابدأ بإضافة الجد الأكبر");};
+$("#btnStartReal").onclick=()=>{S={demo:false,schema:2,currency:S.currency||"ريال",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[]};save();renderAll();toast("ابدأ بإضافة الجد الأكبر");};
 
 
 /* ---------- top bar ---------- */
@@ -838,7 +1072,7 @@ segs.forEach(b=>b.addEventListener("click",()=>{segs.forEach(x=>{const on=x===b;
 function gSearch(){
   const q=norm($("#gq").value);const out=$("#gRes");
   if(!q){out.innerHTML="";return}
-  const hitsG=S.people.filter(p=>norm(nasab(p,6)+" "+p.city+" "+p.spouse).includes(q)||(p.phone&&p.phone.replace(/\D/g,"").includes(q.replace(/\D/g,"")||"#"))).slice(0,12);
+  const hitsG=S.people.filter(p=>norm(nasab(p,6)+" "+p.city+" "+spousesOf(p).map(x=>x.name).join(" ")).includes(q)||(p.phone&&p.phone.replace(/\D/g,"").includes(q.replace(/\D/g,"")||"#"))).slice(0,12);
   out.innerHTML=hitsG.length?hitsG.map(p=>{const c=S.contacts.find(x=>x.personId===p.id);const last=c&&c.log[0];
     return`<div class="res"><div class="who"><b>${esc(p.name)}</b><span class="full">${esc(nasab(p,4))}${p.city?" · "+esc(p.city):""}</span></div>
     ${last?`<span class="pill ${daysAgo(last)<=14?"good":daysAgo(last)<=45?"warn":"bad"}">${daysAgo(last)===0?"اليوم":"قبل "+daysAgo(last)+" يوم"}</span>`:""}
@@ -861,10 +1095,10 @@ const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوا�
 1) ذو القربى: شجرة العائلة. «إضافة فرد» لإضافة شخص، ولمس الاسم يفتح ملفه (تعديل البيانات، إضافة الأبناء دفعة واحدة بأسماء مفصولة بفاصلة، إضافة للتواصل، حذف). أزرار + و − للتكبير والتصغير. وفي ملف كل فرد خانة «ما صلته بـ» تحسب العلاقة بينه وبين أي قريب آخر.
 2) التواصل: جدول. اكتب الاسم الأول فيظهر الاسم الكامل من الشجرة ثم «إضافة للجدول». «تم التواصل» يحفظ التاريخ والوقت تلقائيًا. «موعد تواصل» تختار تاريخًا ووقتًا ثم «حفظ الموعد»، ويظهر زر «تقويم Google» لإضافته إلى التقويم. «السجل» يعرض مرات التواصل.
 3) الإحسان: «المبالغ الثابتة» اسم ومبلغ ويوم الاستحقاق، وزر «تم التحويل» يسجل التحويل بتاريخ اليوم، والمبلغ قابل للتعديل من خانته. «حوالات غير ثابتة» اسم ومبلغ ثم «حفظ» والتاريخ يُسجَّل تلقائيًا. في الأعلى مجموع الشهر والمتبقي ومجموع السنة.
-الشريط العلوي: «بحث» عن قريب، «اسأل Claude»، «تطوير» لقائمة الاقتراحات. الإعدادات: العملة، اسم العائلة، النسخة الاحتياطية. البيانات محفوظة في متصفح الجهاز فقط.`;
+الشريط العلوي: «بحث» عن قريب، «اسأل Claude»، «تطوير» لقائمة الاقتراحات. الإعدادات: العملة، اسم العائلة، النسخة الاحتياطية. ملف كل قريب فيه خانات لإضافة أبيه وأمه وزوجاته وأبنائه وإخوته، وتغيير حالته (حي / متوفى)، و«تعديل» في كل صف من الجداول يفتح كل بياناته مع الحذف.`;
 function familyData(){
   const cmap=new Map(S.contacts.map(c=>[c.personId,c]));
-  const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id);return[p.id,nasab(p,5),p.gender==="f"?"أنثى":"ذكر",p.alive?"حي":"متوفى",p.city||"",p.spouse||"",c&&c.log[0]?c.log[0].slice(0,10):"",c&&c.appt?c.appt.slice(0,16):""].join(" | ")}).join("\n");
+  const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id);return[p.id,nasab(p,5),p.gender==="f"?"أنثى":"ذكر",p.alive?"حي":"متوفى",p.city||"",spousesOf(p).map(x=>x.name).join("، "),c&&c.log[0]?c.log[0].slice(0,10):"",c&&c.appt?c.appt.slice(0,16):""].join(" | ")}).join("\n");
   const fixed=S.fixed.map(r=>`${nameOf(r)} | ${r.amount} | يوم ${r.day} | آخر تحويل ${r.transfers[0]?r.transfers[0].date.slice(0,10):"لا يوجد"}`).join("\n");
   const vari=S.variable.slice(0,80).map(v=>`${nameOf(v)} | ${v.amount} | ${v.date.slice(0,10)}`).join("\n");
   return`تاريخ اليوم: ${new Date().toISOString().slice(0,10)}. العملة: ${S.currency||""}.
@@ -917,7 +1151,7 @@ $("#askChips").addEventListener("click",e=>{const b=e.target.closest(".chip");if
 let focusId=null;
 const fa=p=>p&&byId(p.father), mo=p=>p&&byId(p.mother);
 function sibsOf(p){if(!p)return[];return S.people.filter(x=>x.id!==p.id&&((p.father&&x.father===p.father)||(p.mother&&x.mother===p.mother)))}
-function mk(name,g,father,mother){const id=uid();S.people.push({id,name,gender:g,father:father||"",mother:mother||"",spouse:"",alive:true,city:"",phone:"",born:"",notes:""});return id}
+function mk(name,g,father,mother){const id=uid();S.people.push({id,name,gender:g,father:father||"",mother:mother||"",spouse:"",spouses:[],family:"",alive:true,city:"",phone:"",born:"",notes:""});return id}
 function pc(x,role,big){if(!x)return"";const r=role||"";return`<button class="pc ${x.gender==="f"?"f":""} ${x.alive?"":"dead"} ${big?"big":""}" type="button" data-open="${x.id}">${esc(x.name)}${r?`<small>${esc(r)}${x.alive?"":(x.gender==="f"?" · رحمها الله":" · رحمه الله")}</small>`:(x.alive?"":`<small>${x.gender==="f"?"رحمها الله":"رحمه الله"}</small>`)}</button>`}
 const addB=(kind,label)=>`<button class="add" type="button" data-add="${kind}">+ ${label}</button>`;
 function renderFam(){
@@ -951,10 +1185,10 @@ function renderFam(){
       ${side(M,"mo","جهة الأم","mother","mf","mm","muncle","الأخوال","الخالات","الأم","خال","خالة")}
     </div>
     <div class="join"></div><div class="stem"></div>
-    <div class="me">${pc(me,isMe?"أنت":"",true)}<div class="grp">${me.spouse?`<button class="pc ${me.gender==="f"?"":"f"}" type="button" data-add="spouse">${esc(me.spouse)}<small>${me.gender==="f"?"الزوج":"الزوجة"}</small></button>`:addB("spouse",me.gender==="f"?"الزوج":"الزوجة")}</div></div>
+    <div class="me">${pc(me,isMe?"أنت":(shortRel(S.meId,me.id)||""),true)}<div class="grp">${spousesOf(me).map(x=>pc(x,me.gender==="f"?"الزوج":"الزوجة")).join("")}${addB("spouse",spousesOf(me).length?(me.gender==="f"?"زوج آخر":"زوجة أخرى"):(me.gender==="f"?"الزوج":"الزوجة"))}</div></div>
     <div class="band"><div class="cap">الإخوة والأخوات</div><div class="grp">${sibs.map(x=>pc(x,x.gender==="f"?"أخت":"أخ")).join("")}${addB("sib","أخ أو أخت")}</div></div>
     <div class="stem"></div>
-    <div class="band"><div class="cap">الأبناء والبنات</div><div class="grp">${ch.map(x=>pc(x,(x.gender==="f"?"بنت":"ابن")+(kids(x.id).length?" · "+kids(x.id).length+" أبناء":""))).join("")}${addB("child","ابن أو بنت")}</div></div>
+    <div class="band"><div class="cap">الأبناء والبنات</div><div class="grp">${ch.map(x=>{const o=spousesOf(me).length>1?byId(me.gender==="f"?x.father:x.mother):null;return pc(x,(x.gender==="f"?"بنت":"ابن")+(o?" · من "+o.name:"")+(kids(x.id).length?" · "+kids(x.id).length+" أبناء":""))}).join("")}${addB("child","ابن أو بنت")}</div></div>
     ${gch.length?`<div class="band"><div class="cap">الأحفاد</div><div class="grp">${gch.map(x=>pc(x,(x.gender==="f"?"بنت ":"ابن ")+(fa(x)&&fa(x).id!==me.id?fa(x).name:(mo(x)?mo(x).name:"")))).join("")}</div></div>`:""}
     <p class="sub" style="margin:0;text-align:center">المس أي اسم لفتح ملفه، ومن الملف «عرض عائلته» لتنتقل إليه. والزر المنقّط يضيف القريب في مكانه.</p>
   </div>`;
@@ -966,52 +1200,57 @@ $("#fam").addEventListener("click",e=>{
 $("#famBack").onclick=()=>{focusId=S.meId;renderFam()};
 $("#toFull").onclick=()=>{$("#famPanel").hidden=true;$("#fullPanel").hidden=false;centered=false;renderTree()};
 $("#toFam").onclick=()=>{$("#famPanel").hidden=false;$("#fullPanel").hidden=true};
-function quickAdd(kind){
-  const me=byId(focusId);if(!me)return;const F=fa(me),M=mo(me);
-  if(kind==="spouse"){
-    sheet(`<div class="hd"><h2>${me.gender==="f"?"زوج":"زوجة"} ${esc(me.name)}</h2><button class="btn sm" type="button" data-close>إلغاء</button></div>
-      <form id="qa" class="row"><input type="text" id="qaN" class="grow" value="${esc(me.spouse)}" placeholder="الاسم"><button class="btn primary" type="submit">حفظ</button></form>`,el=>{
-      el.querySelector("[data-close]").onclick=closeSheet;setTimeout(()=>el.querySelector("#qaN").focus(),30);
-      el.querySelector("#qa").onsubmit=e=>{e.preventDefault();me.spouse=el.querySelector("#qaN").value.trim();save();closeSheet();renderAll()}});return;
-  }
-  const K={
-    father:{t:"أبي",g:"m"},mother:{t:"أمي",g:"f"},
-    ff:{t:"جد من جهة الأب",g:"m"},fm:{t:"جدة من جهة الأب",g:"f"},
-    mf:{t:"جد من جهة الأم",g:"m"},mm:{t:"جدة من جهة الأم",g:"f"},
-    sib:{t:"إخوة وأخوات",choose:["أخ","أخت"],multi:1,need:(!F&&!M)?[["pF","اسم الأب"]]:[]},
-    funcle:{t:"أعمام وعمات",choose:["عم","عمة"],multi:1,need:[...(!F?[["pF","اسم الأب"]]:[]),...(!fa(F)?[["pGF","اسم الجد (أبو الأب)"]]:[])]},
-    muncle:{t:"أخوال وخالات",choose:["خال","خالة"],multi:1,need:[...(!M?[["pM","اسم الأم"]]:[]),...(!fa(M)?[["pMF","اسم جد الأم (أبو الأم)"]]:[])]},
-    child:{t:"أبناء وبنات",choose:["ابن","بنت"],multi:1}
-  }[kind];if(!K)return;
-  const who=focusId===S.meId?"":" لـ"+me.name;
-  sheet(`<div class="hd"><h2>إضافة ${K.t}${esc(who)}</h2><button class="btn sm" type="button" data-close>إلغاء</button></div>
+function quickAdd(kind,targetId){
+  const focus=byId(focusId);let T=targetId?byId(targetId):focus;if(!T)return;
+  let base=kind,needT=null;
+  if(!targetId){const F=fa(focus),M=mo(focus);
+    if(kind==="ff"){T=F;base="father"}else if(kind==="fm"){T=F;base="mother"}
+    else if(kind==="mf"){T=M;base="father"}else if(kind==="mm"){T=M;base="mother"}
+    else if(kind==="funcle"){base="sib";if(F)T=F;else needT="father"}
+    else if(kind==="muncle"){base="sib";if(M)T=M;else needT="mother"}
+    if(!T&&!needT)return}
+  if(base==="father"&&byId(T.father)){openPerson(T.father);return}
+  if(base==="mother"&&byId(T.mother)){openPerson(T.mother);return}
+  const fem=T&&T.gender==="f";
+  const L={father:"الأب",mother:"الأم",spouse:fem?"زوج":"زوجة",child:"أبناء وبنات",sib:"إخوة وأخوات"}[base];
+  const choose=base==="child"?["ابن","بنت"]:base==="sib"?(kind==="funcle"?["عم","عمة"]:kind==="muncle"?["خال","خالة"]:["أخ","أخت"]):null;
+  const multi=base==="child"||base==="sib"||base==="spouse";
+  const need=[];
+  if(needT)need.push(["pT",needT==="father"?"اسم أبيك":"اسم أمك"]);
+  if(base==="sib"&&(needT||(!T.father&&!T.mother)))need.push(["pP",(needT?(needT==="father"?"اسم جدك (أبو أبيك)":"اسم جدك (أبو أمك)"):"اسم أب "+T.name)]);
+  const sps=T?spousesOf(T):[];
+  let sibsFix=[];
+  if(T&&base==="mother"&&T.father)sibsFix=S.people.filter(x=>x.id!==T.id&&x.father===T.father&&!x.mother);
+  if(T&&base==="father"&&T.mother)sibsFix=S.people.filter(x=>x.id!==T.id&&x.mother===T.mother&&!x.father);
+  const fixDefault=base==="mother"?spousesOf(byId(T&&T.father)).length===0:true;
+  const title=kind==="funcle"?"إضافة أعمام وعمات":kind==="muncle"?"إضافة أخوال وخالات":`إضافة ${L}${T&&T.id!==S.meId?" لـ"+T.name:""}`;
+  sheet(`<div class="hd"><h2>${esc(title)}</h2><button class="btn sm" type="button" data-close>إلغاء</button></div>
     <form id="qa" class="grid2">
-      ${K.choose?`<div class="gender-pick" style="grid-column:1/-1"><button class="btn" type="button" data-g="m" aria-pressed="true">${K.choose[0]}</button><button class="btn" type="button" data-g="f" aria-pressed="false">${K.choose[1]}</button></div>`:""}
-      <label class="f" style="grid-column:1/-1"><span>${K.multi?"الأسماء (افصل بينها بفاصلة لإضافة أكثر من واحد)":"الاسم"}</span><input type="text" id="qaN" placeholder="${K.multi?"مثل: خالد، فهد، نورة":"الاسم الأول"}" autocomplete="off"></label>
-      ${(K.need||[]).map(([id,l])=>`<label class="f"><span>${l}</span><input type="text" id="${id}" autocomplete="off"></label>`).join("")}
-      <label class="chk"><input type="checkbox" id="qaDead"> ${K.multi?"متوفون":"متوفى"}</label>
+      ${choose?`<div class="gender-pick" style="grid-column:1/-1"><button class="btn" type="button" data-g="m" aria-pressed="true">${choose[0]}</button><button class="btn" type="button" data-g="f" aria-pressed="false">${choose[1]}</button></div>`:""}
+      <label class="f" style="grid-column:1/-1"><span>${multi?"الأسماء (افصل بينها بفاصلة لإضافة أكثر من واحد)":"الاسم"}</span><input type="text" id="qaN" placeholder="${multi?"مثل: خالد، فهد، نورة":"الاسم الأول"}" autocomplete="off"></label>
+      ${need.map(([id,l])=>`<label class="f"><span>${esc(l)}</span><input type="text" id="${id}" autocomplete="off"></label>`).join("")}
+      ${base==="child"&&sps.length?`<label class="f" style="grid-column:1/-1"><span>${fem?"الأب":"الأم"}</span><select id="qaO">${sps.map((x,i)=>`<option value="${x.id}" ${i===0&&sps.length===1?"selected":""}>${esc(x.name)}</option>`).join("")}<option value="" ${sps.length>1?"selected":""}>غير محدد</option></select></label>`:""}
+      ${sibsFix.length?`<label class="chk" style="grid-column:1/-1"><input type="checkbox" id="qaFix" ${fixDefault?"checked":""}> ${base==="mother"?"وهي أم":"وهو أب"} إخوته أيضًا: ${esc(sibsFix.map(x=>x.name).join("، "))}</label>`:""}
+      <label class="chk"><input type="checkbox" id="qaDead"> ${multi?"متوفون":"متوفى"}</label>
       <div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">حفظ</button></div>
     </form>`,el=>{
-    el.querySelector("[data-close]").onclick=closeSheet;setTimeout(()=>el.querySelector("#qaN").focus(),30);
-    let g=K.g||"m";el.querySelectorAll(".gender-pick button").forEach(b=>b.onclick=()=>{g=b.dataset.g;el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+    el.querySelector("[data-close]").onclick=()=>{targetId?openPerson(targetId):closeSheet()};setTimeout(()=>el.querySelector("#qaN").focus(),30);
+    let g=base==="mother"?"f":base==="father"?"m":"m";
+    el.querySelectorAll(".gender-pick button").forEach(b=>b.onclick=()=>{g=b.dataset.g;el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",x===b))});
     el.querySelector("#qa").onsubmit=e=>{e.preventDefault();
-      const names=el.querySelector("#qaN").value.split(K.multi?/[،,\n]+/:/\n/).map(x=>x.trim()).filter(Boolean);if(!names.length){el.querySelector("#qaN").focus();return}
+      const names=el.querySelector("#qaN").value.split(multi?/[،,\n]+/:/\n/).map(x=>x.trim()).filter(Boolean);if(!names.length){el.querySelector("#qaN").focus();return}
       const v=id=>{const i=el.querySelector("#"+id);return i?i.value.trim():""};
-      for(const [id,l] of (K.need||[]))if(!v(id)){el.querySelector("#"+id).focus();toast("اكتب "+l);return}
+      for(const [id,l] of need)if(!v(id)){el.querySelector("#"+id).focus();toast("اكتب "+l);return}
       const alive=!el.querySelector("#qaDead").checked;const made=[];
       const add1=(n,gg,f,m)=>{const id=mk(n,gg,f,m);byId(id).alive=alive;made.push(id);return id};
-      const ensure=(p,key,name,gg)=>{if(p[key]&&byId(p[key]))return p[key];const id=mk(name,gg);p[key]=id;return id};
-      if(kind==="father")me.father=add1(names[0],"m");
-      else if(kind==="mother"){me.mother=add1(names[0],"f");if(F&&!F.spouse)F.spouse=names[0]}
-      else if(kind==="ff")F.father=add1(names[0],"m");
-      else if(kind==="fm")F.mother=add1(names[0],"f");
-      else if(kind==="mf")M.father=add1(names[0],"m");
-      else if(kind==="mm")M.mother=add1(names[0],"f");
-      else if(kind==="sib"){if(!me.father&&!me.mother)ensure(me,"father",v("pF"),"m");names.forEach(n=>add1(n,g,me.father,me.mother))}
-      else if(kind==="funcle"){const f=byId(ensure(me,"father",v("pF"),"m"));const gf=ensure(f,"father",v("pGF"),"m");names.forEach(n=>add1(n,g,gf,f.mother))}
-      else if(kind==="muncle"){const m=byId(ensure(me,"mother",v("pM"),"f"));const gf=ensure(m,"father",v("pMF"),"m");names.forEach(n=>add1(n,g,gf,m.mother))}
-      else if(kind==="child"){names.forEach(n=>add1(n,g,me.gender==="f"?"":me.id,me.gender==="f"?me.id:""))}
-      S.demo=S.demo&&true;save();closeSheet();renderAll();toast(made.length>1?`أُضيف ${made.length} أقارب`:"أُضيف "+names[0]);
+      if(needT){const id=mk(v("pT"),needT==="father"?"m":"f");focus[needT]=id;T=byId(id)}
+      if(base==="father"){const id=add1(names[0],"m");T.father=id;if(el.querySelector("#qaFix")?.checked)sibsFix.forEach(x=>x.father=id)}
+      else if(base==="mother"){const id=add1(names[0],"f");T.mother=id;if(el.querySelector("#qaFix")?.checked)sibsFix.forEach(x=>x.mother=id)}
+      else if(base==="spouse"){names.forEach(n=>linkSpouse(T,byId(add1(n,fem?"m":"f"))))}
+      else if(base==="child"){const o=v("qaO");names.forEach(n=>add1(n,g,fem?o:T.id,fem?T.id:o))}
+      else if(base==="sib"){if(!T.father&&!T.mother)T.father=mk(v("pP"),"m");names.forEach(n=>add1(n,g,T.father,T.mother))}
+      save();renderAll();toast(made.length>1?`أُضيف ${made.length} أقارب`:"أُضيف "+names[0]);
+      if(targetId)openPerson(T.id);else closeSheet();
     };
   });
 }
@@ -1045,17 +1284,43 @@ async function initRemote(){
     const snap=await remoteRef.get();
     const r=snap&&snap.exists?snap.data():null;
     if(r&&r.json&&(!S.updatedAt||(r.updatedAt||0)>=S.updatedAt||S.demo)){
-      try{const d=JSON.parse(r.json);if(Array.isArray(d.people)){S=d;mem=S;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}veiled=!!S.hideAmounts;renderAll()}}catch(e){}
+      try{const d=JSON.parse(r.json);if(Array.isArray(d.people)){S=migrate(d);mem=S;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}veiled=!!S.hideAmounts;renderAll()}}catch(e){}
       remoteReady=true;setSync("محفوظ في حسابك","ok");
     }else{remoteReady=true;pushRemote()}
   }catch(e){setSync("على هذا الجهاز فقط");remoteRef=null}
 }
 /* ---------- app update (Android app only) ---------- */
-const WEB_BUILD=6;
-if(window.DQ){$("#btnUpd").hidden=false;
-  $("#btnUpd").onclick=()=>{$("#btnUpd").disabled=true;$("#btnUpd").textContent="يبحث...";try{window.DQ.update()}catch(e){window.dqUpd("error")}};}
-window.dqUpd=st=>{$("#btnUpd").disabled=false;$("#btnUpd").textContent="تحديث";
-  toast(st==="latest"?"لديك آخر نسخة":st==="done"?"تم التحديث، يُعاد فتح التطبيق":"تعذّر التحديث. تأكد من الاتصال بالإنترنت")};
+const WEB_BUILD=7;
+const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
+const CHANGES={7:[
+  "كلمة «تحديث» تتلوّن بالطوبي مع نقطة عند وصول نسخة جديدة",
+  "زر «تعديل» في كل صف من جدول التواصل وجدولي الإحسان: تعديل الاسم والموعد والمبلغ والتاريخ، وتعديل أي سطر في السجل أو حذفه، وحذف الصف كله",
+  "المتوفى لا يدخل جدول التواصل ولا «اليوم»، وتغيير حالة القريب (حي / متوفى) بلمسة من ملفه",
+  "الزوجة صارت شخصًا في الشجرة، مع أكثر من زوجة وأبناء كل زوجة تحتها",
+  "ملف كل قريب فيه خانات مفتوحة: أضف أباه وأمه وزوجاته وأبناءه وإخوته، ثم انتقل إليهم وأكمل بلا حد، حتى جد الجد وأم الجد",
+  "صلة كل قريب بك تظهر أعلى ملفه، مثل «والدة جدك لأبيك» و«ابن خالتك»",
+  "اسم العائلة صار يتبع النسب، فلا يُلحق اسم عائلتك بأقارب أمك"]};
+function showNews(from){
+  const items=Object.keys(CHANGES).map(Number).filter(b=>b>from&&b<=WEB_BUILD).sort((a,b)=>a-b).flatMap(b=>CHANGES[b]);
+  if(!items.length)return;
+  sheet(`<div class="hd"><h2>الجديد في النسخة ${WEB_BUILD}</h2><button class="btn sm primary" type="button" data-close>حسنًا</button></div><ul class="news">${items.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`,el=>{el.querySelector("[data-close]").onclick=closeSheet});
+}
+if(window.DQ){
+  const ub=$("#btnUpd");ub.hidden=false;let remote=0;
+  const setU=st=>{ub.classList.toggle("has",st==="has");ub.classList.toggle("ok",st==="ok");ub.disabled=st==="busy";
+    ub.textContent=st==="has"?"تحديث جديد":st==="busy"?"يحدّث...":st==="ok"?"✓ محدَّث":"تحديث";ub.title=st==="has"?"وصلت نسخة جديدة، اضغط للتحديث":""};
+  const checkUpd=async()=>{try{const r=await fetch(UPD_BASE+"version.txt?t="+Date.now(),{cache:"no-store"});const n=parseInt(await r.text(),10);if(n>WEB_BUILD){remote=n;if(!ub.disabled)setU("has")}}catch(e){}};
+  ub.onclick=()=>{setU("busy");try{window.DQ.update()}catch(e){window.dqUpd("error")}};
+  window.dqUpd=st=>{
+    if(st==="latest"){setU("ok");toast("لديك آخر نسخة");setTimeout(()=>setU(""),2500)}
+    else if(st==="done"){ub.textContent="يُعاد الفتح...";toast("نُزِّل التحديث، يُعاد فتح التطبيق")}
+    else{setU(remote>WEB_BUILD?"has":"");toast("تعذّر التحديث. تأكد من الاتصال بالإنترنت")}};
+  let seen=0;try{seen=parseInt(localStorage.getItem(KEY+".build"),10)||0}catch(e){}
+  if(!seen&&!S.demo&&S.people.length)seen=6;
+  if(seen&&seen<WEB_BUILD){setU("ok");setTimeout(()=>{if(ub.classList.contains("ok"))setU("")},5000);setTimeout(()=>showNews(seen),400)}
+  try{localStorage.setItem(KEY+".build",String(WEB_BUILD))}catch(e){}
+  checkUpd();document.addEventListener("visibilitychange",()=>{if(!document.hidden)checkUpd()});setInterval(checkUpd,30*60*1000);
+}
 renderAll();
 initRemote();
 })();
