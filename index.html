@@ -404,6 +404,76 @@ body.famfit .view{gap:10px}
 .qg small{color:var(--accent);font-weight:700;margin-inline-start:4px}
 .qg.f small{color:var(--gold)}
 .bk-last{font-size:12.5px}
+/* v12: one meaning for each look. The dashed line is only a place to add someone; the dead are faded, with a solid border and «رحمه الله» */
+.tn.dead{border-style:solid}
+.tn.dead:not(.ctr){background:color-mix(in srgb,var(--surface) 45%,var(--sunk));border-color:color-mix(in srgb,var(--muted) 30%,var(--line))}
+.tn.dead.fa:not(.ctr){border-color:color-mix(in srgb,var(--accent) 42%,var(--line))}
+.tn.dead.mo:not(.ctr){border-color:color-mix(in srgb,var(--gold) 42%,var(--line))}
+.tn.dead.in:not(.ctr){border-color:color-mix(in srgb,var(--in) 42%,var(--line))}
+.tn.dead:not(.ctr) b{color:var(--muted)}
+.tpill.dead,.node.dead{border-style:solid}
+.pc.dead{border-style:solid;opacity:1;background:color-mix(in srgb,var(--surface) 45%,var(--sunk));color:var(--muted)}
+.chip.dead{border-style:solid;background:var(--sunk);color:var(--muted)}
+.rip-h{font-family:var(--body);font-size:13px;font-weight:500;color:var(--muted);margin-inline-start:2px;white-space:nowrap}
+/* the three sides in one row of equal parts */
+.sidepick{grid-template-columns:repeat(var(--n,3),minmax(0,1fr))}
+.spc{padding:6px 4px 7px}
+.spc b{font-size:14px}
+/* «دليل اللوحة»: every look and every tool, each with its example */
+.lg{display:flex;flex-direction:column}
+.lg h3{margin:8px 0 0}
+.lgr{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.lgr:last-child{border-bottom:0}
+.lgx{flex:none;width:108px;min-height:46px;display:flex;gap:6px;align-items:center;justify-content:center;background:var(--sunk);border-radius:10px;padding:6px;direction:ltr}
+.lgx .tn,.lgx .tslot,.lgx .tbadge,.lgx .ftab,.lgx .fpill{position:relative;left:auto;top:auto;cursor:default}
+.lgx .tn{width:88px;height:56px}
+.lgx .tslot{width:88px;height:34px}
+.lgx .fpill{height:28px}
+.lgx .ftab{height:22px;padding:0 10px}
+.lgx svg{display:block;overflow:visible}
+.lgc{fill:var(--surface);stroke:var(--accent);stroke-width:1.5}
+.lgc.n{stroke:var(--line)}
+.lgr p{margin:0;flex:1;min-width:0;font-size:13.5px;color:var(--muted);line-height:1.6}
+.lgr p b{display:block;color:var(--fg);font-size:14px;font-weight:600}
+.lgk{display:inline-grid;place-items:center;min-width:32px;height:32px;padding:0 6px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:16px;color:var(--fg);box-shadow:0 1px 4px rgba(0,0,0,.12);white-space:nowrap}
+/* a name you can touch opens its profile, everywhere */
+.nm{all:unset;cursor:pointer;font-weight:700;color:var(--fg);border-radius:6px;overflow-wrap:anywhere}
+.nm:hover{color:var(--accent)}
+.nm:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.res .who .nm{display:block}
+/* the profile opens on what it is for: reaching the relative */
+.pcon{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.pcon .ph{direction:ltr;unicode-bidi:isolate;font-size:16px;font-weight:600;align-self:flex-start;user-select:all}
+.pcon .meta{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.lnk{all:unset;cursor:pointer;color:var(--accent);font-weight:600;font-size:13px;border-radius:6px}
+.lnk:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+div.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+div.f > span{font-weight:500}
+div.f .seg2{align-self:flex-start}
+.erare{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid var(--line);padding-top:12px}
+/* contacts: one short row for each relative */
+.clist{display:flex;flex-direction:column}
+.crow{display:flex;flex-direction:column;gap:6px;padding:10px 0;border-bottom:1px solid var(--line)}
+.crow:last-child{border-bottom:0}
+.cr1,.cr2{display:flex;align-items:center;gap:8px;min-width:0}
+.cr2{flex-wrap:wrap;gap:6px}
+.cr1 .nm{font-size:15px;flex:none;max-width:45%}
+.cr1 .rl{flex:1;min-width:0;font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cr2 .sp{flex:1}
+.cform,.iform{display:flex;flex-direction:column;gap:8px}
+.cform[hidden],.iform[hidden]{display:none}
+.btn[hidden]{display:none}
+/* «اقتراحاتك»: a small button with its count beside «الإعدادات» */
+#s-dev{display:inline-flex;align-items:center;gap:4px;padding:5px 8px;color:var(--muted)}
+#s-dev svg{width:18px;height:18px;flex:none}
+#s-dev .badge{min-width:18px;height:18px;font-size:11px;padding:0 5px}
+#s-dev .badge[hidden]{display:none}
+#s-dev[aria-expanded="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+#s-dev[aria-expanded="true"] .badge{background:var(--accent-ink);color:var(--accent)}
+header.top{gap:10px}
+.brand,header.top .icon-btn{white-space:nowrap}
+@media (max-width:400px){header.top{gap:6px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}header.top .sp{margin-inline-start:-6px}
+  .brand{font-size:19px}header.top .icon-btn{padding:6px 8px}#s-dev{padding:5px 6px}}
 </style>
 
 <header class="top">
@@ -412,6 +482,7 @@ body.famfit .view{gap:10px}
   <span class="sync" id="sync" role="status">على هذا الجهاز</span>
   <button class="icon-btn" id="btnUpd" type="button" hidden>تحديث</button>
   <button class="icon-btn" id="btnLockNow" type="button" hidden>قفل</button>
+  <button class="icon-btn" id="s-dev" type="button" data-p="p-dev" aria-expanded="false" aria-controls="tbDrop" aria-label="اقتراحاتك لتطوير التطبيق" title="اقتراحاتك"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg><span class="badge" id="ideaCount">0</span></button>
   <button class="icon-btn" id="btnSettings" type="button">الإعدادات</button>
 </header>
 
@@ -423,11 +494,10 @@ body.famfit .view{gap:10px}
   </div>
 
 
-  <section class="panel" id="topbar" aria-label="بحث واستفسار وتطوير">
+  <section class="panel" id="topbar" aria-label="البحث عن قريب">
     <div class="tb-row">
       <div class="qbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input type="search" id="gq" placeholder="ابحث عن قريب" aria-label="ابحث عن قريب بالاسم أو النسب أو المدينة أو الجوال" autocomplete="off"></div>
       <button class="tb-btn" type="button" id="s-ask" data-p="p-ask" aria-expanded="false" aria-controls="tbDrop"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.3 6.6 6.7 2.4-6.7 2.4L12 20.5l-2.3-6.6L3 11.5l6.7-2.4z"/></svg><span>اسأل</span></button>
-      <button class="tb-btn" type="button" id="s-dev" data-p="p-dev" aria-expanded="false" aria-controls="tbDrop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg><span>تطوير</span><span class="badge" id="ideaCount">0</span></button>
     </div>
     <div class="tb-drop" id="tbDrop" hidden>
     <button class="tb-x" type="button" id="tbX" aria-label="إغلاق">إغلاق ✕</button>
@@ -449,6 +519,8 @@ body.famfit .view{gap:10px}
       <p class="sub" id="askNote" style="margin:0" hidden></p>
     </div>
     <div id="p-dev" class="pane" hidden>
+      <h3>اقتراحاتك</h3>
+      <p class="sub" style="margin:0">اكتب ما تريد أن يُضاف إلى التطبيق، ثم انسخ القائمة وأرسلها لي.</p>
       <form class="row" id="ideaForm">
         <input type="text" id="ideaIn" class="grow" placeholder="اقترح تطويرًا أو ميزة جديدة للتطبيق" autocomplete="off">
         <button class="btn primary" type="submit">إضافة</button>
@@ -471,8 +543,8 @@ body.famfit .view{gap:10px}
           <div class="fcap" id="fcap" hidden></div>
           <button class="fopen" type="button" id="toFull">الشجرة المفتوحة</button>
           <div class="fempty" id="fempty" hidden></div>
-          <div class="tzoom"><button class="btn" type="button" id="fzIn" aria-label="تكبير">+</button><button class="btn" type="button" id="fzOut" aria-label="تصغير">−</button><button class="btn" type="button" id="fzFit" aria-label="عرض الجهة كلها">⤢</button><button class="btn" type="button" id="fzFull" aria-label="ملء الشاشة">⛶</button><button class="btn help" type="button" id="fzHelp" aria-label="طريقة الاستخدام">؟</button></div>
-          <div class="ftip" id="ftip" hidden><p>المس بطاقة الجهة تحت اللوحة لتملأها. المس أي اسم لفتح ملفه، والرقم تحت الاسم يفتح فرعه، و«أهلها» ينقلك إلى عائلتها. كل زواج له خط، والأبناء ينزلون من خط أبيهم وأمهم. اسحب للتنقل وقرّب بإصبعين.</p><button type="button" id="ftipX" aria-label="إغلاق">✕</button></div>
+          <div class="tzoom"><button class="btn" type="button" id="fzIn" aria-label="تكبير">+</button><button class="btn" type="button" id="fzOut" aria-label="تصغير">−</button><button class="btn" type="button" id="fzFit" aria-label="عرض الجهة كلها">⤢</button><button class="btn" type="button" id="fzFull" aria-label="ملء الشاشة">⛶</button><button class="btn help" type="button" id="fzHelp" aria-label="دليل اللوحة">؟</button></div>
+          <div class="ftip" id="ftip" hidden><p>المس أي اسم لتفتح ملفه، والخانة المنقطة تضيف قريبًا في مكانه. وزر «؟» يشرح كل شكل في اللوحة.</p><button type="button" id="ftipX" aria-label="إغلاق">✕</button></div>
         </div>
         <div class="sidepick" id="sidepick" role="tablist" aria-label="اختر الجهة"></div>
         <div class="obar" id="obar" hidden><div class="ob-t"><small>في المركز</small><b><span id="obName"></span> <small id="obRel"></small></b></div><div class="ob-b"><button class="btn sm" type="button" id="obTop">الجد الأعلى</button><button class="btn sm" type="button" id="obMe">أنا في المركز</button></div></div>
@@ -484,18 +556,15 @@ body.famfit .view{gap:10px}
   <section class="view" id="v-contact" hidden>
     <div class="panel" id="today"></div>
     <div class="panel">
-      <h2>التواصل</h2>
-      <p class="sub" style="margin:0">اكتب الاسم الأول، فيظهر باقي الاسم من الشجرة، ثم اختر القريب لإضافته إلى الجدول.</p>
-      <div class="row">
-        <div class="ac grow" id="cName"></div>
-        <button class="btn primary" id="cAdd" type="button">إضافة للجدول</button>
+      <div class="row"><h2 class="grow">جدول التواصل</h2><button class="btn sm soft" type="button" id="cAddT" aria-expanded="false" aria-controls="cForm">+ أضف قريبًا</button></div>
+      <div class="cform" id="cForm" hidden>
+        <p class="sub" style="margin:0">اكتب الاسم الأول، ثم اختر القريب من الشجرة.</p>
+        <div class="row">
+          <div class="ac grow" id="cName"></div>
+          <button class="btn primary" id="cAdd" type="button">إضافة</button>
+        </div>
       </div>
-    </div>
-    <div class="panel">
-      <div class="tbl-wrap"><table>
-        <thead><tr><th>القريب</th><th>آخر تواصل</th><th>الموعد القادم</th><th>الإجراء</th></tr></thead>
-        <tbody id="cBody"></tbody>
-      </table></div>
+      <div class="clist" id="cBody"></div>
     </div>
   </section>
 
@@ -504,12 +573,15 @@ body.famfit .view{gap:10px}
     <div class="row"><h2 class="grow">الإحسان</h2><button class="btn sm" type="button" id="btnVeil">إخفاء المبالغ</button></div>
     <div class="totals" id="iTotals"></div>
     <div class="panel">
-      <div class="row"><h2 class="grow">المبالغ الثابتة</h2><span class="sub" id="iMonthLbl"></span></div>
-      <div class="row">
-        <div class="ac grow" id="fName"></div>
-        <input type="number" id="fAmt" class="amt" placeholder="المبلغ" min="0" inputmode="decimal">
-        <label class="chk">يوم <input type="number" id="fDay" min="1" max="31" value="1" style="width:64px"></label>
-        <button class="btn primary" id="fAdd" type="button">إضافة</button>
+      <div class="row"><div class="grow"><h2>مبالغ شهرية</h2><span class="sub" id="iMonthLbl"></span></div><button class="btn sm soft" type="button" id="fAddT" aria-expanded="false" aria-controls="fForm">+ أضف</button></div>
+      <div class="iform" id="fForm" hidden>
+        <div class="row">
+          <div class="ac grow" id="fName"></div>
+          <input type="number" id="fAmt" class="amt" placeholder="المبلغ" min="0" inputmode="decimal">
+          <label class="chk">يوم <input type="number" id="fDay" min="1" max="31" value="1" style="width:64px"></label>
+          <button class="btn primary" id="fAdd" type="button">إضافة</button>
+        </div>
+        <p class="sub" style="margin:0">مبلغ تحوّله كل شهر، واليوم الذي يستحق فيه من الشهر.</p>
       </div>
       <div class="tbl-wrap"><table>
         <thead><tr><th>المستفيد</th><th>المبلغ</th><th>الاستحقاق</th><th>هذا الشهر</th></tr></thead>
@@ -517,13 +589,15 @@ body.famfit .view{gap:10px}
       </table></div>
     </div>
     <div class="panel">
-      <h2>حوالات غير ثابتة</h2>
-      <div class="row">
-        <div class="ac grow" id="vName"></div>
-        <input type="number" id="vAmt" class="amt" placeholder="المبلغ" min="0" inputmode="decimal">
-        <button class="btn primary" id="vAdd" type="button">حفظ</button>
+      <div class="row"><h2 class="grow">مبالغ متفرقة</h2><button class="btn sm soft" type="button" id="vAddT" aria-expanded="false" aria-controls="vForm">+ أضف</button></div>
+      <div class="iform" id="vForm" hidden>
+        <div class="row">
+          <div class="ac grow" id="vName"></div>
+          <input type="number" id="vAmt" class="amt" placeholder="المبلغ" min="0" inputmode="decimal">
+          <button class="btn primary" id="vAdd" type="button">إضافة</button>
+        </div>
+        <p class="sub" style="margin:0">يُحفظ بتاريخ اليوم، وتغيّر تاريخه من «تعديل».</p>
       </div>
-      <p class="sub" style="margin:0">يُحفظ التاريخ تلقائيًا لحظة الحفظ.</p>
       <div class="tbl-wrap"><table>
         <thead><tr><th>الاسم</th><th>المبلغ</th><th>التاريخ</th><th></th></tr></thead>
         <tbody id="vBody"></tbody>
@@ -670,7 +744,7 @@ function bloodRel(aId,bId){ // what B is to A, addressing A as "you"
   const up=ancPath(aId,bId);if(up)return ancName(up);
   const down=ancPath(bId,aId);
   if(down){const d=down.length;if(d===1)return fB?"بنتك":"ابنك";const c=nodeOn(bId,down,d-1);const cw=c&&c.gender==="f"?"بنتك":"ابنك";
-    if(d===2)return(fB?"بنت ":"ابن ")+cw;return(fB?"حفيدة ":"حفيد ")+cw+(d>3?` (الجيل ${d})`:"")}
+    if(d===2)return(fB?"بنت ":"ابن ")+cw;return d===3?(fB?"حفيدة ":"حفيد ")+cw:"من أحفاد "+cw}
   const ma=ancestors(aId),mb=ancestors(bId);let best=null;
   ma.forEach((ia,k)=>{const ib=mb.get(k);if(ib&&ia.d>0&&ib.d>0&&(!best||ia.d+ib.d<best.da+best.db))best={k,da:ia.d,db:ib.d}});
   if(!best)return"";
@@ -713,6 +787,11 @@ const fmtDT=iso=>new Date(iso).toLocaleString(LOC,{day:"numeric",month:"long",ho
 const hijri=iso=>{try{return new Date(iso).toLocaleDateString("ar-SA-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"long",year:"numeric"})}catch(e){return""}};
 const money=n=>(Number(n)||0).toLocaleString("en-US",{maximumFractionDigits:2})+" "+esc(S.currency||"");
 const daysAgo=iso=>Math.floor((Date.now()-new Date(iso).getTime())/864e5);
+function nn(n,w){if(n===1)return w[0];if(n===2)return w[1];const m=n%100;return n+" "+(m>=3&&m<=10?w[2]:m>=11?w[3]:w[4])} // the counted noun: one, two, 3 to 10, 11 to 99, and the hundreds
+const DAYS=["يوم واحد","يومان","أيام","يومًا","يوم"],AQ=["قريب واحد","قريبان","أقارب","قريبًا","قريب"];
+const agoD=d=>d<=0?"اليوم":d===1?"أمس":d===2?"قبل يومين":"قبل "+nn(d,DAYS);
+const lateD=d=>d<=1?"تأخرت يومًا":d===2?"تأخرت يومين":"تأخرت "+nn(d,DAYS);
+const rip=p=>p&&p.gender==="f"?"رحمها الله":"رحمه الله";
 function nasab(p,depth=4){
   if(!p)return"";let out=p.name;let cur=p;let first=true;
   for(let i=0;i<depth;i++){const f=byId(cur.father);if(!f)break;out+=(first&&p.gender==="f"?" بنت ":" بن ")+f.name;first=false;cur=f}
@@ -734,9 +813,9 @@ function bkMail(){const now=new Date().toISOString(),txt=bkText(),when=fmtD(now)
   if(href.length>120000){copyText(body,"النسخة كبيرة على رابط البريد، فنسختها لك. الصقها في رسالة إلى نفسك")}
   else{const a=document.createElement("a");a.href=href;if(!window.DQ){a.target="_blank";a.rel="noopener"}document.body.appendChild(a);a.click();a.remove()}
   S.lastBackup=now;save();renderToday()}
-let toastT;function toast(m,act){clearTimeout(toastT);let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}
-  t.textContent=m;if(act){const b=document.createElement("button");b.type="button";b.className="tact";b.textContent=act.label;b.onclick=()=>{t.hidden=true;act.fn()};t.appendChild(b)}
-  t.hidden=false;toastT=setTimeout(()=>t.hidden=true,act?6000:2200)}
+let toastT;function toast(m,act,ms){clearTimeout(toastT);let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}
+  t.textContent=m;(Array.isArray(act)?act:act?[act]:[]).forEach(a=>{const b=document.createElement("button");b.type="button";b.className="tact";b.textContent=a.label;b.onclick=()=>{t.hidden=true;a.fn&&a.fn()};t.appendChild(b)});
+  t.hidden=false;toastT=setTimeout(()=>t.hidden=true,ms||(act?6000:2200))}
 
 /* ---------- autocomplete (first name → full name) ---------- */
 function makeAC(host,{placeholder,allowFree=true,onPick,filter,preset}){
@@ -800,15 +879,23 @@ function openPerson(id,keep){
   const p=byId(id);if(!p)return;
   const f=byId(p.father),m=byId(p.mother),sp=spousesOf(p),groups=kidGroups(p),sib=sibsOf(p),nk=kids(p.id).length;
   const isMe=p.id===S.meId,rel=!isMe&&byId(S.meId)?shortRel(S.meId,p.id):"";
-  const nas=nasab(p,6),gen=generationOf(p),inC=S.contacts.find(c=>c.personId===p.id),fem=p.gender==="f";
-  const chip=(x,extra)=>`<button class="chip ${x.alive?"":"dead"}" type="button" data-open="${x.id}">${esc(x.name)}${extra?` <small>${esc(extra)}</small>`:""}</button>`;
+  const nas=nasab(p,6),inC=S.contacts.find(c=>c.personId===p.id),fem=p.gender==="f",dead=p.alive===false;
+  const chip=(x,extra)=>{const sm=[extra,x.alive===false?rip(x):""].filter(Boolean).join(" · ");return`<button class="chip${x.alive===false?" dead":""}" type="button" data-open="${x.id}">${esc(x.name)}${sm?` <small>${esc(sm)}</small>`:""}</button>`};
   const slot=(kind,label)=>`<button class="slot" type="button" data-addrel="${kind}">+ ${esc(label)}</button>`;
   const spL=fem?"الزوج":"الزوجة";
   const kidsHTML=groups.filter(g=>g.kids.length).map(g=>{
     const lbl=groups.filter(x=>x.kids.length).length>1||(g.other&&sp.length>1)?(g.other?"من "+g.other.name:(fem?"الأب غير محدد":"الأم غير محددة")):"";
     return`<div class="kgrp">${lbl?`<span class="mgrp">${esc(lbl)}:</span>`:""}${g.kids.map(k=>chip(k)).join("")}</div>`}).join("");
-  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>${esc(p.name)}</h2>${nas!==p.name?`<div class="full">${esc(nas)}</div>`:""}${isMe?`<div class="relme">أنت</div>`:rel?`<div class="relme">${esc(rel)}</div>`:""}</div><button class="btn sm" type="button" data-close>إغلاق</button></div>
-  <div class="row"><div class="seg2" role="group" aria-label="الحالة"><button type="button" data-alive="1" aria-pressed="${!!p.alive}">على قيد الحياة</button><button type="button" class="dead" data-alive="0" aria-pressed="${!p.alive}">${fem?"متوفاة":"متوفى"}</button></div><span class="pill mute">الجيل ${gen}</span>${p.city?`<span class="pill mute">${esc(p.city)}</span>`:""}</div>
+  let con=""; // reaching the relative comes first: it is what the profile is for
+  if(!isMe&&!dead){const ph=p.phone||"",c=inC,last=c&&c.log[0],di=c?dueIn(c):0;
+    con=`<section class="pcon" aria-label="التواصل">
+      ${ph?`<span class="ph num">${esc(ph)}</span>`:""}
+      <div class="row">${ph?callBtns(c,p,ph,""):""}${c?`<button class="btn primary" type="button" id="pDone">تم التواصل</button>`:`<button class="btn soft" type="button" id="pToContact">${fem?"أضفها":"أضفه"} إلى التواصل</button>`}${ph?"":`<button class="slot" type="button" id="pPh">+ أضف رقم الجوال</button>`}</div>
+      ${c?`<div class="meta"><span>آخر تواصل</span><span class="pill ${!last?"bad":di>=3?"good":di>=0?"warn":"bad"}">${last?agoD(daysAgo(last)):"لم تتواصل بعد"}</span><span>· ${fem?"تصلها":"تصله"} ${esc(freqName(c))}</span>${c.appt?`<span>· موعدك القادم <span class="num">${fmtDT(c.appt)}</span></span>`:""}<span style="flex:1"></span><button class="lnk" type="button" id="pCDet">المواعيد والسجل</button></div>`:""}
+    </section>`}
+  const det=[p.city?["المدينة",esc(p.city)]:null,p.born?["سنة الميلاد",`<span class="num">${esc(p.born)}</span>`]:null,p.notes?["ملاحظات",esc(p.notes)]:null].filter(Boolean);
+  sheet(`<div class="hd" data-pp="${p.id}"><div style="flex:1;min-width:0"><h2>${esc(p.name)}${dead?` <small class="rip-h">${rip(p)}</small>`:""}</h2>${nas!==p.name?`<div class="full">${esc(nas)}</div>`:""}${isMe?`<div class="relme">أنت</div>`:rel?`<div class="relme">${esc(rel)}</div>`:""}</div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+  ${con}
   <dl class="fam-grid">
     <dt>الأب</dt><dd>${f?chip(f):slot("father","أضف الأب")}</dd>
     <dt>الأم</dt><dd>${m?chip(m):(p.motherName?`<span class="chip">${esc(p.motherName)}</span>`:"")+slot("mother","أضف الأم")}</dd>
@@ -816,79 +903,67 @@ function openPerson(id,keep){
     <dt>الأبناء${nk?` (${nk})`:""}</dt><dd>${kidsHTML}<div class="chips">${slot("child","ابن أو بنت")}</div></dd>
     <dt>الإخوة${sib.length?` (${sib.length})`:""}</dt><dd><div class="chips">${sib.map(x=>chip(x,sibKind(p,x))).join("")}${slot("sib","أخ أو أخت")}</div></dd>
   </dl>
-  ${p.born||p.phone||p.notes||p.alive?`<dl class="kv">
-    ${p.born?`<dt>سنة الميلاد</dt><dd class="num">${esc(p.born)}</dd>`:""}
-    ${p.phone?`<dt>الجوال</dt><dd class="num" style="direction:ltr;text-align:right;user-select:all">${esc(p.phone)}</dd>`:""}
-    ${p.notes?`<dt>ملاحظات</dt><dd>${esc(p.notes)}</dd>`:""}
-    ${p.alive?`<dt>آخر تواصل</dt><dd>${inC&&inC.log.length?fmtD(inC.log[0]):"لم يُسجَّل"}</dd>`:""}
-  </dl>`:""}
+  ${det.length?`<dl class="kv">${det.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`:""}
   <div class="row">
-    <button class="btn soft" type="button" id="pFocus">اجعله مركز الشجرة</button>
-    <button class="btn primary" type="button" id="pEdit">تعديل البيانات</button>
-    ${p.alive?(inC?`<button class="btn" type="button" id="pGoC">في جدول التواصل</button>`:`<button class="btn" type="button" id="pToContact">إضافة للتواصل</button>`):""}
-    ${!isMe?'<button class="btn" type="button" id="pMe">هذا أنا</button>':""}
+    <button class="btn soft" type="button" id="pFocus">${isMe?"أنا في المركز":fem?"اجعلها في المركز":"اجعله في المركز"}</button>
+    <button class="btn" type="button" id="pEdit">تعديل</button>
   </div>
-  <details class="more"><summary>ما صلته بقريب آخر؟</summary><div class="ac" id="pRel" style="margin-top:8px"></div><div class="rel-out" id="pRelOut" hidden style="margin-top:8px"></div></details>
-  <div class="row" style="justify-content:flex-end"><button class="btn sm danger" type="button" id="pDel">حذف من الشجرة</button></div>
-  <div id="pConfirm"></div>`,el=>{
-    makeAC(el.querySelector("#pRel"),{placeholder:"اكتب اسم قريب آخر",allowFree:false,onPick:st=>{const o=el.querySelector("#pRelOut");o.innerHTML=relation(st.personId,p.id);o.hidden=false}});
+  <details class="more"><summary>${isMe?"ما صلتك بقريب آخر؟":fem?"ما صلتها بقريب آخر؟":"ما صلته بقريب آخر؟"}</summary><div class="ac" id="pRel" style="margin-top:8px"></div><div class="rel-out" id="pRelOut" hidden style="margin-top:8px"></div></details>`,el=>{
+    const q=x=>el.querySelector(x);
+    makeAC(q("#pRel"),{placeholder:"اكتب اسم قريب آخر",allowFree:false,filter:x=>x.id!==p.id,onPick:st=>{const o=q("#pRelOut");o.innerHTML=relChain(st.personId,p.id);o.hidden=false}});
     el.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheet);
     el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openPerson(b.dataset.open));
     el.querySelectorAll("[data-addrel]").forEach(b=>b.onclick=()=>quickAdd(b.dataset.addrel,p.id));
-    el.querySelectorAll("[data-alive]").forEach(b=>b.onclick=()=>{const a=b.dataset.alive==="1";if(a===!!p.alive)return;setAlive(p,a);openPerson(p.id,true)});
-    el.querySelector("#pEdit").onclick=()=>editPerson(p.id);
-    el.querySelector("#pFocus").onclick=()=>{closeSheet();showTab("v-tree");oGo(p.id,true)};
-    const pm=el.querySelector("#pMe");if(pm)pm.onclick=()=>{S.meId=p.id;focusId=p.id;save();closeSheet();renderAll();toast("أنت الآن في مركز الشجرة")};
-    const pc2=el.querySelector("#pToContact");if(pc2)pc2.onclick=()=>{addContact(p.id,"");closeSheet();showTab("v-contact")};
-    const pg=el.querySelector("#pGoC");if(pg)pg.onclick=()=>{closeSheet();showTab("v-contact")};
-    el.querySelector("#pDel").onclick=()=>{
-      const n=kids(p.id).length;
-      el.querySelector("#pConfirm").innerHTML=`<div class="confirm"><span>حذف «${esc(p.name)}» من الشجرة؟${n?` أبناؤه (${n}) يبقون في الشجرة بلا ${fem?"أم":"أب"}.`:""}</span><span style="flex:1"></span><button class="btn sm" type="button" id="cNo">تراجع</button><button class="btn sm danger" type="button" id="cYes">نعم، احذف</button></div>`;
-      el.querySelector("#pConfirm").scrollIntoView({block:"nearest"});
-      el.querySelector("#cNo").onclick=()=>el.querySelector("#pConfirm").innerHTML="";
-      el.querySelector("#cYes").onclick=()=>{
-        S.people.forEach(x=>{if(x.father===p.id)x.father="";if(x.mother===p.id)x.mother="";x.spouses=(x.spouses||[]).filter(i=>i!==p.id)});
-        S.people=S.people.filter(x=>x.id!==p.id);
-        [...S.contacts,...S.fixed,...S.variable].forEach(r=>{if(r.personId===p.id){r.name=nasab(p,3);r.personId=""}});
-        if(S.meId===p.id)S.meId="";if(focusId===p.id)focusId=S.meId;
-        save();closeSheet();renderAll();toast(`حُذف ${p.name}`);
-      };
-    };
+    q("#pEdit").onclick=()=>editPerson(p.id);
+    q("#pFocus").onclick=()=>{closeSheet();showTab("v-tree");oGo(p.id,true)};
+    if(q("#pPh"))q("#pPh").onclick=()=>editPerson(p.id,{},"e-ph");
+    if(q("#pDone"))q("#pDone").onclick=()=>{logContact(inC);openPerson(p.id,true)};
+    if(q("#pToContact"))q("#pToContact").onclick=()=>{addContact(p.id,"");openPerson(p.id,true)};
+    if(q("#pCDet"))q("#pCDet").onclick=()=>editContact(inC.id,false,p.id);
   },{keep});
 }
-function editPerson(id,preset={}){
+function editPerson(id,preset={},focusOn){
   const p=id?byId(id):Object.assign({id:"",name:"",gender:"m",father:"",mother:"",spouse:"",spouses:[],family:"",alive:true,city:"",phone:"",born:"",notes:"",motherName:""},preset);
   const men=S.people.filter(x=>x.gender==="m"&&x.id!==p.id),wom=S.people.filter(x=>x.gender==="f"&&x.id!==p.id);
-  const opt=(arr,sel)=>`<option value="">— لا يوجد في الشجرة —</option>`+arr.map(x=>`<option value="${x.id}" ${x.id===sel?"selected":""}>${esc(nasab(x,3))}</option>`).join("");
+  const opt=(arr,sel)=>`<option value="">— ليس في الشجرة —</option>`+arr.map(x=>`<option value="${x.id}" ${x.id===sel?"selected":""}>${esc(nasab(x,3))}</option>`).join("");
+  const isMe=!!id&&p.id===S.meId;let alive=p.alive!==false;
   sheet(`<div class="hd"><h2>${id?"تعديل بيانات "+esc(p.name):"إضافة فرد"}</h2><button class="btn sm" type="button" data-close>إلغاء</button></div>
   <form id="pf" class="grid2">
     <label class="f"><span>الاسم</span><input type="text" id="e-name" value="${esc(p.name)}" required></label>
-    <label class="f"><span>الجنس</span><select id="e-g"><option value="m" ${p.gender==="m"?"selected":""}>ذكر</option><option value="f" ${p.gender==="f"?"selected":""}>أنثى</option></select></label>
-    <label class="f"><span>الأب</span><select id="e-f">${opt(men,p.father)}</select></label>
-    <label class="f"><span>الأم (من الشجرة)</span><select id="e-m">${opt(wom,p.mother)}</select></label>
-    <div class="qpick" id="e-q" style="grid-column:1/-1"></div>
-    <label class="f"><span>اسم الأم إن لم تكن في الشجرة</span><input type="text" id="e-mn" value="${esc(p.motherName||"")}"></label>
-    <label class="f"><span>اسم العائلة (إن اختلف عن عائلة أبيه)</span><input type="text" id="e-fam" value="${esc(p.family||"")}"></label>
-    <label class="f"><span>المدينة</span><input type="text" id="e-city" value="${esc(p.city)}"></label>
+    <label class="f"><span>الجنس</span><select id="e-g"><option value="m" ${p.gender!=="f"?"selected":""}>ذكر</option><option value="f" ${p.gender==="f"?"selected":""}>أنثى</option></select></label>
     <label class="f"><span>الجوال</span><input type="text" id="e-ph" value="${esc(p.phone)}" inputmode="tel" style="direction:ltr;text-align:right"></label>
+    <label class="f"><span>المدينة</span><input type="text" id="e-city" value="${esc(p.city)}"></label>
     <label class="f"><span>سنة الميلاد</span><input type="text" id="e-born" value="${esc(p.born)}" inputmode="numeric"></label>
-    <label class="chk" style="align-self:end"><input type="checkbox" id="e-alive" ${p.alive?"checked":""}> على قيد الحياة</label>
+    <div class="f"><span>الحالة</span><div class="seg2" role="group" aria-label="الحالة" id="e-alive"><button type="button" data-alive="1" aria-pressed="${alive}">على قيد الحياة</button><button type="button" class="dead" data-alive="0" aria-pressed="${!alive}">${p.gender==="f"?"متوفاة":"متوفى"}</button></div></div>
     <label class="f" style="grid-column:1/-1"><span>ملاحظات</span><input type="text" id="e-notes" value="${esc(p.notes)}"></label>
+    <h3 style="grid-column:1/-1;margin:6px 0 0">النسب</h3>
+    <label class="f"><span>الأب</span><select id="e-f">${opt(men,p.father)}</select></label>
+    <label class="f"><span>الأم</span><select id="e-m">${opt(wom,p.mother)}</select></label>
+    <div class="qpick" id="e-q" style="grid-column:1/-1"></div>
+    ${p.motherName?`<label class="f"><span>اسم الأم كما كُتب أولًا</span><input type="text" id="e-mn" value="${esc(p.motherName)}"></label>`:""}
+    <label class="f"${p.motherName?"":` style="grid-column:1/-1"`}><span>اسم العائلة (إن اختلف عن عائلة الأب)</span><input type="text" id="e-fam" value="${esc(p.family||"")}"></label>
     <div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">حفظ</button></div>
-  </form>`,el=>{
-    el.querySelector("[data-close]").onclick=()=>id?openPerson(id):closeSheet();
-    const fSel=el.querySelector("#e-f"),mSel=el.querySelector("#e-m"),qp=el.querySelector("#e-q");
+  </form>
+  ${id&&!isMe?`<div class="erare">${alive?`<button class="btn" type="button" id="pMe">هذا أنا</button>`:""}<span style="flex:1"></span><button class="btn danger" type="button" id="pDel">حذف من الشجرة</button></div><div id="pConfirm"></div>`:""}`,el=>{
+    const q=x=>el.querySelector(x);
+    q("[data-close]").onclick=()=>id?openPerson(id):closeSheet();
+    const fSel=q("#e-f"),mSel=q("#e-m"),qp=q("#e-q");
     const fillQ=()=>{const F=byId(fSel.value),M=byId(mSel.value);
       const ws=F?spousesOf(F).filter(x=>x.gender==="f"&&x.id!==p.id):[],hs=!F&&M?spousesOf(M).filter(x=>x.gender==="m"&&x.id!==p.id):[];
       qp.innerHTML=(ws.length?`<div class="row"><span class="sub">الأم من زوجات ${esc(F.name)}:</span>${ws.map(w=>`<button type="button" class="chip" data-qm="${w.id}" aria-pressed="${mSel.value===w.id}">${esc(w.name)}</button>`).join("")}</div>`:"")
         +(hs.length?`<div class="row"><span class="sub">الأب من أزواج ${esc(M.name)}:</span>${hs.map(h=>`<button type="button" class="chip" data-qf="${h.id}" aria-pressed="${fSel.value===h.id}">${esc(h.name)}</button>`).join("")}</div>`:"")};
     fSel.addEventListener("change",fillQ);mSel.addEventListener("change",fillQ);fillQ();
     qp.addEventListener("click",e=>{const b=e.target.closest("[data-qm],[data-qf]");if(!b)return;if(b.dataset.qm)mSel.value=b.dataset.qm;else fSel.value=b.dataset.qf;fillQ()});
-    el.querySelector("#pf").addEventListener("submit",e=>{
+    const segs=[...el.querySelectorAll("#e-alive [data-alive]")];
+    segs.forEach(b=>b.onclick=()=>{alive=b.dataset.alive==="1";segs.forEach(x=>x.setAttribute("aria-pressed",String((x.dataset.alive==="1")===alive)))});
+    q("#e-g").addEventListener("change",()=>{segs[1].textContent=q("#e-g").value==="f"?"متوفاة":"متوفى"});
+    if(focusOn)setTimeout(()=>{const i=q("#"+focusOn);i&&i.focus()},60);
+    q("#pf").addEventListener("submit",e=>{
       e.preventDefault();
-      const v=k=>el.querySelector(k).value.trim();
+      const v=k=>q(k).value.trim();
       if(!v("#e-name"))return;
-      const np={id:p.id||uid(),name:v("#e-name"),gender:v("#e-g"),father:v("#e-f"),mother:v("#e-m"),motherName:v("#e-mn"),family:v("#e-fam"),spouses:p.spouses||[],spouse:"",city:v("#e-city"),phone:v("#e-ph"),born:v("#e-born"),alive:el.querySelector("#e-alive").checked,notes:v("#e-notes")};
+      const mn=q("#e-mn");
+      const np={id:p.id||uid(),name:v("#e-name"),gender:v("#e-g"),father:v("#e-f"),mother:v("#e-m"),motherName:mn?mn.value.trim():(p.motherName||""),family:v("#e-fam"),spouses:p.spouses||[],spouse:"",city:v("#e-city"),phone:v("#e-ph"),born:v("#e-born"),alive,notes:v("#e-notes")};
       // prevent cycles
       let c=byId(np.father),g=0;while(c&&g++<80){if(c.id===np.id){toast("لا يصح أن يكون الشخص جدًّا لنفسه");return}c=byId(c.father)}
       const wasAlive=id?p.alive!==false:true;
@@ -896,6 +971,20 @@ function editPerson(id,preset={}){
       if(wasAlive&&!np.alive&&S.contacts.some(c=>c.personId===np.id)){setAlive(byId(np.id),false);openPerson(np.id);return}
       save();renderAll();openPerson(np.id);toast("حُفظ");
     });
+    const pm=q("#pMe");if(pm)pm.onclick=()=>{S.meId=p.id;focusId=p.id;save();closeSheet();renderAll();toast("أنت الآن «"+p.name+"»، والصلات كلها تُحسب منك")};
+    const pd=q("#pDel");if(pd)pd.onclick=()=>{
+      const n=kids(p.id).length,fem=p.gender==="f",box=q("#pConfirm");
+      box.innerHTML=`<div class="confirm"><span>حذف «${esc(p.name)}» من الشجرة؟${n?` ${fem?"أبناؤها":"أبناؤه"} (${n}) يبقون في الشجرة بلا ${fem?"أم":"أب"}.`:""}</span><span style="flex:1"></span><button class="btn sm" type="button" id="cNo">تراجع</button><button class="btn sm danger" type="button" id="cYes">نعم، احذف</button></div>`;
+      box.scrollIntoView({block:"nearest"});
+      q("#cNo").onclick=()=>box.innerHTML="";
+      q("#cYes").onclick=()=>{
+        S.people.forEach(x=>{if(x.father===p.id)x.father="";if(x.mother===p.id)x.mother="";x.spouses=(x.spouses||[]).filter(i=>i!==p.id)});
+        S.people=S.people.filter(x=>x.id!==p.id);
+        [...S.contacts,...S.fixed,...S.variable].forEach(r=>{if(r.personId===p.id){r.name=nasab(p,3);r.personId=""}});
+        if(S.meId===p.id)S.meId="";if(focusId===p.id)focusId=S.meId;
+        save();closeSheet();renderAll();toast(`حُذف ${p.name}`);
+      };
+    };
   });
 }
 
@@ -931,27 +1020,59 @@ function relation(aId,bId){ // describe B relative to A
   return`يلتقيان في الجد «${esc(nasab(k,1))}»: ${na} على بعد ${gw(da)} منه، و${nb} على بعد ${gw(db)}.`;
 }
 function relUpdate(){}
+function rel3(xId,pId){ // what P is to X, said of X: «خاله»، «جدتها لأمها»
+  const X=byId(xId),r=shortRel(xId,pId);if(!X||!r||/^من (ذرية|أقارب|أحفاد)/.test(r))return"";
+  return r.replace(/ك(?=$|[\s)])/g,X.gender==="f"?"ها":"ه")}
+function kinPath(aId,bId){ // the fewest steps from A to B by fathers and mothers, brothers and sisters, children and marriages
+  const prev=new Map([[aId,null]]),q=[aId];
+  while(q.length){const id=q.shift();if(id===bId)break;const p=byId(id);if(!p)continue;
+    const nb=[byId(p.father),byId(p.mother),...sibsOf(p),...kids(id),...spousesOf(p)];
+    for(const x of nb)if(x&&!prev.has(x.id)){prev.set(x.id,id);q.push(x.id)}}
+  if(!prev.has(bId))return null;const steps=[];let c=bId;while(prev.get(c)){steps.unshift([prev.get(c),c]);c=prev.get(c)}return steps}
+function stepW(U,V){const s=U.gender==="f"?"ها":"ه",f=V.gender==="f";
+  if(U.father===V.id||U.mother===V.id)return(f?"أم":"أبو")+s;
+  if(V.father===U.id||V.mother===U.id)return(f?"بنت":"ابن")+s;
+  if(spousesOf(U).includes(V))return(f?"زوجت":"زوج")+s;
+  return(f?"أخت":"أخو")+s}
+function relChain(xId,pId){const X=byId(xId),P=byId(pId);if(!X||!P)return"";if(xId===pId)return"هما الشخص نفسه.";
+  const nm=x=>`<b>${esc(x.name)}</b>`,r=rel3(xId,pId);
+  if(r)return`${nm(X)} ← ${esc(r)} ${nm(P)}`;
+  const st=kinPath(xId,pId);if(!st)return`لا صلة مسجّلة بين ${nm(X)} و${nm(P)} في الشجرة.`;
+  return`<div class="sub" style="margin:0 0 4px">${st.some(([a,b])=>spousesOf(byId(a)).includes(byId(b)))?"لا يجمعهما جد في الشجرة، ويصل بينهما الزواج:":"الطريق بينهما في الشجرة:"}</div>${nm(X)}${st.map(([a,b])=>` ← ${esc(stepW(byId(a),byId(b)))} ${nm(byId(b))}`).join("")}`}
 
 /* ---------- contact ---------- */
 const acC=makeAC($("#cName"),{placeholder:"اكتب الاسم الأول، مثل: أحمد",filter:p=>p.alive!==false});
-function addContact(personId,name){
-  if(personId&&S.contacts.some(c=>c.personId===personId)){toast("موجود في الجدول");return}
-  {const pp=personId&&byId(personId);if(pp&&pp.alive===false){toast((pp.gender==="f"?"رحمها الله":"رحمه الله")+". المتوفى لا يُضاف إلى جدول التواصل، ويمكنك تسجيل صدقة عنه في الإحسان.");return}}
-  S.contacts.unshift({id:uid(),personId,name,log:[],appt:null});save();renderContacts();toast("أُضيف إلى جدول التواصل");
+function addContact(personId,name,quiet){
+  if(personId&&S.contacts.some(c=>c.personId===personId)){toast("موجود في الجدول");return null}
+  {const pp=personId&&byId(personId);if(pp&&pp.alive===false){toast(rip(pp)+". المتوفى لا يُضاف إلى جدول التواصل، ويمكنك تسجيل صدقة عنه في الإحسان.");return null}}
+  const c={id:uid(),personId,name,log:[],appt:null};S.contacts.unshift(c);save();renderContacts();if(!quiet)toast("أُضيف إلى جدول التواصل");return c;
 }
-$("#cAdd").onclick=()=>{const v=acC.get();if(!acC.valid()){acC.input.focus();return}addContact(v.personId,v.personId?"":v.text);acC.clear()};
+let cAddOpen=false;
+$("#cAddT").onclick=()=>{cAddOpen=!cAddOpen;renderContacts();if(cAddOpen)setTimeout(()=>acC.input.focus(),30)};
+$("#cAdd").onclick=()=>{const v=acC.get();if(!acC.valid()){acC.input.focus();return}acC.clear();cAddOpen=false;addContact(v.personId,v.personId?"":v.text)};
 function gcalLink(title,iso){
   const s=new Date(iso),e=new Date(s.getTime()+30*6e4);const f=d=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
   return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(title)+"&dates="+f(s)+"/"+f(e)+"&details="+encodeURIComponent("تذكير من تطبيق ذو القربى: صلة الرحم");
 }
 let openRow=null,apptRow=null,metaRow=null;
 const FREQ=[[7,"كل أسبوع"],[14,"كل أسبوعين"],[30,"كل شهر"],[90,"كل 3 أشهر"]];
-function defaultFreq(c){ // by closeness to the owner if known: parents 7, siblings 14, else 30
-  return 30;}
+function kinDeg(aId,bId){const ma=ancestors(aId),mb=ancestors(bId);let d=1e9;ma.forEach((ia,k)=>{const ib=mb.get(k);if(ib)d=Math.min(d,ia.d+ib.d)});return d}
+const fqMemo=new Map();
+function defaultFreq(c){ // by how close the relative is to you: parents, children and your wife every week; brothers, sisters and grandparents every two weeks; uncles and aunts every month; the rest every three months
+  const me=byId(S.meId),p=c.personId&&byId(c.personId);if(!me||!p)return 30;
+  const k=p.id+"|"+me.id+"|"+(S.updatedAt||0);if(fqMemo.has(k))return fqMemo.get(k);if(fqMemo.size>400)fqMemo.clear();
+  const d=spousesOf(me).includes(p)?1:kinDeg(me.id,p.id),v=d<=1?7:d===2?14:d===3?30:90;fqMemo.set(k,v);return v}
 const freqOf=c=>c.freq||defaultFreq(c);
+const freqName=c=>(FREQ.find(f=>f[0]===freqOf(c))||[])[1]||"";
 function dueIn(c){const last=c.log[0];if(!last)return -1;return freqOf(c)-daysAgo(last)} // <0 overdue
 const phoneOf=c=>{const p=c.personId&&byId(c.personId);return p&&p.phone?p.phone:""};
-const waNum=ph=>{let d=ph.replace(/\D/g,"");if(d.startsWith("00"))d=d.slice(2);else if(d.startsWith("0"))d="966"+d.slice(1);return d};
+// WhatsApp needs the number with its country: a number written with + or 00 keeps its own; a local one is known by its shape (05 Saudi, 09 or 01 Sudan, 01 with 11 digits Egypt), else the country in the settings
+const waNum=ph=>{const raw=String(ph||"").trim();let d=raw.replace(/\D/g,"");if(raw.startsWith("+"))return d;if(d.startsWith("00"))return d.slice(2);
+  if(d.startsWith("0")){const n=d.slice(1);if(/^5\d{8}$/.test(n))return"966"+n;if(/^[19]\d{8}$/.test(n))return"249"+n;if(/^1\d{9}$/.test(n))return"20"+n;return(S.cc||"966")+n}
+  return d};
+const callBtns=(c,p,ph,sm)=>{const pid=p?p.id:(c&&c.personId)||"",cid=c?c.id:"",k=sm?"btn sm":"btn";
+  return`<a class="${k}" href="tel:${esc(ph)}" data-call="${cid}" data-pid="${pid}" data-kind="اتصال">اتصال</a><a class="${k}" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener" data-call="${cid}" data-pid="${pid}" data-kind="واتساب">واتساب</a>`};
+const nmBtn=(r,label)=>r.personId&&byId(r.personId)?`<button class="nm" type="button" data-open="${r.personId}">${esc(label)}</button>`:`<b>${esc(label)}</b>`;
 const TYPES=["اتصال","زيارة","رسالة","واتساب"];
 function renderToday(){
   const live=S.contacts.filter(c=>!deadC(c));const late=live.filter(c=>dueIn(c)<0).sort((a,b)=>dueIn(a)-dueIn(b));
@@ -959,50 +1080,59 @@ function renderToday(){
   const appts=live.filter(c=>c.appt&&new Date(c.appt)<=end);
   const ym=ymNow(),day=now.getDate();
   const dueF=S.fixed.filter(r=>day>=r.day&&!r.transfers.some(t=>t.ym===ym));
-  const item=(c,extra)=>{const ph=phoneOf(c);return`<li><span class="who"><b>${esc(nameOf(c).split(" ")[0])}</b> <span class="full">${extra}</span></span>${ph?`<a class="btn sm" href="tel:${esc(ph)}">اتصال</a><a class="btn sm" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener">واتساب</a>`:""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></li>`};
+  const who=c=>c.personId&&byId(c.personId)?nmBtn(c,nameOf(c).split(" ")[0]):`<button class="nm" type="button" data-cedit="${c.id}">${esc(nameOf(c).split(" ")[0])}</button>`;
+  const item=(c,extra)=>{const ph=phoneOf(c);return`<li><span class="who">${who(c)} <span class="full">${extra}</span></span>${ph?callBtns(c,null,ph,1):""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></li>`};
   const lb=S.lastBackup?daysAgo(S.lastBackup):-1,needBk=!S.demo&&S.people.length>=5&&(lb<0||lb>=30);
   const total=late.length+appts.length+dueF.length+(needBk?1:0);
   $("#today").innerHTML=`<div class="row"><h2 class="grow">اليوم</h2><span class="pill ${total?"warn":"good"}">${total?total+" بانتظارك":"لا شيء متأخر"}</span></div>
   ${appts.length?`<h3>مواعيد اليوم</h3><ul class="today-list">${appts.map(c=>item(c,new Date(c.appt)<now?"فات موعده "+fmtDT(c.appt):"الساعة "+new Date(c.appt).toLocaleTimeString(LOC,{hour:"numeric",minute:"2-digit"}))).join("")}</ul>`:""}
-  ${late.length?`<h3>تأخرتَ في التواصل معهم</h3><ul class="today-list">${late.slice(0,8).map(c=>item(c,c.log[0]?"متأخر "+(-dueIn(c))+" يوم ("+FREQ.find(f=>f[0]===freqOf(c))?.[1]+")":"لم يُسجَّل تواصل بعد")).join("")}</ul>`:""}
-  ${dueF.length?`<h3>مبالغ مستحقة</h3><ul class="today-list">${dueF.map(r=>`<li><span class="who"><b>${esc(nameOf(r).split(" ")[0])}</b> <span class="full num">${money(r.amount)}</span></span><button class="btn sm gold" type="button" data-gofixed>الإحسان</button></li>`).join("")}</ul>`:""}
-  ${needBk?`<h3>نسخة احتياطية</h3><ul class="today-list"><li><span class="who"><b>بياناتك</b> <span class="full">${lb<0?"لم تحفظ نسخة بعد":"آخر نسخة قبل "+lb+" يوم"}</span></span><button class="btn sm primary" type="button" data-gobk>أرسلها إلى بريدي</button></li></ul>`:""}
+  ${late.length?`<h3>تأخرتَ في التواصل معهم</h3><ul class="today-list">${late.slice(0,8).map(c=>item(c,c.log[0]?lateD(-dueIn(c))+" ("+freqName(c)+")":"لم تتواصل بعد")).join("")}</ul>`:""}
+  ${dueF.length?`<h3>مبالغ مستحقة</h3><ul class="today-list">${dueF.map(r=>`<li><span class="who">${nmBtn(r,nameOf(r).split(" ")[0])} <span class="full num">${money(r.amount)}</span></span><button class="btn sm gold" type="button" data-gofixed>الإحسان</button></li>`).join("")}</ul>`:""}
+  ${needBk?`<h3>نسخة احتياطية</h3><ul class="today-list"><li><span class="who"><b>بياناتك</b> <span class="full">${lb<0?"لم تحفظ نسخة بعد":"آخر نسخة "+agoD(lb)}</span></span><button class="btn sm primary" type="button" data-gobk>أرسلها إلى بريدي</button></li></ul>`:""}
   ${!total?`<p class="sub" style="margin:0">أحسنت، كل أقاربك في الجدول ضمن موعد التواصل.</p>`:""}`;
 }
 $("#today").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.open){openPerson(b.dataset.open);return}
+  if(b.dataset.cedit){editContact(b.dataset.cedit);return}
   if(b.dataset.done){const r=S.contacts.find(x=>x.id===b.dataset.done);logContact(r)}
   if("gofixed" in b.dataset)showTab("v-ihsan");
   if("gobk" in b.dataset)bkMail()});
-function logContact(r){const iso=new Date().toISOString();r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;metaRow=r.id;save();renderContacts();toast("سُجِّل التواصل مع "+nameOf(r).split(" ")[0])}
+function logContact(r,type){if(!r)return;const iso=new Date().toISOString();r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:type||"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;metaRow=r.id;save();renderContacts();toast("سُجِّل التواصل مع "+nameOf(r).split(" ")[0])}
+// after «اتصال» or «واتساب», coming back to the app asks whether you reached them, so one touch logs it
+let callPend=null;
+document.addEventListener("click",e=>{const a=e.target.closest("a[data-kind]");if(a)callPend={c:a.dataset.call||"",p:a.dataset.pid||"",k:a.dataset.kind,t:Date.now()}},true);
+function askBack(){const cp=callPend;if(!cp)return;const age=Date.now()-cp.t;if(age<2500)return;callPend=null;if(age>3*36e5)return;
+  const P=cp.p?byId(cp.p):null,r=(cp.c&&S.contacts.find(x=>x.id===cp.c))||(P&&S.contacts.find(x=>x.personId===P.id))||null;
+  const nm=r?nameOf(r).split(" ")[0]:P?P.name:"";if(!nm||(P&&P.alive===false))return;
+  toast("تواصلت مع "+nm+"؟",[{label:"نعم، سجّل",fn:()=>{const c=r||addContact(P.id,"",true);if(!c)return;logContact(c,cp.k);if(P&&$(`#layer [data-pp="${P.id}"]`))openPerson(P.id,true)}},{label:"لا"}],20000)}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(askBack,400)});
+window.addEventListener("focus",()=>setTimeout(askBack,400));
+document.addEventListener("pointerdown",()=>{if(callPend&&Date.now()-callPend.t>15000)askBack()},true);
 function renderContacts(){
   renderToday();
   const all=S.contacts.filter(c=>!deadC(c)),nDead=S.contacts.length-all.length;
-  const rows=all.slice().sort((a,b)=>dueIn(a)-dueIn(b));
-  const times=n=>n===1?"مرة واحدة":n===2?"مرتين":n<=10?n+" مرات":n+" مرة";
+  const rows=all.slice().sort((a,b)=>dueIn(a)-dueIn(b)),empty=!all.length;
+  $("#cForm").hidden=!(cAddOpen||empty);$("#cAddT").hidden=empty;$("#cAddT").textContent=cAddOpen?"إلغاء":"+ أضف قريبًا";$("#cAddT").setAttribute("aria-expanded",String(cAddOpen));
   $("#cBody").innerHTML=(rows.length?rows.map(c=>{
-    const last=c.log[0];const dAgo=last?daysAgo(last):null;
-    const di=dueIn(c);const lastPill=!last?`<span class="pill bad">لا يوجد</span>`:`<span class="num">${fmtD(last)}</span><br><span class="pill ${di>=3?"good":di>=0?"warn":"bad"}">${dAgo===0?"اليوم":"قبل "+dAgo+" يوم"}${di<0?" · متأخر":""}</span>`;
-    const ph=phoneOf(c);const m=(c.meta||{});
-    let appt="—";
-    if(c.appt){const late=new Date(c.appt)<new Date();appt=`<span class="num">${fmtDT(c.appt)}</span><br>${late?'<span class="pill bad">فات موعده</span>':'<span class="pill good">قادم</span>'} <a class="btn sm" href="${gcalLink("تواصل مع "+nameOf(c),c.appt)}" target="_blank" rel="noopener">تقويم Google</a>`}
-    const full=nameOf(c);const first=full.split(" ")[0];const fq=(FREQ.find(f=>f[0]===freqOf(c))||[])[1]||"";
-    return `<tr><td><b>${esc(first)}</b><div class="full">${esc(full)}</div><div class="full">${c.log.length?"تواصلتَ "+times(c.log.length):"لا سجل بعد"} · ${fq}</div></td>
-      <td data-l="آخر تواصل">${lastPill}</td><td data-l="الموعد القادم">${appt}</td>
-      <td class="wide"><div class="acts">${ph?`<a class="btn sm" href="tel:${esc(ph)}">اتصال</a><a class="btn sm" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener">واتساب</a>`:""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button><button class="btn sm soft" type="button" data-appt="${c.id}">موعد تواصل</button><button class="btn sm" type="button" data-cedit="${c.id}">تعديل</button></div>
-      ${metaRow===c.id&&c.log[0]?`<div class="row" style="margin-top:8px"><span class="sub">نوع التواصل:</span>${TYPES.map(t=>`<button class="btn sm ${(m[c.log[0]]||{}).type===t?"soft":""}" type="button" data-mtype="${t}" data-mid="${c.id}">${t}</button>`).join("")}<input type="text" class="grow" id="mn-${c.id}" placeholder="ملاحظة قصيرة (اختياري)" value="${esc((m[c.log[0]]||{}).note||"")}"><button class="btn sm primary" type="button" data-mok="${c.id}">تم</button></div>`:""}
-      ${apptRow===c.id?`<div class="row" style="margin-top:8px"><input type="date" id="ad-${c.id}" style="width:auto"><input type="time" id="at-${c.id}" value="19:00" style="width:auto"><button class="btn sm primary" type="button" data-apsave="${c.id}">حفظ الموعد</button>${c.appt?`<button class="btn sm" type="button" data-apclr="${c.id}">إلغاء الموعد</button>`:""}</div>`:""}</td></tr>`;
-  }).join(""):`<tr><td colspan="4"><div class="empty">الجدول فارغ. اكتب اسم قريب في الأعلى لإضافته.</div></td></tr>`)
-  +(nDead?`<tr><td colspan="4"><div class="sub">أُخفي من الجدول ${nDead} ${nDead===1?"متوفى":"متوفين"}، رحمهم الله. <button class="btn sm" type="button" data-cleardead>إزالتهم من الجدول</button></div></td></tr>`:"");
-  if(apptRow){const c=S.contacts.find(x=>x.id===apptRow);const di=$("#ad-"+apptRow);if(di){const base=c&&c.appt?new Date(c.appt):new Date(Date.now()+864e5);di.value=new Date(base.getTime()-base.getTimezoneOffset()*6e4).toISOString().slice(0,10);if(c&&c.appt)$("#at-"+apptRow).value=base.toTimeString().slice(0,5)}}
+    const last=c.log[0],di=dueIn(c),ph=phoneOf(c),m=c.meta||{},full=nameOf(c),first=full.split(" ")[0];
+    const inT=c.personId&&byId(c.personId),rl=inT?relToMe(c.personId):"";
+    const st=!last?`<span class="pill bad">لم تتواصل بعد</span>`:`<span class="pill ${di>=3?"good":di>=0?"warn":"bad"}" title="${esc(freqName(c))}">${agoD(daysAgo(last))}</span>`;
+    const late=c.appt&&new Date(c.appt)<new Date(),ap=c.appt?`<span class="pill ${late?"bad":"mute"}">${late?"فات موعده":"موعد "+fmtDT(c.appt)}</span>`:"";
+    const nameB=inT?nmBtn(c,first):`<button class="nm" type="button" data-cedit="${c.id}">${esc(full)}</button>`; // a name not in the tree is shown whole
+    return`<div class="crow"><div class="cr1">${nameB}<span class="rl">${esc(inT?(rl||(full!==first?full:"")):"")}</span>${st}</div>
+      <div class="cr2">${ap}<span class="sp"></span>${ph?callBtns(c,null,ph,1):""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></div>
+      ${metaRow===c.id&&c.log[0]?`<div class="row"><span class="sub">نوع التواصل:</span>${TYPES.map(t=>`<button class="btn sm ${(m[c.log[0]]||{}).type===t?"soft":""}" type="button" data-mtype="${t}" data-mid="${c.id}">${t}</button>`).join("")}<input type="text" class="grow" id="mn-${c.id}" placeholder="ملاحظة قصيرة (اختياري)" value="${esc((m[c.log[0]]||{}).note||"")}"><button class="btn sm primary" type="button" data-mok="${c.id}">تم</button></div>`:""}</div>`;
+  }).join(""):`<div class="empty">الجدول فارغ. اكتب اسم قريب في الأعلى لتصله من هنا.</div>`)
+  +(nDead?`<div class="sub" style="padding-top:10px">أُخفي من الجدول ${nDead===1?"قريب متوفى، رحمه الله":nDead===2?"قريبان متوفيان، رحمهما الله":nDead+" من المتوفين، رحمهم الله"}. <button class="btn sm" type="button" data-cleardead>إزالتهم من الجدول</button></div>`:"");
 }
 const locDT=iso=>{const d=new Date(iso);return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,16)};
 const locD=iso=>locDT(iso).slice(0,10);
-function editContact(id,keep){
-  const r=S.contacts.find(x=>x.id===id);if(!r){closeSheet();return}
-  r.meta=r.meta||{};const full=nameOf(r);
+function editContact(id,keep,back){
+  const r=S.contacts.find(x=>x.id===id);if(!r){back?openPerson(back):closeSheet();return}
+  r.meta=r.meta||{};const full=nameOf(r),first=full.split(" ")[0],inT=r.personId&&byId(r.personId);
   const base=r.appt?new Date(r.appt):(()=>{const d=new Date(Date.now()+864e5);d.setHours(19,0,0,0);return d})();
-  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل التواصل</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
-   <div class="panel" style="background:var(--bg)"><h3>القريب</h3><div class="ac" id="ecName"></div><div class="row"><button class="btn sm soft" type="button" id="ecNameSave">حفظ الاسم</button></div></div>
+  const ret=()=>back?openPerson(back):closeSheet();
+  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>التواصل مع ${esc(first)}</h2><div class="full">${esc(full)}</div></div>${inT&&!back?`<button class="btn sm soft" type="button" id="ecOpen">الملف</button>`:""}<button class="btn sm" type="button" data-close>${back?"رجوع":"إغلاق"}</button></div>
    <label class="f"><span>تواصل كل</span><select id="ecFreq">${FREQ.map(([v,l])=>`<option value="${v}" ${v===freqOf(r)?"selected":""}>${l}</option>`).join("")}</select></label>
    <div class="panel" style="background:var(--bg)"><h3>الموعد القادم</h3>
      ${r.appt?`<p class="sub" style="margin:0">الموعد الحالي: <span class="num">${fmtDT(r.appt)}</span></p>`:`<p class="sub" style="margin:0">لا يوجد موعد.</p>`}
@@ -1011,10 +1141,12 @@ function editContact(id,keep){
    <div class="panel" style="background:var(--bg)"><div class="row"><h3 class="grow">سجل التواصل (${r.log.length})</h3><button class="btn sm soft" type="button" id="ecAddLog">+ تواصل سابق</button></div>
      ${r.log.length?r.log.map((iso,i)=>{const mm=r.meta[iso]||{};return`<div class="erow"><div class="f2"><input type="datetime-local" data-ldt="${i}" value="${locDT(iso)}" aria-label="التاريخ والوقت"><select data-ltype="${i}" aria-label="النوع">${TYPES.map(t=>`<option ${((mm.type||"اتصال")===t)?"selected":""}>${t}</option>`).join("")}</select><input type="text" data-lnote="${i}" placeholder="ملاحظة" value="${esc(mm.note||"")}" aria-label="ملاحظة"></div><button class="btn sm danger" type="button" data-ldel="${i}">حذف</button></div>`}).join(""):`<p class="sub" style="margin:0">لا سجل بعد.</p>`}
    </div>
+   <details class="more"><summary>تغيير القريب</summary><div class="ac" id="ecName" style="margin-top:8px"></div><div class="row" style="margin-top:8px"><button class="btn sm soft" type="button" id="ecNameSave">حفظ الاسم</button></div></details>
    <div class="row" style="justify-content:flex-end"><button class="btn danger" type="button" id="ecDel">حذف من جدول التواصل</button></div>
    <div id="ecConf"></div>`,el=>{
-    const again=()=>{save();renderContacts();editContact(id,true)};
-    el.querySelector("[data-close]").onclick=closeSheet;
+    const again=()=>{save();renderContacts();editContact(id,true,back)};
+    el.querySelector("[data-close]").onclick=ret;
+    const eo=el.querySelector("#ecOpen");if(eo)eo.onclick=()=>openPerson(r.personId);
     const ac=makeAC(el.querySelector("#ecName"),{placeholder:"اسم القريب",filter:p=>p.alive!==false,preset:{personId:r.personId,text:full}});
     el.querySelector("#ecNameSave").onclick=()=>{const v=ac.get();if(!v.personId&&!v.text){ac.input.focus();return}
       if(v.personId&&S.contacts.some(c=>c!==r&&c.personId===v.personId)){toast("هذا القريب موجود في الجدول");return}
@@ -1030,29 +1162,25 @@ function editContact(id,keep){
     el.querySelectorAll("[data-ldel]").forEach(b=>b.onclick=()=>{const k=+b.dataset.ldel,iso=r.log[k],mt=r.meta[iso];r.log.splice(k,1);delete r.meta[iso];again();
       toast("حُذف السطر",{label:"تراجع",fn:()=>{r.log.push(iso);r.log.sort((a,b)=>b.localeCompare(a));if(mt)r.meta[iso]=mt;again()}})});
     el.querySelector("#ecDel").onclick=()=>{const c=el.querySelector("#ecConf");
-      c.innerHTML=`<div class="confirm">حذف «${esc(full.split(" ")[0])}» من جدول التواصل مع سجله؟<span style="flex:1"></span><button class="btn sm" type="button" id="ecNo">تراجع</button><button class="btn sm danger" type="button" id="ecYes">نعم، احذف</button></div>`;
+      c.innerHTML=`<div class="confirm">حذف «${esc(first)}» من جدول التواصل مع سجله؟<span style="flex:1"></span><button class="btn sm" type="button" id="ecNo">تراجع</button><button class="btn sm danger" type="button" id="ecYes">نعم، احذف</button></div>`;
       c.scrollIntoView({block:"nearest"});
       c.querySelector("#ecNo").onclick=()=>c.innerHTML="";
-      c.querySelector("#ecYes").onclick=()=>{const idx=S.contacts.indexOf(r);S.contacts.splice(idx,1);save();closeSheet();renderContacts();
-        toast("حُذف من الجدول",{label:"تراجع",fn:()=>{S.contacts.splice(idx,0,r);save();renderContacts()}})}};
+      c.querySelector("#ecYes").onclick=()=>{const idx=S.contacts.indexOf(r);S.contacts.splice(idx,1);save();ret();renderContacts();
+        toast("حُذف من الجدول",{label:"تراجع",fn:()=>{S.contacts.splice(idx,0,r);save();renderContacts();if(back&&$(`#layer [data-pp="${back}"]`))openPerson(back,true)}})}};
   },{keep});
 }
 let confirmRm=null;
 $("#cBody").addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;const d=b.dataset;
   const c=id=>S.contacts.find(x=>x.id===id);
+  if(d.open){openPerson(d.open);return}
   if(d.done){logContact(c(d.done));return}
   else if(d.mtype){const r=c(d.mid);r.meta[r.log[0]]=Object.assign(r.meta[r.log[0]]||{},{type:d.mtype,note:$("#mn-"+r.id).value.trim()});save()}
   else if(d.mok){const r=c(d.mok);r.meta=r.meta||{};r.meta[r.log[0]]=Object.assign(r.meta[r.log[0]]||{type:"اتصال"},{note:$("#mn-"+r.id).value.trim()});metaRow=null;save()}
-  else if(d.hist){openRow=openRow===d.hist?null:d.hist}
-  else if(d.appt){apptRow=apptRow===d.appt?null:d.appt}
-  else if(d.apsave){const dv=$("#ad-"+d.apsave).value,tv=$("#at-"+d.apsave).value||"19:00";if(!dv)return;const r=c(d.apsave);r.appt=new Date(dv+"T"+tv).toISOString();apptRow=null;save();toast("حُفظ الموعد. اضغط «تقويم Google» لإضافته هناك")}
-  else if(d.apclr){c(d.apclr).appt=null;apptRow=null;save()}
   else if(d.cedit){editContact(d.cedit);return}
   else if("cleardead" in d){const gone=S.contacts.filter(deadC);S.contacts=S.contacts.filter(x=>!deadC(x));save();renderContacts();toast("أُزيلوا من الجدول",{label:"تراجع",fn:()=>{S.contacts.push(...gone);save();renderContacts()}});return}
   renderContacts();
 });
-$("#cBody").addEventListener("change",e=>{const id=e.target.dataset.freq;if(!id)return;S.contacts.find(x=>x.id===id).freq=+e.target.value;save();renderContacts();toast("حُدِّد موعد التواصل الدوري")});
 
 /* ---------- ihsan ---------- */
 const acF=makeAC($("#fName"),{placeholder:"اسم المستفيد"});
@@ -1060,45 +1188,49 @@ const acV=makeAC($("#vName"),{placeholder:"الاسم"});
 const ymNow=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")};
 $("#fAdd").onclick=()=>{const v=acF.get(),a=parseFloat($("#fAmt").value),day=Math.min(31,Math.max(1,parseInt($("#fDay").value)||1));
   if(!acF.valid()){acF.input.focus();return}if(!(a>0)){$("#fAmt").focus();return}
-  S.fixed.push({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,day,transfers:[]});save();acF.clear();$("#fAmt").value="";renderIhsan();toast("أُضيف المبلغ الثابت")};
+  S.fixed.push({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,day,transfers:[]});save();acF.clear();$("#fAmt").value="";fAddOpen=false;renderIhsan();toast("أُضيف المبلغ الشهري")};
 $("#vAdd").onclick=()=>{const v=acV.get(),a=parseFloat($("#vAmt").value);
   if(!acV.valid()){acV.input.focus();return}if(!(a>0)){$("#vAmt").focus();return}
-  S.variable.unshift({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,date:new Date().toISOString()});save();acV.clear();$("#vAmt").value="";renderIhsan();toast("حُفظت الحوالة بتاريخ اليوم")};
-let fHist=null,fConfirm=null,vConfirm=null;
+  S.variable.unshift({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,date:new Date().toISOString()});save();acV.clear();$("#vAmt").value="";vAddOpen=false;renderIhsan();toast("حُفظ المبلغ بتاريخ اليوم")};
+let fHist=null,fConfirm=null,vConfirm=null,fAddOpen=false,vAddOpen=false;
+$("#fAddT").onclick=()=>{fAddOpen=!fAddOpen;renderIhsan();if(fAddOpen)setTimeout(()=>acF.input.focus(),30)};
+$("#vAddT").onclick=()=>{vAddOpen=!vAddOpen;renderIhsan();if(vAddOpen)setTimeout(()=>acV.input.focus(),30)};
 function renderIhsan(){
   const ym=ymNow(),yr=ym.slice(0,4);
   $("#iMonthLbl").textContent="شهر "+new Date().toLocaleDateString(LOC,{month:"long",year:"numeric"});
+  const tg=(b,f,open,n)=>{$(f).hidden=!(open||!n);$(b).hidden=!n;$(b).textContent=open?"إلغاء":"+ أضف";$(b).setAttribute("aria-expanded",String(open))};
+  tg("#fAddT","#fForm",fAddOpen,S.fixed.length);tg("#vAddT","#vForm",vAddOpen,S.variable.length);
   const monthF=S.fixed.reduce((s,r)=>s+r.transfers.filter(t=>t.ym===ym).reduce((a,t)=>a+t.amount,0),0);
   const monthV=S.variable.filter(v=>v.date.slice(0,7)===ym).reduce((a,v)=>a+v.amount,0);
   const yearAll=S.fixed.reduce((s,r)=>s+r.transfers.filter(t=>t.ym.slice(0,4)===yr).reduce((a,t)=>a+t.amount,0),0)+S.variable.filter(v=>v.date.slice(0,4)===yr).reduce((a,v)=>a+v.amount,0);
   const pending=S.fixed.filter(r=>!r.transfers.some(t=>t.ym===ym)).reduce((a,r)=>a+r.amount,0);
-  $("#iTotals").innerHTML=[["حُوِّل هذا الشهر",monthF+monthV],["متبقٍّ من الثابت",pending],["مجموع السنة",yearAll]].map(([l,v])=>`<div class="stat"><b class="num">${money(v)}</b><span>${l}</span></div>`).join("");
+  $("#iTotals").innerHTML=[["حُوِّل هذا الشهر",monthF+monthV],["المتبقي هذا الشهر",pending],["مجموع السنة",yearAll]].map(([l,v])=>`<div class="stat"><b class="num">${money(v)}</b><span>${l}</span></div>`).join("");
   const today=new Date().getDate();
   $("#fBody").innerHTML=S.fixed.length?S.fixed.map(r=>{
     const t=r.transfers.find(x=>x.ym===ym);const full=nameOf(r);const due=!t&&today>=r.day;
-    return `<tr><td><b>${esc(full.split(" ")[0])}</b><div class="full">${esc(full)}</div><div class="full">التحويلات المسجلة: ${r.transfers.length}</div>
+    return `<tr><td>${nmBtn(r,full.split(" ")[0])}<div class="full">${esc(full)}</div><div class="full">التحويلات المسجلة: ${r.transfers.length}</div>
       <button class="btn sm" type="button" data-fedit="${r.id}" style="margin-top:4px">تعديل</button></td>
       <td data-l="المبلغ"><input type="number" class="amt num" value="${r.amount}" min="0" data-famt="${r.id}" aria-label="المبلغ"></td>
       <td class="num" data-l="الاستحقاق">يوم ${r.day}</td>
       <td class="wide" data-l="هذا الشهر">${t?`<span class="pill good">تم التحويل</span><div class="full num">${fmtD(t.date)} · ${money(t.amount)}</div><button class="btn sm" type="button" data-fundo="${r.id}">تراجع</button>`
         :`<span class="pill ${due?"warn":"mute"}">${due?"مستحق":"لم يحن"}</span><br><button class="btn sm gold" type="button" data-fdone="${r.id}" style="margin-top:4px">تم التحويل</button>`}</td></tr>`;
-  }).join(""):`<tr><td colspan="4"><div class="empty">لا مبالغ ثابتة بعد. أضف اسمًا ومبلغًا ويوم الاستحقاق.</div></td></tr>`;
-  $("#vBody").innerHTML=S.variable.length?S.variable.map(v=>{const full=nameOf(v);return`<tr><td><b>${esc(full.split(" ")[0])}</b><div class="full">${esc(full)}</div></td>
+  }).join(""):`<tr><td colspan="4"><div class="empty">لا مبالغ شهرية بعد. أضف اسمًا ومبلغًا ويوم الاستحقاق في الأعلى.</div></td></tr>`;
+  $("#vBody").innerHTML=S.variable.length?S.variable.map(v=>{const full=nameOf(v);return`<tr><td>${nmBtn(v,full.split(" ")[0])}<div class="full">${esc(full)}</div></td>
     <td data-l="المبلغ"><input type="number" class="amt num" value="${v.amount}" min="0" data-vamt="${v.id}" aria-label="المبلغ"></td>
     <td class="num" data-l="التاريخ">${fmtD(v.date)}<div class="full">${hijri(v.date)}</div></td>
-    <td class="wide"><button class="btn sm" type="button" data-vedit="${v.id}">تعديل</button></td></tr>`}).join(""):`<tr><td colspan="4"><div class="empty">لا حوالات بعد.</div></td></tr>`;
+    <td class="wide"><button class="btn sm" type="button" data-vedit="${v.id}">تعديل</button></td></tr>`}).join(""):`<tr><td colspan="4"><div class="empty">لا مبالغ متفرقة بعد. أضف اسمًا ومبلغًا في الأعلى.</div></td></tr>`;
 }
 function editFixed(id,keep){
   const r=S.fixed.find(x=>x.id===id);if(!r){closeSheet();return}
   const full=nameOf(r);
-  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل المبلغ الثابت</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل المبلغ الشهري</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
    <div class="panel" style="background:var(--bg)"><h3>المستفيد والمبلغ</h3><div class="ac" id="efName"></div>
      <div class="grid2"><label class="f"><span>المبلغ</span><input type="number" id="efAmt" min="0" inputmode="decimal" value="${r.amount}"></label><label class="f"><span>يوم الاستحقاق من كل شهر</span><input type="number" id="efDay" min="1" max="31" value="${r.day}"></label></div>
      <div class="row"><button class="btn primary" type="button" id="efSave">حفظ</button></div></div>
    <div class="panel" style="background:var(--bg)"><div class="row"><h3 class="grow">سجل التحويلات (${r.transfers.length})</h3><button class="btn sm soft" type="button" id="efAddT">+ تحويل سابق</button></div>
      ${r.transfers.length?r.transfers.map((t,i)=>`<div class="erow"><div class="f2"><input type="date" data-tdt="${i}" value="${locD(t.date)}" aria-label="تاريخ التحويل"><input type="number" class="amt num" data-tamt="${i}" value="${t.amount}" min="0" inputmode="decimal" aria-label="المبلغ"></div><button class="btn sm danger" type="button" data-tdel="${i}">حذف</button></div>`).join(""):`<p class="sub" style="margin:0">لا تحويلات بعد.</p>`}
    </div>
-   <div class="row" style="justify-content:flex-end"><button class="btn danger" type="button" id="efDel">حذف المبلغ الثابت</button></div>
+   <div class="row" style="justify-content:flex-end"><button class="btn danger" type="button" id="efDel">حذف المبلغ الشهري</button></div>
    <div id="efConf"></div>`,el=>{
     const again=()=>{save();renderIhsan();renderToday();editFixed(id,true)};
     el.querySelector("[data-close]").onclick=closeSheet;
@@ -1114,37 +1246,38 @@ function editFixed(id,keep){
     el.querySelectorAll("[data-tdel]").forEach(b=>b.onclick=()=>{const k=+b.dataset.tdel,t=r.transfers[k];r.transfers.splice(k,1);again();
       toast("حُذف التحويل",{label:"تراجع",fn:()=>{r.transfers.push(t);r.transfers.sort((a,b)=>b.date.localeCompare(a.date));again()}})});
     el.querySelector("#efDel").onclick=()=>{const c=el.querySelector("#efConf");
-      c.innerHTML=`<div class="confirm">حذف المبلغ الثابت لـ«${esc(full.split(" ")[0])}» مع سجل تحويلاته؟<span style="flex:1"></span><button class="btn sm" type="button" id="efNo">تراجع</button><button class="btn sm danger" type="button" id="efYes">نعم، احذف</button></div>`;
+      c.innerHTML=`<div class="confirm">حذف المبلغ الشهري لـ«${esc(full.split(" ")[0])}» مع سجل تحويلاته؟<span style="flex:1"></span><button class="btn sm" type="button" id="efNo">تراجع</button><button class="btn sm danger" type="button" id="efYes">نعم، احذف</button></div>`;
       c.scrollIntoView({block:"nearest"});
       c.querySelector("#efNo").onclick=()=>c.innerHTML="";
       c.querySelector("#efYes").onclick=()=>{const idx=S.fixed.indexOf(r);S.fixed.splice(idx,1);save();closeSheet();renderIhsan();renderToday();
-        toast("حُذف المبلغ الثابت",{label:"تراجع",fn:()=>{S.fixed.splice(idx,0,r);save();renderIhsan();renderToday()}})}};
+        toast("حُذف المبلغ الشهري",{label:"تراجع",fn:()=>{S.fixed.splice(idx,0,r);save();renderIhsan();renderToday()}})}};
   },{keep});
 }
 function editVar(id){
   const v=S.variable.find(x=>x.id===id);if(!v){closeSheet();return}
   const full=nameOf(v);
-  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل الحوالة</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل المبلغ</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
    <div class="panel" style="background:var(--bg)"><div class="ac" id="evName"></div>
      <div class="grid2"><label class="f"><span>المبلغ</span><input type="number" id="evAmt" min="0" inputmode="decimal" value="${v.amount}"></label><label class="f"><span>التاريخ</span><input type="date" id="evDate" value="${locD(v.date)}"></label></div>
      <div class="row"><button class="btn primary" type="button" id="evSave">حفظ</button></div></div>
-   <div class="row" style="justify-content:flex-end"><button class="btn danger" type="button" id="evDel">حذف الحوالة</button></div>
+   <div class="row" style="justify-content:flex-end"><button class="btn danger" type="button" id="evDel">حذف المبلغ</button></div>
    <div id="evConf"></div>`,el=>{
     el.querySelector("[data-close]").onclick=closeSheet;
     const ac=makeAC(el.querySelector("#evName"),{placeholder:"الاسم",preset:{personId:v.personId,text:full}});
     el.querySelector("#evSave").onclick=()=>{const n=ac.get(),a=parseFloat(el.querySelector("#evAmt").value),dv=el.querySelector("#evDate").value;
       if(!n.personId&&!n.text){ac.input.focus();return}if(!(a>=0)){el.querySelector("#evAmt").focus();return}
       v.personId=n.personId;v.name=n.personId?"":n.text;v.amount=a;if(dv&&dv!==locD(v.date))v.date=new Date(dv+"T12:00").toISOString();
-      S.variable.sort((x,y)=>y.date.localeCompare(x.date));save();closeSheet();renderIhsan();renderToday();toast("حُفظت الحوالة")};
+      S.variable.sort((x,y)=>y.date.localeCompare(x.date));save();closeSheet();renderIhsan();renderToday();toast("حُفظ المبلغ")};
     el.querySelector("#evDel").onclick=()=>{const c=el.querySelector("#evConf");
-      c.innerHTML=`<div class="confirm">حذف هذه الحوالة؟<span style="flex:1"></span><button class="btn sm" type="button" id="evNo">تراجع</button><button class="btn sm danger" type="button" id="evYes">نعم، احذف</button></div>`;
+      c.innerHTML=`<div class="confirm">حذف هذا المبلغ؟<span style="flex:1"></span><button class="btn sm" type="button" id="evNo">تراجع</button><button class="btn sm danger" type="button" id="evYes">نعم، احذف</button></div>`;
       c.querySelector("#evNo").onclick=()=>c.innerHTML="";
       c.querySelector("#evYes").onclick=()=>{const idx=S.variable.indexOf(v);S.variable.splice(idx,1);save();closeSheet();renderIhsan();
-        toast("حُذفت الحوالة",{label:"تراجع",fn:()=>{S.variable.splice(idx,0,v);save();renderIhsan()}})}};
+        toast("حُذف المبلغ",{label:"تراجع",fn:()=>{S.variable.splice(idx,0,v);save();renderIhsan()}})}};
   });
 }
 $("#v-ihsan").addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;const d=b.dataset;const F=id=>S.fixed.find(x=>x.id===id);const ym=ymNow();
+  if(d.open){openPerson(d.open);return}
   if(d.fdone){const r=F(d.fdone);r.transfers.unshift({date:new Date().toISOString(),amount:r.amount,ym});save();toast("سُجِّل التحويل بتاريخ اليوم")}
   else if(d.fundo){const r=F(d.fundo);r.transfers=r.transfers.filter(t=>t.ym!==ym);save()}
   else if(d.fedit){editFixed(d.fedit);return}
@@ -1167,23 +1300,29 @@ $("#v-ihsan").addEventListener("change",e=>{
 
 /* ---------- settings ---------- */
 $("#btnSettings").onclick=()=>{
+  const lb=S.lastBackup?daysAgo(S.lastBackup):-1;
   sheet(`<div class="hd"><h2>الإعدادات</h2><button class="btn sm" type="button" data-close>إغلاق</button></div>
-  <div class="grid2">
-    <label class="f"><span>العملة</span><input type="text" id="s-cur" value="${esc(S.currency)}"></label>
-    <label class="f"><span>اسم العائلة (يُلحق بالنسب)</span><input type="text" id="s-fam" value="${esc(S.family)}" placeholder="مثل: آل فلان"></label>
+  <div class="panel" style="background:var(--bg)"><h3>نسخة احتياطية</h3>
+    <p class="sub" style="margin:0">بياناتك محفوظة على هذا الجهاز وحده، فإن حُذف التطبيق ضاعت. أرسل نسخة إلى بريدك كل شهر، وإن احتجتها فالصقها هنا واضغط «استعادة».</p>
+    <p class="sub bk-last" id="s-last" style="margin:0">${lb<0?"لم تحفظ نسخة بعد.":"آخر نسخة: "+fmtD(S.lastBackup)+" ("+agoD(lb)+")"}</p>
+    <div class="row"><button class="btn primary" type="button" id="s-mail">أرسلها إلى بريدي</button><button class="btn" type="button" id="s-copy">انسخها</button></div>
+    <textarea id="s-json" spellcheck="false" placeholder="لاستعادة نسخة: الصق رسالتها هنا"></textarea>
+    <div class="row"><button class="btn soft" type="button" id="s-import">استعادة من النص الملصق</button></div>
+    <div id="s-iconf"></div>
   </div>
   <div class="panel" style="background:var(--bg)"><h3>قفل التطبيق</h3>
     <p class="sub" style="margin:0">${S.pinHash?"القفل مفعّل. يُطلب الرمز عند فتح التطبيق.":"اختر رمزًا من 4 أرقام أو أكثر يُطلب عند فتح التطبيق."}</p>
     <div class="row"><input type="password" id="s-pin" inputmode="numeric" placeholder="الرمز الجديد" style="max-width:160px;direction:ltr"><button class="btn soft" type="button" id="s-pinset">${S.pinHash?"تغيير الرمز":"تفعيل القفل"}</button>${S.pinHash?'<button class="btn danger" type="button" id="s-pinoff">إلغاء القفل</button>':""}</div>
     <label class="chk"><input type="checkbox" id="s-veil" ${S.hideAmounts?"checked":""}> إخفاء مبالغ الإحسان عند الفتح</label>
   </div>
-  <div class="row"><button class="btn primary" type="button" id="s-save">حفظ</button></div>
-  <div class="panel" style="background:var(--bg)"><h3>نسخة احتياطية</h3>
-    <p class="sub" style="margin:0">بياناتك محفوظة على هذا الجهاز وحده، فإن حُذف التطبيق ضاعت. أرسل نسخة إلى بريدك كل شهر، وإن احتجتها فالصقها هنا واضغط «استعادة».</p>
-    <p class="sub bk-last" id="s-last" style="margin:0">${S.lastBackup?"آخر نسخة: "+fmtD(S.lastBackup)+" (قبل "+daysAgo(S.lastBackup)+" يوم)":"لم تحفظ نسخة بعد."}</p>
-    <div class="row"><button class="btn primary" type="button" id="s-mail">أرسلها إلى بريدي</button><button class="btn" type="button" id="s-copy">انسخها</button></div>
-    <textarea id="s-json" spellcheck="false" placeholder="لاستعادة نسخة: الصق رسالتها هنا"></textarea>
-    <div class="row"><button class="btn soft" type="button" id="s-import">استعادة من النص الملصق</button></div>
+  <div class="panel" style="background:var(--bg)"><h3>العملة والعائلة والواتساب</h3>
+    <div class="grid2">
+      <label class="f"><span>العملة</span><input type="text" id="s-cur" value="${esc(S.currency)}"></label>
+      <label class="f"><span>اسم العائلة (يُلحق بالنسب)</span><input type="text" id="s-fam" value="${esc(S.family)}" placeholder="مثل: آل فلان"></label>
+      <label class="f"><span>رمز دولتك للواتساب</span><input type="text" id="s-cc" value="${esc(S.cc||"")}" inputmode="numeric" placeholder="966" style="direction:ltr;text-align:right"></label>
+    </div>
+    <p class="sub" style="margin:0">يعرف التطبيق الرقم الذي يبدأ بـ05 سعوديًّا، وبـ09 أو 01 سودانيًّا. ولأرقام غيرها يُستعمل رمز دولتك، أو اكتب الرقم برمزه مثل ‎+971.</p>
+    <div class="row"><button class="btn primary" type="button" id="s-save">حفظ</button></div>
   </div>
   <div class="row"><button class="btn" type="button" id="s-demo">تحميل البيانات التجريبية</button><span style="flex:1"></span><button class="btn danger" type="button" id="s-wipe">مسح كل البيانات</button></div>
   <div id="s-conf"></div><p class="sub" style="margin:0;text-align:center">ذو القربى · النسخة ${WEB_BUILD}</p>`,el=>{
@@ -1194,14 +1333,13 @@ $("#btnSettings").onclick=()=>{
     el.querySelector("#s-pinset").onclick=async()=>{const v=el.querySelector("#s-pin").value.trim();if(!/^\d{4,8}$/.test(v)){toast("الرمز من 4 إلى 8 أرقام");return}S.pinHash=await hashPin(v);save();unlocked=true;closeSheet();renderAll();toast("فُعِّل القفل")};
     const off=el.querySelector("#s-pinoff");if(off)off.onclick=()=>{delete S.pinHash;save();closeSheet();renderAll();toast("أُلغي القفل")};
     el.querySelector("#s-veil").onchange=e=>{S.hideAmounts=e.target.checked;veiled=S.hideAmounts;save();renderAll()};
-    el.querySelector("#s-save").onclick=()=>{S.currency=el.querySelector("#s-cur").value.trim();S.family=el.querySelector("#s-fam").value.trim();save();renderAll();toast("حُفظت الإعدادات")};
+    el.querySelector("#s-save").onclick=()=>{S.currency=el.querySelector("#s-cur").value.trim();S.family=el.querySelector("#s-fam").value.trim();S.cc=el.querySelector("#s-cc").value.replace(/\D/g,"");save();renderAll();toast("حُفظت الإعدادات")};
     el.querySelector("#s-copy").onclick=()=>{copyText("نسخة احتياطية من «ذو القربى» بتاريخ "+fmtD(new Date().toISOString())+"\n"+bkText(),"نُسخت النسخة. الصقها في بريدك أو ملاحظاتك");S.lastBackup=new Date().toISOString();save();renderToday();bkSaid()};
+    const conf=(msg,fn,where)=>{const c=el.querySelector(where||"#s-conf");c.innerHTML=`<div class="confirm">${msg}<span style="flex:1"></span><button class="btn sm" type="button" id="k-no">تراجع</button><button class="btn sm danger" type="button" id="k-yes">نعم</button></div>`;c.querySelector("#k-no").onclick=()=>c.innerHTML="";c.querySelector("#k-yes").onclick=fn;c.scrollIntoView({block:"nearest"})};
     el.querySelector("#s-import").onclick=()=>{let d;try{d=bkParse(ta.value)}catch(e){toast("النص الملصق ليس نسخة احتياطية صالحة");return}
-      conf("ستحل النسخة الملصقة ("+d.people.length+" في الشجرة) محل بياناتك الحالية ("+S.people.length+"). أستعيدها؟",()=>{try{S=migrate(Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},d));save();renderAll();closeSheet();toast("استُعيدت البيانات")}catch(e){toast("تعذّرت الاستعادة من هذا النص")}});
-      const c=el.querySelector("#s-conf");c&&c.scrollIntoView({block:"center",behavior:"smooth"})};
-    const conf=(msg,fn)=>{const c=el.querySelector("#s-conf");c.innerHTML=`<div class="confirm">${msg}<span style="flex:1"></span><button class="btn sm" type="button" id="k-no">تراجع</button><button class="btn sm danger" type="button" id="k-yes">نعم</button></div>`;c.querySelector("#k-no").onclick=()=>c.innerHTML="";c.querySelector("#k-yes").onclick=fn};
+      conf("ستحل النسخة الملصقة ("+d.people.length+" في الشجرة) محل بياناتك الحالية ("+S.people.length+"). أستعيدها؟",()=>{try{S=migrate(Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},d));save();renderAll();closeSheet();toast("استُعيدت البيانات")}catch(e){toast("تعذّرت الاستعادة من هذا النص")}},"#s-iconf")};
     el.querySelector("#s-demo").onclick=()=>conf("ستحل البيانات التجريبية محل بياناتك الحالية.",()=>{S=migrate(sample());save();renderAll();closeSheet()});
-    el.querySelector("#s-wipe").onclick=()=>conf("مسح الشجرة والتواصل والإحسان كلها؟",()=>{S={demo:false,schema:2,currency:S.currency||"ريال",family:"",people:[],contacts:[],fixed:[],variable:[]};save();renderAll();closeSheet();toast("مُسحت البيانات")});
+    el.querySelector("#s-wipe").onclick=()=>conf("مسح الشجرة والتواصل والإحسان كلها؟",()=>{S={demo:false,schema:2,currency:S.currency||"ريال",cc:S.cc||"",family:"",people:[],contacts:[],fixed:[],variable:[]};save();renderAll();closeSheet();toast("مُسحت البيانات")});
   });
 };
 $("#btnStartReal").onclick=()=>{S={demo:false,schema:2,currency:S.currency||"ريال",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[]};save();renderAll();toast("ابدأ بإضافة الجد الأكبر");};
@@ -1213,13 +1351,13 @@ if(!Array.isArray(S.ideas)){S.ideas=DEFAULT_IDEAS.map(t=>({id:uid(),text:t,date:
 // the top bar: one line; search results, «اسأل» and «تطوير» drop down under it and close with a tap outside
 const tbBtns=[$("#s-ask"),$("#s-dev")];let tbPane="";
 function tbShow(p){tbPane=p||"";["p-search","p-ask","p-dev"].forEach(id=>{$("#"+id).hidden=id!==tbPane});$("#tbDrop").hidden=!tbPane;
-  tbBtns.forEach(b=>b.setAttribute("aria-expanded",String(b.dataset.p===tbPane)));if(tbPane==="p-ask")initAsk();if(tbPane)bkPush("drop",()=>tbShow(""));else bkDone("drop")}
+  tbBtns.forEach(b=>b.setAttribute("aria-expanded",String(b.dataset.p===tbPane)));if(tbPane==="p-ask")initAsk();if(tbPane&&tbPane!=="p-search")window.scrollTo(0,0);if(tbPane)bkPush("drop",()=>tbShow(""));else bkDone("drop")}
 tbBtns.forEach(b=>b.addEventListener("click",()=>tbShow(tbPane===b.dataset.p?"":b.dataset.p)));
 $("#tbX").addEventListener("click",()=>tbShow(""));
 $("#gq").addEventListener("input",()=>{if($("#gq").value.trim())tbShow("p-search");else if(tbPane==="p-search")tbShow("")});
 $("#gq").addEventListener("focus",()=>{if($("#gq").value.trim())tbShow("p-search")});
 let tbSwallow=false; // a tap outside only closes the drop-down; it does not also press what lies under it
-document.addEventListener("pointerdown",e=>{if(tbPane&&!e.target.closest("#topbar")&&!e.target.closest("#layer")&&!e.target.closest(".toast")){tbShow("");tbSwallow=true;setTimeout(()=>{tbSwallow=false},500)}},true);
+document.addEventListener("pointerdown",e=>{if(tbPane&&!e.target.closest("#topbar")&&!e.target.closest("#s-dev")&&!e.target.closest("#layer")&&!e.target.closest(".toast")){tbShow("");tbSwallow=true;setTimeout(()=>{tbSwallow=false},500)}},true);
 document.addEventListener("click",e=>{if(tbSwallow){tbSwallow=false;e.stopPropagation();e.preventDefault()}},true);
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&tbPane&&!$("#layer").innerHTML)tbShow("")});
 if(window.DQ&&!window.claude){$("#s-ask").hidden=true;$("#sync").hidden=true} // in the Android app Claude cannot answer, and everything is saved on the phone
@@ -1237,9 +1375,9 @@ function gSearch(){
     if(r>=0)hits.push({p,r,why})});
   hits.sort((a,b)=>a.r-b.r);
   out.innerHTML=hits.length?hits.slice(0,12).map(({p,why})=>{const c=S.contacts.find(x=>x.personId===p.id);const last=c&&c.log[0];const rl=relToMe(p.id);
-    const ns=nasab(p,4),sub=[why||(ns!==p.name?ns:""),rl,!why&&p.city?p.city:""].filter(Boolean).join(" · ");
-    return`<div class="res"><div class="who"><b>${esc(p.name)}</b><span class="full">${esc(sub)}</span></div>
-    ${last?`<span class="pill ${daysAgo(last)<=14?"good":daysAgo(last)<=45?"warn":"bad"}">${daysAgo(last)===0?"اليوم":"قبل "+daysAgo(last)+" يوم"}</span>`:""}
+    const ns=nasab(p,4),sub=[why||(ns!==p.name?ns:""),rl,!why&&p.city?p.city:"",p.alive===false?rip(p):""].filter(Boolean).join(" · ");
+    return`<div class="res"><div class="who"><button class="nm" type="button" data-gopen="${p.id}">${esc(p.name)}</button><span class="full">${esc(sub)}</span></div>
+    ${last?`<span class="pill ${daysAgo(last)<=14?"good":daysAgo(last)<=45?"warn":"bad"}">${agoD(daysAgo(last))}</span>`:""}
     <span class="acts"><button class="btn sm" type="button" data-gtree="${p.id}" aria-label="${esc("أظهر "+p.name+" في الشجرة")}">الشجرة</button><button class="btn sm soft" type="button" data-gopen="${p.id}">الملف</button></span></div>`}).join(""):`<div class="empty">لا يوجد قريب بهذا الاسم في الشجرة.</div>`;
 }
 $("#gq").addEventListener("input",gSearch);
@@ -1258,10 +1396,11 @@ $("#ideas").addEventListener("click",e=>{const id=e.target.closest("[data-idel]"
 // ask Claude
 let sampleFn,askReady=false,turns=[],askCtl=null,hasTools=false;
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
-1) ذو القربى: «الشجرة المفتوحة» (زرها أعلى اللوحة) ترسم بالطريقة نفسها أي قريب في المركز: خط أجداده من الجد الأعلى نازلًا إليه، ومعه كل زيجاته، وأبناؤه وأحفاده مفتوحون تحته، وتحت اللوحة «الجد الأعلى» و«أنا في المركز»، و«أهلها» على أي زوجة يجعلها في المركز. والبحث في الأعلى يقفز بزر «الشجرة» إلى القريب ويضيء بطاقته. السحب بإصبع والتقريب بإصبعين. ولمس الاسم يفتح ملفه (تعديل، خانات الأقارب، الحالة حي أو متوفى، ما صلته بقريب آخر). و«عائلتي» (الواجهة الأولى) لوحة تملأ الشاشة تحتها ثلاث بطاقات: جهة الأب يمينًا، وجهة الأم يسارًا، والزوجة وأهلها تحتهما؛ لمس البطاقة يملأ اللوحة بشجرة تلك الجهة وحدها (جهة الأب فيها الأب وحده والمستخدم تحته بلا الأم، وجهة الأم كذلك). لأي شخص أكثر من زوجة أو زوج: كل زواج له خط، والأبناء ينزلون من خط أبيهم وأمهم، وزوج المرأة الآخر يظهر بجانبها مع أبنائها منه. تحت كل زواج في خط الأجداد خانة «+ عم أو عمة» أو «+ خال أو خالة» تربط المضاف بأبيه وأمه، وبجانب الجد خانة «+ زوجة»، وفي «تعديل البيانات» تُختار الأم من زوجات الأب بلمسة. الرقم تحت أي اسم يفتح فرعه، و«أهلها» فوق الجدة ينقل إلى عائلتها، وأزرار التكبير و⛶ و؟ في أعلى اللوحة. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك.
-2) التواصل: جدول. اكتب الاسم الأول فيظهر الاسم الكامل من الشجرة ثم «إضافة للجدول». «تم التواصل» يحفظ التاريخ والوقت تلقائيًا. «موعد تواصل» تختار تاريخًا ووقتًا ثم «حفظ الموعد»، ويظهر زر «تقويم Google» لإضافته إلى التقويم. «السجل» يعرض مرات التواصل.
-3) الإحسان: «المبالغ الثابتة» اسم ومبلغ ويوم الاستحقاق، وزر «تم التحويل» يسجل التحويل بتاريخ اليوم، والمبلغ قابل للتعديل من خانته. «حوالات غير ثابتة» اسم ومبلغ ثم «حفظ» والتاريخ يُسجَّل تلقائيًا. في الأعلى مجموع الشهر والمتبقي ومجموع السنة.
-الشريط العلوي سطر واحد: خانة البحث عن قريب، و«اسأل» (داخل Claude)، و«تطوير» لقائمة الاقتراحات. الإعدادات: العملة، اسم العائلة، والنسخة الاحتياطية («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، وتذكير في «اليوم» إذا مر شهر بلا نسخة. زر الرجوع في الجوال يغلق الملف أو ملء الشاشة أو الشجرة المفتوحة أولًا. ملف كل قريب فيه خانات لإضافة أبيه وأمه وزوجاته وأبنائه وإخوته، وتغيير حالته (حي / متوفى)، و«تعديل» في كل صف من الجداول يفتح كل بياناته مع الحذف.`;
+1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أعلى اللوحة) تجعل أي قريب في المركز: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«أنا في المركز». الأشكال: البطاقة بإطار متصل قريب مسجّل، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة القريب الذي في المركز. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والخط الأغلظ خطك أنت، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق الزوجة ينقل إلى عائلتها. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة.
+ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات، ثم «اجعله في المركز» و«تعديل». و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، وفي آخرها «هذا أنا» و«حذف من الشجرة». القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك.
+2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، والمبالغ المستحقة، وتذكير النسخة الاحتياطية) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
+3) الإحسان: «مبالغ شهرية» (اسم ومبلغ ويوم الاستحقاق، و«تم التحويل» يسجل التحويل بتاريخ اليوم) و«مبالغ متفرقة» (اسم ومبلغ يُحفظ بتاريخ اليوم)، والإضافة بزر «+ أضف» فوق كل قائمة. وفي الأعلى ما حُوِّل هذا الشهر، والمتبقي هذا الشهر، ومجموع السنة، و«إخفاء المبالغ».
+الشريط العلوي: خانة البحث عن قريب (زر «الشجرة» يقفز إليه ويضيء بطاقته، و«الملف» يفتح ملفه)، و«اسأل» داخل Claude. وفي رأس الشاشة زر «اقتراحاتك» (رمز المصباح وعليه عدد الاقتراحات) و«الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا). زر الرجوع في الجوال يغلق المفتوح أولًا.`;
 function familyData(){
   const cmap=new Map(S.contacts.map(c=>[c.personId,c]));
   const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id);return[p.id,nasab(p,5),p.gender==="f"?"أنثى":"ذكر",p.alive?"حي":"متوفى",p.city||"",spousesOf(p).map(x=>x.name).join("، "),c&&c.log[0]?c.log[0].slice(0,10):"",c&&c.appt?c.appt.slice(0,16):""].join(" | ")}).join("\n");
@@ -1270,9 +1409,9 @@ function familyData(){
   return`تاريخ اليوم: ${new Date().toISOString().slice(0,10)}. العملة: ${S.currency||""}.
 الأفراد (المعرّف | النسب | الجنس | الحالة | المدينة | الزوج/الزوجة | آخر تواصل | الموعد القادم):
 ${people||"لا يوجد"}
-المبالغ الثابتة (الاسم | المبلغ | الاستحقاق | آخر تحويل):
+المبالغ الشهرية (الاسم | المبلغ | يوم الاستحقاق | آخر تحويل):
 ${fixed||"لا يوجد"}
-الحوالات غير الثابتة (الاسم | المبلغ | التاريخ):
+المبالغ المتفرقة (الاسم | المبلغ | التاريخ):
 ${vari||"لا يوجد"}`;
 }
 const RULES=()=>`أنت مساعد داخل تطبيق «ذو القربى» لصلة الرحم. أجب بالعربية باختصار ووضوح، بلا تنسيق Markdown ثقيل. أجب عن أسئلة المستخدم عن أقاربه من البيانات أدناه فقط، ولا تخترع أشخاصًا أو تواريخ. لمعرفة صلة القرابة بين شخصين استعمل أداة kinship بمعرّفيهما إن كانت متاحة. وأجب عن أسئلة طريقة استخدام التطبيق من الدليل.
@@ -1325,7 +1464,7 @@ function renderFam(){
   if(!S.meId||!byId(S.meId)){
     $("#fwrap").hidden=true;document.body.classList.remove("famfit");
     const opts=S.people.length?`<p class="sub" style="margin:0">أو اختر نفسك من الشجرة الموجودة:</p><div class="ac" id="mePick"></div>`:"";
-    host.innerHTML=`<div class="band" style="padding:16px"><h3>ابدأ شجرتك باسمك</h3><p class="sub" style="margin:0">تكون أنت في المركز، وأقارب أبيك يمينًا وأقارب أمك يسارًا، وتضيف كل قريب بلمسة من مكانه.</p>
+    host.innerHTML=`<div class="band" style="padding:16px"><h3>ابدأ شجرتك باسمك</h3><p class="sub" style="margin:0">تبدأ الشجرة منك، ثم تضيف أباك وأمك وزوجك أو زوجتك، فيصير لأقاربك ثلاث جهات: أهل أبيك، وأهل أمك، وأهل زوجك أو زوجتك. وكل قريب يُضاف بلمسة في مكانه.</p>
       <div class="row" style="justify-content:center"><input type="text" id="meName" placeholder="اسمك الأول" style="max-width:200px"><div class="gender-pick" id="meG"><button class="btn sm" type="button" data-g="m" aria-pressed="true">ذكر</button><button class="btn sm" type="button" data-g="f" aria-pressed="false">أنثى</button></div><button class="btn primary" type="button" id="meGo">ابدأ</button></div>${opts}</div>`;
     let g="m";host.querySelectorAll("#meG button").forEach(b=>b.onclick=()=>{g=b.dataset.g;host.querySelectorAll("#meG button").forEach(x=>x.setAttribute("aria-pressed",x===b))});
     $("#meGo").onclick=()=>{const n=$("#meName").value.trim();if(!n){$("#meName").focus();return}S.meId=mk(n,g);S.demo=false;focusId=S.meId;save();renderAll()};
@@ -1349,7 +1488,7 @@ function sideAnchor(s){const me=byId(S.meId);if(!me)return null;
   if(s==="fa")return byId(me.father)||null;if(s==="mo")return byId(me.mother)||null;
   const ws=wivesOfMe();return ws.find(w=>"w:"+w.id===s)||ws[0]||null}
 function topOf(p){let c=p,g=0;while(upOf(c)&&g++<60)c=upOf(c);return c}
-const aqarib=n=>n===0?"لا أحد بعد":n===1?"قريب واحد":n===2?"قريبان":n<=10?n+" أقارب":n+" قريبًا";
+const aqarib=n=>n===0?"لا أحد بعد":nn(n,AQ);
 function sideCount(a){if(!a)return 0;const r=topOf(a),set=new Set([r.id]),q=[r.id]; // your father's side does not count your mother, and the other way round
   while(q.length){const id=q.shift();if(id===S.meId)continue;if(id!==a.id)spousesOf(byId(id)).forEach(x=>set.add(x.id));kids(id).forEach(k=>{if(!set.has(k.id)){set.add(k.id);q.push(k.id)}})}
   set.delete(S.meId);return set.size}
@@ -1358,13 +1497,14 @@ function fAddFor(s){fBefore=new Set(S.people.map(x=>x.id));quickAdd(s==="fa"?"fa
 function renderSidePick(){
   const me=byId(S.meId),host=$("#sidepick");if(!me||!host)return;
   const F=byId(me.father),M=byId(me.mother),ws=wivesOfMe(),fem=me.gender==="f",onW=fSide.startsWith("w"),cw=onW?sideAnchor(fSide):null;
-  const card=(s,cls,title,sub,sel)=>`<button class="spc ${cls}" type="button" role="tab" aria-selected="${!!sel}" data-side="${s}"><b>${title}</b><small>${sub}</small></button>`;
-  const sub=(p,add)=>p?esc(p.name)+" · "+aqarib(sideCount(p)):add;
+  const card=(s,cls,title,sub,sel,lab)=>`<button class="spc ${cls}" type="button" role="tab" aria-selected="${!!sel}" data-side="${s}"${lab?` aria-label="${esc(lab)}"`:""}><b>${title}</b><small>${sub}</small></button>`;
+  const cnt=(p,add)=>p?aqarib(sideCount(p)):add;
   const wl=fem?"الزوج وأهله":"الزوجة وأهلها";
-  const bot=ws.length===1?card("w:"+ws[0].id,"in",wl,sub(ws[0]),onW)
-    :ws.length?ws.map(w=>card("w:"+w.id,"in",esc(w.name)+(fem?" وأهله":" وأهلها"),aqarib(sideCount(w)),onW&&cw&&cw.id===w.id)).join("")
-    :card("w","in",wl,fem?"المس لإضافة الزوج":"المس لإضافة الزوجة",onW);
-  host.innerHTML=card("fa","fa","جهة الأب",sub(F,"المس لإضافة الأب"),fSide==="fa")+card("mo","mo","جهة الأم",sub(M,"المس لإضافة الأم"),fSide==="mo")+`<div class="sp-bot" style="--n:${Math.max(1,ws.length)}">${bot}</div>`;
+  const third=ws.length===1?card("w:"+ws[0].id,"in",wl,cnt(ws[0]),onW)
+    :ws.length?ws.map(w=>card("w:"+w.id,"in",esc(w.name),cnt(w),onW&&cw&&cw.id===w.id,w.name+(fem?" وأهله":" وأهلها"))).join("")
+    :card("w","in",wl,fem?"+ أضف الزوج":"+ أضف الزوجة",onW);
+  host.style.setProperty("--n",String(Math.min(4,2+Math.max(1,ws.length))));
+  host.innerHTML=card("fa","fa","جهة الأب",cnt(F,"+ أضف الأب"),fSide==="fa")+card("mo","mo","جهة الأم",cnt(M,"+ أضف الأم"),fSide==="mo")+third;
 }
 $("#sidepick").addEventListener("click",e=>{const b=e.target.closest("[data-side]");if(!b)return;const s=b.dataset.side;
   if(s!==fSide||fOf)setSide(s);if(!sideAnchor(s))fAddFor(s)});
@@ -1612,7 +1752,32 @@ function bindPZ(o){ // drag with one finger, pinch with two, wheel, zoom buttons
 }
 const fPZ=bindPZ({view:$("#fview"),world:$("#fworld"),st:fv,bIn:$("#fzIn"),bOut:$("#fzOut"),bFit:$("#fzFit"),bFull:$("#fzFull"),fullEl:$("#fwrap"),skip:".tzoom,.fcap,.fempty,.ftip,.fopen",onFull:on=>{fCamKey="";renderSide();if(on)bkPush("full",()=>fPZ.full(false));else bkDone("full")},onUser:()=>{fUserCam=true;fFitAll=false},onFit:()=>{fFitAll=true;fUserCam=false;fCamKey="";renderSide()}});
 function ftipShow(on){$("#ftip").hidden=!on;if(!on)try{localStorage.setItem(KEY+".ftip","1")}catch(e){}if(!fUserCam){fCamKey="";renderSide()}}
-$("#fzHelp").onclick=()=>ftipShow($("#ftip").hidden);$("#ftipX").onclick=()=>ftipShow(false);
+function boardGuide(){const me=byId(S.meId),fem=me&&me.gender==="f";
+  const row=(ex,t,d)=>`<div class="lgr"><span class="lgx" aria-hidden="true">${ex}</span><p><b>${t}</b>${d}</p></div>`;
+  const sv=(w,h,b)=>`<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">${b}</svg>`;
+  const two=(y,h,c2)=>`<rect x="2" y="${y}" width="34" height="${h}" rx="6" class="lgc"/><rect x="60" y="${y}" width="34" height="${h}" rx="6" class="lgc${c2||""}"/>`;
+  sheet(`<div class="hd"><h2>دليل اللوحة</h2><button class="btn sm" type="button" data-close>إغلاق</button></div>
+  <div class="lg"><h3>الأشكال</h3>
+  ${row(`<span class="tn fa"><b>محمد</b><small>أبوك</small></span>`,"بطاقة بإطار متصل","قريب مسجّل. المسها لتفتح ملفه.")}
+  ${row(`<span class="tslot fa"><span>+ أبو محمد</span></span>`,"بطاقة منقطة تبدأ بـ«+»","مكان فارغ، المسه لتضيف القريب في موضعه. المنقّط للإضافة وحدها.")}
+  ${row(`<span class="tn fa dead"><b>عبدالله</b><small class="one">جدك لأبيك</small><small class="rip">رحمه الله</small></span>`,"بطاقة باهتة تحت اسمها «رحمه الله»","قريب متوفى.")}
+  ${row(`<span class="tn ctr me"><b>${esc(me?me.name:"أنت")}</b><small>أنت</small></span>`,"البطاقة الخضراء الممتلئة","أنت. من عندك تبدأ كل جهة.")}
+  ${row(`<span class="tn oc"><b>عبدالله</b><small>في المركز</small></span>`,"حلقة حول البطاقة","في الشجرة المفتوحة: القريب الذي رُسمت الشجرة حوله.")}
+  ${row(sv(92,34,`<path class="tl fa" style="stroke-width:3" d="M4 6H88"/><path class="tl mo" style="stroke-width:3" d="M4 17H88"/><path class="tl in" style="stroke-width:3" d="M4 28H88"/>`),"ثلاثة ألوان","الأخضر جهة الأب، والذهبي جهة الأم، والأزرق "+(fem?"الزوج وأهله":"الزوجة وأهلها")+". اللون يقول من أي جهة تنظر.")}
+  ${row(sv(96,30,two(3,24)+`<path class="tl fa mar" d="M36 12.5H60M36 17.5H60"/>`),"خطان بين اسمين","زواج. ولكل زواج خطه، فتعرف كم زوجة لكل رجل.")}
+  ${row(sv(96,58,two(2,20)+`<path class="tl fa mar" d="M36 9.5H60M36 14.5H60"/><path class="tl n" d="M48 12V30M22 30H74M22 30V38M74 30V38"/><rect x="8" y="38" width="28" height="18" rx="5" class="lgc n"/><rect x="60" y="38" width="28" height="18" rx="5" class="lgc n"/>`),"خط نازل من خط الزواج","أبناء ذلك الزواج، فيُعرف ابن كل أب وأم بلا التباس.")}
+  ${row(sv(96,50,`<path class="tl n" d="M48 4V22H18V46"/><path class="tl fa trunk" d="M48 4V22H78V46"/>`),"الخط الأغلظ","خطك أنت من الجد الأعلى إليك، فتجد نفسك في كل جهة بنظرة.")}
+  ${row(`<span class="tbadge fa">+3</span>`,"رقم تحت الاسم","فرع مطوي، والرقم عدد أبنائه. المسه ليفتح الفرع، و«−» يطويه.")}
+  ${row(`<span class="ftab">أهلها</span>`,"«أهلها» فوق الزوجة","ينقلك إلى عائلتها: أبوها وأمها وإخوتها.")}
+  ${row(`<span class="fpill">+2 إخوة</span>`,"عدد إخوتك بجانبك","المسه ليظهر إخوتك وأخواتك.")}
+  <h3>الأدوات</h3>
+  ${row(`<span class="lgk">+</span><span class="lgk">−</span>`,"التكبير والتصغير","ويكفي أن تقرّب إصبعين أو تبعّدهما، واسحب بإصبع لتتنقل.")}
+  ${row(`<span class="lgk">⤢</span>`,"الجهة كلها","يُظهر الجهة كلها في اللوحة بأكبر حجم يسعها.")}
+  ${row(`<span class="lgk">⛶</span>`,"ملء الشاشة","و✕ يعيد اللوحة إلى مكانها.")}
+  ${row(`<span class="lgk" style="font-size:12px">الشجرة المفتوحة</span>`,"الشجرة المفتوحة","اجعل أي قريب في المركز، فتظهر فوقه أجداده وبجانبه زيجاته وتحته ذريته. و«عائلتي» تعيدك إلى جهاتك.")}
+  </div>`,el=>{el.querySelector("[data-close]").onclick=closeSheet});
+}
+$("#fzHelp").onclick=()=>{if(!$("#ftip").hidden)ftipShow(false);boardGuide()};$("#ftipX").onclick=()=>ftipShow(false);
 document.fonts&&document.fonts.ready.then(()=>{fCamKey="";renderSide()});
 $("#fworld").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
   const anc=id=>{if(!fUserCam)return;const p=fLast.get(id);if(p)fAnchor={id,sx:fv.tx+p[0]*fv.k,sy:fv.ty+p[1]*fv.k}};
@@ -1654,9 +1819,10 @@ function quickAdd(kind,targetId,stay,preOther){
     if(!T&&!needT)return}
   if(base==="father"&&byId(T.father)){openPerson(T.father);return}
   if(base==="mother"&&byId(T.mother)){openPerson(T.mother);return}
-  const fem=T&&T.gender==="f";
-  const L={father:"الأب",mother:"الأم",spouse:fem?"زوج":"زوجة",child:"أبناء وبنات",sib:"إخوة وأخوات"}[base];
-  const choose=base==="child"?["ابن","بنت"]:base==="sib"?(kind==="funcle"?["عم","عمة"]:kind==="muncle"?["خال","خالة"]:["أخ","أخت"]):null;
+  const fem=T&&T.gender==="f",meP=byId(S.meId),isMeT=!!T&&T.id===S.meId,nmT=T?T.name:"";
+  const gpOf=x=>!!x&&!!T&&(x.father===T.id||x.mother===T.id); // T is a grandparent of yours: his children are your uncles and aunts
+  const unc=base==="child"&&meP?(gpOf(byId(meP.father))?"f":gpOf(byId(meP.mother))?"m":""):"";
+  const choose=base==="child"?(unc==="f"?["عم","عمة"]:unc==="m"?["خال","خالة"]:["ابن","بنت"]):base==="sib"?(kind==="funcle"?["عم","عمة"]:kind==="muncle"?["خال","خالة"]:["أخ","أخت"]):null;
   const multi=base==="child"||base==="sib"||base==="spouse";
   const need=[];
   if(needT)need.push(["pT",needT==="father"?"اسم أبيك":"اسم أمك"]);
@@ -1667,16 +1833,21 @@ function quickAdd(kind,targetId,stay,preOther){
   if(T&&base==="father"&&T.mother)sibsFix=S.people.filter(x=>x.id!==T.id&&x.mother===T.mother&&!x.father);
   const fixDefault=base==="mother"?spousesOf(byId(T&&T.father)).length===0:true;
   const PO=base==="child"&&preOther?byId(preOther):null;
-  const title=kind==="funcle"?"إضافة أعمام وعمات":kind==="muncle"?"إضافة أخوال وخالات":`إضافة ${L}${T&&T.id!==S.meId?" لـ"+T.name+(PO?" و"+PO.name:""):""}`;
+  const ttl={father:isMeT?"أبوك":"أبو "+nmT,mother:isMeT?"أمك":"أم "+nmT,spouse:isMeT?(fem?"زوجك":"زوجتك"):(fem?"زوج ":"زوجة ")+nmT,
+    child:(unc==="f"?"أعمامك وعماتك":unc==="m"?"أخوالك وخالاتك":isMeT?"أبناؤك وبناتك":"أبناء "+nmT+(fem?" وبناتها":" وبناته"))+(PO?" من "+PO.name:""),
+    sib:isMeT?"إخوتك وأخواتك":"إخوة "+nmT+(fem?" وأخواتها":" وأخواته")}[base];
+  const title=kind==="funcle"?"إضافة: أعمامك وعماتك":kind==="muncle"?"إضافة: أخوالك وخالاتك":"إضافة: "+ttl;
+  const one=base==="father"||base==="mother"||base==="spouse",exN=base==="father"||(base==="spouse"&&fem)?"مثل: عبدالله":one?"مثل: فاطمة":"مثل: خالد، نورة";
+  const deadL0=base==="father"||(base==="spouse"&&fem)?"متوفى":one?"متوفاة":"متوفى";
   sheet(`<div class="hd"><h2>${esc(title)}</h2><button class="btn sm" type="button" data-close>إلغاء</button></div>
     <form id="qa" class="grid2">
       ${choose?`<div class="gender-pick" style="grid-column:1/-1"><button class="btn" type="button" data-g="m" aria-pressed="true">${choose[0]}</button><button class="btn" type="button" data-g="f" aria-pressed="false">${choose[1]}</button></div>`:""}
-      <label class="f" style="grid-column:1/-1"><span>${multi?"الأسماء (افصل بينها بفاصلة لإضافة أكثر من واحد)":"الاسم"}</span><input type="text" id="qaN" placeholder="${multi?"مثل: خالد، فهد، نورة":"الاسم الأول"}" autocomplete="off"></label>
+      <label class="f" style="grid-column:1/-1"><span>${multi&&!one?"الأسماء (افصل بينها بفاصلة لإضافة أكثر من واحد)":"الاسم الأول"}</span><input type="text" id="qaN" placeholder="${exN}" autocomplete="off"></label>
       ${choose?`<div class="qgs" id="qaGs" hidden aria-label="المس الاسم لتغيير ${choose[0]} أو ${choose[1]}"></div>`:""}
       ${need.map(([id,l])=>`<label class="f"><span>${esc(l)}</span><input type="text" id="${id}" autocomplete="off"></label>`).join("")}
-      ${base==="child"&&sps.length?`<label class="f" style="grid-column:1/-1"><span>${fem?"الأب":"الأم"}</span><select id="qaO">${sps.map((x,i)=>`<option value="${x.id}" ${(preOther?x.id===preOther:i===0&&sps.length===1)?"selected":""}>${esc(x.name)}</option>`).join("")}<option value="" ${!preOther&&sps.length>1?"selected":""}>غير محدد</option></select></label>`:""}
+      ${base==="child"&&sps.length?`<label class="f" style="grid-column:1/-1"><span>${fem?"الأب":"الأم"}</span><select id="qaO">${sps.map((x,i)=>`<option value="${x.id}" ${(preOther?x.id===preOther:i===0&&sps.length===1)?"selected":""}>${esc(x.name)}</option>`).join("")}<option value="" ${!preOther&&sps.length>1?"selected":""}>${fem?"غير محدد":"غير محددة"}</option></select></label>`:""}
       ${sibsFix.length?`<label class="chk" style="grid-column:1/-1"><input type="checkbox" id="qaFix" ${fixDefault?"checked":""}> ${base==="mother"?"وهي أم":"وهو أب"} إخوته أيضًا: ${esc(sibsFix.map(x=>x.name).join("، "))}</label>`:""}
-      <label class="chk"><input type="checkbox" id="qaDead"> ${multi?"متوفون":"متوفى"}</label>
+      <label class="chk"><input type="checkbox" id="qaDead"> <span id="qaDeadL">${deadL0}</span></label>
       <div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">حفظ</button></div>
     </form>`,el=>{
     el.querySelector("[data-close]").onclick=()=>{targetId&&!stay?openPerson(targetId):closeSheet()};setTimeout(()=>el.querySelector("#qaN").focus(),30);
@@ -1687,9 +1858,10 @@ function quickAdd(kind,targetId,stay,preOther){
       box.innerHTML=ns.map((n,i)=>{const x=gOf(n);return`<button type="button" class="qg ${x}" data-qg="${i}">${esc(n)}<small>${x==="f"?choose[1]:choose[0]}</small></button>`}).join("");
       const gs=[...new Set(ns.map(gOf))],on=!ns.length?g:gs.length===1?gs[0]:""; // the two buttons show the names' choice; mixed names press neither
       el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.g===on)))};
-    el.querySelectorAll(".gender-pick button").forEach(b=>b.onclick=()=>{g=b.dataset.g;gSet=true;gOver.clear();el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",x===b));drawG()});
-    el.querySelector("#qaN").addEventListener("input",drawG);
-    const gBox=el.querySelector("#qaGs");if(gBox)gBox.addEventListener("click",e=>{const b=e.target.closest("[data-qg]");if(!b)return;const n=split()[+b.dataset.qg];if(n==null)return;gOver.set(n,gOf(n)==="f"?"m":"f");drawG()});
+    el.querySelectorAll(".gender-pick button").forEach(b=>b.onclick=()=>{g=b.dataset.g;gSet=true;gOver.clear();el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",x===b));drawG();deadLbl()});
+    const deadLbl=()=>{if(one)return;const ns=split(),gs=ns.map(gOf);el.querySelector("#qaDeadL").textContent=ns.length>1?(gs.every(x=>x==="f")?"متوفيات":"متوفون"):(gs[0]==="f"?"متوفاة":"متوفى")};
+    el.querySelector("#qaN").addEventListener("input",()=>{drawG();deadLbl()});
+    const gBox=el.querySelector("#qaGs");if(gBox)gBox.addEventListener("click",e=>{const b=e.target.closest("[data-qg]");if(!b)return;const n=split()[+b.dataset.qg];if(n==null)return;gOver.set(n,gOf(n)==="f"?"m":"f");drawG();deadLbl()});
     el.querySelector("#qa").onsubmit=e=>{e.preventDefault();
       const names=el.querySelector("#qaN").value.split(multi?/[،,\n]+/:/\n/).map(x=>x.trim()).filter(Boolean);if(!names.length){el.querySelector("#qaN").focus();return}
       const v=id=>{const i=el.querySelector("#"+id);return i?i.value.trim():""};
@@ -1703,7 +1875,7 @@ function quickAdd(kind,targetId,stay,preOther){
       else if(base==="child"){const o=v("qaO");names.forEach(n=>add1(n,gOf(n),fem?o:T.id,fem?T.id:o))}
       else if(base==="sib"){if(!T.father&&!T.mother)T.father=mk(v("pP"),"m");names.forEach(n=>add1(n,gOf(n),T.father,T.mother))}
       if(!fBefore)fBefore=new Set(S.people.filter(x=>!made.includes(x.id)).map(x=>x.id));
-      save();renderAll();fBefore=null;toast(made.length>1?`أُضيف ${made.length} أقارب`:"أُضيف "+names[0]);
+      save();renderAll();fBefore=null;toast(made.length>1?"أُضيف "+nn(made.length,AQ):"أُضيف "+names[0]);
       if(targetId&&!stay)openPerson(T.id);else closeSheet();
     };
   });
@@ -1744,9 +1916,21 @@ async function initRemote(){
   }catch(e){setSync("على هذا الجهاز فقط");remoteRef=null}
 }
 /* ---------- app update (Android app only) ---------- */
-const WEB_BUILD=11;
+const WEB_BUILD=12;
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={11:[
+const CHANGES={12:[
+  "لكل شكل في اللوحة معنى واحد: المنقّط للإضافة وحدها، والمتوفى باهت تحت اسمه «رحمه الله». وزر «؟» يفتح «دليل اللوحة» بكل شكل وكل أداة",
+  "الجهات الثلاث في سطر واحد تحت اللوحة، فيه عدد أقارب كل جهة، فكبرت اللوحة",
+  "ملف القريب يبدأ بالتواصل: الجوال و«اتصال» و«واتساب» و«تم التواصل» وآخر تواصل، ثم عائلته، ثم تفاصيله. والحالة و«هذا أنا» و«حذف من الشجرة» انتقلت إلى «تعديل»",
+  "«ما صلته بقريب آخر؟» يجيب بالطريق إذا لم يجمعهما جد، مثل: خالد ← أخوه سالم ← زوجته هند ← أمها فاطمة",
+  "كل اسم يفتح ملفه: في «اليوم»، وجدول التواصل، والإحسان، والبحث",
+  "جدول التواصل سطر مختصر لكل قريب، والإضافة بزر «+ أضف قريبًا»، ومدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر",
+  "بعد «اتصال» أو «واتساب» يسألك التطبيق عند عودتك «تواصلت مع فلان؟» فتسجّله بلمسة",
+  "واتساب يعرف الرقم السوداني (09 و01) والسعودي (05)، ورمز دولتك لغيرهما في الإعدادات",
+  "الإحسان: «مبالغ شهرية» و«مبالغ متفرقة»، والقائمة أولًا والإضافة بزر «+ أضف»",
+  "«اقتراحاتك» زر صغير بجانب «الإعدادات»، والإعدادات تبدأ بالنسخة الاحتياطية",
+  "عربية أدق: قبل 3 أيام وقبل 11 يومًا، واجعلها في المركز، ومتوفاة، وعناوين الإضافة مثل «إضافة: أبو فلان»"],
+11:[
   "«الشجرة المفتوحة» صارت بالرسم الجديد: كل زواج بخطه، وزوجات الجد وأبناؤهن ظاهرون، وتملأ الشاشة بأدوات اللوحة نفسها. تحتها «الجد الأعلى» و«أنا في المركز»، و«أهلها» يجعل الزوجة في المركز",
   "البحث يقدّم من يطابق اسمه، ويكتب سبب ظهور غيره مثل «زوجة محمد»، وزر «الشجرة» ينقلك إلى القريب ويضيء بطاقته",
   "زر الرجوع في الجوال يغلق الملف أو ملء الشاشة أو الشجرة المفتوحة أولًا، ولا يخرج من التطبيق إلا من الشاشة الرئيسية",
