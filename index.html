@@ -1,0 +1,1063 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>ذو القربى</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Reem+Kufi:wght@500;700&display=swap">
+<style>
+/* Layout: phone-first app shell — header, one scrolling view, fixed bottom tab bar of three menus */
+:root{
+  --bg:#f3f5f2; --surface:#ffffff; --sunk:#e8ece6; --fg:#1d2621; --muted:#5f6b64; --line:#c9d2cb;
+  --accent:#23614f; --accent-ink:#ffffff; --accent-soft:#dcebe4; --gold:#9a6b12; --gold-soft:#f5ead3;
+  --good:#2f7a44; --warn:#a4590c; --bad:#b3362f;
+  --display:"Reem Kufi","IBM Plex Sans Arabic",Tahoma,sans-serif;
+  --body:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121814; --surface:#1a221d; --sunk:#232d27; --fg:#e4ebe6; --muted:#9aa8a0; --line:#35423a;
+  --accent:#5fb597; --accent-ink:#0d1a14; --accent-soft:#1f3a30; --gold:#e0b35a; --gold-soft:#3a2f18;
+  --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121814; --surface:#1a221d; --sunk:#232d27; --fg:#e4ebe6; --muted:#9aa8a0; --line:#35423a;
+  --accent:#5fb597; --accent-ink:#0d1a14; --accent-soft:#1f3a30; --gold:#e0b35a; --gold-soft:#3a2f18;
+  --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;direction:rtl;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;align-items:center;gap:12px}
+.brand{font-family:var(--display);font-size:22px;font-weight:700;color:var(--accent);letter-spacing:0}
+.brand small{display:block;font-family:var(--body);font-size:11.5px;color:var(--muted);font-weight:400;margin-top:-4px}
+header.top .sp{flex:1}
+.icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 10px;font-size:13px}
+
+main{max-width:880px;margin:0 auto;padding-block:16px 110px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+.view[hidden]{display:none!important}
+.view{display:flex;flex-direction:column;gap:16px}
+.pane{display:flex;flex-direction:column;gap:10px}
+.pane[hidden]{display:none}
+h2{font-family:var(--display);font-weight:500;font-size:20px;margin:0;text-wrap:balance}
+h3{font-size:15px;font-weight:600;margin:0}
+.sub{color:var(--muted);font-size:13px}
+
+.demo{background:var(--gold-soft);color:var(--fg);border-radius:var(--r);padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:13.5px}
+.demo b{color:var(--gold)}
+.demo .sp{flex:1}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row > .grow{flex:1;min-width:140px}
+
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 12px;font-size:14px;white-space:nowrap}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.soft{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
+.btn.gold{background:var(--gold-soft);border-color:transparent;color:var(--gold);font-weight:600}
+.btn.danger{color:var(--bad)}
+.btn.sm{padding:4px 9px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:default}
+a.btn{text-decoration:none;display:inline-block}
+
+input[type=text],input[type=number],input[type=date],input[type=time],input[type=search],select,textarea{
+  border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 10px;width:100%;min-width:0}
+textarea{min-height:90px;resize:vertical;direction:ltr;font-size:12px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+label.f > span{font-weight:500}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.chk{display:flex;align-items:center;gap:6px;font-size:14px}
+
+/* top bar: search / ask / develop */
+.seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.seg button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 4px;font-weight:600;font-size:14px;white-space:nowrap;color:var(--muted);text-align:center}
+.seg button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
+.seg svg{width:18px;height:18px;flex:none}
+.badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--gold);color:var(--surface);font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.seg button[aria-selected="true"] .badge{background:var(--accent-ink);color:var(--accent)}
+.qbox{position:relative}
+.qbox input{padding-inline-start:40px;padding-block:11px;border-radius:14px;font-size:15px;background:var(--surface)}
+.qbox svg{position:absolute;inset-inline-start:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted);pointer-events:none}
+.results{display:flex;flex-direction:column;gap:2px}
+.res{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--line)}
+.res:last-child{border-bottom:0}
+.res .who{flex:1;min-width:0}
+.res .who b{display:block}
+.chat{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto}
+.msg{padding:9px 12px;border-radius:12px;max-width:92%;white-space:pre-wrap;font-size:14.5px}
+.msg.me{background:var(--accent-soft);align-self:flex-start}
+.msg.ai{background:var(--bg);border:1px solid var(--line);align-self:flex-end}
+.msg.err{color:var(--bad)}
+.today-list{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.today-list li{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
+.today-list li .who{flex:1;min-width:120px}
+.freq{width:auto;padding:3px 6px;font-size:12.5px}
+.idea{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.idea:last-child{border-bottom:0}
+.idea .tx{flex:1;min-width:0}
+.idea.done .tx b{text-decoration:line-through;color:var(--muted);font-weight:400}
+
+/* sync + lock */
+.sync{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px;white-space:nowrap}
+.sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.sync.ok::before{background:var(--good)}
+.sync.busy::before{background:var(--warn)}
+@media (max-width:420px){.sync{font-size:0;gap:0}.brand small{display:none}}
+.lock{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
+.lock .box{display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center;max-width:300px;width:100%}
+.lock input{text-align:center;font-size:24px;letter-spacing:10px;direction:ltr}
+#v-ihsan.veiled .amt,#v-ihsan.veiled .stat b,#v-ihsan.veiled .full.num,#today.veiled .full.num{filter:blur(7px)}
+/* family view (ego-centred) */
+.fam{display:flex;flex-direction:column;gap:10px}
+.sides{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.side{border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;min-width:0}
+.side.fa{background:var(--accent-soft)}
+.side.mo{background:var(--gold-soft)}
+.cap{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:0}
+.side > .cap:first-child{color:var(--fg);font-size:13px}
+.grp{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:100%}
+.pc{border:1.5px solid var(--accent);background:var(--surface);border-radius:10px;padding:5px 10px;font-weight:600;font-size:14px;line-height:1.3;display:inline-flex;flex-direction:column;align-items:center;max-width:100%}
+.pc.f{border-color:var(--gold)}
+.pc.dead{border-style:dashed;opacity:.8}
+.pc small{font-size:11px;font-weight:400;color:var(--muted)}
+.pc.big{font-size:16px;padding:7px 14px}
+.add{border:1.5px dashed var(--line);background:transparent;border-radius:10px;padding:5px 10px;font-size:13px;color:var(--muted)}
+.add:hover{border-color:var(--accent);color:var(--accent)}
+.join{height:16px;margin:0 25%;border:2px solid var(--line);border-top:0;border-radius:0 0 14px 14px}
+.stem{width:2px;height:14px;background:var(--line);margin:0 auto}
+.me{display:flex;flex-direction:column;align-items:center;gap:6px}
+.me .pc.big{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.me .pc.big small{color:var(--accent-ink);opacity:.85}
+.band{display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;padding:8px 6px;border-radius:12px;background:var(--bg)}
+.gender-pick{display:flex;gap:6px}
+.gender-pick button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px}
+.stat b{display:block;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+@media (max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* tree */
+.tree-wrap{overflow:auto;border-radius:var(--r);background:var(--sunk);padding:16px;min-height:220px;max-height:62vh}
+.tree{direction:ltr;width:max-content;margin:0 auto}
+.tree ul{padding-top:22px;position:relative;display:flex;justify-content:center;margin:0;padding-left:0}
+.tree > ul{padding-top:0}
+.tree li{list-style:none;position:relative;padding:22px 5px 0;display:flex;flex-direction:column;align-items:center}
+.tree li::before,.tree li::after{content:"";position:absolute;top:0;right:50%;border-top:1.5px solid var(--line);width:50%;height:22px}
+.tree li::after{right:auto;left:50%;border-left:1.5px solid var(--line)}
+.tree li:only-child::before,.tree li:only-child::after{display:none}
+.tree li:only-child{padding-top:0}
+.tree li:first-child::before,.tree li:last-child::after{border:0 none}
+.tree li:last-child::before{border-right:1.5px solid var(--line);border-radius:0 8px 0 0}
+.tree li:first-child::after{border-radius:8px 0 0 0}
+.tree ul ul::before{content:"";position:absolute;top:0;left:50%;border-left:1.5px solid var(--line);width:0;height:22px}
+.tree > ul > li{padding-top:0}
+.tree > ul > li::before,.tree > ul > li::after{display:none}
+.node{direction:rtl;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:6px 10px;min-width:74px;text-align:center;line-height:1.35;position:relative}
+.node.m{border-color:var(--accent)}
+.node.f{border-color:var(--gold)}
+.node.dead{opacity:.72;border-style:dashed}
+.node.hit{box-shadow:0 0 0 3px var(--gold)}
+.node button.nm{all:unset;cursor:pointer;display:block;font-weight:600;font-size:14px}
+.node .sp2{display:block;font-size:11px;color:var(--muted)}
+.node .tg{position:absolute;bottom:-11px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:12px;line-height:17px;padding:0;color:var(--muted)}
+.zoom{display:flex;gap:6px;align-items:center}
+
+/* lists / tables */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-weight:500;color:var(--muted);font-size:12.5px;text-align:right;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td .acts{display:flex;flex-wrap:wrap;gap:6px}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill.good{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good)}
+.pill.warn{background:color-mix(in srgb,var(--warn) 15%,transparent);color:var(--warn)}
+.pill.bad{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.pill.mute{background:var(--sunk);color:var(--muted)}
+.full{font-size:12.5px;color:var(--muted)}
+.amt{width:110px}
+.hist{font-size:12.5px;color:var(--muted);margin:4px 0 0;padding:0;list-style:none}
+.hist li{padding:1px 0}
+.empty{color:var(--muted);text-align:center;padding:18px 8px;font-size:14px}
+@media (max-width:600px){
+  .tbl-wrap table thead{display:none}
+  .tbl-wrap table,.tbl-wrap tbody{display:block;width:100%}
+  .tbl-wrap tr{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .tbl-wrap tr:last-child{border-bottom:0}
+  .tbl-wrap td{display:block;border:0;padding:0;min-width:0}
+  .tbl-wrap td:first-child,.tbl-wrap td.wide{grid-column:1/-1}
+  .tbl-wrap td[data-l]::before{content:attr(data-l);display:block;font-size:12px;color:var(--muted)}
+  .tbl-wrap td[colspan]{grid-column:1/-1}
+}
+.totals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:480px){.totals{grid-template-columns:1fr 1fr}}
+
+/* autocomplete */
+.ac{position:relative}
+.ac-list{position:absolute;inset-inline:0;top:100%;margin-top:4px;background:var(--surface);border:1px solid var(--line);border-radius:10px;z-index:15;max-height:240px;overflow:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.ac-list button{all:unset;display:block;width:100%;box-sizing:border-box;padding:8px 12px;cursor:pointer;font-size:14px}
+.ac-list button:hover,.ac-list button.on{background:var(--accent-soft)}
+.ac-list .full{display:block}
+.picked{font-size:12.5px;color:var(--accent)}
+
+/* tab bar */
+nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(3,1fr);padding-bottom:env(safe-area-inset-bottom,0px);
+  padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+nav.tabs button{all:unset;cursor:pointer;text-align:center;padding:9px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--muted);font-size:13.5px;font-weight:500}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
+nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
+
+/* sheet */
+.overlay{position:fixed;inset:0;background:rgba(10,20,15,.45);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:620px;max-height:90vh;overflow:auto;border-radius:16px 16px 0 0;
+  padding-block:16px calc(20px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:12px}
+@media (min-width:700px){.overlay{align-items:center}.sheet{border-radius:16px}}
+.sheet .hd{display:flex;align-items:flex-start;gap:8px}
+.sheet .hd h2{flex:1}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:13px;background:var(--bg)}
+.confirm{background:color-mix(in srgb,var(--bad) 10%,transparent);border-radius:10px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+.rel-out{background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:15px}
+.toast{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:14px;z-index:50;max-width:90vw}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
+</style>
+
+<header class="top">
+  <div class="brand">ذو القربى<small>صلة الرحم: شجرة، وتواصل، وإحسان</small></div>
+  <div class="sp"></div>
+  <span class="sync" id="sync" role="status">على هذا الجهاز</span>
+  <button class="icon-btn" id="btnUpd" type="button" hidden>تحديث</button>
+  <button class="icon-btn" id="btnLockNow" type="button" hidden>قفل</button>
+  <button class="icon-btn" id="btnSettings" type="button">الإعدادات</button>
+</header>
+
+<main>
+  <div class="demo" id="demoBar" hidden>
+    <span><b>بيانات تجريبية.</b> الأسماء والمبالغ أمثلة لتجربة التطبيق.</span>
+    <span class="sp"></span>
+    <button class="btn sm gold" id="btnStartReal" type="button">ابدأ ببياناتي</button>
+  </div>
+
+
+  <section class="panel" id="topbar" aria-label="بحث واستفسار وتطوير">
+    <div class="seg" role="tablist">
+      <button role="tab" id="s-search" aria-selected="true" data-p="p-search" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>بحث</button>
+      <button role="tab" id="s-ask" aria-selected="false" data-p="p-ask" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.3 6.6 6.7 2.4-6.7 2.4L12 20.5l-2.3-6.6L3 11.5l6.7-2.4z"/></svg>اسأل Claude</button>
+      <button role="tab" id="s-dev" aria-selected="false" data-p="p-dev" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg>تطوير <span class="badge" id="ideaCount">0</span></button>
+    </div>
+    <div id="p-search" class="pane">
+      <div class="qbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input type="search" id="gq" placeholder="ابحث عن قريب: الاسم، النسب، المدينة أو الجوال" autocomplete="off"></div>
+      <div class="results" id="gRes"></div>
+    </div>
+    <div id="p-ask" class="pane" hidden>
+      <div class="chat" id="chat"></div>
+      <div class="chips" id="askChips">
+        <button class="chip" type="button">ما صلة عمر بحمزة؟</button>
+        <button class="chip" type="button">من لم أتواصل معه منذ شهر؟</button>
+        <button class="chip" type="button">كيف أضيف موعد تواصل؟</button>
+      </div>
+      <form class="row" id="askForm">
+        <input type="text" id="askIn" class="grow" placeholder="اسأل عن قريب أو استفسر عن التطبيق" autocomplete="off">
+        <button class="btn primary" type="submit" id="askGo">إرسال</button>
+        <button class="btn" type="button" id="askStop" hidden>إيقاف</button>
+      </form>
+      <p class="sub" id="askNote" style="margin:0" hidden></p>
+    </div>
+    <div id="p-dev" class="pane" hidden>
+      <form class="row" id="ideaForm">
+        <input type="text" id="ideaIn" class="grow" placeholder="اقترح تطويرًا أو ميزة جديدة للتطبيق" autocomplete="off">
+        <button class="btn primary" type="submit">إضافة</button>
+      </form>
+      <div id="ideas"></div>
+    </div>
+  </section>
+  <!-- ذو القربى -->
+  <section class="view" id="v-tree">
+    <div class="panel" id="famPanel">
+      <div class="row">
+        <h2 class="grow" id="famTitle">عائلتي</h2>
+        <button class="btn sm" type="button" id="famBack" hidden>العودة إليّ</button>
+        <button class="btn sm" type="button" id="toFull">الشجرة الكاملة</button>
+      </div>
+      <div id="fam"></div>
+    </div>
+    <div class="panel" id="fullPanel" hidden>
+      <div class="row">
+        <button class="btn sm" type="button" id="toFam">عائلتي ←</button>
+        <h2 class="grow">الشجرة الكاملة</h2>
+        <div class="zoom">
+          <button class="btn sm" id="zOut" type="button" aria-label="تصغير">−</button>
+          <button class="btn sm" id="zIn" type="button" aria-label="تكبير">+</button>
+          <button class="btn sm primary" id="btnAddRoot" type="button">إضافة فرد</button>
+        </div>
+      </div>
+      <div class="ac">
+        <input type="search" id="treeSearch" placeholder="ابحث بالاسم أو النسب، مثل: سالم بن عبدالله" autocomplete="off">
+      </div>
+      <div class="tree-wrap" id="treeWrap"><div class="tree" id="tree"></div></div>
+      <p class="sub" style="margin:0">المس الاسم لفتح ملف الفرد، والزر الصغير تحته يطوي الفرع أو يفتحه.</p>
+    </div>
+
+  </section>
+
+  <!-- التواصل -->
+  <section class="view" id="v-contact" hidden>
+    <div class="panel" id="today"></div>
+    <div class="panel">
+      <h2>التواصل</h2>
+      <p class="sub" style="margin:0">اكتب الاسم الأول، فيظهر باقي الاسم من الشجرة، ثم اختر القريب لإضافته إلى الجدول.</p>
+      <div class="row">
+        <div class="ac grow" id="cName"></div>
+        <button class="btn primary" id="cAdd" type="button">إضافة للجدول</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>القريب</th><th>آخر تواصل</th><th>الموعد القادم</th><th>الإجراء</th></tr></thead>
+        <tbody id="cBody"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- الإحسان -->
+  <section class="view" id="v-ihsan" hidden>
+    <div class="row"><h2 class="grow">الإحسان</h2><button class="btn sm" type="button" id="btnVeil">إخفاء المبالغ</button></div>
+    <div class="totals" id="iTotals"></div>
+    <div class="panel">
+      <div class="row"><h2 class="grow">المبالغ الثابتة</h2><span class="sub" id="iMonthLbl"></span></div>
+      <div class="row">
+        <div class="ac grow" id="fName"></div>
+        <input type="number" id="fAmt" class="amt" placeholder="المبلغ" min="0" inputmode="decimal">
+        <label class="chk">يوم <input type="number" id="fDay" min="1" max="31" value="1" style="width:64px"></label>
+        <button class="btn primary" id="fAdd" type="button">إضافة</button>
+      </div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>المستفيد</th><th>المبلغ</th><th>الاستحقاق</th><th>هذا الشهر</th></tr></thead>
+        <tbody id="fBody"></tbody>
+      </table></div>
+    </div>
+    <div class="panel">
+      <h2>حوالات غير ثابتة</h2>
+      <div class="row">
+        <div class="ac grow" id="vName"></div>
+        <input type="number" id="vAmt" class="amt" placeholder="المبلغ" min="0" inputmode="decimal">
+        <button class="btn primary" id="vAdd" type="button">حفظ</button>
+      </div>
+      <p class="sub" style="margin:0">يُحفظ التاريخ تلقائيًا لحظة الحفظ.</p>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>الاسم</th><th>المبلغ</th><th>التاريخ</th><th></th></tr></thead>
+        <tbody id="vBody"></tbody>
+      </table></div>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" id="t-tree" aria-selected="true" data-v="v-tree" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.5" r="2.2"/><circle cx="5" cy="19" r="2.2"/><circle cx="12" cy="19" r="2.2"/><circle cx="19" cy="19" r="2.2"/><path d="M12 6.7v5.3M5 16.8V12h14v4.8M12 12v4.8"/></svg>
+    ذو القربى</button>
+  <button role="tab" id="t-contact" aria-selected="false" data-v="v-contact" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14.5l2 2 4-4"/></svg>
+    التواصل</button>
+  <button role="tab" id="t-ihsan" aria-selected="false" data-v="v-ihsan" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M9.5 11.5h5M12 9v5"/></svg>
+    الإحسان</button>
+</nav>
+
+<div id="layer"></div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- storage ---------- */
+const KEY="dhulqurba.v1";
+let mem=null;
+function load(){try{const s=localStorage.getItem(KEY);if(s)return JSON.parse(s)}catch(e){} return mem}
+let remoteRef=null,remoteT=null,remoteReady=false;
+function save(){mem=S;S.updatedAt=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}pushRemote()}
+function setSync(t,cls){const el=document.getElementById("sync");if(el){el.textContent=t;el.className="sync "+(cls||"");el.title=t}}
+function pushRemote(){if(!remoteRef||!remoteReady)return;clearTimeout(remoteT);setSync("يحفظ...","busy");
+  remoteT=setTimeout(async()=>{try{await remoteRef.set({json:JSON.stringify(S),updatedAt:S.updatedAt});setSync("محفوظ في حسابك","ok")}catch(e){setSync("تعذّر الحفظ في الحساب، محفوظ على الجهاز","busy")}},700)}
+const uid=()=>Math.random().toString(36).slice(2,10);
+
+/* ---------- sample data (fictional) ---------- */
+function sample(){
+  const P=[];const add=(id,name,g,father,o={})=>P.push(Object.assign({id,name,gender:g,father:father||"",mother:"",spouse:"",alive:true,city:"",phone:"",born:"",notes:""},o));
+  add("p1","عبدالله","m","",{alive:false,spouse:"نورة",born:"1935"});
+  add("p2","محمد","m","p1",{alive:false,spouse:"فاطمة",city:"الرياض"});
+  add("p3","أحمد","m","p1",{spouse:"مريم",city:"جدة",phone:"0500000001"});
+  add("p4","عائشة","f","p1",{spouse:"خالد",city:"مكة"});
+  add("p5","سالم","m","p2",{spouse:"هند",city:"الرياض",phone:"0500000002"});
+  add("p6","يوسف","m","p2",{city:"الدمام"});
+  add("p7","سارة","f","p2",{city:"الرياض"});
+  add("p8","علي","m","p3",{city:"جدة"});
+  add("p9","ليلى","f","p3",{city:"جدة"});
+  add("p10","عمر","m","p5",{});
+  add("p11","زينب","f","p5",{});
+  add("p12","حمزة","m","p8",{});
+  add("p13","فاطمة","f","",{city:"الرياض",spouse:"محمد"});
+  add("p14","حسن","m","",{alive:false});
+  add("p15","إبراهيم","m","p14",{city:"الخبر",phone:"0500000003"});
+  add("p16","خديجة","f","p14",{city:"الرياض"});
+  P.find(x=>x.id==="p13").father="p14";
+  ["p5","p6","p7"].forEach(id=>P.find(x=>x.id===id).mother="p13");
+  const now=new Date();const d=(n,h=18)=>{const x=new Date(now);x.setDate(x.getDate()-n);x.setHours(h,0,0,0);return x.toISOString()};
+  const f=(n,h=19)=>{const x=new Date(now);x.setDate(x.getDate()+n);x.setHours(h,0,0,0);return x.toISOString()};
+  const ym=now.toISOString().slice(0,7);
+  return {demo:true,meId:"p5",currency:"ريال",family:"",people:P,
+    contacts:[
+      {id:uid(),personId:"p3",name:"",log:[d(3),d(40)],appt:f(4)},
+      {id:uid(),personId:"p4",name:"",log:[d(26)],appt:null},
+      {id:uid(),personId:"p6",name:"",log:[],appt:f(-1)}],
+    fixed:[
+      {id:uid(),personId:"p4",name:"",amount:500,day:1,transfers:[{date:d(Math.max(0,now.getDate()-1)),amount:500,ym}]},
+      {id:uid(),personId:"p9",name:"",amount:300,day:15,transfers:[]}],
+    variable:[
+      {id:uid(),personId:"p10",name:"",amount:200,date:d(5)},
+      {id:uid(),personId:"",name:"جمعية البر",amount:150,date:d(12)}]};
+}
+let S=load()||sample();
+if(!S.people)S=sample();
+save();
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const byId=id=>S.people.find(p=>p.id===id);
+const kids=id=>S.people.filter(p=>p.father===id||p.mother===id);
+const norm=s=>String(s||"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ").trim();
+const LOC="ar-u-nu-latn";
+const fmtD=iso=>new Date(iso).toLocaleDateString(LOC,{day:"numeric",month:"long",year:"numeric"});
+const fmtDT=iso=>new Date(iso).toLocaleString(LOC,{day:"numeric",month:"long",hour:"numeric",minute:"2-digit"});
+const hijri=iso=>{try{return new Date(iso).toLocaleDateString("ar-SA-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"long",year:"numeric"})}catch(e){return""}};
+const money=n=>(Number(n)||0).toLocaleString("en-US",{maximumFractionDigits:2})+" "+esc(S.currency||"");
+const daysAgo=iso=>Math.floor((Date.now()-new Date(iso).getTime())/864e5);
+function nasab(p,depth=4){
+  if(!p)return"";let out=p.name;let cur=p;let first=true;
+  for(let i=0;i<depth;i++){const f=byId(cur.father);if(!f)break;out+=(first&&p.gender==="f"?" بنت ":" بن ")+f.name;first=false;cur=f}
+  if(S.family)out+=" "+S.family;return out;
+}
+const nameOf=r=>r.personId&&byId(r.personId)?nasab(byId(r.personId),3):(r.name||"—");
+let toastT;function toast(m){clearTimeout(toastT);let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}t.textContent=m;t.hidden=false;toastT=setTimeout(()=>t.hidden=true,2200)}
+
+/* ---------- autocomplete (first name → full name) ---------- */
+function makeAC(host,{placeholder,allowFree=true,onPick}){
+  host.innerHTML=`<input type="text" placeholder="${esc(placeholder)}" autocomplete="off"><div class="ac-list" hidden></div><div class="picked" hidden></div>`;
+  const inp=host.querySelector("input"),list=host.querySelector(".ac-list"),picked=host.querySelector(".picked");
+  inp.id="ac-"+host.id;
+  const st={personId:"",text:""};let items=[],hi=-1;
+  function render(){
+    const q=norm(inp.value);st.text=inp.value.trim();st.personId="";picked.hidden=true;
+    if(!q){list.hidden=true;return}
+    items=S.people.map(p=>({p,full:nasab(p)})).filter(x=>norm(x.full).startsWith(q)||norm(x.p.name).startsWith(q)||norm(x.full).includes(" "+q)).slice(0,8);
+    hi=items.length?0:-1;
+    if(!items.length){list.hidden=true;return}
+    list.innerHTML=items.map((x,i)=>`<button type="button" data-i="${i}" class="${i===hi?"on":""}">${esc(x.p.name)}<span class="full">${esc(x.full)}</span></button>`).join("");
+    list.hidden=false;
+  }
+  function pick(i){const x=items[i];if(!x)return;inp.value=x.full;st.personId=x.p.id;st.text=x.full;list.hidden=true;picked.textContent="✓ من الشجرة";picked.hidden=false;onPick&&onPick(st)}
+  inp.addEventListener("input",render);
+  inp.addEventListener("keydown",e=>{
+    if(list.hidden)return;
+    if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();hi=(hi+(e.key==="ArrowDown"?1:-1)+items.length)%items.length;list.querySelectorAll("button").forEach((b,i)=>b.classList.toggle("on",i===hi))}
+    else if(e.key==="Enter"){e.preventDefault();pick(hi)}
+    else if(e.key==="Escape"){list.hidden=true}
+  });
+  list.addEventListener("mousedown",e=>e.preventDefault());
+  list.addEventListener("click",e=>{const b=e.target.closest("button");if(b)pick(+b.dataset.i)});
+  inp.addEventListener("blur",()=>setTimeout(()=>list.hidden=true,120));
+  return {get:()=>({personId:st.personId,text:inp.value.trim()}),clear:()=>{inp.value="";st.personId="";picked.hidden=true;list.hidden=true},valid:()=>st.personId||(allowFree&&inp.value.trim()),input:inp};
+}
+
+/* ---------- tabs ---------- */
+const tabs=[...document.querySelectorAll("nav.tabs button")];
+function showTab(v){tabs.forEach(t=>{const on=t.dataset.v===v;t.setAttribute("aria-selected",on);$("#"+t.dataset.v).hidden=!on});try{localStorage.setItem(KEY+".tab",v)}catch(e){}window.scrollTo(0,0)}
+tabs.forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.v)));
+try{const t=localStorage.getItem(KEY+".tab");if(t&&$("#"+t))showTab(t)}catch(e){}
+
+/* ---------- tree ---------- */
+let zoom=1,centered=false;const collapsed=new Set();let hits=new Set();
+function generationOf(p){let g=1,c=p,guard=0;while(c&&c.father&&byId(c.father)&&guard++<60){g++;c=byId(c.father)}return g}
+function renderStats(){if(!document.getElementById("stats"))return;
+  const n=S.people.length,gens=n?Math.max(...S.people.map(generationOf)):0,alive=S.people.filter(p=>p.alive).length;
+  $("#stats").innerHTML=[["الأفراد",n],["الأجيال",gens],["الأحياء",alive],["المتوفون",n-alive]].map(([l,v])=>`<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
+}
+function nodeHTML(p){
+  const ch=S.people.filter(c=>c.father===p.id||(!c.father&&c.mother===p.id));
+  const isC=collapsed.has(p.id);
+  const cls=["node",p.gender==="f"?"f":"m",p.alive?"":"dead",hits.has(p.id)?"hit":""].join(" ");
+  let h=`<li><div class="${cls}"><button class="nm" type="button" data-open="${p.id}">${esc(p.name)}</button>`+
+    (p.spouse?`<span class="sp2">${p.gender==="f"?"زوجها":"زوجته"}: ${esc(p.spouse)}</span>`:"")+
+    (!p.alive?`<span class="sp2">متوفى${p.gender==="f"?"ة":""}</span>`:"")+
+    (ch.length?`<button class="tg" type="button" data-tg="${p.id}" aria-label="${isC?"فتح":"طي"} فرع ${esc(p.name)}">${isC?"+":"−"}</button>`:"")+`</div>`;
+  if(ch.length&&!isC){h+="<ul>"+ch.slice().reverse().map(nodeHTML).join("")+"</ul>"}
+  return h+"</li>";
+}
+function renderTree(){
+  const roots=S.people.filter(p=>!byId(p.father)&&!(p.mother&&byId(p.mother)));
+  $("#tree").innerHTML=roots.length?"<ul>"+roots.slice().reverse().map(nodeHTML).join("")+"</ul>":`<div class="empty" style="direction:rtl">الشجرة فارغة. ابدأ بإضافة الجد الأكبر من زر «إضافة فرد».</div>`;
+  $("#tree").style.zoom=zoom;
+  renderStats();
+  if(!centered){const w=$("#treeWrap"),r=$("#tree .node");if(r&&w.clientWidth){const a=r.getBoundingClientRect(),b=w.getBoundingClientRect();w.scrollLeft+=(a.left+a.width/2)-(b.left+b.width/2);centered=true}}
+}
+$("#tree").addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]");if(o){openPerson(o.dataset.open);return}
+  const t=e.target.closest("[data-tg]");if(t){const id=t.dataset.tg;collapsed.has(id)?collapsed.delete(id):collapsed.add(id);renderTree()}
+});
+$("#zIn").onclick=()=>{zoom=Math.min(1.6,zoom+.15);renderTree()};
+$("#zOut").onclick=()=>{zoom=Math.max(.4,zoom-.15);renderTree()};
+$("#treeSearch").addEventListener("input",e=>{
+  const q=norm(e.target.value);hits=new Set();
+  if(q){S.people.forEach(p=>{if(norm(nasab(p)).includes(q)){hits.add(p.id);let c=byId(p.father);while(c){collapsed.delete(c.id);c=byId(c.father)}}})}
+  renderTree();
+  const first=$("#tree .node.hit");if(first)first.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
+});
+
+/* ---------- sheet ---------- */
+function sheet(html,onMount){
+  $("#layer").innerHTML=`<div class="overlay"><div class="sheet" role="dialog" aria-modal="true">${html}</div></div>`;
+  const ov=$("#layer .overlay");ov.addEventListener("click",e=>{if(e.target===ov)closeSheet()});
+  onMount&&onMount($("#layer .sheet"));
+  const f=$("#layer .sheet [data-close]");f&&f.focus();
+}
+function closeSheet(){$("#layer").innerHTML=""}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#layer").innerHTML)closeSheet()});
+
+function relLabel(p,o){const r=relation(o.id,p.id);return r}
+function openPerson(id){
+  const p=byId(id);if(!p)return;
+  const f=byId(p.father),m=byId(p.mother);
+  const ch=kids(p.id);const sib=p.father?S.people.filter(x=>x.father===p.father&&x.id!==p.id):[];
+  const lastC=S.contacts.find(c=>c.personId===p.id);
+  const gen=generationOf(p);
+  const chip=x=>`<button class="chip" type="button" data-open="${x.id}">${esc(x.name)}</button>`;
+  sheet(`<div class="hd"><div style="flex:1"><h2>${esc(p.name)}</h2><div class="full">${esc(nasab(p,6))}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+  <div class="row"><span class="pill ${p.alive?"good":"mute"}">${p.alive?(p.gender==="f"?"على قيد الحياة":"على قيد الحياة"):(p.gender==="f"?"متوفاة":"متوفى")}</span><span class="pill mute">الجيل ${gen}</span>${p.city?`<span class="pill mute">${esc(p.city)}</span>`:""}</div>
+  <dl class="kv">
+    <dt>الأب</dt><dd>${f?chip(f):"—"}</dd>
+    <dt>الأم</dt><dd>${m?chip(m):esc(p.motherName||"—")}</dd>
+    <dt>${p.gender==="f"?"الزوج":"الزوجة"}</dt><dd>${esc(p.spouse||"—")}</dd>
+    ${p.born?`<dt>سنة الميلاد</dt><dd class="num">${esc(p.born)}</dd>`:""}
+    ${p.phone?`<dt>الجوال</dt><dd class="num" style="direction:ltr;text-align:right;user-select:all">${esc(p.phone)}</dd>`:""}
+    ${p.notes?`<dt>ملاحظات</dt><dd>${esc(p.notes)}</dd>`:""}
+    <dt>آخر تواصل</dt><dd>${lastC&&lastC.log.length?fmtD(lastC.log[0]):"لم يُسجَّل"}</dd>
+  </dl>
+  <div><h3>الأبناء (${ch.length})</h3><div class="chips" style="margin-top:6px">${ch.map(chip).join("")||'<span class="sub">لا يوجد</span>'}</div></div>
+  ${sib.length?`<div><h3>الإخوة (${sib.length})</h3><div class="chips" style="margin-top:6px">${sib.map(chip).join("")}</div></div>`:""}
+  <div class="panel" style="background:var(--bg)">
+    <h3>إضافة الأبناء دفعة واحدة</h3>
+    <input type="text" id="quickKids" placeholder="اكتب الأسماء مفصولة بفاصلة: خالد، نورة، فهد">
+    <div class="row"><label class="chk"><input type="checkbox" id="quickF"> كلهن بنات</label><span class="sp" style="flex:1"></span><button class="btn soft" type="button" id="quickGo">إضافة</button></div>
+  </div>
+  <div class="row"><button class="btn primary" type="button" id="pEdit">تعديل البيانات</button><button class="btn" type="button" id="pToContact">إضافة للتواصل</button><button class="btn soft" type="button" id="pFocus">عرض عائلته</button>${S.meId!==p.id?'<button class="btn" type="button" id="pMe">هذا أنا</button>':""}<span style="flex:1"></span><button class="btn danger" type="button" id="pDel">حذف</button></div>
+  <div class="panel" style="background:var(--bg)"><h3>ما صلته بـ</h3><div class="ac" id="pRel"></div><div class="rel-out" id="pRelOut" hidden></div></div>
+  <div id="pConfirm"></div>`,el=>{
+    makeAC(el.querySelector("#pRel"),{placeholder:"اكتب اسم قريب آخر",allowFree:false,onPick:st=>{const o=el.querySelector("#pRelOut");o.innerHTML=relation(st.personId,p.id);o.hidden=false}});
+    el.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheet);
+    el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openPerson(b.dataset.open));
+    el.querySelector("#pEdit").onclick=()=>editPerson(p.id);
+    el.querySelector("#pFocus").onclick=()=>{focusId=p.id;closeSheet();showTab("v-tree");renderFam()};
+    const pm=el.querySelector("#pMe");if(pm)pm.onclick=()=>{S.meId=p.id;focusId=p.id;save();closeSheet();renderAll();toast("أنت الآن في مركز الشجرة")};
+    el.querySelector("#pToContact").onclick=()=>{addContact(p.id,"");closeSheet();showTab("v-contact")};
+    el.querySelector("#quickGo").onclick=()=>{
+      const names=el.querySelector("#quickKids").value.split(/[،,\n]+/).map(s=>s.trim()).filter(Boolean);
+      if(!names.length)return;const g=el.querySelector("#quickF").checked?"f":"m";
+      const asFather=p.gender!=="f";
+      names.forEach(n=>S.people.push({id:uid(),name:n,gender:g,father:asFather?p.id:"",mother:asFather?"":p.id,spouse:"",alive:true,city:"",phone:"",born:"",notes:""}));
+      save();renderAll();toast(`أُضيف ${names.length} إلى أبناء ${p.name}`);openPerson(p.id);
+    };
+    el.querySelector("#pDel").onclick=()=>{
+      const n=kids(p.id).length;
+      el.querySelector("#pConfirm").innerHTML=`<div class="confirm"><span>حذف «${esc(p.name)}» من الشجرة؟${n?` أبناؤه (${n}) يبقون ويصيرون بلا أب في الشجرة.`:""}</span><span style="flex:1"></span><button class="btn sm" type="button" id="cNo">تراجع</button><button class="btn sm danger" type="button" id="cYes">نعم، احذف</button></div>`;
+      el.querySelector("#cNo").onclick=()=>el.querySelector("#pConfirm").innerHTML="";
+      el.querySelector("#cYes").onclick=()=>{
+        S.people.forEach(x=>{if(x.father===p.id)x.father="";if(x.mother===p.id)x.mother=""});
+        S.people=S.people.filter(x=>x.id!==p.id);
+        [...S.contacts,...S.fixed,...S.variable].forEach(r=>{if(r.personId===p.id){r.name=nasab(p,3);r.personId=""}});
+        save();closeSheet();renderAll();toast(`حُذف ${p.name}`);
+      };
+    };
+  });
+}
+function editPerson(id,preset={}){
+  const p=id?byId(id):Object.assign({id:"",name:"",gender:"m",father:"",mother:"",spouse:"",alive:true,city:"",phone:"",born:"",notes:"",motherName:""},preset);
+  const men=S.people.filter(x=>x.gender==="m"&&x.id!==p.id),wom=S.people.filter(x=>x.gender==="f"&&x.id!==p.id);
+  const opt=(arr,sel)=>`<option value="">— لا يوجد في الشجرة —</option>`+arr.map(x=>`<option value="${x.id}" ${x.id===sel?"selected":""}>${esc(nasab(x,3))}</option>`).join("");
+  sheet(`<div class="hd"><h2>${id?"تعديل بيانات "+esc(p.name):"إضافة فرد"}</h2><button class="btn sm" type="button" data-close>إلغاء</button></div>
+  <form id="pf" class="grid2">
+    <label class="f"><span>الاسم</span><input type="text" id="e-name" value="${esc(p.name)}" required></label>
+    <label class="f"><span>الجنس</span><select id="e-g"><option value="m" ${p.gender==="m"?"selected":""}>ذكر</option><option value="f" ${p.gender==="f"?"selected":""}>أنثى</option></select></label>
+    <label class="f"><span>الأب</span><select id="e-f">${opt(men,p.father)}</select></label>
+    <label class="f"><span>الأم (من الشجرة)</span><select id="e-m">${opt(wom,p.mother)}</select></label>
+    <label class="f"><span>اسم الأم إن لم تكن في الشجرة</span><input type="text" id="e-mn" value="${esc(p.motherName||"")}"></label>
+    <label class="f"><span>الزوج / الزوجة</span><input type="text" id="e-sp" value="${esc(p.spouse)}"></label>
+    <label class="f"><span>المدينة</span><input type="text" id="e-city" value="${esc(p.city)}"></label>
+    <label class="f"><span>الجوال</span><input type="text" id="e-ph" value="${esc(p.phone)}" inputmode="tel" style="direction:ltr;text-align:right"></label>
+    <label class="f"><span>سنة الميلاد</span><input type="text" id="e-born" value="${esc(p.born)}" inputmode="numeric"></label>
+    <label class="chk" style="align-self:end"><input type="checkbox" id="e-alive" ${p.alive?"checked":""}> على قيد الحياة</label>
+    <label class="f" style="grid-column:1/-1"><span>ملاحظات</span><input type="text" id="e-notes" value="${esc(p.notes)}"></label>
+    <div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">حفظ</button></div>
+  </form>`,el=>{
+    el.querySelector("[data-close]").onclick=()=>id?openPerson(id):closeSheet();
+    el.querySelector("#pf").addEventListener("submit",e=>{
+      e.preventDefault();
+      const v=k=>el.querySelector(k).value.trim();
+      if(!v("#e-name"))return;
+      const np={id:p.id||uid(),name:v("#e-name"),gender:v("#e-g"),father:v("#e-f"),mother:v("#e-m"),motherName:v("#e-mn"),spouse:v("#e-sp"),city:v("#e-city"),phone:v("#e-ph"),born:v("#e-born"),alive:el.querySelector("#e-alive").checked,notes:v("#e-notes")};
+      // prevent cycles
+      let c=byId(np.father),g=0;while(c&&g++<80){if(c.id===np.id){toast("لا يصح أن يكون الشخص جدًّا لنفسه");return}c=byId(c.father)}
+      if(id){Object.assign(p,np)}else S.people.push(np);
+      save();renderAll();openPerson(np.id);toast("حُفظ");
+    });
+  });
+}
+$("#btnAddRoot").onclick=()=>editPerson("");
+
+/* ---------- kinship ---------- */
+function ancestors(id){ // map id -> {d, via(first step from start: 'f'|'m'), child(of this ancestor on path)}
+  const out=new Map();out.set(id,{d:0,via:null,child:null});const q=[id];
+  while(q.length){const cur=q.shift();const info=out.get(cur);const p=byId(cur);if(!p||info.d>40)continue;
+    [["f",p.father],["m",p.mother]].forEach(([k,pid])=>{if(pid&&byId(pid)&&!out.has(pid)){out.set(pid,{d:info.d+1,via:info.via||k,child:cur});q.push(pid)}})}
+  return out;
+}
+function relation(aId,bId){ // describe B relative to A
+  const A=byId(aId),B=byId(bId);if(!A||!B)return"";if(aId===bId)return"هما الشخص نفسه.";
+  const ma=ancestors(aId),mb=ancestors(bId);let best=null;
+  ma.forEach((ia,k)=>{const ib=mb.get(k);if(ib&&(!best||ia.d+ib.d<best.da+best.db))best={k,da:ia.d,db:ib.d,ia,ib}});
+  if(!best)return`لا يوجد جدّ مشترك مسجَّل في الشجرة بين «${esc(A.name)}» و«${esc(B.name)}».`;
+  const {da,db,ia,ib}=best;const fB=B.gender==="f";
+  const he=fB?"هي":"هو";const nb=`«${esc(nasab(B,2))}»`,na=`«${esc(nasab(A,2))}»`;
+  // parent of B on the path (for cousin gender)
+  const bParentOnPath=()=>byId(ib.child);
+  const sideA=ia.via; // 'f' father side, 'm' mother side
+  let t="";
+  if(da===0){t=db===1?(fB?"بنت":"ابن"):db===2?(fB?"حفيدة":"حفيد"):`من ذرية ${na} في الجيل ${db}`; if(db<=2)return`${nb} ${he} ${t} ${na}.`;return`${nb} ${t}.`}
+  if(db===0){t=da===1?(fB?"أم":"أب"):da===2?(fB?"جدة":"جد"):`جدّ أعلى (قبل ${da} أجيال)`;return`${nb} ${he} ${t} ${na}${da===2?(sideA==="m"?" من جهة الأم":" من جهة الأب"):""}.`}
+  if(da===1&&db===1)return`${nb} ${he} ${fB?"أخت":"أخ"} ${na}.`;
+  if(da===2&&db===1){t=sideA==="m"?(fB?"خالة":"خال"):(fB?"عمة":"عم");return`${nb} ${he} ${t} ${na}.`}
+  if(da===1&&db===2){const sib=bParentOnPath();t=(fB?"بنت ":"ابن ")+(sib&&sib.gender==="f"?"أخت":"أخ");return`${nb} ${he} ${t} ${na}.`}
+  if(da===2&&db===2){const bp=bParentOnPath();const pf=bp&&bp.gender==="f";t=(fB?"بنت ":"ابن ")+(sideA==="m"?(pf?"خالة":"خال"):(pf?"عمة":"عم"));return`${nb} ${he} ${t} ${na}.`}
+  if(da===3&&db===1){t=(fB?"عمة ":"عم ")+(sideA==="m"?"أمّ":"أبي");return`${nb} ${he} ${t} ${na}.`}
+  if(da===1&&db===3){return`${nb} ${he} ${fB?"حفيدة":"حفيد"} ${(byId(mb.get(best.k).child)||{}).gender==="f"?"أخت":"أخ"} ${na}.`}
+  if(da===3&&db===2){return`${nb} ${he} ${fB?"بنت":"ابن"} عمّ ${sideA==="m"?"أمّ":"أبي"} ${na}.`}
+  if(da===2&&db===3){return`${na} ${A.gender==="f"?"هي بنت":"هو ابن"} عمّ ${B.father&&ancestors(B.father).has(best.k)?"أبي":"أمّ"} ${nb}.`}
+  const k=byId(best.k);const gw=n=>n===1?"جيل واحد":n===2?"جيلين":n+" أجيال";
+  return`يلتقيان في الجد «${esc(nasab(k,1))}»: ${na} على بعد ${gw(da)} منه، و${nb} على بعد ${gw(db)}.`;
+}
+function relUpdate(){}
+
+/* ---------- contact ---------- */
+const acC=makeAC($("#cName"),{placeholder:"اكتب الاسم الأول، مثل: أحمد"});
+function addContact(personId,name){
+  if(personId&&S.contacts.some(c=>c.personId===personId)){toast("موجود في الجدول");return}
+  S.contacts.unshift({id:uid(),personId,name,log:[],appt:null});save();renderContacts();toast("أُضيف إلى جدول التواصل");
+}
+$("#cAdd").onclick=()=>{const v=acC.get();if(!acC.valid()){acC.input.focus();return}addContact(v.personId,v.personId?"":v.text);acC.clear()};
+function gcalLink(title,iso){
+  const s=new Date(iso),e=new Date(s.getTime()+30*6e4);const f=d=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
+  return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(title)+"&dates="+f(s)+"/"+f(e)+"&details="+encodeURIComponent("تذكير من تطبيق ذو القربى: صلة الرحم");
+}
+let openRow=null,apptRow=null,metaRow=null;
+const FREQ=[[7,"كل أسبوع"],[14,"كل أسبوعين"],[30,"كل شهر"],[90,"كل 3 أشهر"]];
+function defaultFreq(c){ // by closeness to the owner if known: parents 7, siblings 14, else 30
+  return 30;}
+const freqOf=c=>c.freq||defaultFreq(c);
+function dueIn(c){const last=c.log[0];if(!last)return -1;return freqOf(c)-daysAgo(last)} // <0 overdue
+const phoneOf=c=>{const p=c.personId&&byId(c.personId);return p&&p.phone?p.phone:""};
+const waNum=ph=>{let d=ph.replace(/\D/g,"");if(d.startsWith("00"))d=d.slice(2);else if(d.startsWith("0"))d="966"+d.slice(1);return d};
+const TYPES=["اتصال","زيارة","رسالة"];
+function renderToday(){
+  const late=S.contacts.filter(c=>dueIn(c)<0).sort((a,b)=>dueIn(a)-dueIn(b));
+  const now=new Date(),end=new Date();end.setHours(23,59,59);
+  const appts=S.contacts.filter(c=>c.appt&&new Date(c.appt)<=end);
+  const ym=ymNow(),day=now.getDate();
+  const dueF=S.fixed.filter(r=>day>=r.day&&!r.transfers.some(t=>t.ym===ym));
+  const item=(c,extra)=>{const ph=phoneOf(c);return`<li><span class="who"><b>${esc(nameOf(c).split(" ")[0])}</b> <span class="full">${extra}</span></span>${ph?`<a class="btn sm" href="tel:${esc(ph)}">اتصال</a><a class="btn sm" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener">واتساب</a>`:""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></li>`};
+  const total=late.length+appts.length+dueF.length;
+  $("#today").innerHTML=`<div class="row"><h2 class="grow">اليوم</h2><span class="pill ${total?"warn":"good"}">${total?total+" بانتظارك":"لا شيء متأخر"}</span></div>
+  ${appts.length?`<h3>مواعيد اليوم</h3><ul class="today-list">${appts.map(c=>item(c,new Date(c.appt)<now?"فات موعده "+fmtDT(c.appt):"الساعة "+new Date(c.appt).toLocaleTimeString(LOC,{hour:"numeric",minute:"2-digit"}))).join("")}</ul>`:""}
+  ${late.length?`<h3>تأخرتَ في التواصل معهم</h3><ul class="today-list">${late.slice(0,8).map(c=>item(c,c.log[0]?"متأخر "+(-dueIn(c))+" يوم ("+FREQ.find(f=>f[0]===freqOf(c))?.[1]+")":"لم يُسجَّل تواصل بعد")).join("")}</ul>`:""}
+  ${dueF.length?`<h3>مبالغ مستحقة</h3><ul class="today-list">${dueF.map(r=>`<li><span class="who"><b>${esc(nameOf(r).split(" ")[0])}</b> <span class="full num">${money(r.amount)}</span></span><button class="btn sm gold" type="button" data-gofixed>الإحسان</button></li>`).join("")}</ul>`:""}
+  ${!total?`<p class="sub" style="margin:0">أحسنت، كل أقاربك في الجدول ضمن موعد التواصل.</p>`:""}`;
+}
+$("#today").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.done){const r=S.contacts.find(x=>x.id===b.dataset.done);logContact(r)}
+  if("gofixed" in b.dataset)showTab("v-ihsan")});
+function logContact(r){const iso=new Date().toISOString();r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;metaRow=r.id;save();renderContacts();toast("سُجِّل التواصل مع "+nameOf(r).split(" ")[0])}
+function renderContacts(){
+  renderToday();
+  const rows=S.contacts.slice().sort((a,b)=>dueIn(a)-dueIn(b));
+  $("#cBody").innerHTML=rows.length?rows.map(c=>{
+    const last=c.log[0];const dAgo=last?daysAgo(last):null;
+    const di=dueIn(c);const lastPill=(!last?`<span class="pill bad">لا يوجد</span>`:`<span class="num">${fmtD(last)}</span><br><span class="pill ${di>=3?"good":di>=0?"warn":"bad"}">${dAgo===0?"اليوم":"قبل "+dAgo+" يوم"}${di<0?" · متأخر":""}</span>`)+
+      `<br><select class="freq" data-freq="${c.id}" aria-label="تواصل كل">${FREQ.map(([v,l])=>`<option value="${v}" ${v===freqOf(c)?"selected":""}>${l}</option>`).join("")}</select>`;
+    const ph=phoneOf(c);const m=(c.meta||{});
+    let appt="—";
+    if(c.appt){const late=new Date(c.appt)<new Date();appt=`<span class="num">${fmtDT(c.appt)}</span><br>${late?'<span class="pill bad">فات موعده</span>':'<span class="pill good">قادم</span>'} <a class="btn sm" href="${gcalLink("تواصل مع "+nameOf(c),c.appt)}" target="_blank" rel="noopener">تقويم Google</a>`}
+    const full=nameOf(c);const first=full.split(" ")[0];
+    return `<tr><td><b>${esc(first)}</b><div class="full">${esc(full)}</div>
+      ${openRow===c.id?`<ul class="hist">${c.log.map(l=>`<li class="num">✓ ${fmtDT(l)} <span>· ${hijri(l)}</span>${m[l]?` · ${esc(m[l].type)}${m[l].note?": "+esc(m[l].note):""}`:""}</li>`).join("")||"<li>لا سجل بعد</li>"}</ul>`:""}
+      <button class="btn sm" type="button" data-hist="${c.id}" style="margin-top:4px">${openRow===c.id?"إخفاء السجل":"السجل ("+c.log.length+")"}</button></td>
+      <td data-l="آخر تواصل">${lastPill}</td><td data-l="الموعد القادم">${appt}</td>
+      <td class="wide"><div class="acts">${ph?`<a class="btn sm" href="tel:${esc(ph)}">اتصال</a><a class="btn sm" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener">واتساب</a>`:""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button><button class="btn sm soft" type="button" data-appt="${c.id}">موعد تواصل</button><button class="btn sm danger" type="button" data-rm="${c.id}" aria-label="إزالة">إزالة</button></div>
+      ${metaRow===c.id&&c.log[0]?`<div class="row" style="margin-top:8px"><span class="sub">نوع التواصل:</span>${TYPES.map(t=>`<button class="btn sm ${(m[c.log[0]]||{}).type===t?"soft":""}" type="button" data-mtype="${t}" data-mid="${c.id}">${t}</button>`).join("")}<input type="text" class="grow" id="mn-${c.id}" placeholder="ملاحظة قصيرة (اختياري)" value="${esc((m[c.log[0]]||{}).note||"")}"><button class="btn sm primary" type="button" data-mok="${c.id}">تم</button></div>`:""}
+      ${apptRow===c.id?`<div class="row" style="margin-top:8px"><input type="date" id="ad-${c.id}" style="width:auto"><input type="time" id="at-${c.id}" value="19:00" style="width:auto"><button class="btn sm primary" type="button" data-apsave="${c.id}">حفظ الموعد</button>${c.appt?`<button class="btn sm" type="button" data-apclr="${c.id}">إلغاء الموعد</button>`:""}</div>`:""}
+      ${confirmRm===c.id?`<div class="confirm" style="margin-top:8px">إزالة «${esc(first)}» من الجدول؟ <button class="btn sm" type="button" data-rmno>تراجع</button><button class="btn sm danger" type="button" data-rmyes="${c.id}">نعم</button></div>`:""}</td></tr>`;
+  }).join(""):`<tr><td colspan="4"><div class="empty">الجدول فارغ. اكتب اسم قريب في الأعلى لإضافته.</div></td></tr>`;
+  if(apptRow){const c=S.contacts.find(x=>x.id===apptRow);const di=$("#ad-"+apptRow);if(di){const base=c&&c.appt?new Date(c.appt):new Date(Date.now()+864e5);di.value=new Date(base.getTime()-base.getTimezoneOffset()*6e4).toISOString().slice(0,10);if(c&&c.appt)$("#at-"+apptRow).value=base.toTimeString().slice(0,5)}}
+}
+let confirmRm=null;
+$("#cBody").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  const c=id=>S.contacts.find(x=>x.id===id);
+  if(d.done){logContact(c(d.done));return}
+  else if(d.mtype){const r=c(d.mid);r.meta[r.log[0]]=Object.assign(r.meta[r.log[0]]||{},{type:d.mtype,note:$("#mn-"+r.id).value.trim()});save()}
+  else if(d.mok){const r=c(d.mok);r.meta=r.meta||{};r.meta[r.log[0]]=Object.assign(r.meta[r.log[0]]||{type:"اتصال"},{note:$("#mn-"+r.id).value.trim()});metaRow=null;save()}
+  else if(d.hist){openRow=openRow===d.hist?null:d.hist}
+  else if(d.appt){apptRow=apptRow===d.appt?null:d.appt}
+  else if(d.apsave){const dv=$("#ad-"+d.apsave).value,tv=$("#at-"+d.apsave).value||"19:00";if(!dv)return;const r=c(d.apsave);r.appt=new Date(dv+"T"+tv).toISOString();apptRow=null;save();toast("حُفظ الموعد. اضغط «تقويم Google» لإضافته هناك")}
+  else if(d.apclr){c(d.apclr).appt=null;apptRow=null;save()}
+  else if(d.rm){confirmRm=d.rm}
+  else if("rmno" in d){confirmRm=null}
+  else if(d.rmyes){S.contacts=S.contacts.filter(x=>x.id!==d.rmyes);confirmRm=null;save()}
+  renderContacts();
+});
+$("#cBody").addEventListener("change",e=>{const id=e.target.dataset.freq;if(!id)return;S.contacts.find(x=>x.id===id).freq=+e.target.value;save();renderContacts();toast("حُدِّد موعد التواصل الدوري")});
+
+/* ---------- ihsan ---------- */
+const acF=makeAC($("#fName"),{placeholder:"اسم المستفيد"});
+const acV=makeAC($("#vName"),{placeholder:"الاسم"});
+const ymNow=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")};
+$("#fAdd").onclick=()=>{const v=acF.get(),a=parseFloat($("#fAmt").value),day=Math.min(31,Math.max(1,parseInt($("#fDay").value)||1));
+  if(!acF.valid()){acF.input.focus();return}if(!(a>0)){$("#fAmt").focus();return}
+  S.fixed.push({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,day,transfers:[]});save();acF.clear();$("#fAmt").value="";renderIhsan();toast("أُضيف المبلغ الثابت")};
+$("#vAdd").onclick=()=>{const v=acV.get(),a=parseFloat($("#vAmt").value);
+  if(!acV.valid()){acV.input.focus();return}if(!(a>0)){$("#vAmt").focus();return}
+  S.variable.unshift({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,date:new Date().toISOString()});save();acV.clear();$("#vAmt").value="";renderIhsan();toast("حُفظت الحوالة بتاريخ اليوم")};
+let fHist=null,fConfirm=null,vConfirm=null;
+function renderIhsan(){
+  const ym=ymNow(),yr=ym.slice(0,4);
+  $("#iMonthLbl").textContent="شهر "+new Date().toLocaleDateString(LOC,{month:"long",year:"numeric"});
+  const monthF=S.fixed.reduce((s,r)=>s+r.transfers.filter(t=>t.ym===ym).reduce((a,t)=>a+t.amount,0),0);
+  const monthV=S.variable.filter(v=>v.date.slice(0,7)===ym).reduce((a,v)=>a+v.amount,0);
+  const yearAll=S.fixed.reduce((s,r)=>s+r.transfers.filter(t=>t.ym.slice(0,4)===yr).reduce((a,t)=>a+t.amount,0),0)+S.variable.filter(v=>v.date.slice(0,4)===yr).reduce((a,v)=>a+v.amount,0);
+  const pending=S.fixed.filter(r=>!r.transfers.some(t=>t.ym===ym)).reduce((a,r)=>a+r.amount,0);
+  $("#iTotals").innerHTML=[["حُوِّل هذا الشهر",monthF+monthV],["متبقٍّ من الثابت",pending],["مجموع السنة",yearAll]].map(([l,v])=>`<div class="stat"><b class="num">${money(v)}</b><span>${l}</span></div>`).join("");
+  const today=new Date().getDate();
+  $("#fBody").innerHTML=S.fixed.length?S.fixed.map(r=>{
+    const t=r.transfers.find(x=>x.ym===ym);const full=nameOf(r);
+    const due=!t&&today>=r.day;
+    return `<tr><td><b>${esc(full.split(" ")[0])}</b><div class="full">${esc(full)}</div>
+      ${fHist===r.id?`<ul class="hist">${r.transfers.map(x=>`<li class="num">${fmtD(x.date)} · ${money(x.amount)}</li>`).join("")||"<li>لا تحويلات بعد</li>"}</ul>`:""}
+      <button class="btn sm" type="button" data-fh="${r.id}" style="margin-top:4px">${fHist===r.id?"إخفاء السجل":"السجل ("+r.transfers.length+")"}</button>
+      ${fConfirm===r.id?`<div class="confirm" style="margin-top:6px">حذف المبلغ الثابت لـ«${esc(full.split(" ")[0])}»؟ <button class="btn sm" type="button" data-fno>تراجع</button><button class="btn sm danger" type="button" data-fyes="${r.id}">نعم</button></div>`:""}</td>
+      <td data-l="المبلغ"><input type="number" class="amt num" value="${r.amount}" min="0" data-famt="${r.id}" aria-label="المبلغ"></td>
+      <td class="num" data-l="الاستحقاق">يوم ${r.day}<br><button class="btn sm danger" type="button" data-fdel="${r.id}">حذف</button></td>
+      <td class="wide" data-l="هذا الشهر">${t?`<span class="pill good">تم التحويل</span><div class="full num">${fmtD(t.date)} · ${money(t.amount)}</div><button class="btn sm" type="button" data-fundo="${r.id}">تراجع</button>`
+        :`<span class="pill ${due?"warn":"mute"}">${due?"مستحق":"لم يحن"}</span><br><button class="btn sm gold" type="button" data-fdone="${r.id}" style="margin-top:4px">تم التحويل</button>`}</td></tr>`;
+  }).join(""):`<tr><td colspan="4"><div class="empty">لا مبالغ ثابتة بعد. أضف اسمًا ومبلغًا ويوم الاستحقاق.</div></td></tr>`;
+  $("#vBody").innerHTML=S.variable.length?S.variable.map(v=>{const full=nameOf(v);return`<tr><td><b>${esc(full.split(" ")[0])}</b><div class="full">${esc(full)}</div>
+    ${vConfirm===v.id?`<div class="confirm" style="margin-top:6px">حذف هذه الحوالة؟ <button class="btn sm" type="button" data-vno>تراجع</button><button class="btn sm danger" type="button" data-vyes="${v.id}">نعم</button></div>`:""}</td>
+    <td data-l="المبلغ"><input type="number" class="amt num" value="${v.amount}" min="0" data-vamt="${v.id}" aria-label="المبلغ"></td>
+    <td class="num" data-l="التاريخ">${fmtD(v.date)}<div class="full">${hijri(v.date)}</div></td>
+    <td class="wide"><button class="btn sm danger" type="button" data-vdel="${v.id}">حذف</button></td></tr>`}).join(""):`<tr><td colspan="4"><div class="empty">لا حوالات بعد.</div></td></tr>`;
+}
+$("#v-ihsan").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;const d=b.dataset;const F=id=>S.fixed.find(x=>x.id===id);const ym=ymNow();
+  if(d.fdone){const r=F(d.fdone);r.transfers.unshift({date:new Date().toISOString(),amount:r.amount,ym});save();toast("سُجِّل التحويل بتاريخ اليوم")}
+  else if(d.fundo){const r=F(d.fundo);r.transfers=r.transfers.filter(t=>t.ym!==ym);save()}
+  else if(d.fh){fHist=fHist===d.fh?null:d.fh}
+  else if(d.fdel){fConfirm=d.fdel}
+  else if("fno" in d){fConfirm=null}
+  else if(d.fyes){S.fixed=S.fixed.filter(x=>x.id!==d.fyes);fConfirm=null;save()}
+  else if(d.vdel){vConfirm=d.vdel}
+  else if("vno" in d){vConfirm=null}
+  else if(d.vyes){S.variable=S.variable.filter(x=>x.id!==d.vyes);vConfirm=null;save()}
+  else return;
+  renderIhsan();renderToday();
+});
+$("#v-ihsan").addEventListener("change",e=>{
+  const i=e.target;const a=parseFloat(i.value);if(!(a>=0))return;
+  if(i.dataset.famt){S.fixed.find(x=>x.id===i.dataset.famt).amount=a;save();renderIhsan();toast("عُدِّل المبلغ")}
+  if(i.dataset.vamt){S.variable.find(x=>x.id===i.dataset.vamt).amount=a;save();renderIhsan();toast("عُدِّل المبلغ")}
+});
+
+/* ---------- settings ---------- */
+$("#btnSettings").onclick=()=>{
+  sheet(`<div class="hd"><h2>الإعدادات</h2><button class="btn sm" type="button" data-close>إغلاق</button></div>
+  <div class="grid2">
+    <label class="f"><span>العملة</span><input type="text" id="s-cur" value="${esc(S.currency)}"></label>
+    <label class="f"><span>اسم العائلة (يُلحق بالنسب)</span><input type="text" id="s-fam" value="${esc(S.family)}" placeholder="مثل: آل فلان"></label>
+  </div>
+  <div class="panel" style="background:var(--bg)"><h3>قفل التطبيق</h3>
+    <p class="sub" style="margin:0">${S.pinHash?"القفل مفعّل. يُطلب الرمز عند فتح التطبيق.":"اختر رمزًا من 4 أرقام أو أكثر يُطلب عند فتح التطبيق."}</p>
+    <div class="row"><input type="password" id="s-pin" inputmode="numeric" placeholder="الرمز الجديد" style="max-width:160px;direction:ltr"><button class="btn soft" type="button" id="s-pinset">${S.pinHash?"تغيير الرمز":"تفعيل القفل"}</button>${S.pinHash?'<button class="btn danger" type="button" id="s-pinoff">إلغاء القفل</button>':""}</div>
+    <label class="chk"><input type="checkbox" id="s-veil" ${S.hideAmounts?"checked":""}> إخفاء مبالغ الإحسان عند الفتح</label>
+  </div>
+  <div class="row"><button class="btn primary" type="button" id="s-save">حفظ</button></div>
+  <div class="panel" style="background:var(--bg)"><h3>نسخة احتياطية</h3>
+    <p class="sub" style="margin:0">بياناتك محفوظة في هذا المتصفح فقط. انسخ النص واحفظه في مكان آمن، والصقه هنا لاستعادته.</p>
+    <textarea id="s-json" spellcheck="false"></textarea>
+    <div class="row"><button class="btn" type="button" id="s-copy">نسخ النسخة الحالية</button><button class="btn soft" type="button" id="s-import">استعادة من النص الملصق</button></div>
+  </div>
+  <div class="row"><button class="btn" type="button" id="s-demo">تحميل البيانات التجريبية</button><span style="flex:1"></span><button class="btn danger" type="button" id="s-wipe">مسح كل البيانات</button></div>
+  <div id="s-conf"></div>`,el=>{
+    const ta=el.querySelector("#s-json");ta.value=JSON.stringify(S);
+    el.querySelector("[data-close]").onclick=closeSheet;
+    el.querySelector("#s-pinset").onclick=async()=>{const v=el.querySelector("#s-pin").value.trim();if(!/^\d{4,8}$/.test(v)){toast("الرمز من 4 إلى 8 أرقام");return}S.pinHash=await hashPin(v);save();unlocked=true;closeSheet();renderAll();toast("فُعِّل القفل")};
+    const off=el.querySelector("#s-pinoff");if(off)off.onclick=()=>{delete S.pinHash;save();closeSheet();renderAll();toast("أُلغي القفل")};
+    el.querySelector("#s-veil").onchange=e=>{S.hideAmounts=e.target.checked;veiled=S.hideAmounts;save();renderAll()};
+    el.querySelector("#s-save").onclick=()=>{S.currency=el.querySelector("#s-cur").value.trim();S.family=el.querySelector("#s-fam").value.trim();save();renderAll();toast("حُفظت الإعدادات")};
+    el.querySelector("#s-copy").onclick=()=>{ta.value=JSON.stringify(S);navigator.clipboard?.writeText(ta.value).then(()=>toast("نُسخت النسخة الاحتياطية"),()=>{ta.select();toast("حدِّد النص وانسخه")})??(ta.select())};
+    el.querySelector("#s-import").onclick=()=>{try{const d=JSON.parse(ta.value);if(!Array.isArray(d.people))throw 0;S=Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},d);save();renderAll();closeSheet();toast("استُعيدت البيانات")}catch(e){toast("النص الملصق ليس نسخة احتياطية صالحة")}};
+    const conf=(msg,fn)=>{const c=el.querySelector("#s-conf");c.innerHTML=`<div class="confirm">${msg}<span style="flex:1"></span><button class="btn sm" type="button" id="k-no">تراجع</button><button class="btn sm danger" type="button" id="k-yes">نعم</button></div>`;c.querySelector("#k-no").onclick=()=>c.innerHTML="";c.querySelector("#k-yes").onclick=fn};
+    el.querySelector("#s-demo").onclick=()=>conf("ستحل البيانات التجريبية محل بياناتك الحالية.",()=>{S=sample();save();renderAll();closeSheet()});
+    el.querySelector("#s-wipe").onclick=()=>conf("مسح الشجرة والتواصل والإحسان كلها؟",()=>{S={demo:false,currency:S.currency||"ريال",family:"",people:[],contacts:[],fixed:[],variable:[]};save();renderAll();closeSheet();toast("مُسحت البيانات")});
+  });
+};
+$("#btnStartReal").onclick=()=>{S={demo:false,currency:S.currency||"ريال",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[]};save();renderAll();toast("ابدأ بإضافة الجد الأكبر");};
+
+
+/* ---------- top bar ---------- */
+const DEFAULT_IDEAS=["مشاركة الشجرة مع الأقارب برابط أو رمز عائلة","أخبار العائلة ومناسباتها مع تأكيد الحضور","ألبوم صور مرتبط بأفراد الشجرة","طلبات إضافة وتعديل يراجعها مشرف الشجرة","شجرة ورقية بتصميم جاهز للطباعة","تذكير قبل موعد التواصل بيوم"];
+if(!Array.isArray(S.ideas)){S.ideas=DEFAULT_IDEAS.map(t=>({id:uid(),text:t,date:new Date().toISOString(),done:false}));save()}
+const segs=[...document.querySelectorAll(".seg button")];
+segs.forEach(b=>b.addEventListener("click",()=>{segs.forEach(x=>{const on=x===b;x.setAttribute("aria-selected",on);$("#"+x.dataset.p).hidden=!on});if(b.dataset.p==="p-ask")initAsk()}));
+// search
+function gSearch(){
+  const q=norm($("#gq").value);const out=$("#gRes");
+  if(!q){out.innerHTML="";return}
+  const hitsG=S.people.filter(p=>norm(nasab(p,6)+" "+p.city+" "+p.spouse).includes(q)||(p.phone&&p.phone.replace(/\D/g,"").includes(q.replace(/\D/g,"")||"#"))).slice(0,12);
+  out.innerHTML=hitsG.length?hitsG.map(p=>{const c=S.contacts.find(x=>x.personId===p.id);const last=c&&c.log[0];
+    return`<div class="res"><div class="who"><b>${esc(p.name)}</b><span class="full">${esc(nasab(p,4))}${p.city?" · "+esc(p.city):""}</span></div>
+    ${last?`<span class="pill ${daysAgo(last)<=14?"good":daysAgo(last)<=45?"warn":"bad"}">${daysAgo(last)===0?"اليوم":"قبل "+daysAgo(last)+" يوم"}</span>`:""}
+    <button class="btn sm soft" type="button" data-gopen="${p.id}">الملف</button></div>`}).join(""):`<div class="empty">لا يوجد قريب بهذا الاسم في الشجرة.</div>`;
+}
+$("#gq").addEventListener("input",gSearch);
+$("#gRes").addEventListener("click",e=>{const b=e.target.closest("[data-gopen]");if(b)openPerson(b.dataset.gopen)});
+// ideas
+function renderIdeas(){
+  const open=S.ideas.filter(i=>!i.done).length;$("#ideaCount").textContent=open;$("#ideaCount").hidden=!open;
+  const list=S.ideas.slice().sort((a,b)=>a.done-b.done);
+  $("#ideas").innerHTML=list.length?list.map(i=>`<div class="idea ${i.done?"done":""}"><input type="checkbox" ${i.done?"checked":""} data-idone="${i.id}" aria-label="تم التنفيذ" style="margin-top:6px"><div class="tx"><b>${esc(i.text)}</b><div class="full">${fmtD(i.date)}${i.done?" · نُفِّذ":""}</div></div><button class="btn sm danger" type="button" data-idel="${i.id}">حذف</button></div>`).join(""):`<div class="empty">لا اقتراحات بعد.</div>`;
+}
+$("#ideaForm").addEventListener("submit",e=>{e.preventDefault();const t=$("#ideaIn").value.trim();if(!t)return;S.ideas.unshift({id:uid(),text:t,date:new Date().toISOString(),done:false});$("#ideaIn").value="";save();renderIdeas();toast("أُضيف الاقتراح")});
+$("#ideas").addEventListener("change",e=>{const id=e.target.dataset.idone;if(!id)return;const i=S.ideas.find(x=>x.id===id);i.done=e.target.checked;save();renderIdeas()});
+$("#ideas").addEventListener("click",e=>{const id=e.target.closest("[data-idel]")?.dataset.idel;if(!id)return;S.ideas=S.ideas.filter(x=>x.id!==id);save();renderIdeas()});
+// ask Claude
+let sampleFn,askReady=false,turns=[],askCtl=null,hasTools=false;
+const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
+1) ذو القربى: شجرة العائلة. «إضافة فرد» لإضافة شخص، ولمس الاسم يفتح ملفه (تعديل البيانات، إضافة الأبناء دفعة واحدة بأسماء مفصولة بفاصلة، إضافة للتواصل، حذف). أزرار + و − للتكبير والتصغير. وفي ملف كل فرد خانة «ما صلته بـ» تحسب العلاقة بينه وبين أي قريب آخر.
+2) التواصل: جدول. اكتب الاسم الأول فيظهر الاسم الكامل من الشجرة ثم «إضافة للجدول». «تم التواصل» يحفظ التاريخ والوقت تلقائيًا. «موعد تواصل» تختار تاريخًا ووقتًا ثم «حفظ الموعد»، ويظهر زر «تقويم Google» لإضافته إلى التقويم. «السجل» يعرض مرات التواصل.
+3) الإحسان: «المبالغ الثابتة» اسم ومبلغ ويوم الاستحقاق، وزر «تم التحويل» يسجل التحويل بتاريخ اليوم، والمبلغ قابل للتعديل من خانته. «حوالات غير ثابتة» اسم ومبلغ ثم «حفظ» والتاريخ يُسجَّل تلقائيًا. في الأعلى مجموع الشهر والمتبقي ومجموع السنة.
+الشريط العلوي: «بحث» عن قريب، «اسأل Claude»، «تطوير» لقائمة الاقتراحات. الإعدادات: العملة، اسم العائلة، النسخة الاحتياطية. البيانات محفوظة في متصفح الجهاز فقط.`;
+function familyData(){
+  const cmap=new Map(S.contacts.map(c=>[c.personId,c]));
+  const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id);return[p.id,nasab(p,5),p.gender==="f"?"أنثى":"ذكر",p.alive?"حي":"متوفى",p.city||"",p.spouse||"",c&&c.log[0]?c.log[0].slice(0,10):"",c&&c.appt?c.appt.slice(0,16):""].join(" | ")}).join("\n");
+  const fixed=S.fixed.map(r=>`${nameOf(r)} | ${r.amount} | يوم ${r.day} | آخر تحويل ${r.transfers[0]?r.transfers[0].date.slice(0,10):"لا يوجد"}`).join("\n");
+  const vari=S.variable.slice(0,80).map(v=>`${nameOf(v)} | ${v.amount} | ${v.date.slice(0,10)}`).join("\n");
+  return`تاريخ اليوم: ${new Date().toISOString().slice(0,10)}. العملة: ${S.currency||""}.
+الأفراد (المعرّف | النسب | الجنس | الحالة | المدينة | الزوج/الزوجة | آخر تواصل | الموعد القادم):
+${people||"لا يوجد"}
+المبالغ الثابتة (الاسم | المبلغ | الاستحقاق | آخر تحويل):
+${fixed||"لا يوجد"}
+الحوالات غير الثابتة (الاسم | المبلغ | التاريخ):
+${vari||"لا يوجد"}`;
+}
+const RULES=()=>`أنت مساعد داخل تطبيق «ذو القربى» لصلة الرحم. أجب بالعربية باختصار ووضوح، بلا تنسيق Markdown ثقيل. أجب عن أسئلة المستخدم عن أقاربه من البيانات أدناه فقط، ولا تخترع أشخاصًا أو تواريخ. لمعرفة صلة القرابة بين شخصين استعمل أداة kinship بمعرّفيهما إن كانت متاحة. وأجب عن أسئلة طريقة استخدام التطبيق من الدليل.
+
+${APP_GUIDE}
+
+${familyData()}`;
+function addMsg(cls,text){const d=document.createElement("div");d.className="msg "+cls;d.textContent=text;$("#chat").appendChild(d);$("#chat").scrollTop=1e9;return d}
+async function initAsk(){
+  if(askReady)return;askReady=true;
+  if(!$("#chat").children.length)addMsg("ai","اسألني عن أي قريب: صلته بك، متى آخر تواصل معه، ما حُوِّل له. أو اسأل عن طريقة استخدام التطبيق.");
+  try{sampleFn=window.claude?await window.claude.use("sample"):null}catch(e){sampleFn=null}
+  if(!sampleFn){$("#askNote").textContent="الاستفسار من Claude يعمل حين يُفتح التطبيق داخل Claude.";$("#askNote").hidden=false;$("#askGo").disabled=true;return}
+  try{const l=await sampleFn.limits();hasTools=!!l.tools}catch(e){}
+}
+async function ask(q){
+  if(!sampleFn||!q)return;
+  turns.push({role:"user",content:q});addMsg("me",q);
+  const bubble=addMsg("ai","يفكّر...");askCtl=new AbortController();
+  $("#askGo").disabled=true;$("#askStop").hidden=false;$("#askIn").value="";
+  const opts={cache:false,signal:askCtl.signal,onText:({text})=>{bubble.textContent=text;$("#chat").scrollTop=1e9}};
+  if(hasTools)opts.tools=[{name:"kinship",description:"يحسب صلة القرابة: ماذا يكون الشخص b بالنسبة إلى الشخص a. يعيد جملة عربية. المعرّفات من عمود المعرّف في البيانات.",
+    inputSchema:{type:"object",properties:{a:{type:"string"},b:{type:"string"}},required:["a","b"]},
+    execute:i=>{const a=String(i.a),b=String(i.b);if(!byId(a)||!byId(b))throw new Error("معرّف غير موجود");return relation(a,b).replace(/<[^>]+>/g,"")}}];
+  try{
+    const {text}=await sampleFn([{role:"user",content:RULES()},...turns.slice(-10)],opts);
+    turns.push({role:"assistant",content:text});
+  }catch(e){
+    turns.pop();
+    if(e.code==="cancelled"){bubble.textContent=e.text||"أُوقف."}
+    else if(e.code==="not_granted"||e.code==="sampling_disabled"){bubble.remove();$("#askNote").textContent="لم يُسمح للتطبيق باستعمال Claude في هذه الجلسة.";$("#askNote").hidden=false;$("#askGo").disabled=true;$("#askStop").hidden=true;return}
+    else if(e.code==="rate_limited"){bubble.textContent=(e.text?e.text+"\n\n":"")+"كثرت الأسئلة. حاول بعد قليل.";bubble.classList.add("err")}
+    else{bubble.textContent=(e.text?e.text+"\n\n":"")+"تعذّر الحصول على إجابة. أعد المحاولة.";bubble.classList.add("err")}
+  }finally{$("#askGo").disabled=!sampleFn;$("#askStop").hidden=true}
+}
+$("#askForm").addEventListener("submit",e=>{e.preventDefault();ask($("#askIn").value.trim())});
+$("#askStop").onclick=()=>askCtl&&askCtl.abort();
+$("#askChips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(b){$("#askIn").value=b.textContent;$("#askIn").focus()}});
+
+
+/* ---------- family view: you in the centre ---------- */
+let focusId=null;
+const fa=p=>p&&byId(p.father), mo=p=>p&&byId(p.mother);
+function sibsOf(p){if(!p)return[];return S.people.filter(x=>x.id!==p.id&&((p.father&&x.father===p.father)||(p.mother&&x.mother===p.mother)))}
+function mk(name,g,father,mother){const id=uid();S.people.push({id,name,gender:g,father:father||"",mother:mother||"",spouse:"",alive:true,city:"",phone:"",born:"",notes:""});return id}
+function pc(x,role,big){if(!x)return"";const r=role||"";return`<button class="pc ${x.gender==="f"?"f":""} ${x.alive?"":"dead"} ${big?"big":""}" type="button" data-open="${x.id}">${esc(x.name)}${r?`<small>${esc(r)}${x.alive?"":(x.gender==="f"?" · رحمها الله":" · رحمه الله")}</small>`:(x.alive?"":`<small>${x.gender==="f"?"رحمها الله":"رحمه الله"}</small>`)}</button>`}
+const addB=(kind,label)=>`<button class="add" type="button" data-add="${kind}">+ ${label}</button>`;
+function renderFam(){
+  const host=$("#fam");if(!host)return;
+  if(!S.meId||!byId(S.meId)){
+    const opts=S.people.length?`<p class="sub" style="margin:0">أو اختر نفسك من الشجرة الموجودة:</p><div class="ac" id="mePick"></div>`:"";
+    host.innerHTML=`<div class="band" style="padding:16px"><h3>ابدأ شجرتك باسمك</h3><p class="sub" style="margin:0">تكون أنت في المركز، وأقارب أبيك يمينًا وأقارب أمك يسارًا، وتضيف كل قريب بلمسة من مكانه.</p>
+      <div class="row" style="justify-content:center"><input type="text" id="meName" placeholder="اسمك الأول" style="max-width:200px"><div class="gender-pick" id="meG"><button class="btn sm" type="button" data-g="m" aria-pressed="true">ذكر</button><button class="btn sm" type="button" data-g="f" aria-pressed="false">أنثى</button></div><button class="btn primary" type="button" id="meGo">ابدأ</button></div>${opts}</div>`;
+    let g="m";host.querySelectorAll("#meG button").forEach(b=>b.onclick=()=>{g=b.dataset.g;host.querySelectorAll("#meG button").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+    $("#meGo").onclick=()=>{const n=$("#meName").value.trim();if(!n){$("#meName").focus();return}S.meId=mk(n,g);S.demo=false;focusId=S.meId;save();renderAll()};
+    if(S.people.length)makeAC($("#mePick"),{placeholder:"اكتب اسمك",allowFree:false,onPick:st=>{S.meId=st.personId;focusId=st.personId;save();renderAll()}});
+    $("#famBack").hidden=true;$("#famTitle").textContent="عائلتي";return;
+  }
+  if(!focusId||!byId(focusId))focusId=S.meId;
+  const me=byId(focusId),isMe=focusId===S.meId;
+  $("#famTitle").textContent=isMe?"عائلتي":"عائلة "+me.name;$("#famBack").hidden=isMe;
+  const F=fa(me),M=mo(me);
+  const side=(par,cls,title,pk,gfk,gmk,unk,unM,unF,parLbl,sM,sF)=>{
+    const gf=fa(par),gm=mo(par);
+    const uncles=par?sibsOf(par):[];
+    return`<div class="side ${cls}"><div class="cap">${title}</div>
+      ${par?`<div class="cap">الجد والجدة</div><div class="grp">${gf?pc(gf,"الجد"):addB(gfk,"الجد")}${gm?pc(gm,"الجدة"):addB(gmk,"الجدة")}</div>`:""}
+      <div class="grp">${par?pc(par,parLbl,true):addB(pk,parLbl)}</div>
+      <div class="cap">${unM} و${unF}</div>
+      <div class="grp">${uncles.map(u=>pc(u,u.gender==="f"?sF:sM)).join("")}${addB(unk,"إضافة")}</div></div>`};
+  const sibs=sibsOf(me),ch=kids(me.id);
+  const gch=ch.flatMap(c=>kids(c.id));
+  host.innerHTML=`<div class="fam">
+    <div class="sides">
+      ${side(F,"fa","جهة الأب","father","ff","fm","funcle","الأعمام","العمات","الأب","عم","عمة")}
+      ${side(M,"mo","جهة الأم","mother","mf","mm","muncle","الأخوال","الخالات","الأم","خال","خالة")}
+    </div>
+    <div class="join"></div><div class="stem"></div>
+    <div class="me">${pc(me,isMe?"أنت":"",true)}<div class="grp">${me.spouse?`<button class="pc ${me.gender==="f"?"":"f"}" type="button" data-add="spouse">${esc(me.spouse)}<small>${me.gender==="f"?"الزوج":"الزوجة"}</small></button>`:addB("spouse",me.gender==="f"?"الزوج":"الزوجة")}</div></div>
+    <div class="band"><div class="cap">الإخوة والأخوات</div><div class="grp">${sibs.map(x=>pc(x,x.gender==="f"?"أخت":"أخ")).join("")}${addB("sib","أخ أو أخت")}</div></div>
+    <div class="stem"></div>
+    <div class="band"><div class="cap">الأبناء والبنات</div><div class="grp">${ch.map(x=>pc(x,(x.gender==="f"?"بنت":"ابن")+(kids(x.id).length?" · "+kids(x.id).length+" أبناء":""))).join("")}${addB("child","ابن أو بنت")}</div></div>
+    ${gch.length?`<div class="band"><div class="cap">الأحفاد</div><div class="grp">${gch.map(x=>pc(x,(x.gender==="f"?"بنت ":"ابن ")+(fa(x)&&fa(x).id!==me.id?fa(x).name:(mo(x)?mo(x).name:"")))).join("")}</div></div>`:""}
+    <p class="sub" style="margin:0;text-align:center">المس أي اسم لفتح ملفه، ومن الملف «عرض عائلته» لتنتقل إليه. والزر المنقّط يضيف القريب في مكانه.</p>
+  </div>`;
+}
+$("#fam").addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]");if(o){openPerson(o.dataset.open);return}
+  const a=e.target.closest("[data-add]");if(a)quickAdd(a.dataset.add);
+});
+$("#famBack").onclick=()=>{focusId=S.meId;renderFam()};
+$("#toFull").onclick=()=>{$("#famPanel").hidden=true;$("#fullPanel").hidden=false;centered=false;renderTree()};
+$("#toFam").onclick=()=>{$("#famPanel").hidden=false;$("#fullPanel").hidden=true};
+function quickAdd(kind){
+  const me=byId(focusId);if(!me)return;const F=fa(me),M=mo(me);
+  if(kind==="spouse"){
+    sheet(`<div class="hd"><h2>${me.gender==="f"?"زوج":"زوجة"} ${esc(me.name)}</h2><button class="btn sm" type="button" data-close>إلغاء</button></div>
+      <form id="qa" class="row"><input type="text" id="qaN" class="grow" value="${esc(me.spouse)}" placeholder="الاسم"><button class="btn primary" type="submit">حفظ</button></form>`,el=>{
+      el.querySelector("[data-close]").onclick=closeSheet;setTimeout(()=>el.querySelector("#qaN").focus(),30);
+      el.querySelector("#qa").onsubmit=e=>{e.preventDefault();me.spouse=el.querySelector("#qaN").value.trim();save();closeSheet();renderAll()}});return;
+  }
+  const K={
+    father:{t:"أبي",g:"m"},mother:{t:"أمي",g:"f"},
+    ff:{t:"جد من جهة الأب",g:"m"},fm:{t:"جدة من جهة الأب",g:"f"},
+    mf:{t:"جد من جهة الأم",g:"m"},mm:{t:"جدة من جهة الأم",g:"f"},
+    sib:{t:"إخوة وأخوات",choose:["أخ","أخت"],multi:1,need:(!F&&!M)?[["pF","اسم الأب"]]:[]},
+    funcle:{t:"أعمام وعمات",choose:["عم","عمة"],multi:1,need:[...(!F?[["pF","اسم الأب"]]:[]),...(!fa(F)?[["pGF","اسم الجد (أبو الأب)"]]:[])]},
+    muncle:{t:"أخوال وخالات",choose:["خال","خالة"],multi:1,need:[...(!M?[["pM","اسم الأم"]]:[]),...(!fa(M)?[["pMF","اسم جد الأم (أبو الأم)"]]:[])]},
+    child:{t:"أبناء وبنات",choose:["ابن","بنت"],multi:1}
+  }[kind];if(!K)return;
+  const who=focusId===S.meId?"":" لـ"+me.name;
+  sheet(`<div class="hd"><h2>إضافة ${K.t}${esc(who)}</h2><button class="btn sm" type="button" data-close>إلغاء</button></div>
+    <form id="qa" class="grid2">
+      ${K.choose?`<div class="gender-pick" style="grid-column:1/-1"><button class="btn" type="button" data-g="m" aria-pressed="true">${K.choose[0]}</button><button class="btn" type="button" data-g="f" aria-pressed="false">${K.choose[1]}</button></div>`:""}
+      <label class="f" style="grid-column:1/-1"><span>${K.multi?"الأسماء (افصل بينها بفاصلة لإضافة أكثر من واحد)":"الاسم"}</span><input type="text" id="qaN" placeholder="${K.multi?"مثل: خالد، فهد، نورة":"الاسم الأول"}" autocomplete="off"></label>
+      ${(K.need||[]).map(([id,l])=>`<label class="f"><span>${l}</span><input type="text" id="${id}" autocomplete="off"></label>`).join("")}
+      <label class="chk"><input type="checkbox" id="qaDead"> ${K.multi?"متوفون":"متوفى"}</label>
+      <div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">حفظ</button></div>
+    </form>`,el=>{
+    el.querySelector("[data-close]").onclick=closeSheet;setTimeout(()=>el.querySelector("#qaN").focus(),30);
+    let g=K.g||"m";el.querySelectorAll(".gender-pick button").forEach(b=>b.onclick=()=>{g=b.dataset.g;el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+    el.querySelector("#qa").onsubmit=e=>{e.preventDefault();
+      const names=el.querySelector("#qaN").value.split(K.multi?/[،,\n]+/:/\n/).map(x=>x.trim()).filter(Boolean);if(!names.length){el.querySelector("#qaN").focus();return}
+      const v=id=>{const i=el.querySelector("#"+id);return i?i.value.trim():""};
+      for(const [id,l] of (K.need||[]))if(!v(id)){el.querySelector("#"+id).focus();toast("اكتب "+l);return}
+      const alive=!el.querySelector("#qaDead").checked;const made=[];
+      const add1=(n,gg,f,m)=>{const id=mk(n,gg,f,m);byId(id).alive=alive;made.push(id);return id};
+      const ensure=(p,key,name,gg)=>{if(p[key]&&byId(p[key]))return p[key];const id=mk(name,gg);p[key]=id;return id};
+      if(kind==="father")me.father=add1(names[0],"m");
+      else if(kind==="mother"){me.mother=add1(names[0],"f");if(F&&!F.spouse)F.spouse=names[0]}
+      else if(kind==="ff")F.father=add1(names[0],"m");
+      else if(kind==="fm")F.mother=add1(names[0],"f");
+      else if(kind==="mf")M.father=add1(names[0],"m");
+      else if(kind==="mm")M.mother=add1(names[0],"f");
+      else if(kind==="sib"){if(!me.father&&!me.mother)ensure(me,"father",v("pF"),"m");names.forEach(n=>add1(n,g,me.father,me.mother))}
+      else if(kind==="funcle"){const f=byId(ensure(me,"father",v("pF"),"m"));const gf=ensure(f,"father",v("pGF"),"m");names.forEach(n=>add1(n,g,gf,f.mother))}
+      else if(kind==="muncle"){const m=byId(ensure(me,"mother",v("pM"),"f"));const gf=ensure(m,"father",v("pMF"),"m");names.forEach(n=>add1(n,g,gf,m.mother))}
+      else if(kind==="child"){names.forEach(n=>add1(n,g,me.gender==="f"?"":me.id,me.gender==="f"?me.id:""))}
+      S.demo=S.demo&&true;save();closeSheet();renderAll();toast(made.length>1?`أُضيف ${made.length} أقارب`:"أُضيف "+names[0]);
+    };
+  });
+}
+
+var renderAll;renderAll=function(){renderFam();$("#demoBar").hidden=!S.demo;renderTree();renderContacts();renderIhsan();relUpdate();renderIdeas();gSearch()}
+/* ---------- lock & veil ---------- */
+let unlocked=false,veiled=!!S.hideAmounts;
+async function hashPin(v){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("dq:"+v));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){let h=0;for(const c of "dq:"+v)h=(h*31+c.charCodeAt(0))|0;return"f"+h}}
+function showLock(){
+  if(!S.pinHash||unlocked||document.getElementById("lock"))return;
+  const d=document.createElement("div");d.className="lock";d.id="lock";
+  d.innerHTML=`<form class="box"><div class="brand">ذو القربى</div><p class="sub" style="margin:0">أدخل الرمز لفتح التطبيق</p><input type="password" id="pinIn" inputmode="numeric" autocomplete="off" aria-label="الرمز"><button class="btn primary" type="submit" style="width:100%">فتح</button><p class="sub" id="pinErr" style="margin:0;color:var(--bad)" hidden>الرمز غير صحيح</p></form>`;
+  document.body.appendChild(d);const f=d.querySelector("form");setTimeout(()=>d.querySelector("#pinIn").focus(),50);
+  f.addEventListener("submit",async e=>{e.preventDefault();const v=d.querySelector("#pinIn").value.trim();if(await hashPin(v)===S.pinHash){unlocked=true;d.remove()}else{d.querySelector("#pinErr").hidden=false;d.querySelector("#pinIn").value=""}});
+}
+$("#btnLockNow").onclick=()=>{unlocked=false;showLock()};
+$("#btnVeil").onclick=()=>{veiled=!veiled;applyVeil()};
+function applyVeil(){$("#v-ihsan").classList.toggle("veiled",veiled);$("#today").classList.toggle("veiled",veiled);$("#btnVeil").textContent=veiled?"إظهار المبالغ":"إخفاء المبالغ";$("#btnLockNow").hidden=!S.pinHash}
+const _renderAll=renderAll;renderAll=function(){_renderAll();applyVeil();showLock()};
+
+/* ---------- cloud save (per-user, private) ---------- */
+async function initRemote(){
+  if(!window.claude)return;
+  let db=null,user=null;
+  try{[db,user]=await Promise.all([window.claude.use("db"),window.claude.use("user")])}catch(e){}
+  if(!db||!user){setSync("على هذا الجهاز فقط");return}
+  try{
+    const id=await user.id();if(!id){setSync("على هذا الجهاز فقط");return}
+    remoteRef=db.collection("data/users/"+id).doc("state");
+    setSync("يتصل بالحساب...","busy");
+    const snap=await remoteRef.get();
+    const r=snap&&snap.exists?snap.data():null;
+    if(r&&r.json&&(!S.updatedAt||(r.updatedAt||0)>=S.updatedAt||S.demo)){
+      try{const d=JSON.parse(r.json);if(Array.isArray(d.people)){S=d;mem=S;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}veiled=!!S.hideAmounts;renderAll()}}catch(e){}
+      remoteReady=true;setSync("محفوظ في حسابك","ok");
+    }else{remoteReady=true;pushRemote()}
+  }catch(e){setSync("على هذا الجهاز فقط");remoteRef=null}
+}
+/* ---------- app update (Android app only) ---------- */
+const WEB_BUILD=6;
+if(window.DQ){$("#btnUpd").hidden=false;
+  $("#btnUpd").onclick=()=>{$("#btnUpd").disabled=true;$("#btnUpd").textContent="يبحث...";try{window.DQ.update()}catch(e){window.dqUpd("error")}};}
+window.dqUpd=st=>{$("#btnUpd").disabled=false;$("#btnUpd").textContent="تحديث";
+  toast(st==="latest"?"لديك آخر نسخة":st==="done"?"تم التحديث، يُعاد فتح التطبيق":"تعذّر التحديث. تأكد من الاتصال بالإنترنت")};
+renderAll();
+initRemote();
+})();
+</script>
+</body></html>
