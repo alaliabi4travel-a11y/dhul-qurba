@@ -7,7 +7,7 @@
 :root{
   --bg:#f3f5f2; --surface:#ffffff; --sunk:#e8ece6; --fg:#1d2621; --muted:#5f6b64; --line:#c9d2cb;
   --accent:#23614f; --accent-ink:#ffffff; --accent-soft:#dcebe4; --gold:#9a6b12; --gold-soft:#f5ead3;
-  --good:#2f7a44; --warn:#a4590c; --bad:#b3362f; --brick:#a8462a; --brick-soft:#f7e1d7;
+  --good:#2f7a44; --warn:#a4590c; --bad:#b3362f; --brick:#a8462a; --brick-soft:#f7e1d7; --in:#3b6a8f; --in-soft:#e1eaf2;
   --display:"Reem Kufi","IBM Plex Sans Arabic",Tahoma,sans-serif;
   --body:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",sans-serif;
   --r:12px;
@@ -15,11 +15,11 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#121814; --surface:#1a221d; --sunk:#232d27; --fg:#e4ebe6; --muted:#9aa8a0; --line:#35423a;
   --accent:#5fb597; --accent-ink:#0d1a14; --accent-soft:#1f3a30; --gold:#e0b35a; --gold-soft:#3a2f18;
-  --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; --brick:#f2946f; --brick-soft:#3e2219; color-scheme:dark}}
+  --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; --brick:#f2946f; --brick-soft:#3e2219; --in:#8fb7d9; --in-soft:#1c2b37; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#121814; --surface:#1a221d; --sunk:#232d27; --fg:#e4ebe6; --muted:#9aa8a0; --line:#35423a;
   --accent:#5fb597; --accent-ink:#0d1a14; --accent-soft:#1f3a30; --gold:#e0b35a; --gold-soft:#3a2f18;
-  --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; --brick:#f2946f; --brick-soft:#3e2219; color-scheme:dark}
+  --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; --brick:#f2946f; --brick-soft:#3e2219; --in:#8fb7d9; --in-soft:#1c2b37; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;direction:rtl;margin:0}
@@ -294,6 +294,48 @@ details.more summary{cursor:pointer;font-weight:600;font-size:14px}
 .tview.full{position:fixed;inset:0;height:auto;min-height:0;border-radius:0;z-index:35;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
 .tview.full .tzoom{bottom:calc(14px + env(safe-area-inset-bottom,0px))}
 .tzoom .btn{width:40px;height:40px;padding:0;display:grid;place-items:center;font-size:19px;line-height:1;background:var(--surface);box-shadow:0 2px 8px rgba(0,0,0,.14)}
+/* v9: «عائلتي» — one wide board, three sides picked from the cards under it */
+#famPanel{padding:12px 10px}
+.fwrap{display:flex;flex-direction:column;gap:8px}
+.fwrap[hidden],.fempty[hidden]{display:none}
+.fstage{height:min(54vh,560px);min-height:330px;border:2px solid transparent;transition:border-color .2s}
+.fstage.fa{border-color:color-mix(in srgb,var(--accent) 40%,transparent)}
+.fstage.mo{border-color:color-mix(in srgb,var(--gold) 45%,transparent)}
+.fstage.in{border-color:color-mix(in srgb,var(--in) 45%,transparent)}
+.fstage .tzoom .btn{width:34px;height:34px;font-size:17px}
+.fstage .tslot{font-size:12px;padding:0 4px}
+.fstage .tn b{font-size:13.5px}
+.fwrap.full{position:fixed;inset:0;z-index:35;background:var(--bg);padding:calc(8px + env(safe-area-inset-top,0px)) max(8px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.fwrap.full .fstage{flex:1;height:auto;min-height:0}
+.tl.in{stroke:var(--in)}.tn.in{border-color:var(--in)}.tslot.in{border-color:color-mix(in srgb,var(--in) 45%,var(--line))}
+.tl.trunk{stroke-width:2.6}.tl.mar{stroke-width:1.4}
+.fcap{position:absolute;top:8px;right:8px;z-index:2;display:flex;align-items:center;gap:8px;max-width:calc(100% - 16px);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:700;direction:rtl;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.fcap.fa{color:var(--accent)}.fcap.mo{color:var(--gold)}.fcap.in{color:var(--in)}
+.fcap span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fcap button{all:unset;cursor:pointer;font-weight:600;color:var(--muted);white-space:nowrap}
+.fcap button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.fempty{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;text-align:center;padding:24px;direction:rtl}
+.fempty p{margin:0;max-width:300px}
+.ftab{position:absolute;box-sizing:border-box;height:20px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font:inherit;font-size:11px;font-weight:600;color:var(--muted);padding:0 6px;cursor:pointer;direction:rtl;white-space:nowrap;display:grid;place-items:center;z-index:1}
+.ftab:hover{color:var(--fg);border-color:var(--muted)}
+.tbadge.fa{background:var(--accent)}.tbadge.mo{background:var(--gold)}.tbadge.in{background:var(--in)}
+.tbadge.col{background:var(--surface);color:var(--muted);border-color:var(--line)}
+.tbadge.word{direction:rtl;font-weight:600}
+.fpill{position:absolute;box-sizing:border-box;border-radius:999px;border:1px dashed var(--muted);background:var(--surface);font:inherit;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;direction:rtl;padding:0 8px;white-space:nowrap;display:grid;place-items:center}
+.fpill:hover{color:var(--fg)}
+.fpill:focus-visible,.ftab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sidepick{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.spc{all:unset;box-sizing:border-box;cursor:pointer;border-radius:14px;padding:8px 10px 9px;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;transition:background .15s,color .15s}
+.spc b{font-size:15px;font-weight:700;line-height:1.4;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spc small{font-size:12px;opacity:.85;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spc.fa{background:var(--accent-soft);color:var(--accent)}
+.spc.mo{background:var(--gold-soft);color:var(--gold)}
+.spc.in{background:var(--in-soft);color:var(--in)}
+.spc.fa[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.spc.mo[aria-selected="true"]{background:var(--gold);color:var(--surface)}
+.spc.in[aria-selected="true"]{background:var(--in);color:var(--surface)}
+.spc:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.sp-bot{grid-column:1/-1;display:grid;grid-template-columns:repeat(var(--n,1),1fr);gap:6px}
 </style>
 
 <header class="top">
@@ -366,6 +408,15 @@ details.more summary{cursor:pointer;font-weight:600;font-size:14px}
         <button class="btn sm" type="button" id="toFull">الشجرة المفتوحة</button>
       </div>
       <div id="fam"></div>
+      <div class="fwrap" id="fwrap" hidden>
+        <div class="tview fstage fa" id="fview" aria-label="شجرة الجهة المختارة"><div class="tworld" id="fworld"></div>
+          <div class="fcap" id="fcap"></div>
+          <div class="fempty" id="fempty" hidden></div>
+          <div class="tzoom"><button class="btn" type="button" id="fzIn" aria-label="تكبير">+</button><button class="btn" type="button" id="fzOut" aria-label="تصغير">−</button><button class="btn" type="button" id="fzFit" aria-label="عرض الجهة كلها">⤢</button><button class="btn" type="button" id="fzFull" aria-label="ملء الشاشة">⛶</button></div>
+        </div>
+        <div class="sidepick" id="sidepick" role="tablist" aria-label="اختر الجهة"></div>
+      </div>
+      <p class="sub" id="fhint" style="margin:0" hidden>المس بطاقة الجهة لتملأ اللوحة. المس أي اسم لفتح ملفه، والرقم تحت الاسم يفتح فرعه، و«أهلها» ينقلك إلى عائلتها. اسحب للتنقل وقرّب بإصبعين.</p>
     </div>
   </section>
 
@@ -631,7 +682,7 @@ function makeAC(host,{placeholder,allowFree=true,onPick,filter,preset}){
 
 /* ---------- tabs ---------- */
 const tabs=[...document.querySelectorAll("nav.tabs button")];
-function showTab(v){tabs.forEach(t=>{const on=t.dataset.v===v;t.setAttribute("aria-selected",on);$("#"+t.dataset.v).hidden=!on});try{localStorage.setItem(KEY+".tab",v)}catch(e){}window.scrollTo(0,0);if(v==="v-tree")setTimeout(()=>{typeof renderTree==="function"&&renderTree()},0)}
+function showTab(v){tabs.forEach(t=>{const on=t.dataset.v===v;t.setAttribute("aria-selected",on);$("#"+t.dataset.v).hidden=!on});try{localStorage.setItem(KEY+".tab",v)}catch(e){}window.scrollTo(0,0);if(v==="v-tree")setTimeout(()=>{typeof renderTree==="function"&&renderTree();typeof renderSide==="function"&&renderSide()},0)}
 tabs.forEach(t=>t.addEventListener("click",()=>showTab(t.dataset.v)));
 try{const t=localStorage.getItem(KEY+".tab");if(t&&$("#"+t))showTab(t)}catch(e){}
 
@@ -844,7 +895,7 @@ function openPerson(id,keep){
     el.querySelectorAll("[data-addrel]").forEach(b=>b.onclick=()=>quickAdd(b.dataset.addrel,p.id));
     el.querySelectorAll("[data-alive]").forEach(b=>b.onclick=()=>{const a=b.dataset.alive==="1";if(a===!!p.alive)return;setAlive(p,a);openPerson(p.id,true)});
     el.querySelector("#pEdit").onclick=()=>editPerson(p.id);
-    el.querySelector("#pFocus").onclick=()=>{focusId=p.id;closeSheet();showTab("v-tree");renderAll()};
+    el.querySelector("#pFocus").onclick=()=>{focusId=p.id;closeSheet();showTab("v-tree");setTreeMode("open");renderAll()};
     const pm=el.querySelector("#pMe");if(pm)pm.onclick=()=>{S.meId=p.id;focusId=p.id;save();closeSheet();renderAll();toast("أنت الآن في مركز الشجرة")};
     const pc2=el.querySelector("#pToContact");if(pc2)pc2.onclick=()=>{addContact(p.id,"");closeSheet();showTab("v-contact")};
     const pg=el.querySelector("#pGoC");if(pg)pg.onclick=()=>{closeSheet();showTab("v-contact")};
@@ -1226,7 +1277,7 @@ $("#ideas").addEventListener("click",e=>{const id=e.target.closest("[data-idel]"
 // ask Claude
 let sampleFn,askReady=false,turns=[],askCtl=null,hasTools=false;
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
-1) ذو القربى: «الشجرة المفتوحة» بلا حدود، والمستخدم في المركز: الأجداد فوقه (جهة الأب يمينًا وجهة الأم يسارًا) والزوجات والذرية تحته، وخانات منقطة لإضافة أي أب أو أم ناقص أو زوجة أو ابن. السحب بإصبع والتقريب بإصبعين. الرقم الذهبي فوق الجد يجعله في المركز فتظهر ذريته. ولمس الاسم يفتح ملفه (تعديل، خانات الأقارب، الحالة حي أو متوفى، ما صلته بقريب آخر). و«عائلتي» عرض مختصر للأقارب المباشرين.
+1) ذو القربى: «الشجرة المفتوحة» بلا حدود، والمستخدم في المركز: الأجداد فوقه (جهة الأب يمينًا وجهة الأم يسارًا) والزوجات والذرية تحته، وخانات منقطة لإضافة أي أب أو أم ناقص أو زوجة أو ابن. السحب بإصبع والتقريب بإصبعين. الرقم الذهبي فوق الجد يجعله في المركز فتظهر ذريته. ولمس الاسم يفتح ملفه (تعديل، خانات الأقارب، الحالة حي أو متوفى، ما صلته بقريب آخر). و«عائلتي» (الواجهة الأولى) لوحة واسعة تحتها ثلاث بطاقات: جهة الأب يمينًا، وجهة الأم يسارًا، والزوجة وأهلها تحتهما؛ لمس البطاقة يملأ اللوحة بشجرة تلك الجهة متفرعة (الجد والجدة جنبًا إلى جنب، وأبناؤهما صفًّا تحتهما، ثم المستخدم). الرقم تحت أي اسم يفتح فرعه، و«أهلها» فوق الجدة ينقل إلى عائلتها، والخانات المنقطة تضيف القريب في مكانه، و⛶ يملأ الشاشة.
 2) التواصل: جدول. اكتب الاسم الأول فيظهر الاسم الكامل من الشجرة ثم «إضافة للجدول». «تم التواصل» يحفظ التاريخ والوقت تلقائيًا. «موعد تواصل» تختار تاريخًا ووقتًا ثم «حفظ الموعد»، ويظهر زر «تقويم Google» لإضافته إلى التقويم. «السجل» يعرض مرات التواصل.
 3) الإحسان: «المبالغ الثابتة» اسم ومبلغ ويوم الاستحقاق، وزر «تم التحويل» يسجل التحويل بتاريخ اليوم، والمبلغ قابل للتعديل من خانته. «حوالات غير ثابتة» اسم ومبلغ ثم «حفظ» والتاريخ يُسجَّل تلقائيًا. في الأعلى مجموع الشهر والمتبقي ومجموع السنة.
 الشريط العلوي: «بحث» عن قريب، «اسأل Claude»، «تطوير» لقائمة الاقتراحات. الإعدادات: العملة، اسم العائلة، النسخة الاحتياطية. ملف كل قريب فيه خانات لإضافة أبيه وأمه وزوجاته وأبنائه وإخوته، وتغيير حالته (حي / متوفى)، و«تعديل» في كل صف من الجداول يفتح كل بياناته مع الحذف.`;
@@ -1291,6 +1342,7 @@ const addB=(kind,label)=>`<button class="add" type="button" data-add="${kind}">+
 function renderFam(){
   const host=$("#fam");if(!host)return;
   if(!S.meId||!byId(S.meId)){
+    $("#fwrap").hidden=true;$("#fhint").hidden=true;
     const opts=S.people.length?`<p class="sub" style="margin:0">أو اختر نفسك من الشجرة الموجودة:</p><div class="ac" id="mePick"></div>`:"";
     host.innerHTML=`<div class="band" style="padding:16px"><h3>ابدأ شجرتك باسمك</h3><p class="sub" style="margin:0">تكون أنت في المركز، وأقارب أبيك يمينًا وأقارب أمك يسارًا، وتضيف كل قريب بلمسة من مكانه.</p>
       <div class="row" style="justify-content:center"><input type="text" id="meName" placeholder="اسمك الأول" style="max-width:200px"><div class="gender-pick" id="meG"><button class="btn sm" type="button" data-g="m" aria-pressed="true">ذكر</button><button class="btn sm" type="button" data-g="f" aria-pressed="false">أنثى</button></div><button class="btn primary" type="button" id="meGo">ابدأ</button></div>${opts}</div>`;
@@ -1299,37 +1351,253 @@ function renderFam(){
     if(S.people.length)makeAC($("#mePick"),{placeholder:"اكتب اسمك",allowFree:false,onPick:st=>{S.meId=st.personId;focusId=st.personId;save();renderAll()}});
     $("#famBack").hidden=true;$("#famTitle").textContent="عائلتي";return;
   }
-  if(!focusId||!byId(focusId))focusId=S.meId;
-  const me=byId(focusId),isMe=focusId===S.meId;
-  $("#famTitle").textContent=isMe?"عائلتي":"عائلة "+me.name;$("#famBack").hidden=isMe;
-  const F=fa(me),M=mo(me);
-  const side=(par,cls,title,pk,gfk,gmk,unk,unM,unF,parLbl,sM,sF)=>{
-    const gf=fa(par),gm=mo(par);
-    const uncles=par?sibsOf(par):[];
-    return`<div class="side ${cls}"><div class="cap">${title}</div>
-      ${par?`<div class="cap">الجد والجدة</div><div class="grp">${gf?pc(gf,"الجد"):addB(gfk,"الجد")}${gm?pc(gm,"الجدة"):addB(gmk,"الجدة")}</div>`:""}
-      <div class="grp">${par?pc(par,parLbl,true):addB(pk,parLbl)}</div>
-      <div class="cap">${unM} و${unF}</div>
-      <div class="grp">${uncles.map(u=>pc(u,u.gender==="f"?sF:sM)).join("")}${addB(unk,"إضافة")}</div></div>`};
-  const sibs=sibsOf(me),ch=kids(me.id);
-  const gch=ch.flatMap(c=>kids(c.id));
-  host.innerHTML=`<div class="fam">
-    <div class="sides">
-      ${side(F,"fa","جهة الأب","father","ff","fm","funcle","الأعمام","العمات","الأب","عم","عمة")}
-      ${side(M,"mo","جهة الأم","mother","mf","mm","muncle","الأخوال","الخالات","الأم","خال","خالة")}
-    </div>
-    <div class="join"></div><div class="stem"></div>
-    <div class="me">${pc(me,isMe?"أنت":(shortRel(S.meId,me.id)||""),true)}<div class="grp">${spousesOf(me).map(x=>pc(x,me.gender==="f"?"الزوج":"الزوجة")).join("")}${addB("spouse",spousesOf(me).length?(me.gender==="f"?"زوج آخر":"زوجة أخرى"):(me.gender==="f"?"الزوج":"الزوجة"))}</div></div>
-    <p class="sub" style="margin:0;text-align:center">المس أي اسم لفتح ملفه، والزر المنقّط يضيف القريب في مكانه. والأبناء والإخوة في «الشجرة المفتوحة» وفي ملف كل شخص.</p>
-  </div>`;
+  host.innerHTML="";$("#fwrap").hidden=false;$("#fhint").hidden=false;
+  $("#famTitle").textContent="عائلتي";$("#famBack").hidden=true;
+  renderSidePick();renderSide();
 }
+/* ---------- «عائلتي»: one wide board; the cards under it pick the side ---------- */
+const FW=88,FH=54,FG=8,FGG=18,FMG=12,FVG=50,FSW=80,FSH=36;
+let fSide="fa",fOf="",fSibs=false,fCamKey="",fAnchor=null,fBottomId="",fBefore=null,fReveal=null;try{fSide=localStorage.getItem(KEY+".side")||"fa"}catch(e){}
+const fExp=new Set(),fv={k:0,tx:0,ty:0},fLast=new Map();
+const upOf=p=>p?(byId(p.father)||byId(p.mother)||null):null;
+const wivesOfMe=()=>{const me=byId(S.meId);return me?spousesOf(me):[]};
+const sideCls=s=>s==="mo"?"mo":s.startsWith("w")?"in":"fa";
+function sideAnchor(s){const me=byId(S.meId);if(!me)return null;
+  if(s==="fa")return byId(me.father)||null;if(s==="mo")return byId(me.mother)||null;
+  const ws=wivesOfMe();return ws.find(w=>"w:"+w.id===s)||ws[0]||null}
+function topOf(p){let c=p,g=0;while(upOf(c)&&g++<60)c=upOf(c);return c}
+const aqarib=n=>n===0?"لا أحد بعد":n===1?"قريب واحد":n===2?"قريبان":n<=10?n+" أقارب":n+" قريبًا";
+function sideCount(a){if(!a)return 0;const r=topOf(a),set=new Set([r.id]),q=[r.id];
+  while(q.length){const id=q.shift();if(id===S.meId)continue;spousesOf(byId(id)).forEach(x=>set.add(x.id));kids(id).forEach(k=>{if(!set.has(k.id)){set.add(k.id);q.push(k.id)}})}
+  set.delete(S.meId);return set.size}
+function setSide(s){fSide=s;fOf="";fSibs=false;fCamKey="";try{localStorage.setItem(KEY+".side",s)}catch(e){}renderSidePick();renderSide()}
+function fAddFor(s){fBefore=new Set(S.people.map(x=>x.id));quickAdd(s==="fa"?"father":s==="mo"?"mother":"spouse",S.meId,true)}
+function renderSidePick(){
+  const me=byId(S.meId),host=$("#sidepick");if(!me||!host)return;
+  const F=byId(me.father),M=byId(me.mother),ws=wivesOfMe(),fem=me.gender==="f",onW=fSide.startsWith("w"),cw=onW?sideAnchor(fSide):null;
+  const card=(s,cls,title,sub,sel)=>`<button class="spc ${cls}" type="button" role="tab" aria-selected="${!!sel}" data-side="${s}"><b>${title}</b><small>${sub}</small></button>`;
+  const sub=(p,add)=>p?esc(p.name)+" · "+aqarib(sideCount(p)):add;
+  const wl=fem?"الزوج وأهله":"الزوجة وأهلها";
+  const bot=ws.length===1?card("w:"+ws[0].id,"in",wl,sub(ws[0]),onW)
+    :ws.length?ws.map(w=>card("w:"+w.id,"in",esc(w.name)+(fem?" وأهله":" وأهلها"),aqarib(sideCount(w)),onW&&cw&&cw.id===w.id)).join("")
+    :card("w","in",wl,fem?"المس لإضافة الزوج":"المس لإضافة الزوجة",onW);
+  host.innerHTML=card("fa","fa","جهة الأب",sub(F,"المس لإضافة الأب"),fSide==="fa")+card("mo","mo","جهة الأم",sub(M,"المس لإضافة الأم"),fSide==="mo")+`<div class="sp-bot" style="--n:${Math.max(1,ws.length)}">${bot}</div>`;
+}
+$("#sidepick").addEventListener("click",e=>{const b=e.target.closest("[data-side]");if(!b)return;const s=b.dataset.side;
+  if(s!==fSide||fOf)setSide(s);if(!sideAnchor(s))fAddFor(s)});
+function fTrunk(a,toSp){ // the line from the side's top ancestor down to you (or to your wife)
+  const me=byId(S.meId),up=[];let c=a,g=0;
+  while(c&&g++<60&&!up.includes(c)){up.unshift(c);c=upOf(c)}
+  const downTo=(from,to)=>{const p=ancPath(to.id,from.id);if(!p)return null;const ns=[to];let cur=to;
+    for(const st of p){cur=byId(st==="f"?cur.father:cur.mother);if(!cur)return null;ns.push(cur)}return ns.reverse().slice(1)};
+  let tail=[],endSp=toSp?a:null;
+  if(!toSp){const d=downTo(a,me);if(d)tail=d;else for(const sp of spousesOf(me)){const d2=downTo(a,sp);if(d2){tail=d2;endSp=sp;break}}}
+  return{nodes:up.concat(tail),endSp,solo:up.length===1};
+}
+function fBuild(T){
+  const me=byId(S.meId),N=T.nodes,last=N.length-1;let count=0;
+  const sortK=ks=>ks.length>1&&ks.every(k=>parseInt(k.born,10))?ks.slice().sort((a,b)=>parseInt(a.born,10)-parseInt(b.born,10)):ks;
+  const childLbl=nx=>nx.id===me.father?"+ عم أو عمة":nx.id===me.mother?"+ خال أو خالة":T.endSp&&nx.id===T.endSp.id?"+ أخ أو أخت":"+ ابن أو بنت";
+  const leaf=o=>Object.assign({cards:[],groups:[]},o);
+  function node(p,ti,depth){
+    count++;const isT=ti>=0,next=isT&&ti<last?N[ti+1]:null,fem=p.gender==="f";
+    const n={id:p.id,isT,depth,cards:[],groups:[],chip:null,col:false};
+    const hub={t:"p",id:p.id,hub:true};
+    if((isT&&p.id===S.meId&&!T.endSp)||depth>40||count>500){n.cards=[hub];return n}
+    const isEnd=isT&&ti===last&&!!T.endSp,exp=(isT&&!isEnd)||fExp.has(p.id);
+    let sps=exp||isEnd?spousesOf(p):[],other=null,slot=null;
+    if(next){other=byId(fem?next.father:next.mother)||null;
+      if(!other&&next.id!==S.meId)slot={t:"slot",kind:fem?"father":"mother",for:next.id,label:(fem?"+ أبو ":"+ أم ")+next.name}}
+    if(isEnd&&me)sps=[me,...sps.filter(x=>x.id!==me.id)];
+    if(other)sps=[other,...sps.filter(x=>x.id!==other.id)];
+    const spC=sps.map(x=>({t:"p",id:x.id,inlaw:!!other&&x.id===other.id}));
+    if(slot)spC.unshift(slot);
+    n.cards=fem?[hub,...spC]:[...spC.slice().reverse(),hub];
+    const ci=id=>n.cards.findIndex(c=>c.t==="p"&&!c.hub&&c.id===id),si=n.cards.findIndex(c=>c.t==="slot");
+    if(exp){
+      const egoLvl=!!next&&next.id===S.meId&&!T.endSp;
+      kidGroups(p).forEach(g=>{
+        let ks=sortK(g.kids);const hasNext=!!next&&ks.some(k=>k.id===next.id);
+        if(egoLvl&&!fSibs)ks=ks.filter(k=>k.id===S.meId);
+        const kn=ks.map(k=>node(k,next&&k.id===next.id?ti+1:-1,depth+1));
+        if(hasNext){
+          if(egoLvl){const others=kids(p.id).filter(k=>k.id!==S.meId);
+            if(!fSibs&&others.length)kn.push(leaf({leaf:"sibs",n:others.length,g:others.every(k=>k.gender==="f")?"f":"m",w:84,h:30}));
+            if(fSibs)kn.push(leaf({leaf:"slot",kind:"sib",for:S.meId,label:"+ أخ أو أخت",w:FSW,h:FSH}),leaf({leaf:"hide",w:92,h:30}))}
+          else kn.push(leaf({leaf:"slot",kind:"child",for:p.id,other:other?other.id:"",label:childLbl(next),w:FSW,h:FSH}))}
+        if(kn.length)n.groups.push({ci:g.other?ci(g.other.id):hasNext&&si>=0?si:-1,kids:kn});
+      });
+      if(isEnd&&me){const sl=leaf({leaf:"slot",kind:"child",for:p.id,other:me.id,label:"+ ابن أو بنت",w:FSW,h:FSH}),g=n.groups.find(x=>x.ci===ci(me.id));if(g)g.kids.push(sl);else n.groups.push({ci:ci(me.id),kids:[sl]})}
+      n.col=!isT||isEnd;
+    }else{const nk=kids(p.id).length,ns=isEnd?0:spousesOf(p).length;if(nk||ns)n.chip={n:nk,lab:nk?"+"+nk:fem?"زوجها":"زوجته",mid:isEnd}}
+    return n;
+  }
+  const X=N[0];
+  if(T.solo){ // nobody above the side's person yet: show the places of the parents, and a place for brothers and sisters
+    const sib=X.id===me.father?"+ عم أو عمة":X.id===me.mother?"+ خال أو خالة":"+ أخ أو أخت";
+    const xn=node(X,0,1);
+    return{id:"",isT:true,depth:0,ghost:true,chip:null,col:false,cards:[{t:"slot",kind:"mother",for:X.id,label:"+ أم "+X.name},{t:"slot",kind:"father",for:X.id,label:"+ أبو "+X.name,hub:true}],groups:[{ci:0,kids:[xn,leaf({leaf:"slot",kind:"sib",for:X.id,label:sib,w:FSW,h:FSH})]}]};
+  }
+  return node(X,0,0);
+}
+function fLay(n){ // tidy layout: siblings pack as close as their whole branches allow; RTL (eldest on the right)
+  if(n.leaf){n.rw=n.w;n.hubX=n.w/2;n.shape=[[0,n.w]];return}
+  const nc=n.cards.length,cx=i=>i*(FW+FMG)+FW/2,hubI=Math.max(0,n.cards.findIndex(c=>c.hub)),nsp=nc-1;
+  n.rw=nc*FW+(nc-1)*FMG;n.hubX=cx(hubI);
+  n.groups.forEach(g=>{if(g.ci<0){g.ax=cx(hubI);g.mid=false}else if(nsp===1){g.ax=(cx(hubI)+cx(g.ci))/2;g.mid=true}else{g.ax=cx(g.ci);g.mid=false}});
+  n.groups.sort((a,b)=>b.ax-a.ax);
+  const seq=[];n.groups.forEach((g,gi)=>g.kids.forEach(k=>seq.push({k,gi})));seq.reverse();
+  let acc=null;
+  seq.forEach((it,i)=>{fLay(it.k);const sh=it.k.shape;let dx=0;
+    if(acc){dx=-1e9;const gap=seq[i-1].gi!==it.gi?FGG:FG;for(let d=0;d<Math.min(acc.length,sh.length);d++)dx=Math.max(dx,acc[d][1]+gap-sh[d][0])}
+    it.dx=dx;if(!acc)acc=[];
+    sh.forEach(([l,r],d)=>{if(d<acc.length){acc[d][0]=Math.min(acc[d][0],l+dx);acc[d][1]=Math.max(acc[d][1],r+dx)}else acc.push([l+dx,r+dx])})});
+  let u=0;
+  if(seq.length){const mids=[],ancs=[];
+    n.groups.forEach((g,gi)=>{const xs=seq.filter(s=>s.gi===gi&&s.k.leaf!=="sibs"&&s.k.leaf!=="hide").map(s=>s.dx+s.k.hubX);if(xs.length){mids.push((Math.min(...xs)+Math.max(...xs))/2);ancs.push(g.ax)}});
+    if(mids.length)u=mids.reduce((a,b)=>a+b,0)/mids.length-ancs.reduce((a,b)=>a+b,0)/ancs.length;
+    const tk=seq.find(s=>s.k.isT);if(tk)u=tk.dx+tk.k.hubX-n.groups[tk.gi].ax; // the line to you stays straight
+    seq.forEach(s=>{s.k.rel=s.dx-u})}
+  n.shape=[[0,n.rw]].concat(acc?acc.map(([l,r])=>[l-u,r-u]):[]);
+}
+function fPos(n,x0,out,L,cls){
+  n.x0=x0;const top=n.depth*(FH+FVG);
+  if(n.leaf){out.push({t:n.leaf,n,x:x0,y:top+(FH-n.h)/2,w:n.w,h:n.h});return}
+  const cxs=i=>x0+i*(FW+FMG)+FW/2,hubI=Math.max(0,n.cards.findIndex(c=>c.hub));
+  n.cards.forEach((c,i)=>out.push(c.t==="slot"?{t:"uslot",c,n,x:x0+i*(FW+FMG),y:top+(FH-FSH)/2,w:FW,h:FSH}:{t:"card",c,n,x:x0+i*(FW+FMG),y:top,w:FW,h:FH}));
+  for(let i=0;i<n.cards.length-1;i++){const xa=x0+i*(FW+FMG)+FW,xb=xa+FMG,ym=top+FH/2,ds=n.cards[i].t==="slot"||n.cards[i+1].t==="slot";
+    L.push({d:`M${xa} ${ym-2.5}H${xb}M${xa} ${ym+2.5}H${xb}`,c:n.isT?cls:"n",dash:ds,w:"mar"})}
+  if(n.chip){let x=cxs(hubI);if(n.chip.mid){const mi=n.cards.findIndex(c=>c.t==="p"&&c.id===S.meId);if(mi>=0)x=(cxs(hubI)+cxs(mi))/2}
+    out.push({t:"chip",id:n.id,x,y:top+FH-11,lab:n.chip.lab,word:!n.chip.n})}
+  if(n.col){const hx=x0+hubI*(FW+FMG);out.push({t:"col",id:n.id,x:hubI===0&&n.cards.length>1?hx-6:hx+FW-20,y:top+FH-12})}
+  const ng=n.groups.length;
+  n.groups.forEach((g,gi)=>{
+    g.kids.forEach(k=>{k.depth=n.depth+1;fPos(k,x0+k.rel,out,L,cls)});
+    const conn=g.kids.filter(k=>k.leaf!=="sibs"&&k.leaf!=="hide");if(!conn.length)return;
+    const ax=x0+g.ax,ay=top+(g.mid?FH/2:FH),yb=top+FH+FVG/2+(ng>1?(gi-(ng-1)/2)*7:0),kt=top+FH+FVG;
+    const kx=k=>k.x0+k.hubX,xs=conn.map(kx),tk=conn.find(k=>k.isT);
+    L.push({d:`M${Math.min(ax,...xs)} ${yb}H${Math.max(ax,...xs)}`,c:"n"});
+    conn.forEach(k=>{if(k!==tk)L.push({d:`M${kx(k)} ${yb}V${k.leaf?kt+(FH-k.h)/2:kt}`,c:"n",dash:k.leaf==="slot"})});
+    L.push(tk?{d:`M${ax} ${ay}V${yb}H${kx(tk)}V${kt}`,c:cls,w:"trunk"}:{d:`M${ax} ${ay}V${yb}`,c:"n"});
+  });
+}
+function fOfTarget(x){if(!x)return{};const me=byId(S.meId);
+  const chain=a=>{const st=new Set();let c=a,g=0;while(c&&g++<60&&!st.has(c.id)){st.add(c.id);c=upOf(c)}return st};
+  if(byId(me.father)&&chain(byId(me.father)).has(x.id))return{side:"fa"};
+  if(byId(me.mother)&&chain(byId(me.mother)).has(x.id))return{side:"mo"};
+  for(const w of wivesOfMe())if(chain(w).has(x.id))return{side:"w:"+w.id};
+  return{of:x.id}}
+function fApply(){const w=$("#fworld");if(w)w.style.transform=`translate(${fv.tx}px,${fv.ty}px) scale(${fv.k})`}
+function renderSide(){
+  const view=$("#fview"),world=$("#fworld"),cap=$("#fcap"),emp=$("#fempty");
+  if(!view||$("#fwrap").hidden||$("#famPanel").hidden||$("#v-tree").hidden)return;
+  const me=byId(S.meId);if(!me)return;
+  const base=fSide,cls=sideCls(base),fem=me.gender==="f";
+  let a=fOf?byId(fOf):null;if(!a){fOf="";a=sideAnchor(base)}
+  const key=base+"|"+fOf+"|"+(a?a.id:"");
+  view.className="tview fstage "+cls+(view.classList.contains("drag")?" drag":"");cap.className="fcap "+cls;
+  const bt=base==="fa"?"جهة الأب":base==="mo"?"جهة الأم":fem?"الزوج وأهله":"الزوجة وأهلها";
+  if(fOf){const r=relToMe(a.id);cap.innerHTML=`<span>أهل ${esc((r?r+" ":"")+a.name)}</span><button type="button" data-fback>→ ${bt}</button>`}
+  else cap.innerHTML=`<span>${bt}</span>`;
+  if(!a){world.innerHTML="";world.style.width=world.style.height="0px";fLast.clear();fCamKey="";
+    const t=base==="fa"?["أضف أباك","ثم يظهر هنا أجدادك لأبيك وأعمامك وعماتك وفروعهم، كلٌّ في مكانه من الشجرة."]:base==="mo"?["أضف أمك","ثم يظهر هنا أجدادك لأمك وأخوالك وخالاتك وفروعهم، كلٌّ في مكانه من الشجرة."]:fem?["أضف زوجك","ثم يظهر هنا أهله: أبوه وأمه وإخوته وأخواته."]:["أضف زوجتك","ثم يظهر هنا أهلها: أبوها وأمها وإخوتها وأخواتها."];
+    emp.innerHTML=`<button class="btn primary" type="button" data-fadd="${base.startsWith("w")?"w":base}">+ ${t[0]}</button><p class="sub">${t[1]}</p>`;emp.hidden=false;return}
+  emp.hidden=true;emp.innerHTML="";
+  const vw=view.clientWidth,vh=view.clientHeight;if(!vw||!vh)return;
+  if(!fAnchor&&key===fCamKey&&fBottomId){const p=fLast.get(fBottomId);if(p)fAnchor={id:fBottomId,sx:fv.tx+p[0]*fv.k,sy:fv.ty+p[1]*fv.k}}
+  const T=fTrunk(a,base.startsWith("w")&&!fOf),root=fBuild(T);root.depth=0;fLay(root);
+  const out=[],L=[];fPos(root,0,out,L,cls);
+  const N0=T.nodes[0],rh=out.find(o=>o.t==="card"&&o.n===root&&o.c.hub);
+  if(!T.solo&&rh){out.push({t:"rslot",x:rh.x,y:-FSH-22,w:FW,h:FSH,sl:{kind:"father",for:N0.id,label:"+ أبو "+N0.name}});L.push({d:`M${rh.x+FW/2} -22V0`,c:cls,dash:true})}
+  let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
+  out.forEach(o=>{const w=o.w||30,h=o.h||22;x1=Math.min(x1,o.x-8);x2=Math.max(x2,o.x+w+8);y1=Math.min(y1,o.y-14);y2=Math.max(y2,o.y+h+12)});
+  const PAD=14,ox=PAD-x1,oy=PAD-y1,WW=x2-x1+PAD*2,HH=y2-y1+PAD*2;
+  fLast.clear();
+  const rip=p=>p.gender==="f"?"رحمها الله":"رحمه الله";
+  const html=out.map(o=>{const X=o.x+ox,Y=o.y+oy,pos=`left:${X}px;top:${Y}px;width:${o.w}px;height:${o.h}px`;
+    if(o.t==="card"){const p=byId(o.c.id);if(!p)return"";const isMe=p.id===S.meId,rl=isMe?"أنت":relToMe(p.id),lab=[rl,p.alive?"":rip(p)].filter(Boolean).join(" · ");
+      fLast.set(p.id,[X+FW/2,Y+FH/2]);
+      const cl=["tn",o.c.hub&&!isMe?cls:"",isMe?"ctr me":"",p.alive?"":"dead"].filter(Boolean).join(" ");
+      let h=`<button class="${cl}" type="button" style="${pos}" data-open="${p.id}" aria-label="${esc(p.name+(lab?"، "+lab:""))}"><b>${esc(p.name)}</b>${lab?`<small>${esc(lab)}</small>`:""}</button>`;
+      if(o.c.inlaw){const tw=46,tx=o.n.cards[0].hub?X+FW-tw-4:X+4,f2=p.gender==="f";
+        h+=`<button class="ftab" type="button" style="left:${tx}px;top:${Y-17}px;width:${tw}px" data-fof="${p.id}" aria-label="${esc((f2?"أهلها: عائلة ":"أهله: عائلة ")+p.name)}">${f2?"أهلها":"أهله"}</button>`}
+      return h}
+    if(o.t==="uslot"||o.t==="slot"||o.t==="rslot"){const sl=o.t==="uslot"?o.c:o.t==="slot"?o.n:o.sl;
+      return`<button class="tslot ${cls}" type="button" style="${pos}" data-fslot="${sl.kind}" data-for="${sl.for}" data-other="${sl.other||""}" title="${esc(sl.label)}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(sl.label)}</span></button>`}
+    if(o.t==="chip"){const q=byId(o.id);return`<button class="tbadge ${cls}${o.word?" word":""}" type="button" style="left:${X}px;top:${Y}px;transform:translateX(-50%)" data-fexp="${o.id}" aria-label="${esc("أظهر فرع "+(q?q.name:""))}">${esc(o.lab)}</button>`}
+    if(o.t==="col")return`<button class="tbadge col" type="button" style="left:${X}px;top:${Y}px" data-fcol="${o.id}" aria-label="أخفِ الفرع">−</button>`;
+    if(o.t==="sibs"){const n=o.n.n,g=o.n.g;return`<button class="fpill" type="button" style="${pos}" data-fsibs="1" aria-label="أظهر إخوتك">+${n} ${n===1?(g==="f"?"أخت":"أخ"):(g==="f"?"أخوات":"إخوة")}</button>`}
+    if(o.t==="hide")return`<button class="fpill" type="button" style="${pos}" data-fsibs="0">إخفاء الإخوة</button>`;
+    return""}).join("");
+  const ord=l=>l.w==="trunk"?2:l.w==="mar"?1:0;
+  const path=l=>`<path class="tl ${l.c||"n"}${l.dash?" dash":""}${l.w?" "+l.w:""}" d="${l.d}"/>`;
+  world.style.width=WW+"px";world.style.height=HH+"px";
+  world.innerHTML=`<svg width="${WW}" height="${HH}" viewBox="0 0 ${WW} ${HH}" aria-hidden="true"><g transform="translate(${ox},${oy})">${L.slice().sort((p,q)=>ord(p)-ord(q)).map(path).join("")}</g></svg>`+html;
+  fBottomId=T.nodes[T.nodes.length-1].id;
+  if(fAnchor&&key===fCamKey&&fLast.has(fAnchor.id)){const p=fLast.get(fAnchor.id);fv.tx=fAnchor.sx-p[0]*fv.k;fv.ty=fAnchor.sy-p[1]*fv.k}
+  else if(key!==fCamKey||!fv.k){
+    const T0=46,kx=(vw-16)/WW,ky=(vh-T0-8)/HH;fv.k=Math.max(.78,Math.min(1,kx,ky)); // T0: room for the side's name at the top
+    const b=fLast.get(fBottomId)||[WW/2,HH/2];
+    fv.tx=WW*fv.k<=vw-16?(vw-WW*fv.k)/2:Math.min(8,Math.max(vw-8-WW*fv.k,vw/2-b[0]*fv.k));
+    fv.ty=HH*fv.k<=vh-T0-8?T0+(vh-T0-8-HH*fv.k)/2:Math.min(T0,Math.max(vh-8-HH*fv.k,vh*.62-b[1]*fv.k));
+  }
+  let rv=null;if(fBefore){rv=[...fLast.keys()].filter(id=>!fBefore.has(id));fBefore=null}else if(fReveal){rv=fReveal.filter(id=>fLast.has(id));fReveal=null}
+  if(rv&&rv.length){const box=ids=>{const q=ids.map(id=>fLast.get(id));return[Math.min(...q.map(v=>v[0]))-FW/2,Math.max(...q.map(v=>v[0]))+FW/2,Math.min(...q.map(v=>v[1]))-FH/2,Math.max(...q.map(v=>v[1]))+FH/2]};
+    let [l,r2,t,b2]=box(rv);if((r2-l)*fv.k>vw-24||(b2-t)*fv.k>vh-24)[l,r2,t,b2]=box(rv.slice(0,1));
+    const sl=fv.tx+l*fv.k,sr=fv.tx+r2*fv.k,st=fv.ty+t*fv.k,sb=fv.ty+b2*fv.k;
+    if(sl<12)fv.tx+=12-sl;else if(sr>vw-12)fv.tx-=sr-(vw-12);
+    if(st<46)fv.ty+=46-st;else if(sb>vh-12)fv.ty-=sb-(vh-12)}
+  fCamKey=key;fAnchor=null;fApply();
+}
+function bindPZ(o){ // drag with one finger, pinch with two, wheel, zoom buttons, full screen
+  const {view,world,st}=o;const pts=new Map();let drag=null,pinch=null,moved=false;
+  const apply=()=>{world.style.transform=`translate(${st.tx}px,${st.ty}px) scale(${st.k})`};
+  const zoomAt=(sx,sy,f)=>{const k=Math.max(.25,Math.min(2,st.k*f));const wx=(sx-st.tx)/st.k,wy=(sy-st.ty)/st.k;st.k=k;st.tx=sx-wx*k;st.ty=sy-wy*k;apply()};
+  const fit=()=>{const vw=view.clientWidth,vh=view.clientHeight,W=world.offsetWidth,H=world.offsetHeight;if(!W||!H)return;st.k=Math.max(.2,Math.min(1.1,(vw-16)/W,(vh-16)/H));st.tx=(vw-W*st.k)/2;st.ty=(vh-H*st.k)/2;apply()};
+  const rect=()=>view.getBoundingClientRect();
+  view.addEventListener("pointerdown",e=>{if(e.button>0||e.target.closest(o.skip||".tzoom"))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(pts.size===1){drag={x:e.clientX,y:e.clientY,tx:st.tx,ty:st.ty};moved=false;pinch=null}
+    else if(pts.size===2){const [a,b]=[...pts.values()],r=rect();const mx=(a.x+b.x)/2-r.left,my=(a.y+b.y)/2-r.top;
+      pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,k:st.k,wx:(mx-st.tx)/st.k,wy:(my-st.ty)/st.k};drag=null;moved=true}});
+  window.addEventListener("pointermove",e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(pinch&&pts.size>=2){const [a,b]=[...pts.values()],r=rect();const mx=(a.x+b.x)/2-r.left,my=(a.y+b.y)/2-r.top;
+      st.k=Math.max(.25,Math.min(2,pinch.k*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d));st.tx=mx-pinch.wx*st.k;st.ty=my-pinch.wy*st.k;apply()}
+    else if(drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!moved&&Math.abs(dx)+Math.abs(dy)>7){moved=true;view.classList.add("drag")}
+      if(moved){st.tx=drag.tx+dx;st.ty=drag.ty+dy;apply()}}},{passive:true});
+  const up=e=>{if(!pts.has(e.pointerId))return;pts.delete(e.pointerId);
+    if(pts.size===1){const [a]=[...pts.values()];drag={x:a.x,y:a.y,tx:st.tx,ty:st.ty};pinch=null}
+    if(!pts.size){drag=null;pinch=null;view.classList.remove("drag");setTimeout(()=>{moved=false},0)}};
+  window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up);
+  view.addEventListener("click",e=>{if(moved){e.stopPropagation();e.preventDefault()}},true);
+  view.addEventListener("wheel",e=>{e.preventDefault();const r=rect();zoomAt(e.clientX-r.left,e.clientY-r.top,e.deltaY<0?1.12:1/1.12)},{passive:false});
+  const mid=()=>{const r=rect();return[r.width/2,r.height/2]};
+  o.bIn.onclick=()=>zoomAt(...mid(),1.2);o.bOut.onclick=()=>zoomAt(...mid(),1/1.2);o.bFit.onclick=fit;
+  const fullEl=o.fullEl||view;
+  const full=on=>{fullEl.classList.toggle("full",on);o.bFull.textContent=on?"✕":"⛶";o.bFull.setAttribute("aria-label",on?"إغلاق ملء الشاشة":"ملء الشاشة");o.onFull&&o.onFull(on)};
+  o.bFull.onclick=()=>full(!fullEl.classList.contains("full"));
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&fullEl.classList.contains("full")&&!$("#layer").innerHTML)full(false)});
+  return{apply,zoomAt,fit,full};
+}
+bindPZ({view:$("#fview"),world:$("#fworld"),st:fv,bIn:$("#fzIn"),bOut:$("#fzOut"),bFit:$("#fzFit"),bFull:$("#fzFull"),fullEl:$("#fwrap"),skip:".tzoom,.fcap,.fempty",onFull:()=>{fCamKey="";renderSide()}});
+$("#fworld").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  const anc=id=>{const p=fLast.get(id);if(p)fAnchor={id,sx:fv.tx+p[0]*fv.k,sy:fv.ty+p[1]*fv.k}};
+  if(d.open)openPerson(d.open);
+  else if(d.fexp){anc(d.fexp);fExp.add(d.fexp);const q=byId(d.fexp);fReveal=[d.fexp,...kids(d.fexp).map(k=>k.id),...spousesOf(q).map(x=>x.id)];renderSide()}
+  else if(d.fcol){anc(d.fcol);fExp.delete(d.fcol);renderSide()}
+  else if(d.fsibs){anc(S.meId);fSibs=d.fsibs==="1";if(fSibs)fReveal=[S.meId,...sibsOf(byId(S.meId)).map(x=>x.id)];renderSide()}
+  else if(d.fof){const t=fOfTarget(byId(d.fof));if(t.side)setSide(t.side);else if(t.of){fOf=t.of;fSibs=false;fCamKey="";renderSide()}}
+  else if(d.fslot){fBefore=new Set(S.people.map(x=>x.id));quickAdd(d.fslot,d.for,true,d.other||"")}
+});
+$("#fview").addEventListener("click",e=>{const b=e.target.closest("[data-fback],[data-fadd]");if(!b)return;
+  if(b.hasAttribute("data-fback")){fOf="";fCamKey="";renderSide()}else fAddFor(b.dataset.fadd)});
+window.addEventListener("resize",()=>{if(!$("#famPanel").hidden)renderSide()});
 $("#fam").addEventListener("click",e=>{
   const o=e.target.closest("[data-open]");if(o){openPerson(o.dataset.open);return}
   const a=e.target.closest("[data-add]");if(a)quickAdd(a.dataset.add);
 });
 $("#famBack").onclick=()=>{focusId=S.meId;renderFam()};
-let treeMode="open";try{treeMode=localStorage.getItem(KEY+".tmode")||"open"}catch(e){}
-function setTreeMode(m){treeMode=m;try{localStorage.setItem(KEY+".tmode",m)}catch(e){}applyTreeMode()}
+let treeMode="fam";try{treeMode=localStorage.getItem(KEY+".tmode2")||"fam"}catch(e){}
+function setTreeMode(m){treeMode=m;try{localStorage.setItem(KEY+".tmode2",m)}catch(e){}applyTreeMode()}
 function applyTreeMode(){const open=treeMode==="open"&&!!byId(S.meId);$("#openPanel").hidden=!open;$("#famPanel").hidden=open;if(open)renderTree();else renderFam()}
 $("#toFull").onclick=()=>setTreeMode("open");
 $("#toFam").onclick=()=>setTreeMode("fam");
@@ -1426,9 +1694,14 @@ async function initRemote(){
   }catch(e){setSync("على هذا الجهاز فقط");remoteRef=null}
 }
 /* ---------- app update (Android app only) ---------- */
-const WEB_BUILD=8;
+const WEB_BUILD=9;
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={8:[
+const CHANGES={9:[
+  "«عائلتي» صارت لوحة واسعة تحتها ثلاث بطاقات: جهة الأب يمينًا، وجهة الأم يسارًا، والزوجة وأهلها تحتهما. المس بطاقة فتملأ جهتها اللوحة كلها",
+  "كل جهة شجرة متفرعة لا أسماء مكدسة: الجد والجدة جنبًا إلى جنب، وأبناؤهما صفًّا تحتهما (أبوك وأعمامك وعماتك)، ثم أنت تحت أبويك",
+  "الرقم تحت أي اسم يفتح فرعه (زوجه وأبناءه)، و«أهلها» فوق الجدة ينقلك إلى عائلتها، والخانات المنقطة تضيف في مكانها حتى جد الجد",
+  "⛶ يملأ الشاشة بالجهة والبطاقات معًا، و«الشجرة المفتوحة» باقية لمن أراد أن يجعل أي قريب في المركز"],
+8:[
   "الشجرة المفتوحة: أنت في المركز، وأجدادك فوقك بلا حد، جهة أبيك يمينًا وجهة أمك يسارًا، وزوجاتك وذريتك تحتك",
   "خانة منقّطة لكل أب أو أم ناقص، حتى جد الجد وأم الجد وأجدادها، وخانات للزوجة والأبناء",
   "أبناء كل زوجة تحتها، والرقم الذهبي فوق أي جد يجعله في المركز فتظهر ذريته كلها: الأعمام والأخوال وأبناؤهم",
