@@ -474,6 +474,27 @@ header.top{gap:10px}
 .brand,header.top .icon-btn{white-space:nowrap}
 @media (max-width:400px){header.top{gap:6px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}header.top .sp{margin-inline-start:-6px}
   .brand{font-size:19px}header.top .icon-btn{padding:6px 8px}#s-dev{padding:5px 6px}}
+/* v13: the line of the fathers is the backbone of every side («ادعوهم لآبائهم»). Its cards wear the side's colour with a thick border,
+   one thick straight line joins them, and every other relative is a white card with a thin border, so a father never looks like an uncle */
+.tn.sp:not(.ctr){border-width:3px;background:color-mix(in srgb,var(--accent) 12%,var(--surface))}
+.tn.sp.mo:not(.ctr){background:color-mix(in srgb,var(--gold) 15%,var(--surface))}
+.tn.sp.in:not(.ctr){background:color-mix(in srgb,var(--in) 12%,var(--surface))}
+.tn.sp b{font-weight:800}
+.tn.sp.dead:not(.ctr){background:color-mix(in srgb,var(--accent) 7%,var(--sunk));border-color:color-mix(in srgb,var(--accent) 72%,var(--line))}
+.tn.sp.dead.mo:not(.ctr){background:color-mix(in srgb,var(--gold) 9%,var(--sunk));border-color:color-mix(in srgb,var(--gold) 72%,var(--line))}
+.tn.sp.dead.in:not(.ctr){background:color-mix(in srgb,var(--in) 7%,var(--sunk));border-color:color-mix(in srgb,var(--in) 72%,var(--line))}
+.tn.sp.dead:not(.ctr) b{color:color-mix(in srgb,var(--fg) 72%,var(--muted))}
+.tl.trunk{stroke-width:4.2}
+.tl.trunk.dash{stroke-dasharray:6 5;opacity:.8}
+/* the places to add are quiet; only the one over the backbone, which lengthens it, wears the side's colour */
+.fstage .tslot{font-size:11.5px;border-width:1.3px;background:transparent}
+.tslot.fa,.tslot.mo,.tslot.in{border-color:color-mix(in srgb,var(--muted) 45%,var(--line))}
+.fstage .tslot.spx{border-width:2px;font-weight:700;font-size:12.5px;background:color-mix(in srgb,var(--surface) 70%,transparent)}
+.tslot.spx.fa{border-color:var(--accent);color:var(--accent)}
+.tslot.spx.mo{border-color:var(--gold);color:color-mix(in srgb,var(--gold) 70%,var(--fg))}
+.tslot.spx.in{border-color:var(--in);color:var(--in)}
+.tslot .sl{overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.2;text-align:center;white-space:normal}
+.lgc.sp{fill:color-mix(in srgb,var(--accent) 14%,var(--surface));stroke:var(--accent);stroke-width:2.2}
 </style>
 
 <header class="top">
@@ -763,6 +784,11 @@ function bloodRel(aId,bId){ // what B is to A, addressing A as "you"
   if(da===4&&db===2)return(fB?"بنت ":"ابن ")+uncW(pA[2],tg)+" "+ancGen(pA.slice(0,2));
   const K=byId(k);return`من ذرية ${ancName(pA)}${K?" «"+K.name+"»":""}`;
 }
+function viaSp(r,spw,sg){ // what a relative of your wife is to her («جدك لأبيك») said of you: «جد زوجتك لأبيها»
+  if(!r||/^من /.test(r))return"";let first=true;const pr=sg==="f"?"ها":"ه";
+  return r.split(" ").map(w=>{if(!/ك$/.test(w))return w;let t=w.slice(0,-1);
+    if(first){first=false;if(/ت$/.test(t)&&!/^(أخت|بنت)$/.test(t))t=t.slice(0,-1)+"ة";return t+" "+spw}
+    return t+pr}).join(" ")}
 function shortRel(aId,bId){
   const A=byId(aId),B=byId(bId);if(!A||!B||aId===bId)return"";const fB=B.gender==="f",spw=A.gender==="f"?"زوجك":"زوجتك";
   if(spousesOf(A).includes(B))return fB?"زوجتك":"زوجك";
@@ -776,7 +802,7 @@ function shortRel(aId,bId){
   for(const sp of spousesOf(A)){
     if(sp.father===bId||sp.mother===bId)return(fB?"والدة ":"والد ")+spw;
     if((sp.father&&B.father===sp.father)||(sp.mother&&B.mother===sp.mother))return(fB?"أخت ":"أخو ")+spw;
-    if(bloodRel(sp.id,bId))return"من أقارب "+spw;
+    const rs=bloodRel(sp.id,bId);if(rs)return viaSp(rs,spw,sp.gender)||"من أقارب "+spw;
   }
   return"";
 }
@@ -1481,7 +1507,7 @@ let fSide="fa",fOf="",fSibs=false,fCamKey="",fAnchor=null,fBottomId="",fBefore=n
 const fExp=new Set(),fv={k:0,tx:0,ty:0},fLast=new Map();let fUserCam=false,fFitAll=false;
 let treeMode="fam"; // «عائلتي» (the sides) or the open tree around any relative; the app always opens on «عائلتي»
 const oCol=new Set(),ODEP=4;let fHL=""; // the open tree: branches you folded, how many generations open under the centre, the card to light up
-const upOf=p=>p?(byId(p.father)||byId(p.mother)||null):null;
+const upOf=p=>p?(byId(p.father)||null):null; // every side goes up by the fathers: «ادعوهم لآبائهم»
 const wivesOfMe=()=>{const me=byId(S.meId);return me?spousesOf(me):[]};
 const sideCls=s=>s==="mo"?"mo":s.startsWith("w")?"in":"fa";
 function sideAnchor(s){const me=byId(S.meId);if(!me)return null;
@@ -1490,6 +1516,7 @@ function sideAnchor(s){const me=byId(S.meId);if(!me)return null;
 function topOf(p){let c=p,g=0;while(upOf(c)&&g++<60)c=upOf(c);return c}
 const aqarib=n=>n===0?"لا أحد بعد":nn(n,AQ);
 function sideCount(a){if(!a)return 0;const r=topOf(a),set=new Set([r.id]),q=[r.id]; // your father's side does not count your mother, and the other way round
+  const rm=byId(r.mother);if(rm){set.add(rm.id);kids(rm.id).forEach(k=>{if(!byId(k.father)&&!set.has(k.id)){set.add(k.id);q.push(k.id)}})}
   while(q.length){const id=q.shift();if(id===S.meId)continue;if(id!==a.id)spousesOf(byId(id)).forEach(x=>set.add(x.id));kids(id).forEach(k=>{if(!set.has(k.id)){set.add(k.id);q.push(k.id)}})}
   set.delete(S.meId);return set.size}
 function setSide(s){fSide=s;fOf="";bkDone("fof");fSibs=false;fCamKey="";fFitAll=false;fUserCam=false;try{localStorage.setItem(KEY+".side",s)}catch(e){}renderSidePick();renderSide()}
@@ -1523,7 +1550,7 @@ function fTrunk(a,toSp){ // the line from the side's top ancestor down to you (o
 function fBuild(T){
   const me=byId(S.meId),N=T.nodes,last=N.length-1,O=!!T.open,OP=T.path||new Set();let count=0;
   const sortK=ks=>ks.length>1&&ks.every(k=>parseInt(k.born,10))?ks.slice().sort((a,b)=>parseInt(a.born,10)-parseInt(b.born,10)):ks;
-  const childLbl=nx=>nx.id===S.meId?"+ أخ أو أخت":nx.id===me.father?"+ عم أو عمة":nx.id===me.mother?"+ خال أو خالة":T.endSp&&nx.id===T.endSp.id?"+ أخ أو أخت":"+ ابن أو بنت";
+  const childLbl=nx=>nx.id===S.meId?"+ أخ أو أخت":nx.id===me.father?"+ عم أو عمة":nx.id===me.mother?"+ خال أو خالة":"+ إخوة "+nx.name; // whose brothers, by name, wherever they are not yours
   const leaf=o=>Object.assign({cards:[],groups:[],mars:[]},o);
   function node(p,ti,depth,dd=-1){ // dd: generations under the centre of the open tree (-1: not under it)
     count++;const isT=ti>=0,next=isT&&ti<last?N[ti+1]:null,fem=p.gender==="f",isC=O&&isT&&ti===last;
@@ -1544,7 +1571,7 @@ function fBuild(T){
     if(pslot)list.unshift({c:pslot,outs:[]});
     if(!egoLvl&&!isEnd&&exp)list.forEach(s=>{if(s.c.t!=="p"||s.c.id===S.meId)return; // her husband before or after him, with her children from him
       s.outs=spousesOf(byId(s.c.id)).filter(y=>y.id!==p.id&&y.id!==S.meId).map(y=>({c:{t:"p",id:y.id,step:true,of:s.c.id}}))});
-    const extra=isC?{t:"slot",kind:"spouse",for:p.id,label:fem?"+ زوج":"+ زوجة",w:sps.length?FWS:FSW,sm:!!sps.length}:isT&&next&&!egoLvl&&!isEnd&&!fem&&!pslot?{t:"slot",kind:"spouse",for:p.id,label:"+ زوجة",w:FWS,sm:true}:null;
+    const extra=isC?{t:"slot",kind:"spouse",for:p.id,label:fem?"+ زوج":"+ زوجة",w:sps.length?FWS:FSW,sm:!!sps.length}:null;
     const Ls=[],Rs=[];list.forEach((s,i)=>((fem?i%2===1:i%2===0)?Ls:Rs).push(s));
     const extraL=!!extra&&(fem?list.length%2===1:list.length%2===0);
     const cards=[],put=c=>cards.push(c)-1;let ei=-1;
@@ -1567,7 +1594,10 @@ function fBuild(T){
       sortK(kids(x.id)).forEach(k=>{const o=xf?k.father:k.mother;if(o===p.id)return;const oo=o?s.outs.find(y=>y.c.id===o):null;if(o&&!oo)return;
         (oo?grp("m"+oo.mi,{m:oo.mi}):grp("c"+s.i,{c:s.i})).kids.push(node(k,-1,depth+1))})});
     if(isT&&next&&!egoLvl&&!isEnd){const lab=childLbl(next); // a place under every marriage on your line: the one you add hangs from his father and his mother
-      list.forEach(s=>grp("m"+s.mi,{m:s.mi}).kids.push(leaf({leaf:"slot",kind:"child",for:p.id,other:s.c.t==="p"?s.c.id:"",label:lab,w:FSW,h:FSH})))}
+      const n2=N[ti+2],nEgo=!O&&!!n2&&n2.id===S.meId&&!T.endSp,nC=O&&ti+1===last; // is the next man's left taken (by his wife, or by the place of the mother of his son)?
+      const leftBusy=next.gender!=="f"&&(nC||(!nEgo&&(spousesOf(next).length>0||(!!n2&&!byId(n2.mother)))));
+      list.forEach(s=>{const g=grp("m"+s.mi,{m:s.mi}),L=leaf({leaf:"slot",kind:"child",for:p.id,other:s.c.t==="p"?s.c.id:"",label:lab,w:FSW,h:FSH});
+        if(leftBusy&&g.kids.length===1&&g.kids[0].id===next.id)g.kids.unshift(L);else g.kids.push(L)})}
     if(isC){const ms=list.filter(s=>s.c.t==="p"); // the centre of the open tree: a place for a child under each of his marriages
       if(ms.length)ms.forEach(s=>grp("m"+s.mi,{m:s.mi}).kids.push(leaf({leaf:"slot",kind:"child",for:p.id,other:s.c.id,label:"+ ابن أو بنت",w:FSW,h:FSH})));
       else grp("h",{c:hubI}).kids.push(leaf({leaf:"slot",kind:"child",for:p.id,other:"",label:"+ ابن أو بنت",w:FSW,h:FSH}))}
@@ -1579,11 +1609,13 @@ function fBuild(T){
     n.col=!isT||isEnd;
     return n;
   }
-  const X=N[0];
-  if(T.solo){ // nobody above the side's person yet: show the places of the parents, and a place for brothers and sisters
-    const sib=X.id===me.father?"+ عم أو عمة":X.id===me.mother?"+ خال أو خالة":"+ أخ أو أخت";
-    const xn=node(X,0,1);
-    return{id:"",isT:true,depth:0,ghost:true,chip:null,col:false,hubI:1,cards:[{t:"slot",kind:"mother",for:X.id,label:"+ أم "+X.name},{t:"slot",kind:"father",for:X.id,label:"+ أبو "+X.name,hub:true}],mars:[{a:1,b:0,dash:true}],groups:[{m:0,kids:[xn,leaf({leaf:"slot",kind:"sib",for:X.id,label:sib,w:FSW,h:FSH})]}]};
+  const X=N[0],XM=byId(X.mother);
+  if(T.solo||XM){ // the head of the line has no father yet: the place of his father heads the line, and his mother (or her place) stands beside it
+    const xn=node(X,0,1),ks=XM?sortK(kids(XM.id).filter(k=>k.id!==X.id&&!byId(k.father))).map(k=>node(k,-1,1)):[];
+    const sl=leaf({leaf:"slot",kind:"sib",for:X.id,label:childLbl(X),w:FSW,h:FSH});
+    const gk=X.gender!=="f"&&!ks.length?[sl,xn]:[xn,...ks,sl];
+    const mc=XM?{t:"p",id:XM.id,inlaw:true}:{t:"slot",kind:"mother",for:X.id,label:"+ أم "+X.name};
+    return{id:"",isT:true,depth:0,ghost:true,chip:null,col:false,hubI:1,cards:[mc,{t:"slot",kind:"father",for:X.id,label:"+ أبو "+X.name,hub:true,spx:true}],mars:[{a:1,b:0,dash:true}],groups:[{m:0,kids:gk}]};
   }
   return node(X,0,0);
 }
@@ -1605,7 +1637,7 @@ function fLay(n){ // tidy layout: siblings pack as close as their whole branches
   if(seq.length){const mids=[],ancs=[];
     n.groups.forEach((g,gi)=>{const xs=seq.filter(s=>s.gi===gi&&s.k.leaf!=="sibs"&&s.k.leaf!=="hide").map(s=>s.dx+s.k.hubX);if(xs.length){mids.push((Math.min(...xs)+Math.max(...xs))/2);ancs.push(g.ax)}});
     if(mids.length)u=mids.reduce((a,b)=>a+b,0)/mids.length-ancs.reduce((a,b)=>a+b,0)/ancs.length;
-    const tk=seq.find(s=>s.k.isT);if(tk)u=tk.dx+tk.k.hubX-n.groups[tk.gi].ax; // the line to you stays straight
+    const tk=seq.find(s=>s.k.isT);if(tk)u=tk.dx+tk.k.hubX-n.hubX; // the backbone: the son of the line stands right under his father
     seq.forEach(s=>{s.k.rel=s.dx-u})}
   n.shape=[[0,n.rw]].concat(acc?acc.map(([l,r])=>[l-u,r-u]):[]);
 }
@@ -1629,7 +1661,10 @@ function fPos(n,x0,out,L,cls){
     const kx=k=>k.x0+k.hubX,xs=conn.map(kx),tk=conn.find(k=>k.isT);
     L.push({d:`M${Math.min(ax,...xs)} ${yb}H${Math.max(ax,...xs)}`,c:"n"});
     conn.forEach(k=>{if(k!==tk)L.push({d:`M${kx(k)} ${yb}V${k.leaf?kt+(FH-k.h)/2:kt}`,c:"n",dash:k.leaf==="slot"})});
-    L.push(tk?{d:`M${ax} ${ay}V${yb}H${kx(tk)}V${kt}`,c:cls,w:"trunk"}:{d:`M${ax} ${ay}V${yb}`,c:"n"});
+    if(tk){const hc=n.cards[hubI],hx=cxs(hubI),hy=top+(hc.t==="slot"?(FH+FSH)/2:FH);
+      if(Math.abs(ax-hx)>1)L.push({d:`M${ax} ${ay}V${yb}`,c:"n"});
+      L.push({d:`M${hx} ${hy}V${kt}`,c:cls,w:"trunk",dash:hc.t==="slot"})}
+    else L.push({d:`M${ax} ${ay}V${yb}`,c:"n"});
   });
 }
 function oTrunk(c){ // from the top ancestor (by the father, else the mother) down to the centre; the line from the centre down to you stays open
@@ -1678,7 +1713,7 @@ function renderSide(){
   const T=O?oTrunk(a):fTrunk(a,base.startsWith("w")&&!fOf),root=fBuild(T);root.depth=0;fLay(root);
   const out=[],L=[];fPos(root,0,out,L,cls);
   const N0=T.nodes[0],rh=out.find(o=>o.t==="card"&&o.n===root&&o.c.hub);
-  if(!T.solo&&rh){out.push({t:"rslot",x:rh.x,y:-FSH-22,w:FW,h:FSH,sl:{kind:"father",for:N0.id,label:"+ أبو "+N0.name}});L.push({d:`M${rh.x+FW/2} -22V0`,c:cls,dash:true})}
+  if(!T.solo&&rh){out.push({t:"rslot",x:rh.x,y:-FSH-22,w:FW,h:FSH,sl:{kind:"father",for:N0.id,label:"+ أبو "+N0.name,spx:true}});L.push({d:`M${rh.x+FW/2} -22V0`,c:cls,dash:true,w:"trunk"})}
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
   out.forEach(o=>{const w=o.w||30,h=o.h||22;x1=Math.min(x1,o.x-8);x2=Math.max(x2,o.x+w+8);y1=Math.min(y1,o.y-14);y2=Math.max(y2,o.y+h+12)});
   const PAD=14,ox=PAD-x1,oy=PAD-y1,WW=x2-x1+PAD*2,HH=y2-y1+PAD*2;
@@ -1687,13 +1722,14 @@ function renderSide(){
   const html=out.map(o=>{const X=o.x+ox,Y=o.y+oy,pos=`left:${X}px;top:${Y}px;width:${o.w}px;height:${o.h}px`;
     if(o.t==="card"){const p=byId(o.c.id);if(!p)return"";const isMe=p.id===S.meId,dead=!p.alive,sw=o.c.of&&byId(o.c.of);let rl=isMe?"أنت":relToMe(p.id);if(!rl&&sw)rl=(p.gender==="f"?"زوجة ":"زوج ")+sw.name; // her other husband: named by her
       fLast.set(p.id,[X+FW/2,Y+FH/2]);
-      const cl=["tn",o.c.hub&&!isMe?cls:"",isMe?"ctr me":"",O&&p.id===a.id&&!isMe?"oc":"",fHL===p.id?"hl":"",dead?"dead":""].filter(Boolean).join(" ");
+      const sp=!!o.c.hub&&!!o.n.isT; // on the backbone
+      const cl=["tn",sp&&!isMe?cls+" sp":"",isMe?"ctr me":"",O&&p.id===a.id&&!isMe?"oc":"",fHL===p.id?"hl":"",dead?"dead":""].filter(Boolean).join(" ");
       let h=`<button class="${cl}" type="button" style="${pos}" data-open="${p.id}" aria-label="${esc(p.name+(rl?"، "+rl:"")+(dead?"، "+rip(p):""))}"><b>${esc(p.name)}</b>${rl?`<small${dead?' class="one"':""}>${esc(rl)}</small>`:""}${dead?`<small class="rip">${rip(p)}</small>`:""}</button>`;
       if(o.c.inlaw){const tw=46,tx=o.i>o.n.hubI?X+FW-tw-4:X+4,f2=p.gender==="f";
         h+=`<button class="ftab" type="button" style="left:${tx}px;top:${Y-17}px;width:${tw}px" data-fof="${p.id}" aria-label="${esc((f2?"أهلها: عائلة ":"أهله: عائلة ")+p.name)}">${f2?"أهلها":"أهله"}</button>`}
       return h}
     if(o.t==="uslot"||o.t==="slot"||o.t==="rslot"){const sl=o.t==="uslot"?o.c:o.t==="slot"?o.n:o.sl;
-      return`<button class="tslot ${cls}${sl.sm?" sm":""}" type="button" style="${pos}" data-fslot="${sl.kind}" data-for="${sl.for}" data-other="${sl.other||""}" title="${esc(sl.label)}"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(sl.label)}</span></button>`}
+      return`<button class="tslot ${cls}${sl.sm?" sm":""}${sl.spx?" spx":""}" type="button" style="${pos}" data-fslot="${sl.kind}" data-for="${sl.for}" data-other="${sl.other||""}" title="${esc(sl.label)}"><span class="sl">${esc(sl.label)}</span></button>`}
     if(o.t==="chip"){const q=byId(o.id);return`<button class="tbadge ${cls}${o.word?" word":""}" type="button" style="left:${X}px;top:${Y}px;transform:translateX(-50%)" data-fexp="${o.id}" aria-label="${esc("أظهر فرع "+(q?q.name:""))}">${esc(o.lab)}</button>`}
     if(o.t==="col")return`<button class="tbadge col" type="button" style="left:${X}px;top:${Y}px" data-fcol="${o.id}" aria-label="أخفِ الفرع">−</button>`;
     if(o.t==="sibs"){const n=o.n.n,g=o.n.g;return`<button class="fpill" type="button" style="${pos}" data-fsibs="1" aria-label="أظهر إخوتك">+${n} ${n===1?(g==="f"?"أخت":"أخ"):(g==="f"?"أخوات":"إخوة")}</button>`}
@@ -1758,15 +1794,15 @@ function boardGuide(){const me=byId(S.meId),fem=me&&me.gender==="f";
   const two=(y,h,c2)=>`<rect x="2" y="${y}" width="34" height="${h}" rx="6" class="lgc"/><rect x="60" y="${y}" width="34" height="${h}" rx="6" class="lgc${c2||""}"/>`;
   sheet(`<div class="hd"><h2>دليل اللوحة</h2><button class="btn sm" type="button" data-close>إغلاق</button></div>
   <div class="lg"><h3>الأشكال</h3>
-  ${row(`<span class="tn fa"><b>محمد</b><small>أبوك</small></span>`,"بطاقة بإطار متصل","قريب مسجّل. المسها لتفتح ملفه.")}
-  ${row(`<span class="tslot fa"><span>+ أبو محمد</span></span>`,"بطاقة منقطة تبدأ بـ«+»","مكان فارغ، المسه لتضيف القريب في موضعه. المنقّط للإضافة وحدها.")}
-  ${row(`<span class="tn fa dead"><b>عبدالله</b><small class="one">جدك لأبيك</small><small class="rip">رحمه الله</small></span>`,"بطاقة باهتة تحت اسمها «رحمه الله»","قريب متوفى.")}
+  ${row(sv(96,58,`<path class="tl fa trunk" d="M30 18V40"/><path class="tl n" d="M30 29H76V40"/><rect x="8" y="2" width="44" height="16" rx="5" class="lgc sp"/><rect x="8" y="40" width="44" height="16" rx="5" class="lgc sp"/><rect x="60" y="40" width="32" height="16" rx="5" class="lgc n"/>`),"العمود الملوّن","سلسلة الآباء: صاحب الجهة ثم أبوه ثم جده إلى أعلى جد معروف، بطاقاتها بلون الجهة ويصلها خط سميك مستقيم. وما خرج عنها فروع بيضاء: أعمام وإخوة وأزواج.")}
+  ${row(`<span class="tn"><b>خالد</b><small>عمك</small></span>`,"بطاقة بيضاء","قريب مسجّل خارج العمود. المسها لتفتح ملفه.")}
+  ${row(`<span class="tslot fa spx"><span class="sl">+ أبو محمد</span></span>`,"بطاقة منقطة تبدأ بـ«+»","مكان فارغ، المسه لتضيف القريب في موضعه. الملوّنة فوق العمود تمدّه بأبي أعلى جد، والخفيفة لغيره.")}
+  ${row(`<span class="tn fa sp dead"><b>عبدالله</b><small class="one">جدك لأبيك</small><small class="rip">رحمه الله</small></span>`,"بطاقة باهتة تحت اسمها «رحمه الله»","قريب متوفى.")}
   ${row(`<span class="tn ctr me"><b>${esc(me?me.name:"أنت")}</b><small>أنت</small></span>`,"البطاقة الخضراء الممتلئة","أنت. من عندك تبدأ كل جهة.")}
   ${row(`<span class="tn oc"><b>عبدالله</b><small>في المركز</small></span>`,"حلقة حول البطاقة","في الشجرة المفتوحة: القريب الذي رُسمت الشجرة حوله.")}
   ${row(sv(92,34,`<path class="tl fa" style="stroke-width:3" d="M4 6H88"/><path class="tl mo" style="stroke-width:3" d="M4 17H88"/><path class="tl in" style="stroke-width:3" d="M4 28H88"/>`),"ثلاثة ألوان","الأخضر جهة الأب، والذهبي جهة الأم، والأزرق "+(fem?"الزوج وأهله":"الزوجة وأهلها")+". اللون يقول من أي جهة تنظر.")}
   ${row(sv(96,30,two(3,24)+`<path class="tl fa mar" d="M36 12.5H60M36 17.5H60"/>`),"خطان بين اسمين","زواج. ولكل زواج خطه، فتعرف كم زوجة لكل رجل.")}
   ${row(sv(96,58,two(2,20)+`<path class="tl fa mar" d="M36 9.5H60M36 14.5H60"/><path class="tl n" d="M48 12V30M22 30H74M22 30V38M74 30V38"/><rect x="8" y="38" width="28" height="18" rx="5" class="lgc n"/><rect x="60" y="38" width="28" height="18" rx="5" class="lgc n"/>`),"خط نازل من خط الزواج","أبناء ذلك الزواج، فيُعرف ابن كل أب وأم بلا التباس.")}
-  ${row(sv(96,50,`<path class="tl n" d="M48 4V22H18V46"/><path class="tl fa trunk" d="M48 4V22H78V46"/>`),"الخط الأغلظ","خطك أنت من الجد الأعلى إليك، فتجد نفسك في كل جهة بنظرة.")}
   ${row(`<span class="tbadge fa">+3</span>`,"رقم تحت الاسم","فرع مطوي، والرقم عدد أبنائه. المسه ليفتح الفرع، و«−» يطويه.")}
   ${row(`<span class="ftab">أهلها</span>`,"«أهلها» فوق الزوجة","ينقلك إلى عائلتها: أبوها وأمها وإخوتها.")}
   ${row(`<span class="fpill">+2 إخوة</span>`,"عدد إخوتك بجانبك","المسه ليظهر إخوتك وأخواتك.")}
@@ -1916,9 +1952,15 @@ async function initRemote(){
   }catch(e){setSync("على هذا الجهاز فقط");remoteRef=null}
 }
 /* ---------- app update (Android app only) ---------- */
-const WEB_BUILD=12;
+const WEB_BUILD=13;
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={12:[
+const CHANGES={13:[
+  "سلسلة الآباء عمود فقري في كل جهة: صاحب الجهة ثم أبوه ثم جده إلى أعلى جد معروف، كل أب فوق ابنه في عمود مستقيم، بطاقاته بلون الجهة ويصلها خط سميك",
+  "العمود للآباء في الجهات الثلاث: في جهة الأم يصعد من أمك إلى أبيها، وفي جهة الزوجة من زوجتك إلى أبيها. «ادعوهم لآبائهم»",
+  "الأعمام والإخوة والأزواج بطاقات بيضاء بإطار رفيع، فلا يشبه العمُّ الأبَ",
+  "الخانات الفارغة أخف: «+ أبو فلان» فوق العمود وحدها ملوّنة، و«+ إخوة فلان» بجانب صاحبها، و«+ زوجة أخرى» في ملف كل رجل",
+  "أهل الزوجة بصلاتهم: جد زوجتك لأبيها، وعم زوجتك، وابن عم زوجتك"],
+12:[
   "لكل شكل في اللوحة معنى واحد: المنقّط للإضافة وحدها، والمتوفى باهت تحت اسمه «رحمه الله». وزر «؟» يفتح «دليل اللوحة» بكل شكل وكل أداة",
   "الجهات الثلاث في سطر واحد تحت اللوحة، فيه عدد أقارب كل جهة، فكبرت اللوحة",
   "ملف القريب يبدأ بالتواصل: الجوال و«اتصال» و«واتساب» و«تم التواصل» وآخر تواصل، ثم عائلته، ثم تفاصيله. والحالة و«هذا أنا» و«حذف من الشجرة» انتقلت إلى «تعديل»",
