@@ -495,6 +495,18 @@ header.top{gap:10px}
 .tslot.spx.in{border-color:var(--in);color:var(--in)}
 .tslot .sl{overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.2;text-align:center;white-space:normal}
 .lgc.sp{fill:color-mix(in srgb,var(--accent) 14%,var(--surface));stroke:var(--accent);stroke-width:2.2}
+/* v15: the places to add hide behind a small lock on the line of each family; one touch opens them there, another shuts them */
+.flock{position:absolute;z-index:2;box-sizing:border-box;display:grid;place-items:center;padding:0;margin:0;border-radius:50%;border:1.6px solid color-mix(in srgb,var(--muted) 60%,var(--line));background:var(--surface);color:var(--muted);cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.14);font:inherit}
+.flock::after{content:"";position:absolute;inset:-9px;border-radius:50%}
+.flock svg{width:12px;height:12px;display:block;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.flock.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.flock.on.mo{background:var(--gold);border-color:var(--gold);color:var(--surface)}
+.flock.on.in{background:var(--in);border-color:var(--in);color:var(--surface)}
+.flock:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fstage .tslot.off,.fstage .tslot.off:hover{cursor:default;border-color:color-mix(in srgb,var(--muted) 35%,var(--line));color:color-mix(in srgb,var(--muted) 85%,transparent)}
+.lgx .flock{position:relative;left:auto;top:auto;cursor:default;width:26px;height:26px}
+.lgx .flock svg{width:14px;height:14px}
+#efDayH{color:var(--muted);font-size:12px}
 </style>
 
 <header class="top">
@@ -565,7 +577,7 @@ header.top{gap:10px}
           <button class="fopen" type="button" id="toFull">الشجرة المفتوحة</button>
           <div class="fempty" id="fempty" hidden></div>
           <div class="tzoom"><button class="btn" type="button" id="fzIn" aria-label="تكبير">+</button><button class="btn" type="button" id="fzOut" aria-label="تصغير">−</button><button class="btn" type="button" id="fzFit" aria-label="عرض الجهة كلها">⤢</button><button class="btn" type="button" id="fzFull" aria-label="ملء الشاشة">⛶</button><button class="btn help" type="button" id="fzHelp" aria-label="دليل اللوحة">؟</button></div>
-          <div class="ftip" id="ftip" hidden><p>المس أي اسم لتفتح ملفه، والخانة المنقطة تضيف قريبًا في مكانه. وزر «؟» يشرح كل شكل في اللوحة.</p><button type="button" id="ftipX" aria-label="إغلاق">✕</button></div>
+          <div class="ftip" id="ftip" hidden><p>المس أي اسم لتفتح ملفه. والإضافة مقفلة حتى لا تضيف أحدًا بالخطأ: المس القفل على خط الأسرة فتظهر خاناتها المنقطة. وزر «؟» يشرح كل شكل في اللوحة.</p><button type="button" id="ftipX" aria-label="إغلاق">✕</button></div>
         </div>
         <div class="sidepick" id="sidepick" role="tablist" aria-label="اختر الجهة"></div>
         <div class="obar" id="obar" hidden><div class="ob-t"><small>في المركز</small><b><span id="obName"></span> <small id="obRel"></small></b></div><div class="ob-b"><button class="btn sm" type="button" id="obTop">الجد الأعلى</button><button class="btn sm" type="button" id="obMe">أنا في المركز</button></div></div>
@@ -599,10 +611,10 @@ header.top{gap:10px}
         <div class="row">
           <div class="ac grow" id="fName"></div>
           <input type="number" id="fAmt" class="amt" placeholder="المبلغ" min="0" inputmode="decimal">
-          <label class="chk">يوم <input type="number" id="fDay" min="1" max="31" value="1" style="width:64px"></label>
+          <label class="chk">تاريخ الاستحقاق <input type="date" id="fDay" style="width:auto"></label>
           <button class="btn primary" id="fAdd" type="button">إضافة</button>
         </div>
-        <p class="sub" style="margin:0">مبلغ تحوّله كل شهر، واليوم الذي يستحق فيه من الشهر.</p>
+        <p class="sub" style="margin:0">مبلغ تحوّله كل شهر. المس التاريخ لتختاره من التقويم، ويتكرر الاستحقاق في اليوم نفسه من كل شهر.</p>
       </div>
       <div class="tbl-wrap"><table>
         <thead><tr><th>المستفيد</th><th>المبلغ</th><th>الاستحقاق</th><th>هذا الشهر</th></tr></thead>
@@ -1110,7 +1122,7 @@ function renderToday(){
   const now=new Date(),end=new Date();end.setHours(23,59,59);
   const appts=live.filter(c=>c.appt&&new Date(c.appt)<=end);
   const ym=ymNow(),day=now.getDate();
-  const dueF=S.fixed.filter(r=>day>=r.day&&!r.transfers.some(t=>t.ym===ym));
+  const dueF=S.fixed.filter(r=>day>=dueDay(r)&&!r.transfers.some(t=>t.ym===ym));
   const who=c=>c.personId&&byId(c.personId)?nmBtn(c,nameOf(c).split(" ")[0]):`<button class="nm" type="button" data-cedit="${c.id}">${esc(nameOf(c).split(" ")[0])}</button>`;
   const item=(c,extra)=>{const ph=phoneOf(c);return`<li><span class="who">${who(c)} <span class="full">${extra}</span></span>${ph?callBtns(c,null,ph,1):""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></li>`};
   const lb=S.lastBackup?daysAgo(S.lastBackup):-1,needBk=!S.demo&&S.people.length>=5&&(lb<0||lb>=30);
@@ -1217,9 +1229,22 @@ $("#cBody").addEventListener("click",e=>{
 const acF=makeAC($("#fName"),{placeholder:"اسم المستفيد"});
 const acV=makeAC($("#vName"),{placeholder:"الاسم"});
 const ymNow=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")};
-$("#fAdd").onclick=()=>{const v=acF.get(),a=parseFloat($("#fAmt").value),day=Math.min(31,Math.max(1,parseInt($("#fDay").value)||1));
+function isoDay(v){const m=/^\d{4}-\d{2}-(\d{2})$/.exec(v||"");return m?+m[1]:0} // the day of the month in a date the calendar gave
+function monLen(y,m){return new Date(y,m+1,0).getDate()}
+function dueDay(r){const n=new Date();return Math.min(r.day,monLen(n.getFullYear(),n.getMonth()))} // a day the month lacks (31 in a month of 30) falls on its last day
+function dueISO(day){const n=new Date(),y=n.getFullYear(),m=n.getMonth();return y+"-"+String(m+1).padStart(2,"0")+"-"+String(Math.min(day,monLen(y,m))).padStart(2,"0")} // this month's due date
+function dueTxt(d){return"يتكرر يوم "+d+" من كل شهر"+(d>28?"، وفي الشهر الأقصر آخر يوم منه":"")}
+function gcalMonthly(r,day){ // Google Calendar: the transfer at 9 in the morning of that day, every month, from the next due date
+  const n=new Date();let y=n.getFullYear(),m=n.getMonth();if(Math.min(day,monLen(y,m))<n.getDate()){m++;if(m>11){m=0;y++}}
+  const p2=v=>String(v).padStart(2,"0"),d=y+p2(m+1)+p2(Math.min(day,monLen(y,m)));let tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}
+  const rule="RRULE:FREQ=MONTHLY"+(day>28?";BYMONTHDAY="+[28,29,30,31].filter(x=>x<=day).join(",")+";BYSETPOS=-1":""); // 29 to 31: the last of those days the month has, as the app counts it
+  const det="تذكير من تطبيق ذو القربى: صلة الرحم"+(veiled?"":"\nالمبلغ: "+(Number(r.amount)||0).toLocaleString("en-US",{maximumFractionDigits:2})+(S.currency?" "+S.currency:""));
+  return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("تحويل المبلغ الشهري: "+nameOf(r))+"&dates="+d+"T090000/"+d+"T093000"+(tz?"&ctz="+encodeURIComponent(tz):"")
+    +"&recur="+encodeURIComponent(rule)+"&details="+encodeURIComponent(det)}
+$("#fDay").value=dueISO(new Date().getDate());
+$("#fAdd").onclick=()=>{const v=acF.get(),a=parseFloat($("#fAmt").value),day=isoDay($("#fDay").value)||new Date().getDate();
   if(!acF.valid()){acF.input.focus();return}if(!(a>0)){$("#fAmt").focus();return}
-  S.fixed.push({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,day,transfers:[]});save();acF.clear();$("#fAmt").value="";fAddOpen=false;renderIhsan();toast("أُضيف المبلغ الشهري")};
+  S.fixed.push({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,day,transfers:[]});save();acF.clear();$("#fAmt").value="";$("#fDay").value=dueISO(new Date().getDate());fAddOpen=false;renderIhsan();toast("أُضيف المبلغ الشهري، "+dueTxt(day))};
 $("#vAdd").onclick=()=>{const v=acV.get(),a=parseFloat($("#vAmt").value);
   if(!acV.valid()){acV.input.focus();return}if(!(a>0)){$("#vAmt").focus();return}
   S.variable.unshift({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,date:new Date().toISOString()});save();acV.clear();$("#vAmt").value="";vAddOpen=false;renderIhsan();toast("حُفظ المبلغ بتاريخ اليوم")};
@@ -1238,7 +1263,7 @@ function renderIhsan(){
   $("#iTotals").innerHTML=[["حُوِّل هذا الشهر",monthF+monthV],["المتبقي هذا الشهر",pending],["مجموع السنة",yearAll]].map(([l,v])=>`<div class="stat"><b class="num">${money(v)}</b><span>${l}</span></div>`).join("");
   const today=new Date().getDate();
   $("#fBody").innerHTML=S.fixed.length?S.fixed.map(r=>{
-    const t=r.transfers.find(x=>x.ym===ym);const full=nameOf(r);const due=!t&&today>=r.day;
+    const t=r.transfers.find(x=>x.ym===ym);const full=nameOf(r);const due=!t&&today>=dueDay(r);
     return `<tr><td>${nmBtn(r,full.split(" ")[0])}<div class="full">${esc(full)}</div><div class="full">التحويلات المسجلة: ${r.transfers.length}</div>
       <button class="btn sm" type="button" data-fedit="${r.id}" style="margin-top:4px">تعديل</button></td>
       <td data-l="المبلغ"><input type="number" class="amt num" value="${r.amount}" min="0" data-famt="${r.id}" aria-label="المبلغ"></td>
@@ -1256,8 +1281,8 @@ function editFixed(id,keep){
   const full=nameOf(r);
   sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل المبلغ الشهري</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
    <div class="panel" style="background:var(--bg)"><h3>المستفيد والمبلغ</h3><div class="ac" id="efName"></div>
-     <div class="grid2"><label class="f"><span>المبلغ</span><input type="number" id="efAmt" min="0" inputmode="decimal" value="${r.amount}"></label><label class="f"><span>يوم الاستحقاق من كل شهر</span><input type="number" id="efDay" min="1" max="31" value="${r.day}"></label></div>
-     <div class="row"><button class="btn primary" type="button" id="efSave">حفظ</button></div></div>
+     <div class="grid2"><label class="f"><span>المبلغ</span><input type="number" id="efAmt" min="0" inputmode="decimal" value="${r.amount}"></label><label class="f"><span>تاريخ الاستحقاق</span><input type="date" id="efDay" value="${dueISO(r.day)}"><small id="efDayH">${dueTxt(r.day)}</small></label></div>
+     <div class="row"><button class="btn primary" type="button" id="efSave">حفظ</button><span style="flex:1"></span><a class="btn sm" id="efCal" href="${gcalMonthly(r,r.day)}" target="_blank" rel="noopener">تذكير في تقويم Google</a></div></div>
    <div class="panel" style="background:var(--bg)"><div class="row"><h3 class="grow">سجل التحويلات (${r.transfers.length})</h3><button class="btn sm soft" type="button" id="efAddT">+ تحويل سابق</button></div>
      ${r.transfers.length?r.transfers.map((t,i)=>`<div class="erow"><div class="f2"><input type="date" data-tdt="${i}" value="${locD(t.date)}" aria-label="تاريخ التحويل"><input type="number" class="amt num" data-tamt="${i}" value="${t.amount}" min="0" inputmode="decimal" aria-label="المبلغ"></div><button class="btn sm danger" type="button" data-tdel="${i}">حذف</button></div>`).join(""):`<p class="sub" style="margin:0">لا تحويلات بعد.</p>`}
    </div>
@@ -1266,9 +1291,12 @@ function editFixed(id,keep){
     const again=()=>{save();renderIhsan();renderToday();editFixed(id,true)};
     el.querySelector("[data-close]").onclick=closeSheet;
     const ac=makeAC(el.querySelector("#efName"),{placeholder:"اسم المستفيد",preset:{personId:r.personId,text:full}});
-    el.querySelector("#efSave").onclick=()=>{const v=ac.get(),a=parseFloat(el.querySelector("#efAmt").value),dd=parseInt(el.querySelector("#efDay").value);
+    const dI=el.querySelector("#efDay");
+    dI.onchange=()=>{const d=isoDay(dI.value);if(!d){dI.value=dueISO(r.day);return}if(d===r.day)return;
+      r.day=d;save();renderIhsan();renderToday();el.querySelector("#efDayH").textContent=dueTxt(d);el.querySelector("#efCal").href=gcalMonthly(r,d);toast("حُفظ: "+dueTxt(d))};
+    el.querySelector("#efSave").onclick=()=>{const v=ac.get(),a=parseFloat(el.querySelector("#efAmt").value);
       if(!v.personId&&!v.text){ac.input.focus();return}if(!(a>=0)){el.querySelector("#efAmt").focus();return}
-      r.personId=v.personId;r.name=v.personId?"":v.text;r.amount=a;r.day=Math.min(31,Math.max(1,dd||1));again();toast("حُفظ")};
+      r.personId=v.personId;r.name=v.personId?"":v.text;r.amount=a;again();toast("حُفظ")};
     el.querySelector("#efAddT").onclick=()=>{const d=new Date();const ymOf=x=>x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0");let g=0;
       while(r.transfers.some(t=>t.ym===ymOf(d))&&g++<120)d.setMonth(d.getMonth()-1);
       r.transfers.push({date:d.toISOString(),amount:r.amount,ym:ymOf(d)});r.transfers.sort((a,b)=>b.date.localeCompare(a.date));again();toast("أُضيف تحويل، عدّل تاريخه ومبلغه")};
@@ -1427,10 +1455,10 @@ $("#ideas").addEventListener("click",e=>{const id=e.target.closest("[data-idel]"
 // ask Claude
 let sampleFn,askReady=false,turns=[],askCtl=null,hasTools=false;
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
-1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أعلى اللوحة) تجعل أي قريب في المركز: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«أنا في المركز». الأشكال: البطاقة بإطار متصل قريب مسجّل، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة القريب الذي في المركز. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والخط الأغلظ خطك أنت، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق الزوجة ينقل إلى عائلتها. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة.
+1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أعلى اللوحة) تجعل أي قريب في المركز: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«أنا في المركز». الأشكال: العمود الملوّن بخط سميك سلسلة الآباء من صاحب الجهة إلى أعلى جد، والبطاقة البيضاء قريب مسجّل خارج العمود، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، ولا تظهر إلا حين يُفتح القفل الصغير على خط أسرتها (الإضافة مقفلة حتى لا يُضاف أحد بالخطأ، وتُقفل كلها كلما فُتح التطبيق)، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة القريب الذي في المركز. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق الزوجة ينقل إلى عائلتها. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة.
 ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات، ثم «اجعله في المركز» و«تعديل» و«حذف». والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك.
 2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، والمبالغ المستحقة، وتذكير النسخة الاحتياطية) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
-3) الإحسان: «مبالغ شهرية» (اسم ومبلغ ويوم الاستحقاق، و«تم التحويل» يسجل التحويل بتاريخ اليوم) و«مبالغ متفرقة» (اسم ومبلغ يُحفظ بتاريخ اليوم)، والإضافة بزر «+ أضف» فوق كل قائمة. وفي الأعلى ما حُوِّل هذا الشهر، والمتبقي هذا الشهر، ومجموع السنة، و«إخفاء المبالغ».
+3) الإحسان: «مبالغ شهرية» (اسم ومبلغ وتاريخ الاستحقاق يُختار من التقويم ويتكرر في اليوم نفسه كل شهر، و«تم التحويل» يسجل التحويل بتاريخ اليوم، وفي «تعديل» زر «تذكير في تقويم Google» يضيف الموعد شهريًا) و«مبالغ متفرقة» (اسم ومبلغ يُحفظ بتاريخ اليوم)، والإضافة بزر «+ أضف» فوق كل قائمة. وفي الأعلى ما حُوِّل هذا الشهر، والمتبقي هذا الشهر، ومجموع السنة، و«إخفاء المبالغ».
 الشريط العلوي: خانة البحث عن قريب (زر «الشجرة» يقفز إليه ويضيء بطاقته، و«الملف» يفتح ملفه)، و«اسأل» داخل Claude. وفي رأس الشاشة زر «اقتراحاتك» (رمز المصباح وعليه عدد الاقتراحات) و«الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا). زر الرجوع في الجوال يغلق المفتوح أولًا.`;
 function familyData(){
   const cmap=new Map(S.contacts.map(c=>[c.personId,c]));
@@ -1510,6 +1538,9 @@ function renderFam(){
 const FW=88,FH=58,FG=8,FGG=18,FMG=12,FVG=50,FSW=80,FSH=36,FWS=36;
 let fSide="fa",fOf="",fSibs=false,fCamKey="",fAnchor=null,fBottomId="",fBefore=null,fReveal=null;try{fSide=localStorage.getItem(KEY+".side")||"fa"}catch(e){}
 const fExp=new Set(),fv={k:0,tx:0,ty:0},fLast=new Map();let fUserCam=false,fFitAll=false;
+const fUnl=new Set();let fSlotRv=null; // the families whose places to add are open: all shut when the app opens, so nobody is added by a stray touch
+const LKC='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  LKO='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 7.6-1.8"/></svg>';
 let treeMode="fam"; // «عائلتي» (the sides) or the open tree around any relative; the app always opens on «عائلتي»
 const oCol=new Set(),ODEP=4;let fHL=""; // the open tree: branches you folded, how many generations open under the centre, the card to light up
 const upOf=p=>p?(byId(p.father)||null):null; // every side goes up by the fathers: «ادعوهم لآبائهم»
@@ -1563,20 +1594,20 @@ function fBuild(T){
     const hub={t:"p",id:p.id,hub:true};
     if((!O&&isT&&p.id===S.meId&&!T.endSp)||depth>40||count>600){n.cards=[hub];return n}
     const isEnd=!O&&isT&&ti===last&&!!T.endSp,auto=O&&dd>0&&!oCol.has(p.id)&&(dd<ODEP||OP.has(p.id)),exp=(isT&&!isEnd)||fExp.has(p.id)||auto;
-    const egoLvl=!O&&!!next&&next.id===S.meId&&!T.endSp;
+    const egoLvl=!O&&!!next&&next.id===S.meId&&!T.endSp,U=fUnl.has(p.id);
     if(!exp&&!isEnd){const nk=kids(p.id).length,ns=spousesOf(p).length;if(nk||ns)n.chip={n:nk,lab:nk?"+"+nk:fem?"زوجها":"زوجته"};n.cards=[hub];return n}
     let prim=null,pslot=null,sps=spousesOf(p);
     if(isEnd)prim=me;
     else if(egoLvl){ // your own father stands alone on his side (your mother has her own side); his wives show only to tell your brothers apart
       prim=byId(fem?me.father:me.mother)||null;
       const gs=kidGroups(p).filter(g=>g.kids.length);sps=fSibs&&gs.length>1?gs.filter(g=>g.other).map(g=>g.other):[]}
-    else if(next){prim=byId(fem?next.father:next.mother)||null;if(!prim)pslot={t:"slot",kind:fem?"father":"mother",for:next.id,label:(fem?"+ أبو ":"+ أم ")+next.name}}
+    else if(next){prim=byId(fem?next.father:next.mother)||null;if(!prim&&U)pslot={t:"slot",kind:fem?"father":"mother",for:next.id,label:(fem?"+ أبو ":"+ أم ")+next.name}}
     if(prim&&sps.some(x=>x.id===prim.id))sps=[prim,...sps.filter(x=>x.id!==prim.id)];
     const list=sps.map(x=>({c:{t:"p",id:x.id,inlaw:(isT&&!isEnd&&!egoLvl&&!!prim&&x.id===prim.id)||(isC&&x.id!==S.meId)},outs:[]}));
     if(pslot)list.unshift({c:pslot,outs:[]});
     if(!egoLvl&&!isEnd&&exp)list.forEach(s=>{if(s.c.t!=="p"||s.c.id===S.meId)return; // her husband before or after him, with her children from him
       s.outs=spousesOf(byId(s.c.id)).filter(y=>y.id!==p.id&&y.id!==S.meId).map(y=>({c:{t:"p",id:y.id,step:true,of:s.c.id}}))});
-    const extra=isC?{t:"slot",kind:"spouse",for:p.id,label:fem?"+ زوج":"+ زوجة",w:sps.length?FWS:FSW,sm:!!sps.length}:null;
+    const extra=isC&&U?{t:"slot",kind:"spouse",for:p.id,label:fem?"+ زوج":"+ زوجة",w:sps.length?FWS:FSW,sm:!!sps.length}:null;
     const Ls=[],Rs=[];list.forEach((s,i)=>((fem?i%2===1:i%2===0)?Ls:Rs).push(s));
     const extraL=!!extra&&(fem?list.length%2===1:list.length%2===0);
     const cards=[],put=c=>cards.push(c)-1;let ei=-1;
@@ -1598,29 +1629,31 @@ function fBuild(T){
     if(!egoLvl&&!isEnd)list.forEach(s=>{if(s.c.t!=="p"||s.c.id===S.meId)return;const x=byId(s.c.id),xf=x.gender==="f";
       sortK(kids(x.id)).forEach(k=>{const o=xf?k.father:k.mother;if(o===p.id)return;const oo=o?s.outs.find(y=>y.c.id===o):null;if(o&&!oo)return;
         (oo?grp("m"+oo.mi,{m:oo.mi}):grp("c"+s.i,{c:s.i})).kids.push(node(k,-1,depth+1))})});
-    if(isT&&next&&!egoLvl&&!isEnd){const lab=childLbl(next); // a place under every marriage on your line: the one you add hangs from his father and his mother
+    if(isT&&next&&!egoLvl&&!isEnd&&U){const lab=childLbl(next); // a place under every marriage on your line: the one you add hangs from his father and his mother
       const n2=N[ti+2],nEgo=!O&&!!n2&&n2.id===S.meId&&!T.endSp,nC=O&&ti+1===last; // is the next man's left taken (by his wife, or by the place of the mother of his son)?
       const leftBusy=next.gender!=="f"&&(nC||(!nEgo&&(spousesOf(next).length>0||(!!n2&&!byId(n2.mother)))));
       list.forEach(s=>{const g=grp("m"+s.mi,{m:s.mi}),L=leaf({leaf:"slot",kind:"child",for:p.id,other:s.c.t==="p"?s.c.id:"",label:lab,w:FSW,h:FSH});
         if(leftBusy&&g.kids.length===1&&g.kids[0].id===next.id)g.kids.unshift(L);else g.kids.push(L)})}
-    if(isC){const ms=list.filter(s=>s.c.t==="p"); // the centre of the open tree: a place for a child under each of his marriages
+    if(isC&&U){const ms=list.filter(s=>s.c.t==="p"); // the centre of the open tree: a place for a child under each of his marriages
       if(ms.length)ms.forEach(s=>grp("m"+s.mi,{m:s.mi}).kids.push(leaf({leaf:"slot",kind:"child",for:p.id,other:s.c.id,label:"+ ابن أو بنت",w:FSW,h:FSH})));
       else grp("h",{c:hubI}).kids.push(leaf({leaf:"slot",kind:"child",for:p.id,other:"",label:"+ ابن أو بنت",w:FSW,h:FSH}))}
     if(egoLvl){const others=kids(p.id).filter(k=>k.id!==S.meId),eg=[...gm.values()].find(g=>g.kids.some(k=>k.id===S.meId));
       if(eg&&!fSibs&&others.length)eg.kids.push(leaf({leaf:"sibs",n:others.length,g:others.every(k=>k.gender==="f")?"f":"m",w:84,h:30}));
-      if(eg&&fSibs)eg.kids.push(leaf({leaf:"slot",kind:"sib",for:S.meId,label:"+ أخ أو أخت",w:FSW,h:FSH}),leaf({leaf:"hide",w:92,h:30}))}
-    if(isEnd&&me){const s=byS.get(me.id);if(s)grp("m"+s.mi,{m:s.mi}).kids.push(leaf({leaf:"slot",kind:"child",for:p.id,other:me.id,label:"+ ابن أو بنت",w:FSW,h:FSH}))}
+      if(eg&&fSibs){if(U)eg.kids.push(leaf({leaf:"slot",kind:"sib",for:S.meId,label:"+ أخ أو أخت",w:FSW,h:FSH}));eg.kids.push(leaf({leaf:"hide",w:92,h:30}))}}
+    if(isEnd&&me&&U){const s=byS.get(me.id);if(s)grp("m"+s.mi,{m:s.mi}).kids.push(leaf({leaf:"slot",kind:"child",for:p.id,other:me.id,label:"+ ابن أو بنت",w:FSW,h:FSH}))}
+    if((isT&&next&&!egoLvl&&!isEnd)||(egoLvl&&fSibs)||isC||isEnd)n.lk=p.id; // this family has places to add: a lock on its line
     n.groups=[...gm.values()].filter(g=>g.kids.length);
     n.col=!isT||isEnd;
     return n;
   }
-  const X=N[0],XM=byId(X.mother);
-  if(T.solo||XM){ // the head of the line has no father yet: the place of his father heads the line, and his mother (or her place) stands beside it
+  const X=N[0],XM=byId(X.mother),UX=fUnl.has("^"+X.id);
+  if(XM||(T.solo&&UX)){ // the head of the line has no father yet: the place of his father heads the line, and his mother (or her place) stands beside it
     const xn=node(X,0,1),ks=XM?sortK(kids(XM.id).filter(k=>k.id!==X.id&&!byId(k.father))).map(k=>node(k,-1,1)):[];
-    const sl=leaf({leaf:"slot",kind:"sib",for:X.id,label:childLbl(X),w:FSW,h:FSH});
-    const gk=X.gender!=="f"&&!ks.length?[sl,xn]:[xn,...ks,sl];
+    const sl=UX?leaf({leaf:"slot",kind:"sib",for:X.id,label:childLbl(X),w:FSW,h:FSH}):null;
+    const gk=!sl?[xn,...ks]:X.gender!=="f"&&!ks.length?[sl,xn]:[xn,...ks,sl];
     const mc=XM?{t:"p",id:XM.id,inlaw:true}:{t:"slot",kind:"mother",for:X.id,label:"+ أم "+X.name};
-    return{id:"",isT:true,depth:0,ghost:true,chip:null,col:false,hubI:1,cards:[mc,{t:"slot",kind:"father",for:X.id,label:"+ أبو "+X.name,hub:true,spx:true}],mars:[{a:1,b:0,dash:true}],groups:[{m:0,kids:gk}]};
+    const fc=UX?{t:"slot",kind:"father",for:X.id,label:"+ أبو "+X.name,hub:true,spx:true}:{t:"slot",kind:"father",for:X.id,label:"أبو "+X.name,hub:true,off:true};
+    return{id:"",isT:true,depth:0,ghost:true,lk:"^"+X.id,lkp:X.id,chip:null,col:false,hubI:1,cards:[mc,fc],mars:[{a:1,b:0,dash:true}],groups:[{m:0,kids:gk}]};
   }
   return node(X,0,0);
 }
@@ -1666,11 +1699,12 @@ function fPos(n,x0,out,L,cls){
     const kx=k=>k.x0+k.hubX,xs=conn.map(kx),tk=conn.find(k=>k.isT);
     L.push({d:`M${Math.min(ax,...xs)} ${yb}H${Math.max(ax,...xs)}`,c:"n"});
     conn.forEach(k=>{if(k!==tk)L.push({d:`M${kx(k)} ${yb}V${k.leaf?kt+(FH-k.h)/2:kt}`,c:"n",dash:k.leaf==="slot"})});
-    if(tk){const hc=n.cards[hubI],hx=cxs(hubI),hy=top+(hc.t==="slot"?(FH+FSH)/2:FH);
+    if(tk){const hc=n.cards[hubI],hx=cxs(hubI),hy=top+(hc.t==="slot"?(FH+FSH)/2:FH);n.ly=yb;
       if(Math.abs(ax-hx)>1)L.push({d:`M${ax} ${ay}V${yb}`,c:"n"});
       L.push({d:`M${hx} ${hy}V${kt}`,c:cls,w:"trunk",dash:hc.t==="slot"})}
     else L.push({d:`M${ax} ${ay}V${yb}`,c:"n"});
   });
+  if(n.lk){const y=n.ly!=null?n.ly:top+FH+FVG/2;out.push({t:"lock",k:n.lk,pid:n.lkp||n.id,x:cxs(hubI)-11,y:y-11,w:22,h:22})}
 }
 function oTrunk(c){ // from the top ancestor (by the father, else the mother) down to the centre; the line from the centre down to you stays open
   const up=[];let x=c,g=0;while(x&&g++<60&&!up.includes(x)){up.unshift(x);x=upOf(x)}
@@ -1718,7 +1752,9 @@ function renderSide(){
   const T=O?oTrunk(a):fTrunk(a,base.startsWith("w")&&!fOf),root=fBuild(T);root.depth=0;fLay(root);
   const out=[],L=[];fPos(root,0,out,L,cls);
   const N0=T.nodes[0],rh=out.find(o=>o.t==="card"&&o.n===root&&o.c.hub);
-  if(!T.solo&&rh){out.push({t:"rslot",x:rh.x,y:-FSH-22,w:FW,h:FSH,sl:{kind:"father",for:N0.id,label:"+ أبو "+N0.name,spx:true}});L.push({d:`M${rh.x+FW/2} -22V0`,c:cls,dash:true,w:"trunk"})}
+  if(rh&&!root.ghost){const tk="^"+N0.id,cx=rh.x+FW/2;
+    if(fUnl.has(tk)){out.push({t:"rslot",x:rh.x,y:-FSH-36,w:FW,h:FSH,sl:{kind:"father",for:N0.id,label:"+ أبو "+N0.name,spx:true}});L.push({d:`M${cx} -36V0`,c:cls,dash:true,w:"trunk"})}
+    out.push({t:"lock",k:tk,pid:N0.id,x:cx-11,y:-29,w:22,h:22})}
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
   out.forEach(o=>{const w=o.w||30,h=o.h||22;x1=Math.min(x1,o.x-8);x2=Math.max(x2,o.x+w+8);y1=Math.min(y1,o.y-14);y2=Math.max(y2,o.y+h+12)});
   const PAD=14,ox=PAD-x1,oy=PAD-y1,WW=x2-x1+PAD*2,HH=y2-y1+PAD*2;
@@ -1734,7 +1770,10 @@ function renderSide(){
         h+=`<button class="ftab" type="button" style="left:${tx}px;top:${Y-17}px;width:${tw}px" data-fof="${p.id}" aria-label="${esc((f2?"أهلها: عائلة ":"أهله: عائلة ")+p.name)}">${f2?"أهلها":"أهله"}</button>`}
       return h}
     if(o.t==="uslot"||o.t==="slot"||o.t==="rslot"){const sl=o.t==="uslot"?o.c:o.t==="slot"?o.n:o.sl;
+      if(sl.off)return`<button class="tslot ${cls} off" type="button" style="${pos}" data-foff="1" title="${esc(sl.label)}"><span class="sl">${esc(sl.label)}</span></button>`;
       return`<button class="tslot ${cls}${sl.sm?" sm":""}${sl.spx?" spx":""}" type="button" style="${pos}" data-fslot="${sl.kind}" data-for="${sl.for}" data-other="${sl.other||""}" title="${esc(sl.label)}"><span class="sl">${esc(sl.label)}</span></button>`}
+    if(o.t==="lock"){const on=fUnl.has(o.k),q=byId(o.pid),lab=(on?"أقفل الإضافة عند ":"افتح الإضافة عند ")+(q?q.name:"");
+      return`<button class="flock ${cls}${on?" on":""}" type="button" style="${pos}" data-flock="${esc(o.k)}" data-lp="${o.pid}" aria-pressed="${on}" aria-label="${esc(lab)}" title="${esc(lab)}">${on?LKO:LKC}</button>`}
     if(o.t==="chip"){const q=byId(o.id);return`<button class="tbadge ${cls}${o.word?" word":""}" type="button" style="left:${X}px;top:${Y}px;transform:translateX(-50%)" data-fexp="${o.id}" aria-label="${esc("أظهر فرع "+(q?q.name:""))}">${esc(o.lab)}</button>`}
     if(o.t==="col")return`<button class="tbadge col" type="button" style="left:${X}px;top:${Y}px" data-fcol="${o.id}" aria-label="أخفِ الفرع">−</button>`;
     if(o.t==="sibs"){const n=o.n.n,g=o.n.g;return`<button class="fpill" type="button" style="${pos}" data-fsibs="1" aria-label="أظهر إخوتك">+${n} ${n===1?(g==="f"?"أخت":"أخ"):(g==="f"?"أخوات":"إخوة")}</button>`}
@@ -1759,6 +1798,14 @@ function renderSide(){
     const sl=fv.tx+l*fv.k,sr=fv.tx+r2*fv.k,st=fv.ty+t*fv.k,sb=fv.ty+b2*fv.k;
     if(sl<12)fv.tx+=12-sl;else if(sr>vw-12)fv.tx-=sr-(vw-12);
     if(st<46)fv.ty+=46-st;else if(sb>vh-12)fv.ty-=sb-(vh-12)}
+  if(fSlotRv){const R=fSlotRv,pp=fLast.get(R.id);fSlotRv=null;
+    const nb=out.filter(o=>o.t==="uslot"||o.t==="slot"||o.t==="rslot").filter(o=>{const q=o.t==="uslot"?o.c:o.t==="slot"?o.n:o.sl;return!q.off&&!R.before.has(q.kind+"|"+q.for+"|"+(q.other||""))});
+    const bx=o=>({l:o.x+ox,r:o.x+ox+o.w,t:o.y+oy,b:o.y+oy+o.h}),its=nb.map(bx),cd=q=>pp?Math.hypot((q.l+q.r)/2-pp[0],(q.t+q.b)/2-pp[1]):0;its.sort((a,b)=>cd(a)-cd(b)); // nearest first
+    let B=pp?{l:pp[0]-FW/2,r:pp[0]+FW/2,t:pp[1]-FH/2,b:pp[1]+FH/2}:null,fit=null;
+    for(const q of its){const c=B?{l:Math.min(B.l,q.l),r:Math.max(B.r,q.r),t:Math.min(B.t,q.t),b:Math.max(B.b,q.b)}:q;if((c.r-c.l)*fv.k<=vw-24&&(c.b-c.t)*fv.k<=vh-58){B=c;fit=c}else break} // as many as the screen holds at your zoom
+    if(fit){const L1=fv.tx+fit.l*fv.k,R1=fv.tx+fit.r*fv.k,T1=fv.ty+fit.t*fv.k,B1=fv.ty+fit.b*fv.k;
+      if(L1<12)fv.tx+=12-L1;else if(R1>vw-12)fv.tx-=R1-(vw-12);
+      if(T1<46)fv.ty+=46-T1;else if(B1>vh-12)fv.ty-=B1-(vh-12)}}
   fCamKey=key;fAnchor=null;fApply();
   if(fHL){const h=fHL;setTimeout(()=>{if(fHL===h)fHL=""},2800)}
 }
@@ -1801,7 +1848,8 @@ function boardGuide(){const me=byId(S.meId),fem=me&&me.gender==="f";
   <div class="lg"><h3>الأشكال</h3>
   ${row(sv(96,58,`<path class="tl fa trunk" d="M30 18V40"/><path class="tl n" d="M30 29H76V40"/><rect x="8" y="2" width="44" height="16" rx="5" class="lgc sp"/><rect x="8" y="40" width="44" height="16" rx="5" class="lgc sp"/><rect x="60" y="40" width="32" height="16" rx="5" class="lgc n"/>`),"العمود الملوّن","سلسلة الآباء: صاحب الجهة ثم أبوه ثم جده إلى أعلى جد معروف، بطاقاتها بلون الجهة ويصلها خط سميك مستقيم. وما خرج عنها فروع بيضاء: أعمام وإخوة وأزواج.")}
   ${row(`<span class="tn"><b>خالد</b><small>عمك</small></span>`,"بطاقة بيضاء","قريب مسجّل خارج العمود. المسها لتفتح ملفه.")}
-  ${row(`<span class="tslot fa spx"><span class="sl">+ أبو محمد</span></span>`,"بطاقة منقطة تبدأ بـ«+»","مكان فارغ، المسه لتضيف القريب في موضعه. الملوّنة فوق العمود تمدّه بأبي أعلى جد، والخفيفة لغيره.")}
+  ${row(`<span class="tslot fa spx"><span class="sl">+ أبو محمد</span></span>`,"بطاقة منقطة تبدأ بـ«+»","مكان فارغ يظهر حين تفتح قفل أسرته، المسه لتضيف القريب في موضعه. الملوّنة فوق العمود تمدّه بأبي أعلى جد، والخفيفة لغيره.")}
+  ${row(`<span class="flock fa">${LKC}</span><span class="flock fa on">${LKO}</span>`,"القفل على الخط","الإضافة في اللوحة مقفلة حتى لا تضيف أحدًا بالخطأ. على خط كل أسرة قفل صغير، المسه فتظهر خانات الإضافة لتلك الأسرة وحدها، والمسه مرة أخرى فتُقفل. وتُقفل كلها كلما فتحت التطبيق.")}
   ${row(`<span class="tn fa sp dead"><b>عبدالله</b><small class="one">جدك لأبيك</small><small class="rip">رحمه الله</small></span>`,"بطاقة باهتة تحت اسمها «رحمه الله»","قريب متوفى.")}
   ${row(`<span class="tn ctr me"><b>${esc(me?me.name:"أنت")}</b><small>أنت</small></span>`,"البطاقة الخضراء الممتلئة","أنت. من عندك تبدأ كل جهة.")}
   ${row(`<span class="tn oc"><b>عبدالله</b><small>في المركز</small></span>`,"حلقة حول البطاقة","في الشجرة المفتوحة: القريب الذي رُسمت الشجرة حوله.")}
@@ -1828,6 +1876,10 @@ $("#fworld").addEventListener("click",e=>{const b=e.target.closest("button");if(
   else if(d.fsibs){anc(S.meId);fSibs=d.fsibs==="1";if(fSibs)fReveal=[S.meId,...sibsOf(byId(S.meId)).map(x=>x.id)];renderSide()}
   else if(d.fof){if(treeMode==="open"){oGo(d.fof);return}const t=fOfTarget(byId(d.fof));if(t.side)setSide(t.side);else if(t.of){fOf=t.of;fSibs=false;fCamKey="";renderSide();bkPush("fof",()=>{fOf="";fCamKey="";renderSide()})}}
   else if(d.fslot){fBefore=new Set(S.people.map(x=>x.id));quickAdd(d.fslot,d.for,true,d.other||"")}
+  else if(d.flock){const k=d.flock,on=!fUnl.has(k);anc(d.lp); // the camera stays as you left it, and the places that open come into sight
+    if(on){fUnl.add(k);fSlotRv={id:d.lp,before:new Set([...$("#fworld").querySelectorAll(".tslot[data-fslot]")].map(e=>e.dataset.fslot+"|"+e.dataset.for+"|"+e.dataset.other))}}else fUnl.delete(k);
+    renderSide();toast(on?"فُتحت الإضافة هنا. المس القفل مرة أخرى لتقفلها":"أُقفلت الإضافة هنا",null,2400)}
+  else if(d.foff)toast("الإضافة هنا مقفلة. المس القفل الذي تحتها لتفتحها",null,2600);
 });
 $("#fview").addEventListener("click",e=>{const b=e.target.closest("[data-fback],[data-fadd]");if(!b)return;
   if(b.hasAttribute("data-fback")){fOf="";fCamKey="";renderSide();bkDone("fof")}else fAddFor(b.dataset.fadd)});
@@ -1957,9 +2009,13 @@ async function initRemote(){
   }catch(e){setSync("على هذا الجهاز فقط");remoteRef=null}
 }
 /* ---------- app update (Android app only) ---------- */
-const WEB_BUILD=14;
+const WEB_BUILD=15;
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={14:[
+const CHANGES={15:[
+  "الإضافة في اللوحة مقفلة حتى لا تضيف أحدًا بالخطأ: على خط كل أسرة قفل صغير، المسه فتظهر خانات الإضافة لتلك الأسرة وحدها، والمسه مرة أخرى فتُقفل. وتُقفل كلها كلما فتحت التطبيق",
+  "تاريخ الاستحقاق في المبالغ الشهرية يُختار من تقويم الهاتف، ويتكرر في اليوم نفسه من كل شهر. وإن كان 31 ففي الشهر الأقصر يستحق في آخر يوم منه",
+  "في «تعديل» المبلغ الشهري زر «تذكير في تقويم Google» يضع موعد التحويل في تقويمك كل شهر"],
+14:[
   "«حذف» في ملف كل قريب: يسألك أولًا، وبعد الحذف زر «تراجع» يعيده كما كان إن حذفته بالخطأ. وأبناؤه يبقون في الشجرة"],
 13:[
   "سلسلة الآباء عمود فقري في كل جهة: صاحب الجهة ثم أبوه ثم جده إلى أعلى جد معروف، كل أب فوق ابنه في عمود مستقيم، بطاقاته بلون الجهة ويصلها خط سميك",
