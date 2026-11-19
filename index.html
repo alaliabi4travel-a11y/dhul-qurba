@@ -1704,7 +1704,9 @@ function fPos(n,x0,out,L,cls){
       L.push({d:`M${hx} ${hy}V${kt}`,c:cls,w:"trunk",dash:hc.t==="slot"})}
     else L.push({d:`M${ax} ${ay}V${yb}`,c:"n"});
   });
-  if(n.lk){const y=n.ly!=null?n.ly:top+FH+FVG/2;out.push({t:"lock",k:n.lk,pid:n.lkp||n.id,x:cxs(hubI)-11,y:y-11,w:22,h:22})}
+  if(n.lk){const y=n.ly!=null?n.ly:top+FH+FVG/2;let l=x0,r=x0+n.rw,b=top+FH; // the family behind the lock: its row and its children's row
+    n.groups.forEach(g=>g.kids.forEach(k=>{l=Math.min(l,k.x0);r=Math.max(r,k.x0+k.rw);b=Math.max(b,top+FH+FVG+FH)}));
+    out.push({t:"lock",k:n.lk,pid:n.lkp||n.id,x:cxs(hubI)-11,y:y-11,w:22,h:22,fam:{l,r,t:top,b}})}
 }
 function oTrunk(c){ // from the top ancestor (by the father, else the mother) down to the centre; the line from the centre down to you stays open
   const up=[];let x=c,g=0;while(x&&g++<60&&!up.includes(x)){up.unshift(x);x=upOf(x)}
@@ -1754,7 +1756,7 @@ function renderSide(){
   const N0=T.nodes[0],rh=out.find(o=>o.t==="card"&&o.n===root&&o.c.hub);
   if(rh&&!root.ghost){const tk="^"+N0.id,cx=rh.x+FW/2;
     if(fUnl.has(tk)){out.push({t:"rslot",x:rh.x,y:-FSH-36,w:FW,h:FSH,sl:{kind:"father",for:N0.id,label:"+ أبو "+N0.name,spx:true}});L.push({d:`M${cx} -36V0`,c:cls,dash:true,w:"trunk"})}
-    out.push({t:"lock",k:tk,pid:N0.id,x:cx-11,y:-29,w:22,h:22})}
+    out.push({t:"lock",k:tk,pid:N0.id,x:cx-11,y:-29,w:22,h:22,fam:{l:rh.x,r:rh.x+FW,t:-FSH-36,b:FH}})}
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
   out.forEach(o=>{const w=o.w||30,h=o.h||22;x1=Math.min(x1,o.x-8);x2=Math.max(x2,o.x+w+8);y1=Math.min(y1,o.y-14);y2=Math.max(y2,o.y+h+12)});
   const PAD=14,ox=PAD-x1,oy=PAD-y1,WW=x2-x1+PAD*2,HH=y2-y1+PAD*2;
@@ -1798,11 +1800,15 @@ function renderSide(){
     const sl=fv.tx+l*fv.k,sr=fv.tx+r2*fv.k,st=fv.ty+t*fv.k,sb=fv.ty+b2*fv.k;
     if(sl<12)fv.tx+=12-sl;else if(sr>vw-12)fv.tx-=sr-(vw-12);
     if(st<46)fv.ty+=46-st;else if(sb>vh-12)fv.ty-=sb-(vh-12)}
-  if(fSlotRv){const R=fSlotRv,pp=fLast.get(R.id);fSlotRv=null;
-    const nb=out.filter(o=>o.t==="uslot"||o.t==="slot"||o.t==="rslot").filter(o=>{const q=o.t==="uslot"?o.c:o.t==="slot"?o.n:o.sl;return!q.off&&!R.before.has(q.kind+"|"+q.for+"|"+(q.other||""))});
-    const bx=o=>({l:o.x+ox,r:o.x+ox+o.w,t:o.y+oy,b:o.y+oy+o.h}),its=nb.map(bx),cd=q=>pp?Math.hypot((q.l+q.r)/2-pp[0],(q.t+q.b)/2-pp[1]):0;its.sort((a,b)=>cd(a)-cd(b)); // nearest first
-    let B=pp?{l:pp[0]-FW/2,r:pp[0]+FW/2,t:pp[1]-FH/2,b:pp[1]+FH/2}:null,fit=null;
-    for(const q of its){const c=B?{l:Math.min(B.l,q.l),r:Math.max(B.r,q.r),t:Math.min(B.t,q.t),b:Math.max(B.b,q.b)}:q;if((c.r-c.l)*fv.k<=vw-24&&(c.b-c.t)*fv.k<=vh-58){B=c;fit=c}else break} // as many as the screen holds at your zoom
+  if(fSlotRv){const R=fSlotRv,pp=fLast.get(R.id);fSlotRv=null; // a lock just opened: its family and the places that appeared come into sight
+    const lk=out.find(o=>o.t==="lock"&&o.k===R.key),F=lk&&lk.fam?{l:lk.fam.l+ox,r:lk.fam.r+ox,t:lk.fam.t+oy,b:lk.fam.b+oy}:null;
+    const fits=q=>(q.r-q.l)*fv.k<=vw-24&&(q.b-q.t)*fv.k<=vh-58;
+    if(F&&pp&&!fits(F)){const k2=Math.max(.55,Math.min(fv.k,(vw-24)/(F.r-F.l),(vh-58)/(F.b-F.t))),sx=fv.tx+pp[0]*fv.k,sy=fv.ty+pp[1]*fv.k;fv.k=k2;fv.tx=sx-pp[0]*k2;fv.ty=sy-pp[1]*k2} // zoom out around the person
+    let fit=F&&fits(F)?F:null;
+    if(!fit){const nb=out.filter(o=>o.t==="uslot"||o.t==="slot"||o.t==="rslot").filter(o=>{const q=o.t==="uslot"?o.c:o.t==="slot"?o.n:o.sl;return!q.off&&!R.before.has(q.kind+"|"+q.for+"|"+(q.other||""))});
+      const bx=o=>({l:o.x+ox,r:o.x+ox+o.w,t:o.y+oy,b:o.y+oy+o.h}),its=nb.map(bx),cd=q=>pp?Math.hypot((q.l+q.r)/2-pp[0],(q.t+q.b)/2-pp[1]):0;its.sort((a,b)=>cd(a)-cd(b)); // too big even so: the person and the nearest places
+      let B=pp?{l:pp[0]-FW/2,r:pp[0]+FW/2,t:pp[1]-FH/2,b:pp[1]+FH/2}:null;
+      for(const q of its){const c=B?{l:Math.min(B.l,q.l),r:Math.max(B.r,q.r),t:Math.min(B.t,q.t),b:Math.max(B.b,q.b)}:q;if(fits(c)){B=c;fit=c}else break}}
     if(fit){const L1=fv.tx+fit.l*fv.k,R1=fv.tx+fit.r*fv.k,T1=fv.ty+fit.t*fv.k,B1=fv.ty+fit.b*fv.k;
       if(L1<12)fv.tx+=12-L1;else if(R1>vw-12)fv.tx-=R1-(vw-12);
       if(T1<46)fv.ty+=46-T1;else if(B1>vh-12)fv.ty-=B1-(vh-12)}}
@@ -1876,8 +1882,10 @@ $("#fworld").addEventListener("click",e=>{const b=e.target.closest("button");if(
   else if(d.fsibs){anc(S.meId);fSibs=d.fsibs==="1";if(fSibs)fReveal=[S.meId,...sibsOf(byId(S.meId)).map(x=>x.id)];renderSide()}
   else if(d.fof){if(treeMode==="open"){oGo(d.fof);return}const t=fOfTarget(byId(d.fof));if(t.side)setSide(t.side);else if(t.of){fOf=t.of;fSibs=false;fCamKey="";renderSide();bkPush("fof",()=>{fOf="";fCamKey="";renderSide()})}}
   else if(d.fslot){fBefore=new Set(S.people.map(x=>x.id));quickAdd(d.fslot,d.for,true,d.other||"")}
-  else if(d.flock){const k=d.flock,on=!fUnl.has(k);anc(d.lp); // the camera stays as you left it, and the places that open come into sight
-    if(on){fUnl.add(k);fSlotRv={id:d.lp,before:new Set([...$("#fworld").querySelectorAll(".tslot[data-fslot]")].map(e=>e.dataset.fslot+"|"+e.dataset.for+"|"+e.dataset.other))}}else fUnl.delete(k);
+  else if(d.flock){const k=d.flock,on=!fUnl.has(k);
+    if(on){const q=fLast.get(d.lp);if(q)fAnchor={id:d.lp,sx:fv.tx+q[0]*fv.k,sy:fv.ty+q[1]*fv.k}; // opening: nothing jumps, then the family comes into sight
+      fUnl.add(k);fSlotRv={id:d.lp,key:k,before:new Set([...$("#fworld").querySelectorAll(".tslot[data-fslot]")].map(e=>e.dataset.fslot+"|"+e.dataset.for+"|"+e.dataset.other))}}
+    else{anc(d.lp);fUnl.delete(k)}
     renderSide();toast(on?"فُتحت الإضافة هنا. المس القفل مرة أخرى لتقفلها":"أُقفلت الإضافة هنا",null,2400)}
   else if(d.foff)toast("الإضافة هنا مقفلة. المس القفل الذي تحتها لتفتحها",null,2600);
 });
