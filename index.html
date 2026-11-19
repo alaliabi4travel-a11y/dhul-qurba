@@ -901,6 +901,20 @@ function setAlive(p,alive){
   save();renderAll();
   if(removed.length)toast((p.gender==="f"?"رحمها الله":"رحمه الله")+". أُزيل من جدول التواصل",{label:"تراجع",fn:()=>{p.alive=true;S.contacts.unshift(...removed);save();renderAll();if($("#layer").innerHTML)openPerson(p.id,true)}});
 }
+function delPerson(p){ // takes him out of the tree; his children stay, without him as their parent; «تراجع» puts everything back
+  const snap=JSON.stringify(S),nm=p.name;
+  S.people.forEach(x=>{if(x.father===p.id)x.father="";if(x.mother===p.id)x.mother="";x.spouses=(x.spouses||[]).filter(i=>i!==p.id)});
+  S.people=S.people.filter(x=>x.id!==p.id);
+  [...S.contacts,...S.fixed,...S.variable].forEach(r=>{if(r.personId===p.id){r.name=nasab(p,3);r.personId=""}});
+  if(S.meId===p.id)S.meId="";if(focusId===p.id)focusId=S.meId;
+  save();closeSheet();renderAll();
+  toast(`حُذف «${nm}»`,[{label:"تراجع",fn:()=>{const o=JSON.parse(snap);Object.keys(S).forEach(k=>{if(!(k in o))delete S[k]});Object.assign(S,o);save();renderAll();toast(`رجع «${nm}» إلى الشجرة`)}}],9000)}
+function delAsk(p,box){ // the question, right where it was asked
+  const n=kids(p.id).length,fem=p.gender==="f",inR=[...S.contacts,...S.fixed,...S.variable].some(r=>r.personId===p.id);
+  box.innerHTML=`<div class="confirm"><span>حذف «${esc(p.name)}» من الشجرة؟${n?` ${fem?"أبناؤها":"أبناؤه"} (${n}) يبقون في الشجرة بلا ${fem?"أم":"أب"}.`:""}${inR?` ويبقى ${fem?"اسمها":"اسمه"} في التواصل والإحسان.`:""}</span><span style="flex:1"></span><button class="btn sm" type="button" data-dno>إلغاء</button><button class="btn sm danger" type="button" data-dyes>نعم، احذف</button></div>`;
+  box.scrollIntoView({block:"nearest"});
+  box.querySelector("[data-dno]").onclick=()=>box.innerHTML="";
+  box.querySelector("[data-dyes]").onclick=()=>delPerson(p)}
 function openPerson(id,keep){
   const p=byId(id);if(!p)return;
   const f=byId(p.father),m=byId(p.mother),sp=spousesOf(p),groups=kidGroups(p),sib=sibsOf(p),nk=kids(p.id).length;
@@ -933,7 +947,9 @@ function openPerson(id,keep){
   <div class="row">
     <button class="btn soft" type="button" id="pFocus">${isMe?"أنا في المركز":fem?"اجعلها في المركز":"اجعله في المركز"}</button>
     <button class="btn" type="button" id="pEdit">تعديل</button>
+    ${isMe?"":`<span style="flex:1"></span><button class="btn danger" type="button" id="pDelP">حذف</button>`}
   </div>
+  <div id="pDelBox"></div>
   <details class="more"><summary>${isMe?"ما صلتك بقريب آخر؟":fem?"ما صلتها بقريب آخر؟":"ما صلته بقريب آخر؟"}</summary><div class="ac" id="pRel" style="margin-top:8px"></div><div class="rel-out" id="pRelOut" hidden style="margin-top:8px"></div></details>`,el=>{
     const q=x=>el.querySelector(x);
     makeAC(q("#pRel"),{placeholder:"اكتب اسم قريب آخر",allowFree:false,filter:x=>x.id!==p.id,onPick:st=>{const o=q("#pRelOut");o.innerHTML=relChain(st.personId,p.id);o.hidden=false}});
@@ -941,6 +957,7 @@ function openPerson(id,keep){
     el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openPerson(b.dataset.open));
     el.querySelectorAll("[data-addrel]").forEach(b=>b.onclick=()=>quickAdd(b.dataset.addrel,p.id));
     q("#pEdit").onclick=()=>editPerson(p.id);
+    if(q("#pDelP"))q("#pDelP").onclick=()=>delAsk(p,q("#pDelBox"));
     q("#pFocus").onclick=()=>{closeSheet();showTab("v-tree");oGo(p.id,true)};
     if(q("#pPh"))q("#pPh").onclick=()=>editPerson(p.id,{},"e-ph");
     if(q("#pDone"))q("#pDone").onclick=()=>{logContact(inC);openPerson(p.id,true)};
@@ -998,19 +1015,7 @@ function editPerson(id,preset={},focusOn){
       save();renderAll();openPerson(np.id);toast("حُفظ");
     });
     const pm=q("#pMe");if(pm)pm.onclick=()=>{S.meId=p.id;focusId=p.id;save();closeSheet();renderAll();toast("أنت الآن «"+p.name+"»، والصلات كلها تُحسب منك")};
-    const pd=q("#pDel");if(pd)pd.onclick=()=>{
-      const n=kids(p.id).length,fem=p.gender==="f",box=q("#pConfirm");
-      box.innerHTML=`<div class="confirm"><span>حذف «${esc(p.name)}» من الشجرة؟${n?` ${fem?"أبناؤها":"أبناؤه"} (${n}) يبقون في الشجرة بلا ${fem?"أم":"أب"}.`:""}</span><span style="flex:1"></span><button class="btn sm" type="button" id="cNo">تراجع</button><button class="btn sm danger" type="button" id="cYes">نعم، احذف</button></div>`;
-      box.scrollIntoView({block:"nearest"});
-      q("#cNo").onclick=()=>box.innerHTML="";
-      q("#cYes").onclick=()=>{
-        S.people.forEach(x=>{if(x.father===p.id)x.father="";if(x.mother===p.id)x.mother="";x.spouses=(x.spouses||[]).filter(i=>i!==p.id)});
-        S.people=S.people.filter(x=>x.id!==p.id);
-        [...S.contacts,...S.fixed,...S.variable].forEach(r=>{if(r.personId===p.id){r.name=nasab(p,3);r.personId=""}});
-        if(S.meId===p.id)S.meId="";if(focusId===p.id)focusId=S.meId;
-        save();closeSheet();renderAll();toast(`حُذف ${p.name}`);
-      };
-    };
+    const pd=q("#pDel");if(pd)pd.onclick=()=>delAsk(p,q("#pConfirm"));
   });
 }
 
@@ -1423,7 +1428,7 @@ $("#ideas").addEventListener("click",e=>{const id=e.target.closest("[data-idel]"
 let sampleFn,askReady=false,turns=[],askCtl=null,hasTools=false;
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
 1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أعلى اللوحة) تجعل أي قريب في المركز: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«أنا في المركز». الأشكال: البطاقة بإطار متصل قريب مسجّل، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة القريب الذي في المركز. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والخط الأغلظ خطك أنت، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق الزوجة ينقل إلى عائلتها. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة.
-ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات، ثم «اجعله في المركز» و«تعديل». و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، وفي آخرها «هذا أنا» و«حذف من الشجرة». القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك.
+ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات، ثم «اجعله في المركز» و«تعديل» و«حذف». والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك.
 2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، والمبالغ المستحقة، وتذكير النسخة الاحتياطية) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
 3) الإحسان: «مبالغ شهرية» (اسم ومبلغ ويوم الاستحقاق، و«تم التحويل» يسجل التحويل بتاريخ اليوم) و«مبالغ متفرقة» (اسم ومبلغ يُحفظ بتاريخ اليوم)، والإضافة بزر «+ أضف» فوق كل قائمة. وفي الأعلى ما حُوِّل هذا الشهر، والمتبقي هذا الشهر، ومجموع السنة، و«إخفاء المبالغ».
 الشريط العلوي: خانة البحث عن قريب (زر «الشجرة» يقفز إليه ويضيء بطاقته، و«الملف» يفتح ملفه)، و«اسأل» داخل Claude. وفي رأس الشاشة زر «اقتراحاتك» (رمز المصباح وعليه عدد الاقتراحات) و«الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا). زر الرجوع في الجوال يغلق المفتوح أولًا.`;
@@ -1952,9 +1957,11 @@ async function initRemote(){
   }catch(e){setSync("على هذا الجهاز فقط");remoteRef=null}
 }
 /* ---------- app update (Android app only) ---------- */
-const WEB_BUILD=13;
+const WEB_BUILD=14;
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={13:[
+const CHANGES={14:[
+  "«حذف» في ملف كل قريب: يسألك أولًا، وبعد الحذف زر «تراجع» يعيده كما كان إن حذفته بالخطأ. وأبناؤه يبقون في الشجرة"],
+13:[
   "سلسلة الآباء عمود فقري في كل جهة: صاحب الجهة ثم أبوه ثم جده إلى أعلى جد معروف، كل أب فوق ابنه في عمود مستقيم، بطاقاته بلون الجهة ويصلها خط سميك",
   "العمود للآباء في الجهات الثلاث: في جهة الأم يصعد من أمك إلى أبيها، وفي جهة الزوجة من زوجتك إلى أبيها. «ادعوهم لآبائهم»",
   "الأعمام والإخوة والأزواج بطاقات بيضاء بإطار رفيع، فلا يشبه العمُّ الأبَ",
