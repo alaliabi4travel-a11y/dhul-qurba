@@ -471,17 +471,10 @@ div.f .seg2{align-self:flex-start}
 .cform,.iform{display:flex;flex-direction:column;gap:8px}
 .cform[hidden],.iform[hidden]{display:none}
 .btn[hidden]{display:none}
-/* «اقتراحاتك»: a small button with its count beside «الإعدادات» */
-#s-dev{display:inline-flex;align-items:center;gap:4px;padding:5px 8px;color:var(--muted)}
-#s-dev svg{width:18px;height:18px;flex:none}
-#s-dev .badge{min-width:18px;height:18px;font-size:calc(11px*var(--fs,1));padding:0 5px}
-#s-dev .badge[hidden]{display:none}
-#s-dev[aria-expanded="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-#s-dev[aria-expanded="true"] .badge{background:var(--accent-ink);color:var(--accent)}
 header.top{gap:10px}
 .brand,header.top .icon-btn{white-space:nowrap}
 @media (max-width:400px){header.top{gap:6px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}header.top .sp{margin-inline-start:-6px}
-  .brand{font-size:calc(19px*var(--fs,1))}header.top .icon-btn{padding:6px 8px}#s-dev{padding:5px 6px}}
+  .brand{font-size:calc(19px*var(--fs,1))}header.top .icon-btn{padding:6px 8px}}
 /* v13: the line of the fathers is the backbone of every side («ادعوهم لآبائهم»). Its cards wear the side's colour with a thick border,
    one thick straight line joins them, and every other relative is a white card with a thin border, so a father never looks like an uncle */
 .tn.sp:not(.ctr){border-width:3px;background:color-mix(in srgb,var(--accent) 12%,var(--surface))}
@@ -598,6 +591,40 @@ textarea.seamsg{direction:rtl;font-size:calc(15px*var(--fs,1));min-height:78px;l
 #v-ihsan.veiled .ia{filter:blur(7px)}
 .knote{flex:1 1 150px;min-width:0}
 .knote[hidden],#efNoteL[hidden],#evNoteL[hidden]{display:none}
+/* v20: three tabs at the top (بحث، اسأل Claude، تطوير), the search over everything in groups, «تطوير» */
+.gseg{margin-bottom:6px;border-radius:12px}
+.gseg button{padding:7px 2px;gap:5px;font-size:min(calc(13.5px*var(--fs,1)),15.5px)}
+.gseg svg{width:16px;height:16px}
+.gseg .badge{min-width:18px;height:18px;padding:0 5px;font-size:calc(11px*var(--fs,1));background:var(--brick);color:var(--surface)}
+.gseg .badge[hidden]{display:none}
+@media (max-width:370px){html[data-fs="1.12"] .gseg svg,html[data-fs="1.25"] .gseg svg{display:none}} /* a narrow phone with a large font: the words without the icons */
+@media (max-width:384px){html[data-fs="1.25"] .gseg svg{display:none}}
+.rgh{font-size:calc(12px*var(--fs,1));font-weight:700;color:var(--muted);padding:8px 4px 2px;border-bottom:1px solid var(--line)}
+.rgh:first-child{padding-top:0}
+.rmore{padding:6px 4px 0}
+.res .who .full{display:block}
+#askSet[hidden],#askChips[hidden],#askForm[hidden]{display:none}
+.aiset{display:flex;flex-direction:column;align-items:flex-start;gap:6px;background:var(--accent-soft);border-radius:12px;padding:10px 12px}
+.aiset b{font-size:calc(14px*var(--fs,1))}
+.dvtop{display:flex;gap:8px}.dvtop .btn{flex:1;min-height:42px;font-weight:600}
+.dvi{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg)}
+.dvh{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.dvh b{font-size:calc(14.5px*var(--fs,1));line-height:1.5}
+.dva{font-size:calc(11.5px*var(--fs,1));color:var(--muted);background:var(--sunk);border-radius:8px;padding:2px 8px;white-space:nowrap}
+.dvi p{margin:0;line-height:1.7;font-size:calc(13.5px*var(--fs,1))}
+.dvi small{color:var(--muted);line-height:1.6;font-size:calc(12.5px*var(--fs,1))}
+.dvb{display:flex;gap:6px}.dvb .btn{flex:1;min-height:38px}
+.dvi textarea,.dvown textarea{direction:rtl;min-height:58px;font-size:calc(14.5px*var(--fs,1));line-height:1.6;background:var(--surface)}
+.dvown textarea{border-style:dashed}
+.dvhint{font-size:calc(12px*var(--fs,1));color:var(--muted);line-height:1.6}
+.dvown{display:flex;flex-direction:column;align-items:flex-start;gap:6px}.dvown textarea{align-self:stretch}
+.dvsec{display:flex;flex-direction:column;align-items:flex-start;gap:4px;border-top:1px solid var(--line);padding-top:8px}
+.dvsec h4{margin:0;font-size:calc(14px*var(--fs,1))}
+.dvrow{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed var(--line);align-self:stretch;font-size:calc(13.5px*var(--fs,1))}
+.dvra{display:flex;gap:12px;flex:none}.lnk.dvx{color:var(--bad)}
+.dvk{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:6px 0;border-bottom:1px dashed var(--line);align-self:stretch;font-size:calc(13.5px*var(--fs,1))}
+.dvk span{grid-column:1;color:var(--muted)}.dvk button{grid-row:1/3;grid-column:2;align-self:center}
+.dverr{margin:0;color:var(--bad);font-size:calc(13.5px*var(--fs,1))}
 @media print{body>*:not(#printArea){display:none!important}#printArea{display:block!important}#printArea img{display:block;width:100%;height:auto}html,body{background:#fff!important}body::before{display:none}}
 </style>
 
@@ -607,7 +634,6 @@ textarea.seamsg{direction:rtl;font-size:calc(15px*var(--fs,1));min-height:78px;l
   <span class="sync" id="sync" role="status">على هذا الجهاز</span>
   <button class="icon-btn" id="btnUpd" type="button" hidden>تحديث</button>
   <button class="icon-btn" id="btnLockNow" type="button" hidden>قفل</button>
-  <button class="icon-btn" id="s-dev" type="button" data-p="p-dev" aria-expanded="false" aria-controls="tbDrop" aria-label="اقتراحاتك لتطوير التطبيق" title="اقتراحاتك"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg><span class="badge" id="ideaCount">0</span></button>
   <button class="icon-btn" id="btnSettings" type="button">الإعدادات</button>
 </header>
 
@@ -619,18 +645,23 @@ textarea.seamsg{direction:rtl;font-size:calc(15px*var(--fs,1));min-height:78px;l
   </div>
 
 
-  <section class="panel" id="topbar" aria-label="البحث عن قريب">
-    <div class="tb-row">
-      <div class="qbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input type="search" id="gq" placeholder="ابحث عن قريب" aria-label="ابحث عن قريب بالاسم أو النسب أو المدينة أو الجوال" autocomplete="off"></div>
-      <button class="tb-btn" type="button" id="s-ask" data-p="p-ask" aria-expanded="false" aria-controls="tbDrop"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.3 6.6 6.7 2.4-6.7 2.4L12 20.5l-2.3-6.6L3 11.5l6.7-2.4z"/></svg><span>اسأل</span></button>
+  <section class="panel" id="topbar" aria-label="بحث، واسأل Claude، وتطوير">
+    <div class="seg gseg" id="gseg" role="tablist" aria-label="بحث، واسأل Claude، وتطوير">
+      <button type="button" role="tab" id="g-find" data-gm="find" aria-selected="true" aria-controls="tbDrop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><span>بحث</span></button>
+      <button type="button" role="tab" id="g-ask" data-gm="ask" aria-selected="false" aria-controls="tbDrop" tabindex="-1"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.3 6.6 6.7 2.4-6.7 2.4L12 20.5l-2.3-6.6L3 11.5l6.7-2.4z"/></svg><span>اسأل Claude</span></button>
+      <button type="button" role="tab" id="g-dev" data-gm="dev" aria-selected="false" aria-controls="tbDrop" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.6 1.1 1.3 1.1 2.2h5c0-.9.4-1.6 1.1-2.2A6 6 0 0 0 12 3z"/></svg><span>تطوير</span><span class="badge" id="devN" hidden>0</span></button>
+    </div>
+    <div class="tb-row" id="g-row">
+      <div class="qbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input type="search" id="gq" placeholder="ابحث في كل شيء: قريب، ملاحظة، مبلغ" aria-label="ابحث في الأقارب والتواصل والإحسان والاقتراحات" autocomplete="off"></div>
     </div>
     <div class="tb-drop" id="tbDrop" hidden>
     <button class="tb-x" type="button" id="tbX" aria-label="إغلاق">إغلاق ✕</button>
-    <div id="p-search" class="pane" hidden>
+    <div id="p-search" class="pane" role="tabpanel" aria-label="نتائج البحث" hidden>
       <div class="results" id="gRes"></div>
     </div>
-    <div id="p-ask" class="pane" hidden>
+    <div id="p-ask" class="pane" role="tabpanel" aria-label="اسأل Claude" hidden>
       <div class="chat" id="chat"></div>
+      <div id="askSet" hidden></div>
       <div class="chips" id="askChips">
         <button class="chip" type="button">من أقاربي من جهة أمي؟</button>
         <button class="chip" type="button">من لم أتواصل معه منذ شهر؟</button>
@@ -643,16 +674,7 @@ textarea.seamsg{direction:rtl;font-size:calc(15px*var(--fs,1));min-height:78px;l
       </form>
       <p class="sub" id="askNote" style="margin:0" hidden></p>
     </div>
-    <div id="p-dev" class="pane" hidden>
-      <h3>اقتراحاتك</h3>
-      <p class="sub" style="margin:0">اكتب ما تريد أن يُضاف إلى التطبيق، ثم انسخ القائمة وأرسلها لي.</p>
-      <form class="row" id="ideaForm">
-        <input type="text" id="ideaIn" class="grow" placeholder="اقترح تطويرًا أو ميزة جديدة للتطبيق" autocomplete="off">
-        <button class="btn primary" type="submit">إضافة</button>
-      </form>
-      <div class="row" id="ideaSendRow" hidden><button class="btn sm" type="button" id="ideaSend">انسخ الاقتراحات لترسلها لي</button></div>
-      <div id="ideas"></div>
-    </div>
+    <div id="p-dev" class="pane" role="tabpanel" aria-label="تطوير" hidden></div>
     </div>
   </section>
   <!-- ذو القربى -->
@@ -772,7 +794,7 @@ window.addEventListener("load",function(){setTimeout(function(){if(window.__dqOK
 "use strict";
 /* ---------- storage ---------- */
 const KEY="dhulqurba.v1";
-const WEB_BUILD=19;
+const WEB_BUILD=20;
 let mem=null,loadBad=null,saveErr=false;
 function load(){let s=null;try{s=localStorage.getItem(KEY)}catch(e){return mem}if(!s)return mem;
   try{const d=JSON.parse(s);if(d&&typeof d==="object"&&Array.isArray(d.people))return d}catch(e){}
@@ -876,7 +898,13 @@ function clean(D){ // ids, names, links that lead somewhere, no one his own ance
   if(D.greet!=null){if(!obj(D.greet))delete D.greet;else Object.keys(D.greet).forEach(k=>{if(!/^[rfa]$/.test(k)||typeof D.greet[k]!=="string"||!D.greet[k].trim())delete D.greet[k]})}
   if(D.seasonAll!=null){if(D.seasonAll===true)D.seasonAll=true;else delete D.seasonAll}
   if(D.fontScale!=null){const f=+D.fontScale;if([1.12,1.25].includes(f))D.fontScale=f;else delete D.fontScale}
-  if(D.ideas!=null)D.ideas=objs(D.ideas).filter(i=>str(i.text).trim()).map(i=>Object.assign(i,{id:str(i.id)||uid(),text:str(i.text),date:okD(i.date)?i.date:new Date().toISOString(),done:!!i.done}));
+  if(D.ideas!=null)D.ideas=objs(D.ideas).filter(i=>str(i.text).trim()).map(i=>{Object.assign(i,{id:str(i.id)||uid(),text:str(i.text),date:okD(i.date)?i.date:new Date().toISOString(),done:!!i.done});
+    ["detail","why","dev"].forEach(k=>{if(i[k]!=null)i[k]=str(i[k]).slice(0,600)});if(i.doneAt!=null&&!okD(i.doneAt))delete i.doneAt;return i});
+  if(D.dev!=null){const ST=["new","later","no","ok","answered"],cut=(v,n)=>str(v).slice(0,n),dseen=new Set(); // «تطوير»: Claude's ideas and questions, and your answers
+    D.dev=objs(D.dev).filter(x=>x.kind==="idea"||x.kind==="q").map(x=>{let id=str(x.id);if(!id||dseen.has(id))id=uid();dseen.add(id);
+      const o={id,kind:x.kind,status:ST.includes(x.status)?x.status:"new",at:okD(x.at)?x.at:new Date().toISOString()};
+      if(x.kind==="idea")Object.assign(o,{title:cut(x.title,120),detail:cut(x.detail,600),why:cut(x.why,300),area:cut(x.area,20)});else Object.assign(o,{q:cut(x.q,300),why:cut(x.why,300),answer:cut(x.answer,1000)});
+      ["okAt","ansAt"].forEach(k=>{if(okD(x[k]))o[k]=x[k]});return o}).filter(x=>(x.kind==="idea"?x.title:x.q).trim()).slice(-300)}
   ["currency","family"].forEach(k=>{if(D[k]!=null&&typeof D[k]!=="string")D[k]=str(D[k])});
   D.cc=toLat(D.cc).replace(/\D/g,"");D.meId=by.has(str(D.meId))?str(D.meId):"";
   return D}
@@ -907,7 +935,7 @@ if(!S)S=loadBad!=null?{demo:false,schema:2,currency:"ريال",family:"",cc:"",p
 S=migrate(S);
 persist(); // as it was read: the time of the last change stays, so a newer copy in the account still wins
 let fEdit=false; // the one switch at the top of the board: shut, the family is only looked at; open, the places to add, «تعديل» and «حذف» show. Shut whenever the app opens
-function applyFs(){try{document.documentElement.style.setProperty("--fs",String(S.fontScale||1))}catch(e){}} // «حجم الخط»: the lists and the sheets grow, the board keeps its cards and has its zoom
+function applyFs(){try{document.documentElement.style.setProperty("--fs",String(S.fontScale||1));document.documentElement.dataset.fs=String(S.fontScale||1)}catch(e){}} // «حجم الخط»: the lists and the sheets grow, the board keeps its cards and has its zoom
 applyFs();
 
 /* ---------- helpers ---------- */
@@ -1700,7 +1728,7 @@ $("#v-ihsan").addEventListener("change",e=>{
 });
 
 /* ---------- settings ---------- */
-$("#btnSettings").onclick=()=>{
+function openSettings(go,o){o=o||{}; // go: the panel to show, o.keep: the same scroll, o.test: test the key just saved
   const lb=S.lastBackup?daysAgo(S.lastBackup):-1,ls=k=>{try{return localStorage.getItem(KEY+k)}catch(e){return null}},aside=ls(".aside"),bad=ls(".bad");
   let errN=0;try{errN=JSON.parse(ls(".err")||"[]").length}catch(e){}
   let asInfo="";if(aside){try{const o=JSON.parse(aside);asInfo=(o.people||[]).length+" في الشجرة"+(o.updatedAt?"، آخر تعديل "+fmtD(new Date(o.updatedAt).toISOString()):"")}catch(e){}}
@@ -1734,6 +1762,7 @@ $("#btnSettings").onclick=()=>{
     <p class="sub" style="margin:0">يعرف التطبيق الرقم الذي يبدأ بـ05 سعوديًّا، وبـ09 أو 01 سودانيًّا. ولأرقام غيرها يُستعمل رمز دولتك، أو اكتب الرقم برمزه مثل ‎+971.</p>
     <div class="row"><button class="btn primary" type="button" id="s-save">حفظ</button></div>
   </div>
+  ${aiPanelHTML()}
   <div class="row"><button class="btn" type="button" id="s-demo">تحميل البيانات التجريبية</button><span style="flex:1"></span><button class="btn danger" type="button" id="s-wipe">مسح كل البيانات</button></div>
   <div id="s-conf"></div><p class="sub" style="margin:0;text-align:center">ذو القربى · النسخة ${WEB_BUILD}${errN?` · <button class="lnk" type="button" id="s-err">انسخ سجل الأخطاء (${errN})</button>`:""}</p>`,el=>{
     const ta=el.querySelector("#s-json");
@@ -1751,7 +1780,7 @@ $("#btnSettings").onclick=()=>{
     el.querySelector("#s-import").onclick=()=>{let d;try{d=bkParse(ta.value)}catch(e){toast("النص الملصق ليس نسخة احتياطية صالحة");return}
       conf("ستحل النسخة الملصقة ("+d.people.length+" في الشجرة) محل بياناتك الحالية ("+S.people.length+"). أستعيدها؟",()=>{try{replaceAll(Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},d),"استُعيدت البيانات")}catch(e){toast("تعذّرت الاستعادة من هذا النص")}},"#s-iconf")};
     el.querySelector("#s-demo").onclick=()=>conf("ستحل البيانات التجريبية محل بياناتك الحالية.",()=>replaceAll(sample(),"حُمّلت البيانات التجريبية"));
-    el.querySelector("#s-wipe").onclick=()=>conf("مسح الشجرة والتواصل والإحسان كلها؟",()=>replaceAll({demo:false,schema:2,currency:S.currency||"ريال",cc:S.cc||"",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[]},"مُسحت البيانات"));
+    el.querySelector("#s-wipe").onclick=()=>conf("مسح الشجرة والتواصل والإحسان كلها؟",()=>replaceAll({demo:false,schema:2,currency:S.currency||"ريال",cc:S.cc||"",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[],dev:devKeep()},"مُسحت البيانات"));
     const sa=el.querySelector("#s-asideGo");if(sa)sa.onclick=()=>conf("تعود البيانات الموضوعة جانبًا، وتوضع بياناتك الحالية مكانها فلا يضيع شيء. ويُطلب رمزها إن كان لها رمز. أأعيدها؟",()=>{let o=null;try{o=JSON.parse(localStorage.getItem(KEY+".aside"))}catch(e){}if(!o||!Array.isArray(o.people)){toast("تعذّرت قراءتها");return}
       try{localStorage.setItem(KEY+".aside",JSON.stringify(S))}catch(e){toast("تعذّر الحفظ، فلم يُغيَّر شيء");return}
       replaceAll(o,"أُعيدت البيانات الموضوعة جانبًا، ووُضعت بياناتك الحالية مكانها",{undo:false,dev:false});if(S.pinHash){unlocked=false;showLock()}},"#s-xconf");
@@ -1759,9 +1788,25 @@ $("#btnSettings").onclick=()=>{
     const bc=el.querySelector("#s-badCopy");if(bc)bc.onclick=()=>{let t="";try{t=localStorage.getItem(KEY+".bad")||""}catch(e){}copyText(t,"نُسخت. أرسلها لي لأستخرج منها بياناتك")};
     const bd=el.querySelector("#s-badDel");if(bd)bd.onclick=()=>conf("حذف البيانات التي تعذّرت قراءتها نهائيًّا؟",()=>{try{localStorage.removeItem(KEY+".bad")}catch(e){}closeSheet();toast("حُذفت")},"#s-xconf");
     const er=el.querySelector("#s-err");if(er)er.onclick=()=>{let t="";try{t=localStorage.getItem(KEY+".err")||""}catch(e){}copyText("سجل أخطاء «ذو القربى»، النسخة "+WEB_BUILD+"\n"+t,"نُسخ سجل الأخطاء. أرسله لي")};
-  });
-};
-$("#btnStartReal").onclick=()=>replaceAll({demo:false,schema:2,currency:S.currency||"ريال",cc:S.cc||"",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[]},"ابدأ باسمك، ثم أضف أباك وأمك",{undo:false});
+    const ak=el.querySelector("#s-ak");if(ak){const st=el.querySelector("#s-akRes");
+      const test=async()=>{st.textContent="يختبر المفتاح...";try{await apiCall({max_tokens:1024,messages:[{role:"user",content:"أجب بكلمة واحدة: تم"}],output_config:{effort:"low"}});st.textContent="✓ المفتاح يعمل. افتح «اسأل Claude» أو «تطوير»."}catch(e){st.textContent=aiErr(e)}};
+      el.querySelector("#s-akSave").onclick=()=>{const v=ak.value.replace(/\s+/g,"");if(!/^sk-ant-[\w-]{20,}$/.test(v)){toast("هذا ليس مفتاح Claude. المفتاح يبدأ بـ sk-ant-");ak.focus();return}
+        if(!ckSet(v)){toast("تعذّر حفظ المفتاح");return}aiChanged();openSettings("s-ai",{keep:true,test:true})};
+      const ts=el.querySelector("#s-akTest");if(ts)ts.onclick=test;
+      const dl=el.querySelector("#s-akDel");if(dl)dl.onclick=()=>conf("حذف مفتاح Claude من هذا الجهاز؟ يتوقف «اسأل Claude» و«تطوير» حتى تضعه من جديد.",()=>{ckSet("");aiChanged();openSettings("s-ai",{keep:true});toast("حُذف المفتاح")},"#s-akConf");
+      if(o.test)test()}
+    if(go&&!o.keep)setTimeout(()=>{const t=el.querySelector("#"+go);if(!t)return;t.scrollIntoView({block:"center"});const i=t.querySelector("input");if(i)i.focus({preventScroll:true})},80);
+  },{keep:!!o.keep});
+}
+function aiPanelHTML(){if(window.claude)return""; // inside Claude it answers by itself; in the Android app and the browser it needs your key
+  const k=ckGet();return`<div class="panel" style="background:var(--bg)" id="s-ai"><h3>Claude داخل التطبيق</h3>
+    <p class="sub" style="margin:0">«اسأل Claude» و«تطوير» يعملان بمفتاح من حسابك في Claude: أنشئه مرة واحدة من <a href="https://platform.claude.com/settings/keys" target="_blank" rel="noopener">صفحة المفاتيح</a> بزر «Create Key»، ثم انسخه والصقه هنا. يُحفظ على هذا الجهاز وحده ولا يدخل في النسخة الاحتياطية، ويُحتسب ما تسأله على رصيد حسابك.</p>
+    <p class="sub" style="margin:0" id="s-akSt">${k?"المفتاح محفوظ: "+esc(k.slice(0,7))+"…"+esc(k.slice(-4)):"لم يُضف مفتاح بعد."}</p><p class="sub" style="margin:0;font-weight:600" id="s-akRes" role="status"></p>
+    <div class="row"><input type="password" id="s-ak" placeholder="sk-ant-..." autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="مفتاح Claude" style="direction:ltr;flex:1;min-width:0;width:auto"><button class="btn primary" type="button" id="s-akSave">حفظ المفتاح</button></div>
+    ${k?`<div class="row"><button class="btn soft" type="button" id="s-akTest">اختبر المفتاح</button><button class="btn danger" type="button" id="s-akDel">احذف المفتاح</button></div>`:""}<div id="s-akConf"></div>
+  </div>`}
+$("#btnSettings").onclick=()=>openSettings();
+$("#btnStartReal").onclick=()=>replaceAll({demo:false,schema:2,currency:S.currency||"ريال",cc:S.cc||"",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[],dev:devKeep()},"ابدأ باسمك، ثم أضف أباك وأمك",{undo:false});
 const DEV=["pinHash","hideAmounts","fontScale"]; // what belongs to this phone and not to the data: a restored copy does not bring an old code with it
 function viewReset(){fEdit=false;edPaint();fOf="";fOfBack.length=0;fExp.clear();oCol.clear();fSibs=false;fCamKey="";fUserCam=false;fFitAll=false;focusId=S.meId||null;if(treeMode==="open")setTreeMode("fam")}
 function replaceAll(next,msg,o){o=Object.assign({undo:true,dev:true},o);const snap=JSON.stringify(S); // o.dev: this phone keeps its lock and its veil; o.undo: «تراجع» brings back what was there
@@ -1773,108 +1818,282 @@ function replaceAll(next,msg,o){o=Object.assign({undo:true,dev:true},o);const sn
 /* ---------- top bar ---------- */
 const DEFAULT_IDEAS=["مشاركة الشجرة مع الأقارب برابط أو رمز عائلة","أخبار العائلة ومناسباتها مع تأكيد الحضور","ألبوم صور مرتبط بأفراد الشجرة","طلبات إضافة وتعديل يراجعها مشرف الشجرة","شجرة ورقية بتصميم جاهز للطباعة","تذكير قبل موعد التواصل بيوم"];
 if(!Array.isArray(S.ideas)){S.ideas=DEFAULT_IDEAS.map(t=>({id:uid(),text:t,date:new Date().toISOString(),done:false}));persist()}
-// the top bar: one line; search results, «اسأل» and «تطوير» drop down under it and close with a tap outside
-const tbBtns=[$("#s-ask"),$("#s-dev")];let tbPane="";
-function tbShow(p){tbPane=p||"";["p-search","p-ask","p-dev"].forEach(id=>{$("#"+id).hidden=id!==tbPane});$("#tbDrop").hidden=!tbPane;
-  tbBtns.forEach(b=>b.setAttribute("aria-expanded",String(b.dataset.p===tbPane)));if(tbPane==="p-ask")initAsk();if(tbPane&&tbPane!=="p-search")window.scrollTo(0,0);if(tbPane)bkPush("drop",()=>tbShow(""));else bkDone("drop")}
-tbBtns.forEach(b=>b.addEventListener("click",()=>tbShow(tbPane===b.dataset.p?"":b.dataset.p)));
+// the top bar: three tabs (بحث، اسأل Claude، تطوير); the results, the chat and «تطوير» drop down under them and close with a tap outside
+const gTabs=[...document.querySelectorAll("#gseg [data-gm]")];let tbPane="";
+function tbShow(p){tbPane=p||"";["p-search","p-ask","p-dev"].forEach(id=>{$("#"+id).hidden=id!==tbPane});const dr=$("#tbDrop"),sg=$("#gseg");dr.hidden=!tbPane;
+  const m=tbPane==="p-ask"?"ask":tbPane==="p-dev"?"dev":"find";gTabs.forEach(b=>{const on=b.dataset.gm===m;b.setAttribute("aria-selected",String(on));b.tabIndex=on?0:-1});
+  dr.style.top=m==="find"?"":(sg.offsetTop+sg.offsetHeight+6)+"px"; // «اسأل Claude» and «تطوير» open right under the tabs, over the search line
+  if(tbPane==="p-ask")initAsk();if(tbPane==="p-dev")openDev();if(tbPane&&tbPane!=="p-search")window.scrollTo(0,0);if(tbPane)bkPush("drop",()=>tbShow(""));else bkDone("drop")}
+gTabs.forEach(b=>b.addEventListener("click",()=>{const m=b.dataset.gm;
+  if(m==="find"){tbShow($("#gq").value.trim()?"p-search":"");$("#gq").focus();return} // «بحث»: back to the search line
+  tbShow(tbPane==="p-"+m?"":"p-"+m)}));
+$("#gseg").addEventListener("keydown",e=>{if(e.key!=="ArrowLeft"&&e.key!=="ArrowRight")return;const i=gTabs.indexOf(document.activeElement);if(i<0)return;e.preventDefault(); // right to left: the arrow to the left is the next tab
+  gTabs[(i+(e.key==="ArrowLeft"?1:gTabs.length-1))%gTabs.length].focus()});
 $("#tbX").addEventListener("click",()=>tbShow(""));
 $("#gq").addEventListener("input",()=>{if($("#gq").value.trim())tbShow("p-search");else if(tbPane==="p-search")tbShow("")});
 $("#gq").addEventListener("focus",()=>{if($("#gq").value.trim())tbShow("p-search")});
 let tbSwallow=false; // a tap outside only closes the drop-down; it does not also press what lies under it
-document.addEventListener("pointerdown",e=>{if(tbPane&&!e.target.closest("#topbar")&&!e.target.closest("#s-dev")&&!e.target.closest("#layer")&&!e.target.closest(".toast")){tbShow("");tbSwallow=true;setTimeout(()=>{tbSwallow=false},500)}},true);
+document.addEventListener("pointerdown",e=>{if(tbPane&&!e.target.closest("#topbar")&&!e.target.closest("#layer")&&!e.target.closest(".toast")){tbShow("");tbSwallow=true;setTimeout(()=>{tbSwallow=false},500)}},true);
 document.addEventListener("click",e=>{if(tbSwallow){tbSwallow=false;e.stopPropagation();e.preventDefault()}},true);
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&tbPane&&!$("#layer").innerHTML)tbShow("")});
-if(window.DQ&&!window.claude){$("#s-ask").hidden=true;$("#sync").hidden=true} // in the Android app Claude cannot answer, and everything is saved on the phone
-// search
+if(window.DQ&&!window.claude)$("#sync").hidden=true; // in the Android app everything is saved on the phone
+// search: everything written in the app, in four groups: the relatives, the contacts, the giving, and «تطوير»
+const snip=(t,q)=>{const x=String(t||"").replace(/\s+/g," ").trim();if(x.length<=64)return x;const a=Math.max(0,norm(x).indexOf(q)-22);return(a?"…":"")+x.slice(a,a+60)+(a+60<x.length?"…":"")};
+const amtT=r=>(Number(r.amount)||0).toLocaleString("en-US",{maximumFractionDigits:2})+(S.currency?" "+S.currency:""); // an amount as plain text
+function dvSt(x){return(x.kind==="q"?{new:"سؤال ينتظر جوابك",answered:"أجبت عنه",later:"أجّلته",no:"تخطّيته"}:{new:"مقترح جديد",later:"أجّلته",no:"رفضته",ok:"اعتمدته"})[x.status]||""}
 function gSearch(){
-  const q=norm($("#gq").value);const out=$("#gRes");
+  const raw=$("#gq").value.trim(),q=norm(raw),out=$("#gRes");
   if(!q){out.innerHTML="";return}
-  const dq=toLat(q).replace(/\D/g,""),hits=[];
+  const lat=toLat(raw).replace(/٫/g,".").replace(/[\s,٬]/g,""),num=/^\d+(\.\d+)?$/.test(lat)?lat:"",yr=/^\d{4}$/.test(lat)?lat:"";
+  const dq=toLat(q).replace(/\D/g,""),has=v=>!!v&&norm(v).includes(q),hits=[];
   S.people.forEach(p=>{const nv=norm(p.name);let r=-1,why="";
     if(nv.startsWith(q))r=0;else if(nv.includes(q))r=1;else if(norm(nasab(p,6)+" "+familyOf(p)).includes(q))r=2;
     else{const sp=spousesOf(p).find(x=>norm(x.name).includes(q));
       if(sp){r=3;why=(p.gender==="f"?"زوجة ":"زوج ")+sp.name}
       else if(p.city&&norm(p.city).includes(q)){r=4;why=p.city}
-      else if(dq.length>=2&&p.phone&&toLat(p.phone).replace(/\D/g,"").includes(dq)){r=5;why=p.phone}}
+      else if(yr&&toLat(p.born).trim()===yr){r=5;why=(p.gender==="f"?"وُلدت سنة ":"وُلد سنة ")+yr}
+      else if(dq.length>=2&&p.phone&&toLat(p.phone).replace(/\D/g,"").includes(dq)){r=6;why=p.phone}
+      else if(has(p.notes)){r=7;why="ملاحظة: "+snip(p.notes,q)}}
     if(r>=0)hits.push({p,r,why})});
   hits.sort((a,b)=>a.r-b.r);
-  out.innerHTML=hits.length?hits.slice(0,12).map(({p,why})=>{const c=S.contacts.find(x=>x.personId===p.id);const last=c&&c.log[0];const rl=relToMe(p.id);
+  const cts=[]; // the contacts: one kept by name only, outside the tree, and a note written in the log
+  S.contacts.forEach(c=>{const inT=c.personId&&byId(c.personId),m=c.meta||{};
+    if(!inT&&has(c.name)){cts.push({c,r:0,why:"في جدول التواصل، خارج الشجرة"});return}
+    const k=(c.log||[]).find(iso=>m[iso]&&has(m[iso].note));if(k)cts.push({c,r:1,why:fmtDs(k)+": "+snip(m[k].note,q)})});
+  cts.sort((a,b)=>a.r-b.r);
+  const ih=[],byAmt=!veiled&&!!num; // the giving: by name and category, and by amount unless the amounts are hidden
+  const mI=(r,t)=>{const nm=nameOf(r),kl=kindLbl(r)||"";if(!(has(nm)||has(kl)||(byAmt&&String(+r.amount).startsWith(num))))return;
+    ih.push({r,t,nm,sub:(t==="f"?["مبلغ شهري","يوم "+r.day,kl]:["مبلغ متفرق",fmtDs(r.date),kl]).filter(Boolean).join(" · ")})};
+  S.fixed.forEach(r=>mI(r,"f"));S.variable.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))).forEach(v=>mI(v,"v"));
+  const dv=[]; // «تطوير»: the ideas waiting or done, and what Claude suggested or asked
+  (Array.isArray(S.ideas)?S.ideas:[]).forEach(i=>{if(has(i.text)||has(i.detail))dv.push({t:i.text,s:i.done?"نُفِّذ":"بانتظار التنفيذ",k:i.done?"done":""})});
+  devItems().forEach(x=>{if(x.status==="ok")return;const t=x.kind==="q"?x.q:x.title;
+    if(has(t)||has(x.detail)||has(x.why)||has(x.answer))dv.push({t,s:dvSt(x)+(x.answer?": "+snip(x.answer,q):""),k:x.status==="answered"?"know":x.status==="later"?"later":""})});
+  const grp=(t,rows,n)=>rows.length?`<div class="rgh">${t} (${rows.length})</div>`+rows.slice(0,n).join("")+(rows.length>n?`<div class="sub rmore">تظهر أول ${n}. زد كلمة لتضييق البحث.</div>`:""):"";
+  const P=hits.map(({p,why})=>{const c=S.contacts.find(x=>x.personId===p.id);const last=c&&c.log[0];const rl=relToMe(p.id);
     const ns=nasab(p,4),sub=[why||(ns!==p.name?ns:""),rl,!why&&p.city?p.city:"",p.alive===false?rip(p):""].filter(Boolean).join(" · ");
     return`<div class="res"><div class="who"><button class="nm" type="button" data-gopen="${p.id}">${esc(p.name)}</button><span class="full">${esc(sub)}</span></div>
     ${last?`<span class="pill ${daysAgo(last)<=14?"good":daysAgo(last)<=45?"warn":"bad"}">${agoD(daysAgo(last))}</span>`:""}
-    <span class="acts"><button class="btn sm" type="button" data-gtree="${p.id}" aria-label="${esc("أظهر "+p.name+" في الشجرة")}">الشجرة</button><button class="btn sm soft" type="button" data-gopen="${p.id}">الملف</button></span></div>`}).join(""):`<div class="empty">لا يوجد قريب بهذا الاسم في الشجرة.</div>`;
+    <span class="acts"><button class="btn sm" type="button" data-gtree="${p.id}" aria-label="${esc("أظهر "+p.name+" في الشجرة")}">الشجرة</button><button class="btn sm soft" type="button" data-gopen="${p.id}">الملف</button></span></div>`});
+  const C=cts.map(({c,why})=>`<div class="res"><div class="who"><button class="nm" type="button" data-gc="${c.id}">${esc(nameOf(c))}</button><span class="full">${esc(why)}</span></div><span class="acts"><button class="btn sm soft" type="button" data-gc="${c.id}">التواصل</button></span></div>`);
+  const I=ih.map(({r,t,nm,sub})=>`<div class="res"><div class="who"><button class="nm" type="button" data-g${t}="${r.id}">${esc(nm)}</button><span class="full">${esc(sub)}</span></div>${veiled?"":`<span class="pill mute num">${esc(amtT(r))}</span>`}</div>`);
+  const V=dv.map(({t,s,k})=>`<div class="res"><div class="who"><button class="nm" type="button" data-gd="${k}">${esc(t)}</button><span class="full">${esc(s)}</span></div></div>`);
+  out.innerHTML=grp("الأقارب",P,12)+grp("التواصل",C,6)+grp("الإحسان",I,8)+grp("التطوير",V,6)||`<div class="empty">لا شيء يطابق «${esc(raw)}» في الأقارب ولا التواصل ولا الإحسان ولا الاقتراحات.</div>`;
 }
 $("#gq").addEventListener("input",gSearch);
 $("#gRes").addEventListener("click",e=>{const t=e.target.closest("[data-gtree]");if(t){const id=t.dataset.gtree;tbShow("");$("#gq").blur();showTab("v-tree");oGo(id,true);return}
-  const b=e.target.closest("[data-gopen]");if(b)openPerson(b.dataset.gopen)});
-// ideas
-function renderIdeas(){if(!Array.isArray(S.ideas))S.ideas=[];
-  const open=S.ideas.filter(i=>!i.done).length;$("#ideaSendRow").hidden=!open||!!window.claude;$("#ideaCount").textContent=open;$("#ideaCount").hidden=!open;
-  const list=S.ideas.slice().sort((a,b)=>a.done-b.done);
-  $("#ideas").innerHTML=list.length?list.map(i=>`<div class="idea ${i.done?"done":""}"><input type="checkbox" ${i.done?"checked":""} data-idone="${i.id}" aria-label="تم التنفيذ" style="margin-top:6px"><div class="tx"><b>${esc(i.text)}</b><div class="full">${fmtD(i.date)}${i.done?" · نُفِّذ":""}</div></div><button class="btn sm danger" type="button" data-idel="${i.id}">حذف</button></div>`).join(""):`<div class="empty">لا اقتراحات بعد.</div>`;
-}
-$("#ideaSend").onclick=()=>{const t="اقتراحاتي لتطبيق «ذو القربى»:\n"+S.ideas.filter(i=>!i.done).map((i,n)=>(n+1)+". "+i.text).join("\n");copyText(t,"نُسخت الاقتراحات. الصقها لي في المحادثة")};
-$("#ideaForm").addEventListener("submit",e=>{e.preventDefault();const t=$("#ideaIn").value.trim();if(!t)return;S.ideas.unshift({id:uid(),text:t,date:new Date().toISOString(),done:false});$("#ideaIn").value="";save();renderIdeas();toast("أُضيف الاقتراح")});
-$("#ideas").addEventListener("change",e=>{const id=e.target.dataset.idone;if(!id)return;const i=S.ideas.find(x=>x.id===id);i.done=e.target.checked;save();renderIdeas()});
-$("#ideas").addEventListener("click",e=>{const id=e.target.closest("[data-idel]")?.dataset.idel;if(!id)return;S.ideas=S.ideas.filter(x=>x.id!==id);save();renderIdeas()});
+  const b=e.target.closest("[data-gopen]");if(b){openPerson(b.dataset.gopen);return}
+  const c=e.target.closest("[data-gc]");if(c){editContact(c.dataset.gc);return}
+  const f=e.target.closest("[data-gf]");if(f){editFixed(f.dataset.gf);return}
+  const v=e.target.closest("[data-gv]");if(v){editVar(v.dataset.gv);return}
+  const d=e.target.closest("[data-gd]");if(d){if(d.dataset.gd)DV.open[d.dataset.gd]=true;tbShow("p-dev")}});
+// «تطوير»: «اقترح علي» (Claude's ideas: adopt, later, refuse) and «اسألني» (Claude's questions: the answers make it wiser),
+// then your own idea, «بانتظار التنفيذ» with «انسخ التعليمات», and folded: later, done, and what the app knows about you
+const DV={busy:"",err:"",errKey:false,draft:{},own:"",open:{}};
+const AREAS=["الشجرة","التواصل","الإحسان","البحث","الإعدادات","عام"];
+const devItems=()=>Array.isArray(S.dev)?S.dev:[];
+function devList(){if(!Array.isArray(S.dev))S.dev=[];return S.dev}
+function devKeep(){return devItems().filter(x=>x.kind==="idea")} // a fresh start keeps the ideas for the app, not what was learnt about the family
+const devKnow=()=>devItems().filter(x=>x.kind==="q"&&x.status==="answered"&&x.answer);
+function knowText(){const K=devKnow().slice(-40);return K.length?"\n\nما يعرفه التطبيق عن المستخدم وعائلته من أجوبته:\n"+K.map(x=>"- س: "+x.q+"\n  ج: "+x.answer).join("\n"):""}
+function devTrim(){let D=devList();if(D.length<=300)return;let over=D.length-300;D=D.filter(x=>{if(over>0&&x.status==="no"){over--;return false}return true});S.dev=D.length>300?D.slice(-300):D}
+function renderDevBadge(){const n=devItems().filter(x=>x.status==="new").length,b=$("#devN");b.textContent=n;b.hidden=!n}
+function renderIdeas(){renderDevBadge();if(tbPane==="p-dev")renderDev()}
+function devHTML(){
+  const D=devItems().slice().sort((a,b)=>String(b.at||"").localeCompare(String(a.at||""))),nw=D.filter(x=>x.status==="new"),later=D.filter(x=>x.status==="later"),K=devKnow();
+  const I=Array.isArray(S.ideas)?S.ideas:[],pend=I.filter(i=>!i.done),done=I.filter(i=>i.done),bz=DV.busy;
+  const fold=(k,t,n,body)=>`<div class="dvsec"><button type="button" class="lnk" data-dv="tog" data-k="${k}" aria-expanded="${!!DV.open[k]}">${DV.open[k]?"▾":"◂"} ${t} (${n})</button>${DV.open[k]?body:""}</div>`;
+  const idea=x=>`<div class="dvi"><div class="dvh"><b>${esc(x.title)}</b>${x.area?`<span class="dva">${esc(x.area)}</span>`:""}</div>${x.detail?`<p>${esc(x.detail)}</p>`:""}${x.why?`<small>✓ ${esc(x.why)}</small>`:""}
+    <div class="dvb"><button type="button" class="btn primary" data-dv="ok" data-id="${x.id}">اعتمد ✓</button><button type="button" class="btn" data-dv="later" data-id="${x.id}">لاحقًا</button><button type="button" class="btn" data-dv="no" data-id="${x.id}">ارفض ✗</button></div></div>`;
+  const ques=x=>`<div class="dvi dvq"><div class="dvh"><b>❓ ${esc(x.q)}</b></div>${x.why?`<small>${esc(x.why)}</small>`:""}
+    <textarea id="dva-${x.id}" data-dva="${x.id}" rows="2" placeholder="اكتب جوابك" aria-label="${esc("جوابك: "+x.q)}">${esc(DV.draft[x.id]||"")}</textarea>
+    <div class="dvhint">🎤 للإجابة بالصوت: اضغط على الخانة، ثم اضغط زر المايك في لوحة المفاتيح وتكلّم.</div>
+    <div class="dvb"><button type="button" class="btn primary" data-dv="ans" data-id="${x.id}">حفظ الجواب</button><button type="button" class="btn" data-dv="skip" data-id="${x.id}">تخطَّ</button></div></div>`;
+  let h=aiMode===""?aiSetHTML("«اقترح علي» و«اسألني» يعملان بـClaude.")
+    :`<div class="dvtop"><button type="button" class="btn primary" data-dv="idea"${bz?" disabled":""}>${bz==="idea"?"Claude يفكّر…":"💡 اقترح علي"}</button><button type="button" class="btn" data-dv="q"${bz?" disabled":""}>${bz==="q"?"Claude يفكّر…":"❓ اسألني"}</button></div>`;
+  if(DV.err)h+=`<p class="dverr" role="alert">${esc(DV.err)}${DV.errKey&&!window.claude?` <button type="button" class="lnk" data-aikey>افتح إعدادات المفتاح</button>`:""}</p>`;
+  if(aiMode!==""&&!D.length&&!bz)h+=`<p class="sub" style="margin:0">اضغط «اقترح علي» ليعطيك Claude مقترحات لتطوير التطبيق تعتمد منها ما تريد، أو «اسألني» ليسألك عن عائلتك فيصير أدق في إجاباته.</p>`;
+  h+=nw.map(x=>x.kind==="q"?ques(x):idea(x)).join("");
+  h+=`<form class="dvown" id="dvOwn"><textarea id="dvOwnIn" rows="2" placeholder="أو اكتب فكرتك أنت، مثل: تذكير بمواعيد زيارة الأقارب" aria-label="فكرتك لتطوير التطبيق">${esc(DV.own)}</textarea><button type="submit" class="btn">اعتمد فكرتي</button></form>`;
+  if(pend.length)h+=`<div class="dvsec"><h4>⏳ بانتظار التنفيذ (${pend.length})</h4>${pend.map(i=>`<div class="dvrow"><span>${esc(i.text)}</span><span class="dvra"><button type="button" class="lnk" data-dv="idone" data-id="${i.id}">نُفِّذ</button><button type="button" class="lnk dvx" data-dv="idel" data-id="${i.id}">${i.dev?"إلغاء":"حذف"}</button></span></div>`).join("")}
+    <p class="sub" style="margin:0">اضغط «📋 انسخ التعليمات» ثم الصقها لـClaude في المحادثة، فينفّذها في التحديث القادم.</p><button type="button" class="btn" data-dv="copy">📋 انسخ التعليمات</button></div>`;
+  if(later.length)h+=fold("later","🕓 لاحقًا",later.length,later.map(x=>`<div class="dvrow"><span>${esc(x.kind==="q"?x.q:x.title)}</span><button type="button" class="lnk" data-dv="back" data-id="${x.id}">أعده</button></div>`).join(""));
+  if(done.length)h+=fold("done","✅ تم التنفيذ",done.length,done.map(i=>`<div class="dvrow"><span>${esc(i.text)}</span><button type="button" class="lnk" data-dv="iundo" data-id="${i.id}">أعده</button></div>`).join(""));
+  if(K.length)h+=fold("know","🧠 ما يعرفه التطبيق عنك",K.length,K.map(x=>`<div class="dvk"><b>${esc(x.q)}</b><span>${esc(x.answer)}</span><button type="button" class="lnk" data-dv="forget" data-id="${x.id}">احذف</button></div>`).join(""));
+  return h}
+function renderDev(){const box=$("#p-dev"),f=document.activeElement,fid=f&&box.contains(f)&&f.id&&f.tagName==="TEXTAREA"?f.id:"";let a=0,z=0;if(fid){a=f.selectionStart;z=f.selectionEnd}
+  box.innerHTML=devHTML();renderDevBadge();
+  if(fid){const g=document.getElementById(fid);if(g){g.focus({preventScroll:true});try{g.setSelectionRange(a,z)}catch(e){}}}} // typing goes on while the pane redraws
+function openDev(){const was=aiMode;renderDev();aiNow().then(m=>{if(m!==was&&tbPane==="p-dev")renderDev()})}
+function devCopyText(){const L=(Array.isArray(S.ideas)?S.ideas:[]).filter(i=>!i.done);
+  return"طلبات تطوير لتطبيق «ذو القربى»، نفّذها:\n\n"+L.map((i,n)=>`${n+1}) ${i.text}${i.detail&&i.detail!==i.text?"\n"+i.detail:""}${i.why?"\nالفائدة: "+i.why:""}`).join("\n\n")}
+const DEV_ABOUT="تطبيق «ذو القربى» لصلة الرحم على الجوال: شجرة العائلة بجهاتها، وجدول التواصل مع الأقارب ومواعيده، والإحسان إليهم بالمبالغ الشهرية والمتفرقة. يستعمله صاحبه لنفسه.";
+const SCH_IDEA={type:"object",properties:{items:{type:"array",items:{type:"object",properties:{title:{type:"string"},detail:{type:"string"},why:{type:"string"},area:{type:"string"}},required:["title","detail","why","area"],additionalProperties:false}}},required:["items"],additionalProperties:false};
+const SCH_Q={type:"object",properties:{items:{type:"array",items:{type:"object",properties:{q:{type:"string"},why:{type:"string"}},required:["q","why"],additionalProperties:false}}},required:["items"],additionalProperties:false};
+function devPrompt(kind){
+  const prev=devItems().slice(-80).map(x=>`- ${x.kind==="q"?"سؤال":"مقترح"} (${dvSt(x)}): ${x.kind==="q"?x.q:x.title}`)
+    .concat((Array.isArray(S.ideas)?S.ideas:[]).slice(0,40).map(i=>`- فكرة في القائمة (${i.done?"نُفِّذت":"بانتظار التنفيذ"}): ${i.text}`)).join("\n")||"لا شيء";
+  const data=familyData().slice(0,30000);
+  return kind==="idea"?`أنت مستشار تطوير ل${DEV_ABOUT}
+${APP_GUIDE}${knowText()}
+
+مقترحات وأسئلة وأفكار سابقة (لا تكررها ولا تقترح ما يشبهها):
+${prev}
+
+بيانات المستخدم للاطلاع:
+${data}
+
+اقترح 3 تحسينات عملية جديدة ومختلفة للتطبيق، ليست في الدليل أعلاه، وكل منها مبني على ما تراه في البيانات وطريقة الاستعمال.
+اكتب بعربية بسيطة جدًّا. العنوان قصير. التفصيل جملتان تشرحان ماذا يتغير في التطبيق. الفائدة جملة واحدة.
+لا تذكر أسماء الأقارب ولا أرقام الجوال ولا المبالغ.
+أجب JSON فقط: {"items":[{"title":"","detail":"","why":"","area":"${AREAS.join("|")}"}]}`
+  :`أنت داخل ${DEV_ABOUT} تريد أن تفهم عائلة المستخدم وطريقته في صلة أرحامه أكثر، لتجيب وتقترح بذكاء.
+${APP_GUIDE}${knowText()}
+
+أسئلة ومقترحات سابقة (لا تكرر سؤالًا منها):
+${prev}
+
+بيانات المستخدم:
+${data}
+
+اكتب 3 أسئلة قصيرة جديدة للمستخدم، كل سؤال عن أمر لا يُعرف من البيانات: قريب صلته غامضة أو ناقصة، أو عادة في التواصل، أو مناسبة عائلية، أو طريقة في الإحسان. سؤال واحد في كل بند، بعربية بسيطة، يُجاب عنه بجملة.
+أجب JSON فقط: {"items":[{"q":"","why":"لماذا يفيد التطبيق أن يعرف هذا، جملة قصيرة"}]}`}
+async function devAsk(kind){if(DV.busy)return;const m=await aiNow();if(!m){renderDev();return}
+  DV.busy=kind;DV.err="";DV.errKey=false;renderDev();
+  try{const r=await aiJSON(devPrompt(kind),kind==="idea"?SCH_IDEA:SCH_Q),at=new Date().toISOString(),cut=(v,n)=>String(v==null?"":v).trim().slice(0,n);
+    const arr=(Array.isArray(r)?r:(r&&r.items)||[]).filter(x=>x&&typeof x==="object").slice(0,3);let n=0;
+    arr.forEach(x=>{const d=kind==="idea"?{id:uid(),kind:"idea",title:cut(x.title,120),detail:cut(x.detail,600),why:cut(x.why,300),area:AREAS.includes(cut(x.area,20))?cut(x.area,20):"عام",status:"new",at}
+      :{id:uid(),kind:"q",q:cut(x.q,300),why:cut(x.why,300),status:"new",at};
+      if(kind==="idea"?d.title:d.q){devList().push(d);n++}});
+    if(!n)throw{code:"empty"};devTrim();save();
+  }catch(e){DV.err=aiErr(e);DV.errKey=KEYERR.includes(e&&e.code)}
+  finally{DV.busy="";if(tbPane==="p-dev")renderDev();else renderDevBadge()}}
+$("#p-dev").addEventListener("input",e=>{const id=e.target.dataset.dva;if(id)DV.draft[id]=e.target.value;if(e.target.id==="dvOwnIn")DV.own=e.target.value});
+$("#p-dev").addEventListener("submit",e=>{if(e.target.id!=="dvOwn")return;e.preventDefault();const t=DV.own.trim();if(!t){toast("اكتب فكرتك أولًا");$("#dvOwnIn").focus();return}
+  if(!Array.isArray(S.ideas))S.ideas=[];S.ideas.unshift({id:uid(),text:t.slice(0,1000),date:new Date().toISOString(),done:false});DV.own="";save();renderDev();toast("أُضيفت إلى «بانتظار التنفيذ»")});
+$("#p-dev").addEventListener("click",e=>{const b=e.target.closest("[data-dv]");if(!b)return;const a=b.dataset.dv,id=b.dataset.id,now=new Date().toISOString();
+  const x=devItems().find(d=>d.id===id),I=Array.isArray(S.ideas)?S.ideas:(S.ideas=[]),it=I.find(i=>i.id===id),done=()=>{save();renderDev()};
+  const undo=(msg,back)=>toast(msg,{label:"تراجع",fn:()=>{back();done()}});
+  if(a==="idea"||a==="q"){devAsk(a);return}
+  if(a==="tog"){DV.open[b.dataset.k]=!DV.open[b.dataset.k];renderDev();return}
+  if(a==="copy"){copyText(devCopyText(),"نُسخت التعليمات. الصقها لـClaude في المحادثة");return}
+  if(x){const was=x.status,ans=x.answer;
+    if(a==="ok"){x.status="ok";x.okAt=now;I.unshift({id:uid(),text:x.title,detail:x.detail||"",why:x.why||"",dev:x.id,date:now,done:false});done();toast("اعتُمد. تجده في «بانتظار التنفيذ»")}
+    else if(a==="later"){x.status="later";done();toast("في «لاحقًا»")}
+    else if(a==="no"||a==="skip"){x.status="no";done();undo(a==="no"?"رُفض المقترح":"تُخطّي السؤال",()=>{x.status=was})}
+    else if(a==="back"){x.status="new";done()}
+    else if(a==="ans"){const v=String(DV.draft[id]||"").trim();if(!v){toast("اكتب الجواب أولًا");const t=$("#dva-"+id);t&&t.focus();return}
+      x.status="answered";x.answer=v.slice(0,1000);x.ansAt=now;delete DV.draft[id];done();toast("حُفظ. صار التطبيق يعرف هذا")}
+    else if(a==="forget"){x.status="no";x.answer="";done();undo("حُذف مما يعرفه التطبيق",()=>{x.status=was;x.answer=ans})}
+    return}
+  if(it){const k=I.indexOf(it);
+    if(a==="idone"){it.done=true;it.doneAt=now;done();toast("نُقل إلى «تم التنفيذ»")}
+    else if(a==="iundo"){it.done=false;delete it.doneAt;done()}
+    else if(a==="idel"){const d=it.dev&&devItems().find(z=>z.id===it.dev),ws=d&&d.status;I.splice(k,1);if(d)d.status="new";done();
+      undo(d?"أُلغي، ورجع إلى المقترحات":"حُذفت الفكرة",()=>{I.splice(k,0,it);if(d)d.status=ws})}}});
+document.addEventListener("click",e=>{if(e.target.closest("[data-aikey]"))openSettings(window.claude?"":"s-ai")}); // «ضع المفتاح»: the settings, at the key
 // ask Claude
-let sampleFn,askReady=false,turns=[],askCtl=null,hasTools=false;
+let sampleFn=null,askReady=false,askBusy=false,turns=[],askCtl=null,hasTools=false,aiMode=null,sampleNo=false; // aiMode: "sample" inside Claude, "key" with your key, "" none
+const CK=KEY+".ck",AI_URL="https://api.anthropic.com/v1/messages",AI_MODEL="claude-opus-5-5"; // the key stays on this phone, out of the data and of every backup
+const ckGet=()=>{try{return localStorage.getItem(CK)||""}catch(e){return""}};
+const ckSet=v=>{try{if(v)localStorage.setItem(CK,v);else localStorage.removeItem(CK);return true}catch(e){return false}};
+function getSample(){return getSample.p||(getSample.p=(async()=>{try{return window.claude?await window.claude.use("sample"):null}catch(e){return null}})())}
+async function aiNow(){const sm=await getSample();if(sm&&!sampleNo){sampleFn=sm;return aiMode="sample"}return aiMode=window.claude?"":ckGet()?"key":""}
+const KEYERR=["no_key","bad_key","forbidden","credit"];
+function aiErr(e){return({no_key:"ضع مفتاح Claude في الإعدادات أولًا.",bad_key:"مفتاح Claude غير صحيح. انسخه من جديد والصقه في الإعدادات.",forbidden:"هذا المفتاح لا يملك صلاحية. أنشئ مفتاحًا جديدًا والصقه في الإعدادات.",
+  credit:"انتهى رصيد حسابك في Claude. أضف رصيدًا من موقع Claude ثم أعد المحاولة.",rate_limited:"كثرت الطلبات الآن. حاول بعد قليل.",busy:"Claude مشغول الآن. حاول بعد دقيقة.",
+  net:"تعذّر الوصول إلى Claude. تأكد من الإنترنت ثم أعد المحاولة.",refusal:"اعتذر Claude عن هذا الطلب. جرّب صياغة أخرى.",empty:"لم يصل شيء من Claude. أعد المحاولة."})[e&&e.code]||"تعذّر الحصول على إجابة. أعد المحاولة."}
+let aiFB=true; // the safety fallback of the API: asked for, unless the API refuses it
+async function apiCall(body,signal){const key=ckGet();if(!key)throw{code:"no_key"};
+  const go=async fb=>{const h={"content-type":"application/json","x-api-key":key,"anthropic-version":"2026-10-21","anthropic-dangerous-direct-browser-access":"true"},b=Object.assign({model:AI_MODEL},body);
+    if(fb){h["anthropic-beta"]="server-side-fallback-2026-07-01";b.fallbacks="default"}
+    let r,j=null;try{r=await fetch(AI_URL,{method:"POST",headers:h,body:JSON.stringify(b),signal})}catch(e){throw e&&e.name==="AbortError"?{code:"cancelled"}:{code:"net"}}
+    try{j=await r.json()}catch(e){if(e&&e.name==="AbortError")throw{code:"cancelled"}}return{r,j}};
+  let {r,j}=await go(aiFB);const em=x=>String(x&&x.error&&x.error.message||"");
+  if(r.status===400&&aiFB&&/fallback|beta/i.test(em(j))){aiFB=false;({r,j}=await go(false))}
+  if(!r.ok){const t=j&&j.error&&j.error.type||"",msg=em(j);
+    throw{code:r.status===401?"bad_key":r.status===403?"forbidden":r.status===429?"rate_limited":/credit balance/i.test(msg)?"credit":(r.status===529||r.status>=500||t==="overloaded_error")?"busy":"error",status:r.status}}
+  if(!j||!Array.isArray(j.content))throw{code:"error"};if(j.stop_reason==="refusal")throw{code:"refusal"};return j}
+const KIN_DESC="يحسب صلة القرابة: ماذا يكون الشخص b بالنسبة إلى الشخص a. يعيد جملة عربية. المعرّفات من عمود المعرّف في البيانات.";
+const kinRun=i=>{const a=String(i&&i.a||""),b=String(i&&i.b||"");if(!byId(a)||!byId(b))throw new Error("معرّف غير موجود");return relation(a,b).replace(/<[^>]+>/g,"")};
+async function apiAsk(hist,signal,bubble){ // with your key: one question, and the kinship tool as often as Claude needs it
+  const msgs=hist.map(t=>({role:t.role,content:t.content})),sys=[{type:"text",text:RULES(),cache_control:{type:"ephemeral"}}];
+  const tools=[{name:"kinship",description:KIN_DESC,input_schema:{type:"object",properties:{a:{type:"string"},b:{type:"string"}},required:["a","b"],additionalProperties:false}}];
+  let text="";
+  for(let n=0;n<6;n++){const j=await apiCall({max_tokens:8000,system:sys,tools,messages:msgs,output_config:{effort:"low"}},signal);
+    text=j.content.filter(c=>c.type==="text").map(c=>c.text).join("").trim();if(j.stop_reason!=="tool_use")break;
+    const fi=j.content.map(c=>c.type).lastIndexOf("fallback"),echo=j.content.filter((c,i)=>!(i<fi&&/^(thinking|redacted_thinking|tool_use|server_tool_use)$/.test(c.type))); // what a declined model left before the switch is not sent back
+    const uses=echo.filter(c=>c.type==="tool_use");if(!uses.length)break;
+    msgs.push({role:"assistant",content:echo},{role:"user",content:uses.map(u=>{try{return{type:"tool_result",tool_use_id:u.id,content:kinRun(u.input)}}catch(e){return{type:"tool_result",tool_use_id:u.id,content:String(e&&e.message||e),is_error:true}}})});
+    if(bubble)bubble.textContent="يحسب صلة القرابة...";}
+  return text}
+async function aiJSON(prompt,schema){const m=await aiNow();
+  if(m==="sample")return await sampleFn.json(prompt,{cache:false,modelTier:"default"});if(m!=="key")throw{code:"no_key"};
+  const j=await apiCall({max_tokens:8000,messages:[{role:"user",content:prompt}],output_config:{effort:"medium",format:{type:"json_schema",schema}}}),t=j.content.filter(c=>c.type==="text").map(c=>c.text).join("");
+  try{return JSON.parse(t)}catch(e){const a=t.indexOf("{"),z=t.lastIndexOf("}");if(a>=0&&z>a){try{return JSON.parse(t.slice(a,z+1))}catch(x){}}throw{code:"empty"}}}
+const aiSetHTML=lead=>window.claude?`<div class="aiset"><b>${lead}</b><span class="sub">لم يُسمح للتطبيق باستعمال Claude في هذه الجلسة.</span></div>`
+  :`<div class="aiset"><b>🔑 ${lead}</b><span class="sub">ليعمل في تطبيق الجوال، ضع مفتاح Claude مرة واحدة في الإعدادات. يُحفظ على جوالك وحده.</span><button class="btn primary sm" type="button" data-aikey>ضع المفتاح</button></div>`;
+function aiChanged(){aiNow().then(m=>{if(tbPane==="p-ask")askSetup(m);if(tbPane==="p-dev")renderDev()})}
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
 1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أسفل اللوحة يمينًا) تعرض شجرة أي قريب: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«شجرتي». الأشكال: العمود الملوّن بخط سميك سلسلة الآباء من صاحب الجهة إلى أعلى جد، والبطاقة البيضاء قريب مسجّل خارج العمود، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، ولا تظهر إلا في وضع التعديل: في أعلى اللوحة يمينًا قفل واحد، مقفلًا تكون اللوحة والملفات للعرض فقط بلا خانات إضافة ولا «تعديل» ولا «حذف»، ومفتوحًا يظهر ذلك كله ويصير الزر «تعديل» ويُحاط اللوح بإطار متقطع بلون الجهة، ويُقفل كلما فُتح التطبيق، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة صاحب الشجرة المعروضة. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق كل زوجة و«أهله» فوق كل زوج ينقل إلى عائلته: هو أسفل العمود وفوقه أبوه ثم جده، فالعمود في كل جهة يصعد بالآباء وحدهم «ادعوهم لآبائهم» والأمهات بجانب أزواجهن، وخط الزواج إذا قطعه خطان صغيران فهو طلاق، والإخوة مرتبون من الأكبر بسنة الميلاد. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة، وزر التصدير بجانبها يحفظ الجهة التي تراها صورةً أو نصًّا، أو PDF في المتصفح. وأول مرة يسألك التطبيق اسمك ثم اسم أبيك ثم اسم أمك.
 ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اعرض شجرته» و«تعديل» و«حذف»، و«ترتيب الزوجات» لمن له أكثر من زوجة تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة. والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات وترتيب كل زوجة باختيار مباشر (الأولى، الثانية، الثالثة) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
 2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، والمبالغ المستحقة، وتذكير النسخة الاحتياطية، وفي أيام رمضان والعيدين «القائمة» للتهنئة: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، و«تم التواصل» في تلك الأيام يعلّم التهنئة أيضًا، وفي غيرها سطر يعدّ الأيام إلى الموسم القادم) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة، وتحته أزرار تضيف جهة كاملة بلمسة: الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة، ويحين موعد كل مضاف حسب قربه. وفوق الجدول فرز: الكل، ومتأخر، وهذا الأسبوع. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
 3) الإحسان: في الأعلى شريط الشهر (› السابق و‹ التالي و«الشهر الحالي»)، والمجاميع والقائمتان تتبع الشهر المعروض. «مبالغ شهرية»: كل مبلغ سطر واحد فيه الاسم والمبلغ ويوم الاستحقاق وحاله (مستحق، لم يحن، حُوِّل، لم يُسجَّل)، وزر ✓ في السطر يسجل التحويل في الشهر المعروض فيُسجَّل تحويل فات في شهره، ولمس السطر يفتح التفاصيل: المبلغ والتصنيف وتاريخ الاستحقاق (يُختار من التقويم ويتكرر في اليوم نفسه كل شهر) وسجل التحويلات و«تذكير في تقويم Google» والحذف. «مبالغ متفرقة»: سطر لكل مبلغ فيه الاسم والمبلغ والتاريخ، ولمسه يفتح التعديل. والإضافة بزر «+ أضف» فوق كل قائمة: اسم ومبلغ وتصنيف وتاريخ. التصنيفات ثلاثة: مصاريف، علاج، أخرى (ومعها تعليق يقول ما هو)، وتحت المجاميع مجموع كل تصنيف في السنة. وفي الأعلى ما حُوِّل في الشهر، والمتبقي، ومجموع السنة، و«إخفاء المبالغ».
-الشريط العلوي: خانة البحث عن قريب (زر «الشجرة» يقفز إليه ويضيء بطاقته، و«الملف» يفتح ملفه)، و«اسأل» داخل Claude. وفي رأس الشاشة زر «اقتراحاتك» (رمز المصباح وعليه عدد الاقتراحات) و«الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم حجم الخط (عادي أو كبير أو أكبر)، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا). زر الرجوع في الجوال يغلق المفتوح أولًا.`;
+الشريط العلوي ثلاثة تبويبات: «بحث» وتحته خانة تبحث في كل ما كُتب في التطبيق: الأقارب بالاسم والنسب والمدينة والجوال والملاحظات وسنة الميلاد (زر «الشجرة» يقفز إلى القريب ويضيء بطاقته، و«الملف» يفتح ملفه)، وملاحظات التواصل، والإحسان بالاسم والتصنيف والمبلغ، والاقتراحات. و«اسأل Claude» تسأل فيه عن أقاربك وعن التطبيق. و«تطوير» وعليه عدد ما ينتظرك: «اقترح علي» يعطيك مقترحات لتطوير التطبيق تعتمدها أو تؤجلها أو ترفضها، و«اسألني» يسألك عن عائلتك فتجيب كتابةً أو بالصوت من مايك لوحة المفاتيح فيصير أدق، وتحتهما فكرتك أنت، و«بانتظار التنفيذ» و«انسخ التعليمات»، و«ما يعرفه التطبيق عنك». وفي رأس الشاشة «الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم حجم الخط (عادي أو كبير أو أكبر)، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا)، ثم «Claude داخل التطبيق» في تطبيق الجوال: يُلصق فيه مفتاح Claude مرة واحدة. زر الرجوع في الجوال يغلق المفتوح أولًا.`;
 function familyData(){
   const cmap=new Map(S.contacts.map(c=>[c.personId,c]));
-  const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id);return[p.id,nasab(p,5),p.gender==="f"?"أنثى":"ذكر",p.alive!==false?"حي":"متوفى",p.city||"",spousesOf(p).map(x=>x.name+(isDiv(p,x)?" (طلاق)":"")).join("، "),c&&c.log[0]?locD(c.log[0]):"",c&&c.appt?locDT(c.appt).replace("T"," "):""].join(" | ")}).join("\n");
+  const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id),l=c&&c.log[0],mm=l&&c.meta&&c.meta[l]||{};
+    return[p.id,nasab(p,5),relToMe(p.id),p.gender==="f"?"أنثى":"ذكر",p.alive!==false?"حي":"متوفى",p.born||"",p.city||"",spousesOf(p).map(x=>x.name+(isDiv(p,x)?" (طلاق)":"")).join("، "),
+      l?locD(l)+(mm.type?" "+mm.type:"")+(mm.note?" ("+String(mm.note).slice(0,80)+")":""):"",c&&c.appt?locDT(c.appt).replace("T"," "):"",String(p.notes||"").replace(/\s+/g," ").slice(0,120)].join(" | ")}).join("\n");
+  const outside=S.contacts.filter(c=>!(c.personId&&byId(c.personId))).slice(0,100).map(c=>`${c.name||"—"} | ${c.log[0]?locD(c.log[0]):""} | ${c.appt?locDT(c.appt).replace("T"," "):""}`).join("\n");
   const fixed=S.fixed.map(r=>`${nameOf(r)} | ${r.amount} | يوم ${r.day} | ${kindName(r.kind)||"—"}${r.note?" ("+r.note+")":""} | آخر تحويل ${r.transfers[0]?locD(r.transfers[0].date):"لا يوجد"}`).join("\n");
   const vari=S.variable.slice(0,80).map(v=>`${nameOf(v)} | ${v.amount} | ${kindName(v.kind)||"—"}${v.note?" ("+v.note+")":""} | ${locD(v.date)}`).join("\n");
   return`تاريخ اليوم: ${locD(new Date().toISOString())}. العملة: ${S.currency||""}.
-الأفراد (المعرّف | النسب | الجنس | الحالة | المدينة | الزوج/الزوجة | آخر تواصل | الموعد القادم):
+الأفراد (المعرّف | النسب | صلته بك | الجنس | الحالة | سنة الميلاد | المدينة | الزوج/الزوجة | آخر تواصل | الموعد القادم | ملاحظات):
 ${people||"لا يوجد"}
+في جدول التواصل وليسوا في الشجرة (الاسم | آخر تواصل | الموعد القادم):
+${outside||"لا يوجد"}
 المبالغ الشهرية (الاسم | المبلغ | يوم الاستحقاق | التصنيف | آخر تحويل):
 ${fixed||"لا يوجد"}
 المبالغ المتفرقة (الاسم | المبلغ | التصنيف | التاريخ):
 ${vari||"لا يوجد"}`;
 }
-const RULES=()=>`أنت مساعد داخل تطبيق «ذو القربى» لصلة الرحم. أجب بالعربية باختصار ووضوح، بلا تنسيق Markdown ثقيل. أجب عن أسئلة المستخدم عن أقاربه من البيانات أدناه فقط، ولا تخترع أشخاصًا أو تواريخ. لمعرفة صلة القرابة بين شخصين استعمل أداة kinship بمعرّفيهما إن كانت متاحة. وأجب عن أسئلة طريقة استخدام التطبيق من الدليل.
+const RULES=()=>`أنت مساعد داخل تطبيق «ذو القربى» لصلة الرحم. أجب بالعربية باختصار ووضوح، بلا تنسيق Markdown ثقيل. أجب عن أسئلة المستخدم عن أقاربه من البيانات أدناه فقط، ولا تخترع أشخاصًا أو تواريخ. عمود «صلته بك» صلة كل فرد بالمستخدم. ولمعرفة صلة القرابة بين شخصين آخرين استعمل أداة kinship بمعرّفيهما إن كانت متاحة. وأجب عن أسئلة طريقة استخدام التطبيق من الدليل.
 
-${APP_GUIDE}
+${APP_GUIDE}${knowText()}
 
 ${familyData()}`;
 function addMsg(cls,text){const d=document.createElement("div");d.className="msg "+cls;d.textContent=text;$("#chat").appendChild(d);$("#chat").scrollTop=1e9;return d}
+function askSetup(m){const no=!m,set=$("#askSet");set.hidden=!no;set.innerHTML=no?aiSetHTML("«اسأل Claude» يجيبك عن أقاربك وعن التطبيق."):"";
+  $("#askChips").hidden=no;$("#askForm").hidden=no;if(no)$("#askNote").hidden=true;$("#askGo").disabled=no||askBusy}
 async function initAsk(){
-  if(askReady)return;askReady=true;
   if(!$("#chat").children.length)addMsg("ai","اسألني عن أي قريب: صلته بك، متى آخر تواصل معه، ما حُوِّل له. أو اسأل عن طريقة استخدام التطبيق.");
-  try{sampleFn=window.claude?await window.claude.use("sample"):null}catch(e){sampleFn=null}
-  if(!sampleFn){$("#askNote").textContent="الاستفسار من Claude يعمل حين يُفتح التطبيق داخل Claude.";$("#askNote").hidden=false;$("#askGo").disabled=true;return}
-  try{const l=await sampleFn.limits();hasTools=!!l.tools}catch(e){}
+  const m=await aiNow();askSetup(m);
+  if(m==="sample"&&!askReady){askReady=true;try{const l=await sampleFn.limits();hasTools=!!l.tools}catch(e){}}
 }
 async function ask(q){
-  if(!sampleFn||!q)return;
-  turns.push({role:"user",content:q});addMsg("me",q);
-  const bubble=addMsg("ai","يفكّر...");askCtl=new AbortController();
+  if(!q||askBusy)return;const m=await aiNow();if(!m){askSetup(m);return}
+  askBusy=true;turns.push({role:"user",content:q});addMsg("me",q);
+  const bubble=addMsg("ai","يفكّر...");askCtl=new AbortController();$("#askNote").hidden=true;
   $("#askGo").disabled=true;$("#askStop").hidden=false;$("#askIn").value="";
-  const opts={cache:false,signal:askCtl.signal,onText:({text})=>{bubble.textContent=text;$("#chat").scrollTop=1e9}};
-  if(hasTools)opts.tools=[{name:"kinship",description:"يحسب صلة القرابة: ماذا يكون الشخص b بالنسبة إلى الشخص a. يعيد جملة عربية. المعرّفات من عمود المعرّف في البيانات.",
-    inputSchema:{type:"object",properties:{a:{type:"string"},b:{type:"string"}},required:["a","b"]},
-    execute:i=>{const a=String(i.a),b=String(i.b);if(!byId(a)||!byId(b))throw new Error("معرّف غير موجود");return relation(a,b).replace(/<[^>]+>/g,"")}}];
-  try{
-    const {text}=await sampleFn([{role:"user",content:RULES()},...turns.slice(-10)],opts);
-    turns.push({role:"assistant",content:text});
+  try{let text;
+    if(m==="sample"){const opts={cache:false,signal:askCtl.signal,onText:({text})=>{bubble.textContent=text;$("#chat").scrollTop=1e9}};
+      if(hasTools)opts.tools=[{name:"kinship",description:KIN_DESC,inputSchema:{type:"object",properties:{a:{type:"string"},b:{type:"string"}},required:["a","b"]},execute:kinRun}];
+      text=(await sampleFn([{role:"user",content:RULES()},...turns.slice(-10)],opts)).text}
+    else{const h=turns.slice(-11);while(h.length&&h[0].role!=="user")h.shift();text=await apiAsk(h,askCtl.signal,bubble)}
+    text=String(text||"").trim()||"…";bubble.textContent=text;$("#chat").scrollTop=1e9;turns.push({role:"assistant",content:text});
   }catch(e){
-    turns.pop();
-    if(e.code==="cancelled"){bubble.textContent=e.text||"أُوقف."}
-    else if(e.code==="not_granted"||e.code==="sampling_disabled"){bubble.remove();$("#askNote").textContent="لم يُسمح للتطبيق باستعمال Claude في هذه الجلسة.";$("#askNote").hidden=false;$("#askGo").disabled=true;$("#askStop").hidden=true;return}
-    else if(e.code==="rate_limited"){bubble.textContent=(e.text?e.text+"\n\n":"")+"كثرت الأسئلة. حاول بعد قليل.";bubble.classList.add("err")}
-    else{bubble.textContent=(e.text?e.text+"\n\n":"")+"تعذّر الحصول على إجابة. أعد المحاولة.";bubble.classList.add("err")}
-  }finally{$("#askGo").disabled=!sampleFn;$("#askStop").hidden=true}
+    turns.pop();const c=e&&e.code;
+    if(c==="cancelled"){bubble.textContent=e.text||"أُوقف."}
+    else if(c==="not_granted"||c==="sampling_disabled"){bubble.remove();sampleNo=true;aiMode="";askSetup("")}
+    else{bubble.textContent=(e&&e.text?e.text+"\n\n":"")+aiErr(e);bubble.classList.add("err");
+      if(KEYERR.includes(c)&&!window.claude){$("#askNote").innerHTML=`<button class="lnk" type="button" data-aikey>افتح إعدادات المفتاح</button>`;$("#askNote").hidden=false}}
+  }finally{askBusy=false;$("#askGo").disabled=!aiMode;$("#askStop").hidden=true}
 }
 $("#askForm").addEventListener("submit",e=>{e.preventDefault();ask($("#askIn").value.trim())});
 $("#askStop").onclick=()=>askCtl&&askCtl.abort();
 $("#askChips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(b){$("#askIn").value=b.textContent;$("#askIn").focus()}});
+aiNow(); // know early whether Claude answers here
 
 
 /* ---------- family view: you in the centre ---------- */
@@ -2486,7 +2705,7 @@ function showLock(){
     const n=migrate(Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},dd));delete n.pinHash;S=n;veiled=!!S.hideAmounts;save();open();viewReset();renderAll();toast("استُعيدت بياناتك من النسخة، وأُلغي الرمز")};
   let sure=false;d.querySelector("#pinNew").onclick=e=>{if(!sure){sure=true;e.target.textContent="المس مرة أخرى لتبدأ من جديد";return}
     if(!aside()){say("تعذّر وضع البيانات الحالية جانبًا، فلم يُغيَّر شيء");return}
-    S=migrate({demo:false,schema:2,currency:S.currency||"ريال",cc:S.cc||"",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[]});veiled=false;save();open();viewReset();renderAll();toast("بدأت من جديد. بياناتك السابقة موضوعة جانبًا في الإعدادات",null,6000)};
+    S=migrate({demo:false,schema:2,currency:S.currency||"ريال",cc:S.cc||"",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[],dev:devKeep()});veiled=false;save();open();viewReset();renderAll();toast("بدأت من جديد. بياناتك السابقة موضوعة جانبًا في الإعدادات",null,6000)};
 }
 let hidAt=0,dayKey=new Date().toDateString();const LOCK_AFTER=5*60e3;
 document.addEventListener("visibilitychange",()=>{if(document.hidden){hidAt=Date.now();return} // back after a while: the code again, and «اليوم» and the month as they are now
@@ -2517,7 +2736,13 @@ async function initRemote(){
 }
 /* ---------- app update (Android app only) ---------- */
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={19:[
+const CHANGES={20:[
+  "ثلاثة تبويبات في أعلى الشاشة: «بحث»، و«اسأل Claude»، و«تطوير»، والمفتوح منها بلون داكن",
+  "البحث صار في كل ما كُتب في التطبيق: الأقارب بالاسم والنسب والمدينة والجوال والملاحظات وسنة الميلاد، وملاحظات التواصل، والإحسان بالاسم والتصنيف والمبلغ، والاقتراحات، كلٌّ في مجموعته",
+  "«اسأل Claude»: تسأله عن أقاربك (صلة أي قريب بك أو بغيره، ومتى تواصلت معه، وما حُوِّل له) وعن طريقة استعمال التطبيق. وفي تطبيق الجوال يعمل بمفتاح Claude تلصقه مرة واحدة في الإعدادات",
+  "«تطوير»: «اقترح علي» يعطيك فيه Claude مقترحات لتطوير التطبيق تعتمد منها ما تريد أو تؤجله أو ترفضه، و«اسألني» يسألك عن عائلتك فتجيب كتابةً أو بالصوت من مايك لوحة المفاتيح، فتصير إجاباته أدق، وتجد أجوبتك في «ما يعرفه التطبيق عنك»",
+  "زر المصباح انتقل إلى «تطوير»: فكرتك أنت، و«بانتظار التنفيذ»، و«انسخ التعليمات» لترسلها، وعلى التبويب عدد ما ينتظرك"],
+19:[
   "ترتيب الزوجات باختيار مباشر: في ملف من له أكثر من زوجة، والتعديل مفتوح، زر «ترتيب الزوجات» تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة، فيُحفظ فورًا. وفي «تعديل» صار الاختيار نفسه بدل الأسهم",
   "تسمية أوضح: «اجعله في المركز» صار «اعرض شجرته»، و«أنا في المركز» صار «شجرتي». والزر يفتح الشجرة حوله: أجداده فوقه، وزيجاته بجانبه، وذريته تحته"],
 18:[
