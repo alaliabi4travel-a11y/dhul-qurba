@@ -30,7 +30,7 @@
   --good:#6cc283; --warn:#e3a157; --bad:#ef7a72; --brick:#f2946f; --brick-soft:#3e2219; --in:#8fb7d9; --in-soft:#1c2b37; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;direction:rtl;margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:calc(15px*var(--fs,1));line-height:1.6;direction:rtl;margin:0}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
@@ -40,21 +40,21 @@ button{cursor:pointer}
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
   padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   display:flex;align-items:center;gap:12px}
-.brand{font-family:var(--display);font-size:22px;font-weight:700;color:var(--accent);letter-spacing:0}
-.brand small{display:block;font-family:var(--body);font-size:11.5px;color:var(--muted);font-weight:400;margin-top:-4px}
+.brand{font-family:var(--display);font-size:calc(22px*var(--fs,1));font-weight:700;color:var(--accent);letter-spacing:0}
+.brand small{display:block;font-family:var(--body);font-size:calc(11.5px*var(--fs,1));color:var(--muted);font-weight:400;margin-top:-4px}
 header.top .sp{flex:1}
-.icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 10px;font-size:13px}
+.icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 10px;font-size:calc(13px*var(--fs,1))}
 
 main{max-width:880px;margin:0 auto;padding-block:16px 110px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
 .view[hidden]{display:none!important}
 .view{display:flex;flex-direction:column;gap:16px}
 .pane{display:flex;flex-direction:column;gap:10px}
 .pane[hidden]{display:none}
-h2{font-family:var(--display);font-weight:500;font-size:20px;margin:0;text-wrap:balance}
-h3{font-size:15px;font-weight:600;margin:0}
-.sub{color:var(--muted);font-size:13px}
+h2{font-family:var(--display);font-weight:500;font-size:calc(20px*var(--fs,1));margin:0;text-wrap:balance}
+h3{font-size:calc(15px*var(--fs,1));font-weight:600;margin:0}
+.sub{color:var(--muted);font-size:calc(13px*var(--fs,1))}
 
-.demo{background:var(--gold-soft);color:var(--fg);border-radius:var(--r);padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:13.5px}
+.demo{background:var(--gold-soft);color:var(--fg);border-radius:var(--r);padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font-size:calc(13.5px*var(--fs,1))}
 .demo b{color:var(--gold)}
 .demo .sp{flex:1}
 
@@ -62,33 +62,33 @@ h3{font-size:15px;font-weight:600;margin:0}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .row > .grow{flex:1;min-width:140px}
 
-.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 12px;font-size:14px;white-space:nowrap}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 12px;font-size:calc(14px*var(--fs,1));white-space:nowrap}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
 .btn.soft{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:600}
 .btn.gold{background:var(--gold-soft);border-color:transparent;color:var(--gold);font-weight:600}
 .btn.danger{color:var(--bad)}
-.btn.sm{padding:4px 9px;font-size:13px}
+.btn.sm{padding:4px 9px;font-size:calc(13px*var(--fs,1))}
 .btn:disabled{opacity:.5;cursor:default}
 a.btn{text-decoration:none;display:inline-block;color:inherit}
 
 input[type=text],input[type=number],input[type=date],input[type=time],input[type=datetime-local],input[type=password],input[type=search],select,textarea{
   border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 10px;width:100%;min-width:0}
-textarea{min-height:90px;resize:vertical;direction:ltr;font-size:12px}
-label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+textarea{min-height:90px;resize:vertical;direction:ltr;font-size:calc(12px*var(--fs,1))}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:calc(13px*var(--fs,1));color:var(--muted)}
 label.f > span{font-weight:500}
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
-.chk{display:flex;align-items:center;gap:6px;font-size:14px}
+.chk{display:flex;align-items:center;gap:6px;font-size:calc(14px*var(--fs,1))}
 
 /* top bar: search / ask / develop */
 .seg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
-.seg button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 4px;font-weight:600;font-size:14px;white-space:nowrap;color:var(--muted);text-align:center}
+.seg button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 4px;font-weight:600;font-size:calc(14px*var(--fs,1));white-space:nowrap;color:var(--muted);text-align:center}
 .seg button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
 .seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-3px}
 .seg svg{width:18px;height:18px;flex:none}
-.badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--gold);color:var(--surface);font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.badge{display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--gold);color:var(--surface);font-size:calc(12.5px*var(--fs,1));font-weight:700;font-variant-numeric:tabular-nums}
 .seg button[aria-selected="true"] .badge{background:var(--accent-ink);color:var(--accent)}
 .qbox{position:relative}
-.qbox input{padding-inline-start:40px;padding-block:11px;border-radius:14px;font-size:15px;background:var(--surface)}
+.qbox input{padding-inline-start:40px;padding-block:11px;border-radius:14px;font-size:calc(15px*var(--fs,1));background:var(--surface)}
 .qbox svg{position:absolute;inset-inline-start:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted);pointer-events:none}
 .results{display:flex;flex-direction:column;gap:2px}
 .res{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--line)}
@@ -96,28 +96,28 @@ label.f > span{font-weight:500}
 .res .who{flex:1;min-width:0}
 .res .who b{display:block}
 .chat{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto}
-.msg{padding:9px 12px;border-radius:12px;max-width:92%;white-space:pre-wrap;font-size:14.5px}
+.msg{padding:9px 12px;border-radius:12px;max-width:92%;white-space:pre-wrap;font-size:calc(14.5px*var(--fs,1))}
 .msg.me{background:var(--accent-soft);align-self:flex-start}
 .msg.ai{background:var(--bg);border:1px solid var(--line);align-self:flex-end}
 .msg.err{color:var(--bad)}
 .today-list{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
-.today-list li{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px}
+.today-list li{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:calc(14px*var(--fs,1))}
 .today-list li .who{flex:1;min-width:120px}
-.freq{width:auto;padding:3px 6px;font-size:12.5px}
+.freq{width:auto;padding:3px 6px;font-size:calc(12.5px*var(--fs,1))}
 .idea{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
 .idea:last-child{border-bottom:0}
 .idea .tx{flex:1;min-width:0}
 .idea.done .tx b{text-decoration:line-through;color:var(--muted);font-weight:400}
 
 /* sync + lock */
-.sync{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px;white-space:nowrap}
+.sync{font-size:calc(12px*var(--fs,1));color:var(--muted);display:flex;align-items:center;gap:5px;white-space:nowrap}
 .sync::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted)}
 .sync.ok::before{background:var(--good)}
 .sync.busy::before{background:var(--warn)}
 @media (max-width:420px){.sync{font-size:0;gap:0}.brand small{display:none}}
 .lock{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
 .lock .box{display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center;max-width:300px;width:100%}
-.lock input{text-align:center;font-size:24px;letter-spacing:10px;direction:ltr}
+.lock input{text-align:center;font-size:calc(24px*var(--fs,1));letter-spacing:10px;direction:ltr}
 #v-ihsan.veiled .amt,#v-ihsan.veiled .stat b,#v-ihsan.veiled .full.num,#today.veiled .full.num{filter:blur(7px)}
 /* family view (ego-centred) */
 .fam{display:flex;flex-direction:column;gap:10px}
@@ -125,15 +125,15 @@ label.f > span{font-weight:500}
 .side{border-radius:12px;padding:10px 6px;display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;min-width:0}
 .side.fa{background:var(--accent-soft)}
 .side.mo{background:var(--gold-soft)}
-.cap{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:0}
-.side > .cap:first-child{color:var(--fg);font-size:13px}
+.cap{font-size:calc(12px*var(--fs,1));color:var(--muted);font-weight:600;letter-spacing:0}
+.side > .cap:first-child{color:var(--fg);font-size:calc(13px*var(--fs,1))}
 .grp{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:100%}
-.pc{border:1.5px solid var(--accent);background:var(--surface);border-radius:10px;padding:5px 10px;font-weight:600;font-size:14px;line-height:1.3;display:inline-flex;flex-direction:column;align-items:center;max-width:100%}
+.pc{border:1.5px solid var(--accent);background:var(--surface);border-radius:10px;padding:5px 10px;font-weight:600;font-size:calc(14px*var(--fs,1));line-height:1.3;display:inline-flex;flex-direction:column;align-items:center;max-width:100%}
 .pc.f{border-color:var(--gold)}
 .pc.dead{border-style:dashed;opacity:.8}
-.pc small{font-size:11px;font-weight:400;color:var(--muted)}
-.pc.big{font-size:16px;padding:7px 14px}
-.add{border:1.5px dashed var(--line);background:transparent;border-radius:10px;padding:5px 10px;font-size:13px;color:var(--muted)}
+.pc small{font-size:calc(11px*var(--fs,1));font-weight:400;color:var(--muted)}
+.pc.big{font-size:calc(16px*var(--fs,1));padding:7px 14px}
+.add{border:1.5px dashed var(--line);background:transparent;border-radius:10px;padding:5px 10px;font-size:calc(13px*var(--fs,1));color:var(--muted)}
 .add:hover{border-color:var(--accent);color:var(--accent)}
 .join{height:16px;margin:0 25%;border:2px solid var(--line);border-top:0;border-radius:0 0 14px 14px}
 .stem{width:2px;height:14px;background:var(--line);margin:0 auto}
@@ -146,8 +146,8 @@ label.f > span{font-weight:500}
 /* stats */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px}
-.stat b{display:block;font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
-.stat span{font-size:12px;color:var(--muted)}
+.stat b{display:block;font-size:calc(22px*var(--fs,1));font-weight:600;font-variant-numeric:tabular-nums}
+.stat span{font-size:calc(12px*var(--fs,1));color:var(--muted)}
 @media (max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}}
 
 /* tree */
@@ -171,28 +171,28 @@ label.f > span{font-weight:500}
 .node.f{border-color:var(--gold)}
 .node.dead{opacity:.72;border-style:dashed}
 .node.hit{box-shadow:0 0 0 3px var(--gold)}
-.node button.nm{all:unset;cursor:pointer;display:block;font-weight:600;font-size:14px}
-.node .sp2{display:block;font-size:11px;color:var(--muted)}
-.node .tg{position:absolute;bottom:-11px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:12px;line-height:17px;padding:0;color:var(--muted)}
+.node button.nm{all:unset;cursor:pointer;display:block;font-weight:600;font-size:calc(14px*var(--fs,1))}
+.node .sp2{display:block;font-size:calc(11px*var(--fs,1));color:var(--muted)}
+.node .tg{position:absolute;bottom:-11px;left:50%;transform:translateX(-50%);width:20px;height:20px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:calc(12px*var(--fs,1));line-height:17px;padding:0;color:var(--muted)}
 .zoom{display:flex;gap:6px;align-items:center}
 
 /* lists / tables */
 .tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th{font-weight:500;color:var(--muted);font-size:12.5px;text-align:right;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:calc(14px*var(--fs,1))}
+th{font-weight:500;color:var(--muted);font-size:calc(12.5px*var(--fs,1));text-align:right;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
 td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
 tr:last-child td{border-bottom:0}
 td .acts{display:flex;flex-wrap:wrap;gap:6px}
-.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:calc(12px*var(--fs,1));font-weight:600;white-space:nowrap}
 .pill.good{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good)}
 .pill.warn{background:color-mix(in srgb,var(--warn) 15%,transparent);color:var(--warn)}
 .pill.bad{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
 .pill.mute{background:var(--sunk);color:var(--muted)}
-.full{font-size:12.5px;color:var(--muted)}
+.full{font-size:calc(12.5px*var(--fs,1));color:var(--muted)}
 .amt{width:110px}
-.hist{font-size:12.5px;color:var(--muted);margin:4px 0 0;padding:0;list-style:none}
+.hist{font-size:calc(12.5px*var(--fs,1));color:var(--muted);margin:4px 0 0;padding:0;list-style:none}
 .hist li{padding:1px 0}
-.empty{color:var(--muted);text-align:center;padding:18px 8px;font-size:14px}
+.empty{color:var(--muted);text-align:center;padding:18px 8px;font-size:calc(14px*var(--fs,1))}
 @media (max-width:600px){
   .tbl-wrap table thead{display:none}
   .tbl-wrap table,.tbl-wrap tbody{display:block;width:100%}
@@ -200,25 +200,25 @@ td .acts{display:flex;flex-wrap:wrap;gap:6px}
   .tbl-wrap tr:last-child{border-bottom:0}
   .tbl-wrap td{display:block;border:0;padding:0;min-width:0}
   .tbl-wrap td:first-child,.tbl-wrap td.wide{grid-column:1/-1}
-  .tbl-wrap td[data-l]::before{content:attr(data-l);display:block;font-size:12px;color:var(--muted)}
+  .tbl-wrap td[data-l]::before{content:attr(data-l);display:block;font-size:calc(12px*var(--fs,1));color:var(--muted)}
   .tbl-wrap td[colspan]{grid-column:1/-1}
 }
 .totals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-@media (max-width:480px){.totals{gap:6px}.totals .stat{padding:8px 9px}.totals .stat b{font-size:15.5px}}
+@media (max-width:480px){.totals{gap:6px}.totals .stat{padding:8px 9px}.totals .stat b{font-size:calc(15.5px*var(--fs,1))}}
 
 /* autocomplete */
 .ac{position:relative}
 .ac-list{position:absolute;inset-inline:0;top:100%;margin-top:4px;background:var(--surface);border:1px solid var(--line);border-radius:10px;z-index:15;max-height:240px;overflow:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
-.ac-list button{all:unset;display:block;width:100%;box-sizing:border-box;padding:8px 12px;cursor:pointer;font-size:14px}
+.ac-list button{all:unset;display:block;width:100%;box-sizing:border-box;padding:8px 12px;cursor:pointer;font-size:calc(14px*var(--fs,1))}
 .ac-list button:hover,.ac-list button.on{background:var(--accent-soft)}
 .ac-list .full{display:block}
-.picked{font-size:12.5px;color:var(--accent)}
+.picked{font-size:calc(12.5px*var(--fs,1));color:var(--accent)}
 
 /* tab bar */
 nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);
   display:grid;grid-template-columns:repeat(3,1fr);padding-bottom:env(safe-area-inset-bottom,0px);
   padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
-nav.tabs button{all:unset;cursor:pointer;text-align:center;padding:9px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--muted);font-size:13.5px;font-weight:500}
+nav.tabs button{all:unset;cursor:pointer;text-align:center;padding:9px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--muted);font-size:calc(13.5px*var(--fs,1));font-weight:500}
 nav.tabs button svg{width:24px;height:24px}
 nav.tabs button[aria-selected="true"]{color:var(--accent);font-weight:700}
 nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
@@ -230,14 +230,14 @@ nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-4p
 @media (min-width:700px){.overlay{align-items:center}.sheet{border-radius:16px}}
 .sheet .hd{display:flex;align-items:flex-start;gap:8px}
 .sheet .hd h2{flex:1}
-.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:calc(14px*var(--fs,1))}
 .kv dt{color:var(--muted)}
 .kv dd{margin:0}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:13px;background:var(--bg)}
-.confirm{background:color-mix(in srgb,var(--bad) 10%,transparent);border-radius:10px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
-.rel-out{background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:15px}
-.toast{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:14px;z-index:50;max-width:90vw}
+.chip{border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:calc(13px*var(--fs,1));background:var(--bg)}
+.confirm{background:color-mix(in srgb,var(--bad) 10%,transparent);border-radius:10px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:calc(14px*var(--fs,1))}
+.rel-out{background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:calc(15px*var(--fs,1))}
+.toast{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:calc(14px*var(--fs,1));z-index:50;max-width:90vw}
 @media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
 /* v7: edit sheets, family slots, update badge */
 .toast{display:flex;align-items:center;gap:14px}
@@ -249,24 +249,24 @@ nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-4p
 #btnUpd.has::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--brick);flex:none}
 @media (prefers-reduced-motion:no-preference){#btnUpd.has::before{animation:dqpulse 1.6s ease-in-out infinite}@keyframes dqpulse{50%{opacity:.25}}}
 #btnUpd.ok{background:var(--accent-soft);color:var(--accent);border-color:transparent;font-weight:600}
-.relme{color:var(--accent);font-weight:600;font-size:14px;margin-top:2px}
+.relme{color:var(--accent);font-weight:600;font-size:calc(14px*var(--fs,1));margin-top:2px}
 .seg2{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--bg)}
-.seg2 button{all:unset;cursor:pointer;padding:5px 12px;font-size:13px;font-weight:500;color:var(--muted)}
+.seg2 button{all:unset;cursor:pointer;padding:5px 12px;font-size:calc(13px*var(--fs,1));font-weight:500;color:var(--muted)}
 .seg2 button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
 .seg2 button.dead[aria-pressed="true"]{background:var(--muted);color:var(--surface)}
 .seg2 button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .fam-grid{display:grid;grid-template-columns:auto 1fr;gap:10px 12px;margin:0;align-items:start}
-.fam-grid dt{color:var(--muted);font-size:13px;font-weight:500;padding-top:4px;white-space:nowrap}
+.fam-grid dt{color:var(--muted);font-size:calc(13px*var(--fs,1));font-weight:500;padding-top:4px;white-space:nowrap}
 .fam-grid dd{margin:0;min-width:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
 .fam-grid dd .chips,.fam-grid dd .kgrp{align-self:stretch}
-.chip small{font-size:11px;color:var(--muted)}
+.chip small{font-size:calc(11px*var(--fs,1));color:var(--muted)}
 .chip.dead{border-style:dashed;color:var(--muted)}
-.slot{border:1.5px dashed var(--line);border-radius:999px;padding:2px 10px;font-size:13px;background:transparent;color:var(--muted)}
+.slot{border:1.5px dashed var(--line);border-radius:999px;padding:2px 10px;font-size:calc(13px*var(--fs,1));background:transparent;color:var(--muted)}
 .slot:hover,.slot:focus-visible{border-color:var(--accent);color:var(--accent)}
 .kgrp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.mgrp{font-size:12px;color:var(--muted)}
+.mgrp{font-size:calc(12px*var(--fs,1));color:var(--muted)}
 details.more{border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--bg)}
-details.more summary{cursor:pointer;font-weight:600;font-size:14px}
+details.more summary{cursor:pointer;font-weight:600;font-size:calc(14px*var(--fs,1))}
 .erow{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
 .erow:last-child{border-bottom:0}
 .erow .f2{flex:1;display:flex;flex-wrap:wrap;gap:6px;min-width:0}
@@ -334,8 +334,8 @@ details.more summary{cursor:pointer;font-weight:600;font-size:14px}
 .fpill:focus-visible,.ftab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .sidepick{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .spc{all:unset;box-sizing:border-box;cursor:pointer;border-radius:14px;padding:8px 10px 9px;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;transition:background .15s,color .15s}
-.spc b{font-size:15px;font-weight:700;line-height:1.4;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.spc small{font-size:12px;opacity:.85;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spc b{font-size:calc(15px*var(--fs,1));font-weight:700;line-height:1.4;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spc small{font-size:calc(12px*var(--fs,1));opacity:.85;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .spc.fa{background:var(--accent-soft);color:var(--accent)}
 .spc.mo{background:var(--gold-soft);color:var(--gold)}
 .spc.in{background:var(--in-soft);color:var(--in)}
@@ -349,16 +349,16 @@ details.more summary{cursor:pointer;font-weight:600;font-size:14px}
 .tb-row{display:flex;gap:6px;align-items:center}
 .tb-row .qbox{flex:1;min-width:0}
 .tb-row .qbox input{padding-block:9px}
-.tb-btn{display:flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:12px;padding:0 10px;height:42px;font:inherit;font-size:13.5px;font-weight:600;white-space:nowrap;flex:none}
+.tb-btn{display:flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:12px;padding:0 10px;height:42px;font:inherit;font-size:calc(13.5px*var(--fs,1));font-weight:600;white-space:nowrap;flex:none}
 .tb-btn[hidden]{display:none}
 .tb-btn svg{width:18px;height:18px;flex:none}
 .tb-btn[aria-expanded="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.tb-btn .badge{min-width:20px;height:20px;font-size:11.5px;padding:0 5px}
+.tb-btn .badge{min-width:20px;height:20px;font-size:calc(11.5px*var(--fs,1));padding:0 5px}
 .tb-btn .badge[hidden]{display:none}
 .tb-btn[aria-expanded="true"] .badge{background:var(--accent-ink);color:var(--accent)}
 .tb-drop{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px 12px;box-shadow:0 12px 32px rgba(0,0,0,.2);max-height:min(70vh,560px);overflow:auto;display:flex;flex-direction:column;gap:8px}
 .tb-drop[hidden]{display:none}
-.tb-x{all:unset;cursor:pointer;align-self:flex-end;font-size:13px;color:var(--muted);padding:2px 6px;border-radius:8px}
+.tb-x{all:unset;cursor:pointer;align-self:flex-end;font-size:calc(13px*var(--fs,1));color:var(--muted);padding:2px 6px;border-radius:8px}
 .tb-x:focus-visible{outline:2px solid var(--accent)}
 .sync[hidden]{display:none}
 body.famfit main{padding-bottom:calc(var(--navh,72px) + 10px)}
@@ -386,8 +386,8 @@ body.famfit main{padding-bottom:calc(var(--navh,72px) + 10px)}
 body.famfit main{padding-top:10px;gap:10px}
 body.famfit .view{gap:10px}
 .spc{padding:6px 10px 7px}
-.spc b{font-size:14.5px;line-height:1.35}
-.spc small{font-size:11.5px}
+.spc b{font-size:calc(14.5px*var(--fs,1));line-height:1.35}
+.spc small{font-size:calc(11.5px*var(--fs,1))}
 #topbar{padding:6px}
 .tb-row .qbox input{padding-block:8px}
 .qpick{display:flex;flex-direction:column;gap:6px}
@@ -397,9 +397,9 @@ body.famfit .view{gap:10px}
 .obar{display:flex;align-items:center;gap:8px;background:var(--accent-soft);border-radius:14px;padding:8px 10px;min-height:52px;box-sizing:border-box}
 .obar[hidden],.sidepick[hidden]{display:none}
 .ob-t{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.35}
-.ob-t small{font-size:11.5px;color:var(--muted)}
-.ob-t b{font-size:15px;color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ob-t b small{font-weight:600;color:var(--muted);font-size:12px}
+.ob-t small{font-size:calc(11.5px*var(--fs,1));color:var(--muted)}
+.ob-t b{font-size:calc(15px*var(--fs,1));color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ob-t b small{font-weight:600;color:var(--muted);font-size:calc(12px*var(--fs,1))}
 .ob-b{display:flex;gap:6px;flex:none}
 .ob-b .btn[hidden]{display:none}
 .tn.oc{box-shadow:0 0 0 3px var(--accent)}
@@ -408,10 +408,10 @@ body.famfit .view{gap:10px}
 .res .acts{display:flex;gap:6px;flex:none}
 .qgs{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
 .qgs[hidden]{display:none}
-.qg{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 10px;font:inherit;font-size:13px;cursor:pointer;color:var(--fg)}
+.qg{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 10px;font:inherit;font-size:calc(13px*var(--fs,1));cursor:pointer;color:var(--fg)}
 .qg small{color:var(--accent);font-weight:700;margin-inline-start:4px}
 .qg.f small{color:var(--gold)}
-.bk-last{font-size:12.5px}
+.bk-last{font-size:calc(12.5px*var(--fs,1))}
 /* v12: one meaning for each look. The dashed line is only a place to add someone; the dead are faded, with a solid border and «رحمه الله» */
 .tn.dead{border-style:solid}
 .tn.dead:not(.ctr){background:color-mix(in srgb,var(--surface) 45%,var(--sunk));border-color:color-mix(in srgb,var(--muted) 30%,var(--line))}
@@ -422,11 +422,11 @@ body.famfit .view{gap:10px}
 .tpill.dead,.node.dead{border-style:solid}
 .pc.dead{border-style:solid;opacity:1;background:color-mix(in srgb,var(--surface) 45%,var(--sunk));color:var(--muted)}
 .chip.dead{border-style:solid;background:var(--sunk);color:var(--muted)}
-.rip-h{font-family:var(--body);font-size:13px;font-weight:500;color:var(--muted);margin-inline-start:2px;white-space:nowrap}
+.rip-h{font-family:var(--body);font-size:calc(13px*var(--fs,1));font-weight:500;color:var(--muted);margin-inline-start:2px;white-space:nowrap}
 /* the three sides in one row of equal parts */
 .sidepick{grid-template-columns:repeat(var(--n,3),minmax(0,1fr))}
 .spc{padding:6px 4px 7px}
-.spc b{font-size:14px}
+.spc b{font-size:calc(14px*var(--fs,1))}
 /* «دليل اللوحة»: every look and every tool, each with its example */
 .lg{display:flex;flex-direction:column}
 .lg h3{margin:8px 0 0}
@@ -441,9 +441,9 @@ body.famfit .view{gap:10px}
 .lgx svg{display:block;overflow:visible}
 .lgc{fill:var(--surface);stroke:var(--accent);stroke-width:1.5}
 .lgc.n{stroke:var(--line)}
-.lgr p{margin:0;flex:1;min-width:0;font-size:13.5px;color:var(--muted);line-height:1.6}
-.lgr p b{display:block;color:var(--fg);font-size:14px;font-weight:600}
-.lgk{display:inline-grid;place-items:center;min-width:32px;height:32px;padding:0 6px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:16px;color:var(--fg);box-shadow:0 1px 4px rgba(0,0,0,.12);white-space:nowrap}
+.lgr p{margin:0;flex:1;min-width:0;font-size:calc(13.5px*var(--fs,1));color:var(--muted);line-height:1.6}
+.lgr p b{display:block;color:var(--fg);font-size:calc(14px*var(--fs,1));font-weight:600}
+.lgk{display:inline-grid;place-items:center;min-width:32px;height:32px;padding:0 6px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-size:calc(16px*var(--fs,1));color:var(--fg);box-shadow:0 1px 4px rgba(0,0,0,.12);white-space:nowrap}
 /* a name you can touch opens its profile, everywhere */
 .nm{all:unset;cursor:pointer;font-weight:700;color:var(--fg);border-radius:6px;overflow-wrap:anywhere}
 .nm:hover{color:var(--accent)}
@@ -451,11 +451,11 @@ body.famfit .view{gap:10px}
 .res .who .nm{display:block}
 /* the profile opens on what it is for: reaching the relative */
 .pcon{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
-.pcon .ph{direction:ltr;unicode-bidi:isolate;font-size:16px;font-weight:600;align-self:flex-start;user-select:all}
-.pcon .meta{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
-.lnk{all:unset;cursor:pointer;color:var(--accent);font-weight:600;font-size:13px;border-radius:6px}
+.pcon .ph{direction:ltr;unicode-bidi:isolate;font-size:calc(16px*var(--fs,1));font-weight:600;align-self:flex-start;user-select:all}
+.pcon .meta{font-size:calc(13px*var(--fs,1));color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.lnk{all:unset;cursor:pointer;color:var(--accent);font-weight:600;font-size:calc(13px*var(--fs,1));border-radius:6px}
 .lnk:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-div.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+div.f{display:flex;flex-direction:column;gap:4px;font-size:calc(13px*var(--fs,1));color:var(--muted)}
 div.f > span{font-weight:500}
 div.f .seg2{align-self:flex-start}
 .erare{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid var(--line);padding-top:12px}
@@ -465,8 +465,8 @@ div.f .seg2{align-self:flex-start}
 .crow:last-child{border-bottom:0}
 .cr1,.cr2{display:flex;align-items:center;gap:8px;min-width:0}
 .cr2{flex-wrap:wrap;gap:6px}
-.cr1 .nm{font-size:15px;flex:none;max-width:45%}
-.cr1 .rl{flex:1;min-width:0;font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cr1 .nm{font-size:calc(15px*var(--fs,1));flex:none;max-width:45%}
+.cr1 .rl{flex:1;min-width:0;font-size:calc(12.5px*var(--fs,1));color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cr2 .sp{flex:1}
 .cform,.iform{display:flex;flex-direction:column;gap:8px}
 .cform[hidden],.iform[hidden]{display:none}
@@ -474,14 +474,14 @@ div.f .seg2{align-self:flex-start}
 /* «اقتراحاتك»: a small button with its count beside «الإعدادات» */
 #s-dev{display:inline-flex;align-items:center;gap:4px;padding:5px 8px;color:var(--muted)}
 #s-dev svg{width:18px;height:18px;flex:none}
-#s-dev .badge{min-width:18px;height:18px;font-size:11px;padding:0 5px}
+#s-dev .badge{min-width:18px;height:18px;font-size:calc(11px*var(--fs,1));padding:0 5px}
 #s-dev .badge[hidden]{display:none}
 #s-dev[aria-expanded="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 #s-dev[aria-expanded="true"] .badge{background:var(--accent-ink);color:var(--accent)}
 header.top{gap:10px}
 .brand,header.top .icon-btn{white-space:nowrap}
 @media (max-width:400px){header.top{gap:6px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}header.top .sp{margin-inline-start:-6px}
-  .brand{font-size:19px}header.top .icon-btn{padding:6px 8px}#s-dev{padding:5px 6px}}
+  .brand{font-size:calc(19px*var(--fs,1))}header.top .icon-btn{padding:6px 8px}#s-dev{padding:5px 6px}}
 /* v13: the line of the fathers is the backbone of every side («ادعوهم لآبائهم»). Its cards wear the side's colour with a thick border,
    one thick straight line joins them, and every other relative is a white card with a thin border, so a father never looks like an uncle */
 .tn.sp:not(.ctr){border-width:3px;background:color-mix(in srgb,var(--accent) 12%,var(--surface))}
@@ -514,11 +514,59 @@ header.top{gap:10px}
 .fstage .tslot.off,.fstage .tslot.off:hover{cursor:default;border-color:color-mix(in srgb,var(--muted) 35%,var(--line));color:color-mix(in srgb,var(--muted) 85%,transparent)}
 .lgx .flock{position:relative;left:auto;top:auto;cursor:default;width:26px;height:26px}
 .lgx .flock svg{width:14px;height:14px}
-#efDayH{color:var(--muted);font-size:12px}
+#efDayH{color:var(--muted);font-size:calc(12px*var(--fs,1))}
 .lock .box{max-height:100%;overflow:auto}
 .lock .pinhelp{display:flex;flex-direction:column;gap:10px;width:100%;text-align:start}
 .lock .pinhelp textarea{min-height:80px}
 .erow .f2 input.amt{flex:none;width:110px;min-width:0}
+/* v17: seasons, the kinds and the months of الإحسان, the marriages, a whole side at once, the export, the size of the letters */
+.blur{filter:blur(7px)}
+#v-ihsan.veiled .kt b{filter:blur(7px)}
+.csides{display:flex;flex-direction:column;gap:6px}
+.csides[hidden],.cfilt[hidden],.kinds[hidden]{display:none}
+.chip.csd{cursor:pointer;font:inherit;font-size:calc(13px*var(--fs,1));padding:4px 12px;color:var(--accent);background:var(--accent-soft);border-color:transparent;font-weight:600}
+.chip.csd b{font-weight:700;margin-inline-start:2px}
+.cfilt{align-self:flex-start}
+.cfilt button .num{opacity:.75;font-weight:600}
+.mbar{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:6px 8px}
+.mbar b{flex:1;text-align:center;font-weight:600;min-width:0}
+.mbar .btn{min-width:36px}
+.kinds{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;font-size:calc(13px*var(--fs,1));padding:0 2px}
+.kinds .kt{white-space:nowrap}
+.kinds .kt b{font-weight:600}
+.ktag{display:inline-block;font-size:calc(11.5px*var(--fs,1));line-height:1.5;padding:0 7px;border-radius:999px;background:var(--gold-soft);color:var(--gold);font-weight:600;vertical-align:middle}
+.iform select{flex:none;width:auto}
+.mars{display:flex;flex-direction:column;gap:8px}
+.mrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:7px 9px}
+.mrow .mn{flex:1;min-width:110px;display:flex;flex-direction:column;line-height:1.35}
+.mrow .mn small{font-size:calc(12px*var(--fs,1));color:var(--muted)}
+.mo2{display:flex;gap:4px}
+.mo2 .btn{min-width:34px}
+.sea-prog{display:flex;flex-direction:column;gap:6px}
+.sea-prog:empty{display:none}
+.sea-prog .bar{height:8px;border-radius:999px;background:var(--sunk);overflow:hidden}
+.sea-prog .bar i{display:block;height:100%;background:var(--accent);border-radius:inherit;transition:width .2s}
+textarea.seamsg{direction:rtl;font-size:calc(15px*var(--fs,1));min-height:78px;line-height:1.6}
+.slist{display:flex;flex-direction:column}
+.srow{display:flex;align-items:center;gap:8px;padding:8px 2px;border-bottom:1px solid var(--line)}
+.srow:last-child{border-bottom:0}
+.srow .sn{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.35}
+.srow .sn b,.srow .sn small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srow .sn small{font-size:calc(12px*var(--fs,1));color:var(--muted)}
+.srow.on .sn b{color:var(--muted);font-weight:500}
+.sea-next{margin:0}
+.onb-st{font-size:calc(12px*var(--fs,1));color:var(--muted);font-weight:600;background:var(--sunk);border-radius:999px;padding:1px 9px;white-space:nowrap}
+.xprev{border:1px solid var(--line);border-radius:var(--r);overflow:auto;max-height:46vh;background:#fff}
+.xprev img{display:block;max-width:100%;height:auto;margin:0 auto}
+.xacts{display:flex;flex-wrap:wrap;gap:8px}
+.tl.dv{stroke-width:1.8;opacity:1}
+.tzoom .btn svg{width:17px;height:17px;display:block}
+.lgk svg{width:18px;height:18px;display:block}
+.fcap,.fopen{max-width:calc(100% - 236px)}
+@media (max-width:400px){.fstage .tzoom{gap:2px}.fstage .tzoom .btn{width:28px;height:28px;font-size:14.5px}.fstage .tzoom .btn.help{font-size:14px}.fstage .tzoom .btn svg{width:15px;height:15px}.fcap,.fopen{max-width:calc(100% - 196px)}}
+#printArea{display:none}
+.hd h2 .num{margin-inline-start:.22em}
+@media print{body>*:not(#printArea){display:none!important}#printArea{display:block!important}#printArea img{display:block;width:100%;height:auto}html,body{background:#fff!important}body::before{display:none}}
 </style>
 
 <header class="top">
@@ -588,7 +636,7 @@ header.top{gap:10px}
           <div class="fcap" id="fcap" hidden></div>
           <button class="fopen" type="button" id="toFull">الشجرة المفتوحة</button>
           <div class="fempty" id="fempty" hidden></div>
-          <div class="tzoom"><button class="btn" type="button" id="fzIn" aria-label="تكبير">+</button><button class="btn" type="button" id="fzOut" aria-label="تصغير">−</button><button class="btn" type="button" id="fzFit" aria-label="عرض الجهة كلها">⤢</button><button class="btn" type="button" id="fzFull" aria-label="ملء الشاشة">⛶</button><button class="btn help" type="button" id="fzHelp" aria-label="دليل اللوحة">؟</button></div>
+          <div class="tzoom"><button class="btn" type="button" id="fzIn" aria-label="تكبير">+</button><button class="btn" type="button" id="fzOut" aria-label="تصغير">−</button><button class="btn" type="button" id="fzFit" aria-label="عرض الجهة كلها">⤢</button><button class="btn" type="button" id="fzFull" aria-label="ملء الشاشة">⛶</button><button class="btn" type="button" id="fzExp" aria-label="تصدير الجهة صورة أو نصًّا"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></button><button class="btn help" type="button" id="fzHelp" aria-label="دليل اللوحة">؟</button></div>
           <div class="ftip" id="ftip" hidden><p>المس أي اسم لتفتح ملفه. والإضافة مقفلة حتى لا تضيف أحدًا بالخطأ: المس القفل على خط الأسرة فتظهر خاناتها المنقطة. وزر «؟» يشرح كل شكل في اللوحة.</p><button type="button" id="ftipX" aria-label="إغلاق">✕</button></div>
         </div>
         <div class="sidepick" id="sidepick" role="tablist" aria-label="اختر الجهة"></div>
@@ -608,7 +656,9 @@ header.top{gap:10px}
           <div class="ac grow" id="cName"></div>
           <button class="btn primary" id="cAdd" type="button">إضافة</button>
         </div>
+        <div class="csides" id="cSides" hidden></div>
       </div>
+      <div class="seg2 cfilt" id="cFilt" role="group" aria-label="فرز جدول التواصل" hidden></div>
       <div class="clist" id="cBody"></div>
     </div>
   </section>
@@ -616,20 +666,23 @@ header.top{gap:10px}
   <!-- الإحسان -->
   <section class="view" id="v-ihsan" hidden>
     <div class="row"><h2 class="grow">الإحسان</h2><button class="btn sm" type="button" id="btnVeil">إخفاء المبالغ</button></div>
+    <div class="mbar" role="group" aria-label="الشهر"><button class="btn sm" type="button" id="ihPrev" aria-label="الشهر السابق">›</button><b class="grow" id="iMonthLbl"></b><button class="btn sm soft" type="button" id="ihNow" hidden>الشهر الحالي</button><button class="btn sm" type="button" id="ihNext" aria-label="الشهر التالي">‹</button></div>
     <div class="totals" id="iTotals"></div>
+    <div class="kinds" id="iKinds" hidden></div>
     <div class="panel">
-      <div class="row"><div class="grow"><h2>مبالغ شهرية</h2><span class="sub" id="iMonthLbl"></span></div><button class="btn sm soft" type="button" id="fAddT" aria-expanded="false" aria-controls="fForm">+ أضف</button></div>
+      <div class="row"><h2 class="grow">مبالغ شهرية</h2><button class="btn sm soft" type="button" id="fAddT" aria-expanded="false" aria-controls="fForm">+ أضف</button></div>
       <div class="iform" id="fForm" hidden>
         <div class="row">
           <div class="ac grow" id="fName"></div>
           <input type="text" id="fAmt" class="amt" placeholder="المبلغ" inputmode="decimal" autocomplete="off">
+          <select id="fKind" aria-label="نوع الإحسان"><option value="">النوع</option><option value="s">صدقة</option><option value="z">زكاة</option><option value="h">هدية</option><option value="n">نفقة</option></select>
           <label class="chk">تاريخ الاستحقاق <input type="date" id="fDay" style="width:auto"></label>
           <button class="btn primary" id="fAdd" type="button">إضافة</button>
         </div>
         <p class="sub" style="margin:0">مبلغ تحوّله كل شهر. المس التاريخ لتختاره من التقويم، ويتكرر الاستحقاق في اليوم نفسه من كل شهر.</p>
       </div>
       <div class="tbl-wrap"><table>
-        <thead><tr><th>المستفيد</th><th>المبلغ</th><th>الاستحقاق</th><th>هذا الشهر</th></tr></thead>
+        <thead><tr><th>المستفيد</th><th>المبلغ</th><th>الاستحقاق</th><th id="iThM">هذا الشهر</th></tr></thead>
         <tbody id="fBody"></tbody>
       </table></div>
     </div>
@@ -639,9 +692,11 @@ header.top{gap:10px}
         <div class="row">
           <div class="ac grow" id="vName"></div>
           <input type="text" id="vAmt" class="amt" placeholder="المبلغ" inputmode="decimal" autocomplete="off">
+          <select id="vKind" aria-label="نوع الإحسان"><option value="">النوع</option><option value="s">صدقة</option><option value="z">زكاة</option><option value="h">هدية</option><option value="n">نفقة</option></select>
+          <input type="date" id="vDate" aria-label="التاريخ" style="width:auto">
           <button class="btn primary" id="vAdd" type="button">إضافة</button>
         </div>
-        <p class="sub" style="margin:0">يُحفظ بتاريخ اليوم، وتغيّر تاريخه من «تعديل».</p>
+        <p class="sub" style="margin:0">يُحفظ بتاريخ اليوم، والمس التاريخ لتختار يومًا قبله من التقويم.</p>
       </div>
       <div class="tbl-wrap"><table>
         <thead><tr><th>الاسم</th><th>المبلغ</th><th>التاريخ</th><th></th></tr></thead>
@@ -688,7 +743,7 @@ window.addEventListener("load",function(){setTimeout(function(){if(window.__dqOK
 "use strict";
 /* ---------- storage ---------- */
 const KEY="dhulqurba.v1";
-const WEB_BUILD=16;
+const WEB_BUILD=17;
 let mem=null,loadBad=null,saveErr=false;
 function load(){let s=null;try{s=localStorage.getItem(KEY)}catch(e){return mem}if(!s)return mem;
   try{const d=JSON.parse(s);if(d&&typeof d==="object"&&Array.isArray(d.people))return d}catch(e){}
@@ -749,11 +804,11 @@ function sample(){
       {id:uid(),personId:"p4",name:"",log:[d(26)],appt:null},
       {id:uid(),personId:"p6",name:"",log:[],appt:f(-1)}],
     fixed:[
-      {id:uid(),personId:"p4",name:"",amount:500,day:1,transfers:[{date:d(Math.max(0,now.getDate()-1)),amount:500,ym}]},
-      {id:uid(),personId:"p9",name:"",amount:300,day:15,transfers:[]}],
+      {id:uid(),personId:"p4",name:"",amount:500,day:1,kind:"n",transfers:[{date:d(Math.max(0,now.getDate()-1)),amount:500,ym}]},
+      {id:uid(),personId:"p9",name:"",amount:300,day:15,kind:"s",transfers:[]}],
     variable:[
-      {id:uid(),personId:"p10",name:"",amount:200,date:d(5)},
-      {id:uid(),personId:"",name:"جمعية البر",amount:150,date:d(12)}]};
+      {id:uid(),personId:"p10",name:"",amount:200,kind:"h",date:d(5)},
+      {id:uid(),personId:"",name:"جمعية البر",amount:150,kind:"s",date:d(12)}]};
 }
 function clean(D){ // ids, names, links that lead somewhere, no one his own ancestor, dates that are dates, amounts that are numbers
   const str=v=>v==null?"":String(v),obj=x=>x&&typeof x==="object"&&!Array.isArray(x),objs=a=>(Array.isArray(a)?a:[]).filter(obj),okD=v=>typeof v==="string"&&!!v&&!isNaN(Date.parse(v));
@@ -768,6 +823,9 @@ function clean(D){ // ids, names, links that lead somewhere, no one his own ance
     const F=by.get(p.father),M=by.get(p.mother);if((F&&F.gender==="f"&&(!M||M.gender==="m"))||(M&&M.gender==="m"&&(!F||F.gender==="f"))){const t=p.father;p.father=p.mother;p.mother=t} // a woman in the father's place and a man in the mother's: swapped
     p.spouses=[...new Set((Array.isArray(p.spouses)?p.spouses:[]).map(str))].filter(id=>id&&id!==p.id&&by.has(id))});
   D.people.forEach(p=>p.spouses.forEach(id=>{const q=by.get(id);if(!q.spouses.includes(p.id))q.spouses.push(p.id)}));
+  D.people.forEach(p=>{p.div=[...new Set((Array.isArray(p.div)?p.div:[]).map(str))].filter(id=>id&&id!==p.id&&by.has(id))}); // a divorce is known to both
+  D.people.forEach(p=>p.div.forEach(id=>{const q=by.get(id);if(!q.div.includes(p.id))q.div.push(p.id)}));
+  D.people.forEach(p=>{if(!p.div.length)delete p.div});
   const st=new Map(); // a link that closes a circle of ancestors is cut
   D.people.forEach(p0=>{if(st.has(p0.id))return;const stack=[[p0.id,0]];st.set(p0.id,1);
     while(stack.length){const top=stack[stack.length-1],p=by.get(top[0]);
@@ -782,6 +840,12 @@ function clean(D){ // ids, names, links that lead somewhere, no one his own ance
   D.fixed=objs(D.fixed).map(r=>{r.id=rid(r);who(r);r.amount=amt(r.amount);r.day=Math.min(31,Math.max(1,parseInt(toLat(r.day),10)||1));
     r.transfers=objs(r.transfers).filter(t=>okD(t.date)).map(t=>Object.assign(t,{amount:amt(t.amount),ym:/^\d{4}-\d{2}$/.test(t.ym)?t.ym:ymOf(t.date)})).sort((a,b)=>b.date.localeCompare(a.date));return r});
   D.variable=objs(D.variable).map(v=>{v.id=rid(v);who(v);v.amount=amt(v.amount);if(!okD(v.date))v.date=new Date().toISOString();return v});
+  [...D.fixed,...D.variable].forEach(r=>{if(!["s","z","h","n"].includes(r.kind))delete r.kind});D.fixed.forEach(r=>{if(!/^\d{4}-\d{2}$/.test(r.since)){const m=r.transfers.map(t=>t.ym).filter(x=>/^\d{4}-\d{2}$/.test(x)).sort()[0];r.since=m||ymOf(Date.now())}}); // the kind of giving, and the month a monthly amount began: for one from before, its first transfer, else this month
+  D.contacts.forEach(c=>{if(!okD(c.added))delete c.added});
+  if(D.seasons!=null){const o={};if(obj(D.seasons))Object.keys(D.seasons).forEach(k=>{if(/^[rfa]\d{4}$/.test(k)&&Array.isArray(D.seasons[k]))o[k]=[...new Set(D.seasons[k].map(str).filter(Boolean))]});D.seasons=o}
+  if(D.greet!=null){if(!obj(D.greet))delete D.greet;else Object.keys(D.greet).forEach(k=>{if(!/^[rfa]$/.test(k)||typeof D.greet[k]!=="string"||!D.greet[k].trim())delete D.greet[k]})}
+  if(D.seasonAll!=null){if(D.seasonAll===true)D.seasonAll=true;else delete D.seasonAll}
+  if(D.fontScale!=null){const f=+D.fontScale;if([1.12,1.25].includes(f))D.fontScale=f;else delete D.fontScale}
   if(D.ideas!=null)D.ideas=objs(D.ideas).filter(i=>str(i.text).trim()).map(i=>Object.assign(i,{id:str(i.id)||uid(),text:str(i.text),date:okD(i.date)?i.date:new Date().toISOString(),done:!!i.done}));
   ["currency","family"].forEach(k=>{if(D[k]!=null&&typeof D[k]!=="string")D[k]=str(D[k])});
   D.cc=toLat(D.cc).replace(/\D/g,"");D.meId=by.has(str(D.meId))?str(D.meId):"";
@@ -812,6 +876,8 @@ let S=load();
 if(!S)S=loadBad!=null?{demo:false,schema:2,currency:"ريال",family:"",cc:"",people:[],contacts:[],fixed:[],variable:[]}:sample(); // the samples only for a first start, never over data that could not be read
 S=migrate(S);
 persist(); // as it was read: the time of the last change stays, so a newer copy in the account still wins
+function applyFs(){try{document.documentElement.style.setProperty("--fs",String(S.fontScale||1))}catch(e){}} // «حجم الخط»: the lists and the sheets grow, the board keeps its cards and has its zoom
+applyFs();
 
 /* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
@@ -822,9 +888,13 @@ const deadC=c=>{const p=c.personId&&byId(c.personId);return !!p&&p.alive===false
 function spousesOf(p){if(!p)return[];const out=[];const add=x=>{if(x&&x.id!==p.id&&!out.includes(x))out.push(x)};
   (p.spouses||[]).forEach(id=>add(byId(id)));kids(p.id).forEach(k=>add(byId(p.gender==="f"?k.father:k.mother)));return out}
 function linkSpouse(a,b){a.spouses=a.spouses||[];b.spouses=b.spouses||[];if(!a.spouses.includes(b.id))a.spouses.push(b.id);if(!b.spouses.includes(a.id))b.spouses.push(a.id)}
+const isDiv=(a,b)=>!!a&&!!b&&Array.isArray(a.div)&&a.div.includes(b.id); // the marriage ended in divorce
+const ordW=(x,i)=>(x.gender==="f"?["الأولى","الثانية","الثالثة","الرابعة","الخامسة"]:["الأول","الثاني","الثالث","الرابع","الخامس"])[i]||""; // the first wife, the second...
+function byBorn(ks){const yr=k=>parseInt(toLat(k.born),10)||0,at=[],w=[];ks.forEach((k,i)=>{if(yr(k)){at.push(i);w.push(k)}});if(w.length<2)return ks; // the eldest first among those whose year is known; the others keep their places
+  w.sort((a,b)=>yr(a)-yr(b));const out=ks.slice();at.forEach((i,j)=>{out[i]=w[j]});return out}
 function kidGroups(p){const key=k=>p.gender==="f"?k.father:k.mother;const m=new Map();
   spousesOf(p).forEach(x=>m.set(x.id,[]));
-  kids(p.id).forEach(k=>{const o=byId(key(k))?key(k):"";if(!m.has(o))m.set(o,[]);m.get(o).push(k)});
+  byBorn(kids(p.id)).forEach(k=>{const o=byId(key(k))?key(k):"";if(!m.has(o))m.set(o,[]);m.get(o).push(k)});
   return[...m.entries()].map(([id,list])=>({other:byId(id)||null,kids:list}))}
 function familyOf(p){let c=p,g=0;while(c&&g++<80){if(c.family)return c.family;const f=byId(c.father);if(!f)break;c=f}
   if(S.family&&S.meId){let m=byId(S.meId),h=0;while(m&&byId(m.father)&&h++<80)m=byId(m.father);if(m&&c&&m.id===c.id)return S.family}
@@ -876,22 +946,24 @@ function viaSp(r,spw,sg){ // what a relative of your wife is to her («جدك ل
     return t+pr}).join(" ")}
 function shortRel(aId,bId,dp){
   const A=byId(aId),B=byId(bId);if(!A||!B||aId===bId)return"";const fB=B.gender==="f",spw=A.gender==="f"?"زوجك":"زوجتك";
-  if(spousesOf(A).includes(B))return fB?"زوجتك":"زوجك";
+  const sw=x=>isDiv(A,x)?(x.gender==="f"?"طليقتك":"طليقك"):(x.gender==="f"?"زوجتك":"زوجك"); // your wife, or the one you divorced
+  const mw=(x,y)=>isDiv(x,y)?(x.gender==="f"?"طليقة ":"طليق "):(x.gender==="f"?"زوجة ":"زوج "); // x said of y: «زوجة» or «طليقة»
+  if(spousesOf(A).includes(B))return sw(B);
   const r=bloodRel(aId,bId);if(r)return r;
   const gen=w=>w.replace(/^أبوك/,"أبيك").replace(/^أخوك/,"أخيك");
-  for(const x of spousesOf(B)){const rx=bloodRel(aId,x.id);if(rx&&!rx.startsWith("من ذرية"))return(fB?"زوجة ":"زوج ")+gen(rx)}
-  for(const pid of [B.father,B.mother]){const X=byId(pid);if(!X)continue;const xw=X.gender==="f"?"زوجة ":"زوج ",bw=fB?"بنت ":"ابن "; // e.g. the son of your grandfather's wife from her first husband
+  for(const x of spousesOf(B)){const rx=bloodRel(aId,x.id);if(rx&&!rx.startsWith("من ذرية"))return mw(B,x)+gen(rx)}
+  for(const pid of [B.father,B.mother]){const X=byId(pid);if(!X)continue;const bw=fB?"بنت ":"ابن "; // e.g. the son of your grandfather's wife from her first husband
     for(const R of spousesOf(X)){if(R.id===B.father||R.id===B.mother)continue;
-      if(R.id===aId)return bw+(X.gender==="f"?"زوجتك":"زوجك");
-      const rr=bloodRel(aId,R.id);if(rr&&!rr.startsWith("من ذرية"))return bw+xw+gen(rr)}}
-  for(const sp of spousesOf(A)){
-    if(sp.father===bId||sp.mother===bId)return(fB?"والدة ":"والد ")+spw;
-    if((sp.father&&B.father===sp.father)||(sp.mother&&B.mother===sp.mother))return(fB?"أخت ":"أخو ")+spw;
-    const rs=bloodRel(sp.id,bId);if(rs)return viaSp(rs,spw,sp.gender)||"من أقارب "+spw;
+      if(R.id===aId)return bw+sw(X);
+      const rr=bloodRel(aId,R.id);if(rr&&!rr.startsWith("من ذرية"))return bw+mw(X,R)+gen(rr)}}
+  for(const sp of spousesOf(A)){const w=sw(sp);
+    if(sp.father===bId||sp.mother===bId)return(fB?"والدة ":"والد ")+w;
+    if((sp.father&&B.father===sp.father)||(sp.mother&&B.mother===sp.mother))return(fB?"أخت ":"أخو ")+w;
+    const rs=bloodRel(sp.id,bId);if(rs)return viaSp(rs,w,sp.gender)||"من أقارب "+w;
   }
   if(!dp)for(const x of spousesOf(B)){ // married to one who is yours by marriage: your wife's other husband, her sister's husband, the other husband of your grandfather's wife
-    if(spousesOf(A).includes(x))return fB?"زوجة "+spw+" الأخرى":"زوج "+spw+" الآخر";
-    const rx=shortRel(aId,x.id,1);if(rx&&!/^من /.test(rx))return(fB?"زوجة ":"زوج ")+rx.replace(/^أخو /,"أخي ").replace(/^أبو /,"أبي ")}
+    if(spousesOf(A).includes(x))return!isDiv(A,x)&&!isDiv(B,x)?(fB?"زوجة "+spw+" الأخرى":"زوج "+spw+" الآخر"):mw(B,x)+sw(x);
+    const rx=shortRel(aId,x.id,1);if(rx&&!/^من /.test(rx))return mw(B,x)+rx.replace(/^أخو /,"أخي ").replace(/^أبو /,"أبي ")}
   return"";
 }
 const norm=s=>String(s||"").replace(/[\u064B-\u065F\u0670\u0640]/g,"").replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/\s+/g," ").trim();
@@ -902,7 +974,7 @@ const hijri=iso=>{try{return new Date(iso).toLocaleDateString("ar-SA-u-ca-islami
 const money=n=>(Number(n)||0).toLocaleString("en-US",{maximumFractionDigits:2})+" "+esc(S.currency||"");
 const daysAgo=iso=>{const a=new Date(iso),b=new Date();a.setHours(12,0,0,0);b.setHours(12,0,0,0);return Math.round((b-a)/864e5)}; // whole days on the calendar: last night is yesterday
 function nn(n,w){if(n===1)return w[0];if(n===2)return w[1];const m=n%100;return n+" "+(m>=3&&m<=10?w[2]:m>=11?w[3]:w[4])} // the counted noun: one, two, 3 to 10, 11 to 99, and the hundreds
-const DAYS=["يوم واحد","يومان","أيام","يومًا","يوم"],AQ=["قريب واحد","قريبان","أقارب","قريبًا","قريب"];
+const DAYS=["يوم واحد","يومان","أيام","يومًا","يوم"],AQ=["قريب واحد","قريبان","أقارب","قريبًا","قريب"],TIMES=["مرة واحدة","مرتان","مرات","مرة","مرة"];
 const agoD=d=>d<=0?"اليوم":d===1?"أمس":d===2?"قبل يومين":"قبل "+nn(d,DAYS);
 const lateD=d=>d<=1?"تأخرت يومًا":d===2?"تأخرت يومين":"تأخرت "+nn(d,DAYS);
 const rip=p=>p&&p.gender==="f"?"رحمها الله":"رحمه الله";
@@ -1020,15 +1092,18 @@ function openPerson(id,keep){
     con=`<section class="pcon" aria-label="التواصل">
       ${ph?`<span class="ph num">${esc(ph)}</span>`:""}
       <div class="row">${ph?callBtns(c,p,ph,""):""}${c?`<button class="btn primary" type="button" id="pDone">تم التواصل</button>`:`<button class="btn soft" type="button" id="pToContact">${fem?"أضفها":"أضفه"} إلى التواصل</button>`}${ph?"":`<button class="slot" type="button" id="pPh">+ أضف رقم الجوال</button>`}</div>
-      ${c?`<div class="meta"><span>آخر تواصل</span><span class="pill ${!last?"bad":di>=3?"good":di>=0?"warn":"bad"}">${last?agoD(daysAgo(last)):"لم تتواصل بعد"}</span><span>· ${fem?"تصلها":"تصله"} ${esc(freqName(c))}</span>${c.appt?`<span>· موعدك القادم <span class="num">${fmtDT(c.appt)}</span></span>`:""}<span style="flex:1"></span><button class="lnk" type="button" id="pCDet">المواعيد والسجل</button></div>`:""}
+      ${c?`<div class="meta"><span>آخر تواصل</span><span class="pill ${!last?(di<0?"bad":"mute"):di>=3?"good":di>=0?"warn":"bad"}">${last?agoD(daysAgo(last)):"لم تتواصل بعد"}</span><span>· ${fem?"تصلها":"تصله"} ${esc(freqName(c))}</span>${c.appt?`<span>· موعدك القادم <span class="num">${fmtDT(c.appt)}</span></span>`:""}<span style="flex:1"></span><button class="lnk" type="button" id="pCDet">المواعيد والسجل</button></div>`:""}
     </section>`}
-  const det=[p.city?["المدينة",esc(p.city)]:null,p.born?["سنة الميلاد",`<span class="num">${esc(p.born)}</span>`]:null,p.notes?["ملاحظات",esc(p.notes)]:null].filter(Boolean);
+  const gv=givenTo(p.id,String(new Date().getFullYear())),fx=S.fixed.filter(r=>r.personId===p.id),bl=veiled?" blur":""; // what you gave: hidden under the veil like the rest of the amounts
+  const det=[p.city?["المدينة",esc(p.city)]:null,p.born?["سنة الميلاد",`<span class="num">${esc(p.born)}</span>`]:null,p.notes?["ملاحظات",esc(p.notes)]:null,
+    fx.length?["مبلغ شهري",fx.map(r=>`<span class="num${bl}">${money(r.amount)}</span> يوم ${r.day}${r.kind?" · "+esc(kindName(r.kind)):""}`).join("، ")]:null,
+    gv.n?["الإحسان هذا العام",`<span class="num${bl}">${money(gv.sum)}</span> <span class="sub">(${nn(gv.n,TIMES)})</span>`]:null].filter(Boolean);
   sheet(`<div class="hd" data-pp="${p.id}"><div style="flex:1;min-width:0"><h2>${esc(p.name)}${dead?` <small class="rip-h">${rip(p)}</small>`:""}</h2>${nas!==p.name?`<div class="full">${esc(nas)}</div>`:""}${isMe?`<div class="relme">أنت</div>`:rel?`<div class="relme">${esc(rel)}</div>`:""}</div><button class="btn sm" type="button" data-close>إغلاق</button></div>
   ${con}
   <dl class="fam-grid">
     <dt>الأب</dt><dd>${f?chip(f):slot("father","أضف الأب")}</dd>
     <dt>الأم</dt><dd>${m?chip(m):(p.motherName?`<span class="chip">${esc(p.motherName)}</span>`:"")+slot("mother","أضف الأم")}</dd>
-    <dt>${sp.length>1?(fem?"الأزواج":"الزوجات"):spL}</dt><dd><div class="chips">${sp.map(x=>chip(x)).join("")}${slot("spouse",sp.length?(fem?"زوج آخر":"زوجة أخرى"):"أضف "+spL)}</div></dd>
+    <dt>${sp.length>1?(fem?"الأزواج":"الزوجات"):spL}</dt><dd><div class="chips">${sp.map((x,i)=>chip(x,[sp.length>1?ordW(x,i):"",isDiv(p,x)?(x.gender==="f"?"طليقته":"طليقها"):""].filter(Boolean).join(" · "))).join("")}${slot("spouse",sp.length?(fem?"زوج آخر":"زوجة أخرى"):"أضف "+spL)}</div></dd>
     <dt>الأبناء${nk?` (${nk})`:""}</dt><dd>${kidsHTML}<div class="chips">${slot("child","ابن أو بنت")}</div></dd>
     <dt>الإخوة${sib.length?` (${sib.length})`:""}</dt><dd><div class="chips">${sib.map(x=>chip(x,sibKind(p,x))).join("")}${slot("sib","أخ أو أخت")}</div></dd>
   </dl>
@@ -1074,6 +1149,7 @@ function editPerson(id,preset={},focusOn){
     <div class="qpick" id="e-q" style="grid-column:1/-1"></div>
     ${p.motherName?`<label class="f"><span>اسم الأم كما كُتب أولًا</span><input type="text" id="e-mn" value="${esc(p.motherName)}"></label>`:""}
     <label class="f"${p.motherName?"":` style="grid-column:1/-1"`}><span>اسم العائلة (إن اختلف عن عائلة الأب)</span><input type="text" id="e-fam" value="${esc(p.family||"")}"></label>
+    ${id&&spousesOf(p).length?`<h3 style="grid-column:1/-1;margin:6px 0 0">${spousesOf(p).length>1?(p.gender==="f"?"الأزواج":"الزوجات"):(p.gender==="f"?"الزوج":"الزوجة")}</h3><div class="mars" id="e-mars" style="grid-column:1/-1"></div>`:""}
     <div class="row" style="grid-column:1/-1"><button class="btn primary" type="submit">حفظ</button></div>
   </form>
   ${id&&!isMe?`<div class="erare">${alive?`<button class="btn" type="button" id="pMe">هذا أنا</button>`:""}<span style="flex:1"></span><button class="btn danger" type="button" id="pDel">حذف من الشجرة</button></div><div id="pConfirm"></div>`:""}`,el=>{
@@ -1086,6 +1162,19 @@ function editPerson(id,preset={},focusOn){
         +(hs.length?`<div class="row"><span class="sub">الأب من أزواج ${esc(M.name)}:</span>${hs.map(h=>`<button type="button" class="chip" data-qf="${h.id}" aria-pressed="${fSel.value===h.id}">${esc(h.name)}</button>`).join("")}</div>`:"")};
     fSel.addEventListener("change",fillQ);mSel.addEventListener("change",fillQ);fillQ();
     qp.addEventListener("click",e=>{const b=e.target.closest("[data-qm],[data-qf]");if(!b)return;if(b.dataset.qm)mSel.value=b.dataset.qm;else fSel.value=b.dataset.qf;fillQ()});
+    const mBox=q("#e-mars"),mOrd=spousesOf(p).map(x=>x.id),mDiv=new Set((p.div||[]).filter(i=>mOrd.includes(i))); // kept here until «حفظ»
+    const drawM=()=>{if(!mBox)return;const n=mOrd.length,fem=p.gender==="f";
+      mBox.innerHTML=mOrd.map((sid,i)=>{const x=byId(sid),xf=x.gender==="f",dv=mDiv.has(sid);
+        return`<div class="mrow"><span class="mn"><b>${esc(x.name)}</b>${n>1?`<small>${ordW(x,i)}</small>`:""}${x.alive===false?`<small>${rip(x)}</small>`:""}</span>
+        <span class="seg2" role="group" aria-label="${esc("الزواج من "+x.name)}"><button type="button" data-mst="${sid}" data-v="0" aria-pressed="${!dv}">${xf?"زوجته":"زوجها"}</button><button type="button" data-mst="${sid}" data-v="1" aria-pressed="${dv}">${xf?"طليقته":"طليقها"}</button></span>
+        ${n>1?`<span class="mo2"><button class="btn sm" type="button" data-mup="${i}"${i?"":" disabled"} aria-label="${esc("قدّم "+x.name)}">↑</button><button class="btn sm" type="button" data-mdn="${i}"${i<n-1?"":" disabled"} aria-label="${esc("أخّر "+x.name)}">↓</button></span>`:""}</div>`}).join("")
+        +(n>1?`<p class="sub" style="margin:0">رتّبهم بترتيب الزواج: ${fem?"الأول ثم الثاني":"الأولى ثم الثانية"}. وبهذا الترتيب يُرسمون في اللوحة.</p>`:"")};
+    drawM();
+    if(mBox)mBox.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+      if(d.mst){if(d.v==="1")mDiv.add(d.mst);else mDiv.delete(d.mst)}
+      else if(d.mup){const i=+d.mup;if(i>0)[mOrd[i-1],mOrd[i]]=[mOrd[i],mOrd[i-1]]}
+      else if(d.mdn){const i=+d.mdn;if(i<mOrd.length-1)[mOrd[i+1],mOrd[i]]=[mOrd[i],mOrd[i+1]]}
+      else return;drawM()});
     const segs=[...el.querySelectorAll("#e-alive [data-alive]")];
     segs.forEach(b=>b.onclick=()=>{alive=b.dataset.alive==="1";segs.forEach(x=>x.setAttribute("aria-pressed",String((x.dataset.alive==="1")===alive)))});
     q("#e-g").addEventListener("change",()=>{segs[1].textContent=q("#e-g").value==="f"?"متوفاة":"متوفى"});
@@ -1095,11 +1184,13 @@ function editPerson(id,preset={},focusOn){
       const v=k=>q(k).value.trim();
       if(!v("#e-name"))return;
       const mn=q("#e-mn");
-      const np={id:p.id||uid(),name:v("#e-name"),gender:v("#e-g"),father:v("#e-f"),mother:v("#e-m"),motherName:mn?mn.value.trim():(p.motherName||""),family:v("#e-fam"),spouses:p.spouses||[],spouse:"",city:v("#e-city"),phone:toLat(v("#e-ph")),born:toLat(v("#e-born")),alive,notes:v("#e-notes")};
+      const np={id:p.id||uid(),name:v("#e-name"),gender:v("#e-g"),father:v("#e-f"),mother:v("#e-m"),motherName:mn?mn.value.trim():(p.motherName||""),family:v("#e-fam"),spouses:mBox?mOrd.slice():(p.spouses||[]),spouse:"",city:v("#e-city"),phone:toLat(v("#e-ph")),born:toLat(v("#e-born")),alive,notes:v("#e-notes")};
       const upTo=x=>{const seen=new Set(),q2=[x];while(q2.length){const c=byId(q2.shift());if(!c||seen.has(c.id))continue;if(c.id===np.id)return true;seen.add(c.id);q2.push(c.father,c.mother)}return false}; // no one is his own ancestor, by his father or by his mother
       if(id&&((np.father&&upTo(np.father))||(np.mother&&upTo(np.mother)))){toast("لا يصح أن يكون الشخص من أجداد نفسه");return}
       const wasAlive=id?p.alive!==false:true,gWas=p.gender==="f"?"f":"m";
       if(id){Object.assign(p,np)}else S.people.push(np);
+      if(mBox){mOrd.forEach(sid=>{const x=byId(sid);if(x)linkSpouse(p,x)});const nd=mOrd.filter(sid=>mDiv.has(sid));if(nd.length)p.div=nd;else delete p.div; // a divorce is known to both
+        mOrd.forEach(sid=>{const x=byId(sid);if(!x)return;const a=(x.div||[]).filter(i=>i!==p.id);if(mDiv.has(sid))a.push(p.id);if(a.length)x.div=a;else delete x.div})}
       const gClash=[];if(id&&gWas!==np.gender){const was=gWas==="f"?"mother":"father",now=np.gender==="f"?"mother":"father"; // a new gender: in his children he moves to the other parent's place
         S.people.forEach(k=>{if(k[was]!==p.id)return;k[was]=k[now]===p.id?"":(k[now]||"");k[now]=p.id;const o=byId(k[was]);if(o&&o.gender===np.gender&&!gClash.includes(o))gClash.push(o)})}
       if(wasAlive&&!np.alive&&S.contacts.some(c=>c.personId===np.id)){setAlive(byId(np.id),false);openPerson(np.id);return}
@@ -1169,9 +1260,26 @@ function addContact(personId,name,quiet){
   {const pp=personId&&byId(personId);if(pp&&pp.alive===false){toast(rip(pp)+". المتوفى لا يُضاف إلى جدول التواصل، ويمكنك تسجيل صدقة عنه في الإحسان.");return null}}
   const c={id:uid(),personId,name,log:[],appt:null};S.contacts.unshift(c);save();renderContacts();if(!quiet)toast("أُضيف إلى جدول التواصل");return c;
 }
-let cAddOpen=false;
+let cAddOpen=false,cFilt="all";
+/* a whole side at once: the nearest, your father's side, your mother's side, your wife's family */
+function sideGroups(){const me=byId(S.meId);if(!me)return[];
+  const by=new Map(S.people.map(p=>[p.id,p])),inC=new Set(S.contacts.map(c=>c.personId).filter(Boolean));
+  const anc=id=>{const out=new Map([[id,{d:0,via:""}]]),q=[id];while(q.length){const c=q.shift(),i=out.get(c),p=by.get(c);if(!p||i.d>=4)continue;
+    [["f",p.father],["m",p.mother]].forEach(([k,pid])=>{if(pid&&by.has(pid)&&!out.has(pid)){out.set(pid,{d:i.d+1,via:i.via||k});q.push(pid)}})}return out};
+  const deg=(ma,mb)=>{let d=99;const v=new Set();ma.forEach((ia,k)=>{const ib=mb.get(k);if(!ib)return;const t=ia.d+ib.d;if(t<d)d=t;if(ia.d>0&&t<=4)v.add(ia.via)});return{d,v}};
+  const ma=anc(me.id),sps=spousesOf(me).filter(w=>!isDiv(me,w)),mw=sps.map(w=>anc(w.id)),G={near:[],fa:[],mo:[],sp:[]};
+  S.people.forEach(x=>{if(x.id===me.id||x.alive===false||inC.has(x.id))return;const mb=anc(x.id),{d,v}=deg(ma,mb),isSp=sps.includes(x);
+    if(isSp||d<=2)G.near.push([x,isSp?1:d]);if(v.has("f"))G.fa.push([x,d]);if(v.has("m"))G.mo.push([x,d]);
+    let dw=99;mw.forEach(m=>{dw=Math.min(dw,deg(m,mb).d)});if(!isSp&&dw<=2)G.sp.push([x,dw+1])});
+  const srt=a=>a.sort((p,q)=>p[1]-q[1]).map(z=>z[0]),fem=me.gender==="f",w1=sps.length>1;
+  return[["near","الأقربون",srt(G.near)],["fa","جهة الأب",srt(G.fa)],["mo","جهة الأم",srt(G.mo)],["sp",fem?(w1?"أهل أزواجك":"أهل زوجك"):(w1?"أهل زوجاتك":"أهل زوجتك"),srt(G.sp)]].filter(g=>g[2].length)}
 $("#cAddT").onclick=()=>{cAddOpen=!cAddOpen;renderContacts();if(cAddOpen)setTimeout(()=>acC.input.focus(),30)};
 $("#cAdd").onclick=()=>{const v=acC.get();if(!acC.valid()){acC.input.focus();return}acC.clear();cAddOpen=false;addContact(v.personId,v.personId?"":v.text)};
+$("#cFilt").addEventListener("click",e=>{const b=e.target.closest("[data-cf]");if(!b)return;cFilt=b.dataset.cf;renderContacts()});
+$("#cSides").addEventListener("click",e=>{const b=e.target.closest("[data-cside]");if(!b)return;const g=sideGroups().find(x=>x[0]===b.dataset.cside);if(!g)return;
+  const now=new Date().toISOString(),made=g[2].map(x=>({id:uid(),personId:x.id,name:"",log:[],appt:null,added:now})),ids=new Set(made.map(c=>c.id)); // each is due by his nearness: the nearest first
+  S.contacts.push(...made);cAddOpen=false;acC.clear();save();renderContacts();
+  toast("أُضيف "+nn(made.length,AQ)+" إلى جدول التواصل: "+g[1],{label:"تراجع",fn:()=>{S.contacts=S.contacts.filter(c=>!ids.has(c.id));save();renderContacts()}},9000)});
 function gcalLink(title,iso){
   const s=new Date(iso),e=new Date(s.getTime()+30*6e4);const f=d=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
   return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(title)+"&dates="+f(s)+"/"+f(e)+"&details="+encodeURIComponent("تذكير من تطبيق ذو القربى: صلة الرحم");
@@ -1183,10 +1291,10 @@ const fqMemo=new Map();
 function defaultFreq(c){ // by how close the relative is to you: parents, children and your wife every week; brothers, sisters and grandparents every two weeks; uncles and aunts every month; the rest every three months
   const me=byId(S.meId),p=c.personId&&byId(c.personId);if(!me||!p)return 30;
   const k=p.id+"|"+me.id+"|"+(S.updatedAt||0);if(fqMemo.has(k))return fqMemo.get(k);if(fqMemo.size>400)fqMemo.clear();
-  const d=spousesOf(me).includes(p)?1:kinDeg(me.id,p.id),v=d<=1?7:d===2?14:d===3?30:90;fqMemo.set(k,v);return v}
+  const d=spousesOf(me).includes(p)&&!isDiv(me,p)?1:kinDeg(me.id,p.id),v=d<=1?7:d===2?14:d===3?30:90;fqMemo.set(k,v);return v}
 const freqOf=c=>c.freq||defaultFreq(c);
 const freqName=c=>(FREQ.find(f=>f[0]===freqOf(c))||[])[1]||"";
-function dueIn(c){const last=c.log[0];if(!last)return -1;return freqOf(c)-daysAgo(last)} // <0 overdue
+function dueIn(c){const last=c.log[0];if(!last)return c.added?freqOf(c)-daysAgo(c.added):-1;return freqOf(c)-daysAgo(last)} // <0 overdue; one added with a whole side is due by his nearness, from the day he was added
 const phoneOf=c=>{const p=c.personId&&byId(c.personId);return p&&p.phone?p.phone:""};
 // WhatsApp needs the number with its country: a number written with + or 00 keeps its own; a local one is known by its shape (05 Saudi, 09 or 01 Sudan, 01 with 11 digits Egypt), else the country in the settings
 const waNum=ph=>{const raw=toLat(ph).trim();let d=raw.replace(/\D/g,"");if(raw.startsWith("+"))return d;if(d.startsWith("00"))return d.slice(2);
@@ -1205,21 +1313,27 @@ function renderToday(){
   const who=c=>c.personId&&byId(c.personId)?nmBtn(c,nameOf(c).split(" ")[0]):`<button class="nm" type="button" data-cedit="${c.id}">${esc(nameOf(c).split(" ")[0])}</button>`;
   const item=(c,extra)=>{const ph=phoneOf(c);return`<li><span class="who">${who(c)} <span class="full">${extra}</span></span>${ph?callBtns(c,null,ph,1):""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></li>`};
   const lb=S.lastBackup?daysAgo(S.lastBackup):-1,needBk=!S.demo&&S.people.length>=5&&(lb<0||lb>=30);
-  const total=late.length+appts.length+dueF.length+(needBk?1:0);
+  const I=seaInfo(),sc=I&&I.cur?seaCount(I.cur.key):null,seaDue=!!sc&&sc.n<sc.t;
+  const total=late.length+appts.length+dueF.length+(needBk?1:0)+(seaDue?1:0);
   $("#today").innerHTML=`<div class="row"><h2 class="grow">اليوم</h2><span class="pill ${total?"warn":"good"}">${total?total+" بانتظارك":"لا شيء متأخر"}</span></div>
+  ${sc?`<h3>${esc(I.cur.hi)}</h3><ul class="today-list"><li><span class="who"><b>تهنئة ${esc(I.cur.nm)}</b> <span class="full">${sc.t?(sc.n===sc.t?"هنّأت الجميع، أحسنت":"هنّأت "+sc.n+" من "+sc.t):"اختر من تهنئهم"}</span></span><button class="btn sm primary" type="button" data-gosea>القائمة</button></li></ul>`:""}
   ${appts.length?`<h3>مواعيد اليوم</h3><ul class="today-list">${appts.map(c=>item(c,new Date(c.appt)<now?"فات موعده "+fmtDT(c.appt):"الساعة "+new Date(c.appt).toLocaleTimeString(LOC,{hour:"numeric",minute:"2-digit"}))).join("")}</ul>`:""}
   ${late.length?`<h3>تأخرتَ في التواصل معهم</h3><ul class="today-list">${late.slice(0,8).map(c=>item(c,c.log[0]?lateD(-dueIn(c))+" ("+freqName(c)+")":"لم تتواصل بعد")).join("")}</ul>`:""}
   ${dueF.length?`<h3>مبالغ مستحقة</h3><ul class="today-list">${dueF.map(r=>`<li><span class="who">${nmBtn(r,nameOf(r).split(" ")[0])} <span class="full num">${money(r.amount)}</span></span><button class="btn sm gold" type="button" data-gofixed>الإحسان</button></li>`).join("")}</ul>`:""}
   ${needBk?`<h3>نسخة احتياطية</h3><ul class="today-list"><li><span class="who"><b>بياناتك</b> <span class="full">${lb<0?"لم تحفظ نسخة بعد":"آخر نسخة "+agoD(lb)}</span></span><button class="btn sm primary" type="button" data-gobk>أرسلها إلى بريدي</button></li></ul>`:""}
-  ${!total?`<p class="sub" style="margin:0">أحسنت، كل أقاربك في الجدول ضمن موعد التواصل.</p>`:""}`;
+  ${!total?`<p class="sub" style="margin:0">أحسنت، كل أقاربك في الجدول ضمن موعد التواصل.</p>`:""}
+  ${I&&!I.cur?`<p class="sea-next"><button class="lnk" type="button" data-gosea>تهنئة ${esc(I.s.nm)} ${I.days===1?"غدًا":"بعد "+nn(I.days,DAYS)}</button></p>`:""}`;
 }
 $("#today").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   if(b.dataset.open){openPerson(b.dataset.open);return}
   if(b.dataset.cedit){editContact(b.dataset.cedit);return}
   if(b.dataset.done){const r=S.contacts.find(x=>x.id===b.dataset.done);logContact(r)}
-  if("gofixed" in b.dataset)showTab("v-ihsan");
+  if("gofixed" in b.dataset){ihM="";showTab("v-ihsan");renderIhsan()}
+  if("gosea" in b.dataset)seasonSheet();
   if("gobk" in b.dataset)bkMail()});
-function logContact(r,type){if(!r)return;const iso=new Date().toISOString();r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:type||"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;metaRow=r.id;save();renderContacts();toast("سُجِّل التواصل مع "+nameOf(r).split(" ")[0])}
+function logContact(r,type){if(!r)return;const iso=new Date().toISOString();r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:type||"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;metaRow=r.id;
+  const I=seaInfo(),sk=I&&I.cur?I.cur.key:"",P=r.personId&&byId(r.personId),sid=P?P.id:r.id,sm=!!sk&&!seaSet(sk).has(sid);if(sm)seaPut(sk,sid,true); // in the days of the season, reaching him is greeting him
+  save();renderContacts();toast("سُجِّل التواصل مع "+nameOf(r).split(" ")[0]+(sm?"، وعُلِّمت "+(P&&P.gender==="f"?"تهنئتها":"تهنئته")+" ب"+I.cur.nm:""))}
 // after «اتصال» or «واتساب», coming back to the app asks whether you reached them, so one touch logs it
 let callPend=null;
 document.addEventListener("click",e=>{const a=e.target.closest("a[data-kind]");if(a)callPend={c:a.dataset.call||"",p:a.dataset.pid||"",k:a.dataset.kind,t:Date.now()}},true);
@@ -1232,19 +1346,24 @@ window.addEventListener("focus",()=>setTimeout(askBack,400));
 document.addEventListener("pointerdown",()=>{if(callPend&&Date.now()-callPend.t>15000)askBack()},true);
 function renderContacts(){
   renderToday();
-  const all=S.contacts.filter(c=>!deadC(c)),nDead=S.contacts.length-all.length;
-  const rows=all.slice().sort((a,b)=>dueIn(a)-dueIn(b)),empty=!all.length;
-  $("#cForm").hidden=!(cAddOpen||empty);$("#cAddT").hidden=empty;$("#cAddT").textContent=cAddOpen?"إلغاء":"+ أضف قريبًا";$("#cAddT").setAttribute("aria-expanded",String(cAddOpen));
+  const all=S.contacts.filter(c=>!deadC(c)),nDead=S.contacts.length-all.length,empty=!all.length;
+  const isLate=c=>dueIn(c)<0,isWeek=c=>{if(isLate(c))return false;return dueIn(c)<=7||(!!c.appt&&new Date(c.appt)<=new Date(Date.now()+7*864e5))}; // late, or due in the coming seven days
+  const fb=$("#cFilt");fb.hidden=all.length<5;if(fb.hidden)cFilt="all";
+  fb.innerHTML=fb.hidden?"":[["all","الكل",all.length],["late","متأخر",all.filter(isLate).length],["week","هذا الأسبوع",all.filter(isWeek).length]].map(([k,l,n])=>`<button type="button" data-cf="${k}" aria-pressed="${cFilt===k}">${l} <span class="num">${n}</span></button>`).join("");
+  const rows=all.filter(cFilt==="late"?isLate:cFilt==="week"?isWeek:()=>true).sort((a,b)=>dueIn(a)-dueIn(b));
+  const formOn=cAddOpen||empty,gs=formOn?sideGroups():[],cs=$("#cSides");cs.hidden=!gs.length;
+  cs.innerHTML=gs.length?`<span class="sub">أو أضف جهة كاملة بلمسة:</span><div class="chips">${gs.map(([k,l,a])=>`<button class="chip csd" type="button" data-cside="${k}" aria-label="${esc("أضف "+l+": "+nn(a.length,AQ))}">${esc(l)} <b class="num">${a.length}</b></button>`).join("")}</div><p class="sub" style="margin:0">الأقربون: الوالدان والزوج والأبناء والإخوة والأجداد والأحفاد. وكل جهة إلى أبناء الأعمام والأخوال.</p>`:"";
+  $("#cForm").hidden=!formOn;$("#cAddT").hidden=empty;$("#cAddT").textContent=cAddOpen?"إلغاء":"+ أضف قريبًا";$("#cAddT").setAttribute("aria-expanded",String(cAddOpen));
   $("#cBody").innerHTML=(rows.length?rows.map(c=>{
     const last=c.log[0],di=dueIn(c),ph=phoneOf(c),m=c.meta||{},full=nameOf(c),first=full.split(" ")[0];
     const inT=c.personId&&byId(c.personId),rl=inT?relToMe(c.personId):"";
-    const st=!last?`<span class="pill bad">لم تتواصل بعد</span>`:`<span class="pill ${di>=3?"good":di>=0?"warn":"bad"}" title="${esc(freqName(c))}">${agoD(daysAgo(last))}</span>`;
+    const st=!last?`<span class="pill ${di<0?"bad":di>7?"mute":"warn"}">لم تتواصل بعد</span>`:`<span class="pill ${di>=3?"good":di>=0?"warn":"bad"}" title="${esc(freqName(c))}">${agoD(daysAgo(last))}</span>`;
     const late=c.appt&&new Date(c.appt)<new Date(),ap=c.appt?`<span class="pill ${late?"bad":"mute"}">${late?"فات موعده":"موعد "+fmtDT(c.appt)}</span>`:"";
     const nameB=inT?nmBtn(c,first):`<button class="nm" type="button" data-cedit="${c.id}">${esc(full)}</button>`; // a name not in the tree is shown whole
     return`<div class="crow"><div class="cr1">${nameB}<span class="rl">${esc(inT?(rl||(full!==first?full:"")):"")}</span>${st}</div>
       <div class="cr2">${ap}<span class="sp"></span>${ph?callBtns(c,null,ph,1):""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></div>
       ${metaRow===c.id&&c.log[0]?`<div class="row"><span class="sub">نوع التواصل:</span>${TYPES.map(t=>`<button class="btn sm ${(m[c.log[0]]||{}).type===t?"soft":""}" type="button" data-mtype="${t}" data-mid="${c.id}">${t}</button>`).join("")}<input type="text" class="grow" id="mn-${c.id}" placeholder="ملاحظة قصيرة (اختياري)" value="${esc((m[c.log[0]]||{}).note||"")}"><button class="btn sm primary" type="button" data-mok="${c.id}">تم</button></div>`:""}</div>`;
-  }).join(""):`<div class="empty">الجدول فارغ. اكتب اسم قريب في الأعلى لتصله من هنا.</div>`)
+  }).join(""):`<div class="empty">${empty?"الجدول فارغ. اكتب اسم قريب في الأعلى لتصله من هنا.":cFilt==="late"?"لا أحد متأخر. أحسنت.":"لا أحد يحين موعده هذا الأسبوع."}</div>`)
   +(nDead?`<div class="sub" style="padding-top:10px">أُخفي من الجدول ${nDead===1?"قريب متوفى، رحمه الله":nDead===2?"قريبان متوفيان، رحمهما الله":nDead+" من المتوفين، رحمهم الله"}. <button class="btn sm" type="button" data-cleardead>إزالتهم من الجدول</button></div>`:"");
 }
 const locDT=iso=>{const d=new Date(iso);return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,16)};
@@ -1291,6 +1410,67 @@ function editContact(id,keep,back){
         toast("حُذف من الجدول",{label:"تراجع",fn:()=>{S.contacts.splice(idx,0,r);save();renderContacts();if(back&&$(`#layer [data-pp="${back}"]`))openPerson(back,true)}})}};
   },{keep});
 }
+/* ---------- مواسم الصلة: Ramadan and the two Eids by the Umm al-Qura calendar; the list of whom to greet, and whom you greeted ---------- */
+const HF=(()=>{try{const f=new Intl.DateTimeFormat("en-u-ca-islamic-umalqura-nu-latn",{day:"numeric",month:"numeric",year:"numeric"});
+  return f.formatToParts(new Date(2027,1,8,12)).some(p=>p.type==="month"&&p.value==="9")?f:null}catch(e){return null}})(); // checked on a day it knows (1 Ramadan 1448): a phone without this calendar shows no season rather than a wrong one
+const hOf=d=>{const o={};HF.formatToParts(d).forEach(p=>{if(p.type==="day"||p.type==="month"||p.type==="year")o[p.type]=parseInt(p.value,10)});return o.year&&o.month&&o.day?{y:o.year,m:o.month,d:o.day}:null};
+const SEAS=[ // each from a few days before, so the greeting is ready in time
+  {k:"r",nm:"رمضان",hi:"رمضان مبارك",a:[8,27],b:[9,3],msg:"مبارك عليكم الشهر، أعاده الله علينا وعليكم بالخير والبركات، وتقبّل منا ومنكم الصيام والقيام."},
+  {k:"f",nm:"عيد الفطر",hi:"عيد فطر مبارك",a:[9,28],b:[10,3],msg:"عيد فطر مبارك، تقبّل الله منا ومنكم، وكل عام وأنتم بخير."},
+  {k:"a",nm:"عيد الأضحى",hi:"عيد أضحى مبارك",a:[12,7],b:[12,13],msg:"عيد أضحى مبارك، تقبّل الله منا ومنكم، وكل عام وأنتم بخير."}];
+const hIn=(h,s)=>{const v=h.m*100+h.d;return v>=s.a[0]*100+s.a[1]&&v<=s.b[0]*100+s.b[1]};
+function season(d){const h=HF&&hOf(d);if(!h)return null;const s=SEAS.find(x=>hIn(h,x));return s?Object.assign({},s,{y:h.y,key:s.k+h.y}):null}
+let seaMemo=["",null];
+function seaInfo(){if(!HF)return null;const k=new Date().toDateString();if(seaMemo[0]===k)return seaMemo[1]; // the season now, or the next one and the days to it; worked out once a day
+  const day=i=>{const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+i);return d},kOf=i=>{const s=season(day(i));return s?s.key:""};
+  let v=null;const cur=season(day(0));
+  if(cur){let i=0;while(i<20&&kOf(i+1)===cur.key)i++;v={cur,s:cur,left:i,end:day(i)}}
+  else for(let i=1;i<=400;i++){const s=season(day(i));if(s){v={cur:null,s,days:i,start:day(i)};break}}
+  seaMemo=[k,v];return v}
+const fmtHD=d=>d.toLocaleDateString(LOC,{weekday:"long",day:"numeric",month:"long"})+"، "+hijri(d.toISOString());
+function closeMap(){ // how near each one is to you: by blood, and your wife's family one step further
+  const me=byId(S.meId),out=new Map();if(!me)return out;const by=new Map(S.people.map(p=>[p.id,p]));
+  const anc=id=>{const m=new Map([[id,0]]),q=[id];while(q.length){const c=q.shift(),d=m.get(c),p=by.get(c);if(!p||d>=4)continue;[p.father,p.mother].forEach(x=>{if(x&&by.has(x)&&!m.has(x)){m.set(x,d+1);q.push(x)}})}return m};
+  const deg=(ma,mb)=>{let d=99;ma.forEach((a,k)=>{const b=mb.get(k);if(b!=null&&a+b<d)d=a+b});return d};
+  const ma=anc(me.id),sps=spousesOf(me).filter(w=>!isDiv(me,w)),mw=sps.map(w=>anc(w.id));
+  S.people.forEach(x=>{if(x.id===me.id)return;const mb=anc(x.id);let d=sps.includes(x)?1:deg(ma,mb);mw.forEach(m=>{d=Math.min(d,deg(m,mb)+1)});out.set(x.id,d)});
+  return out}
+function seaList(){ // the contacts table, or every living relative in the tree; the nearest first
+  const out=[],seen=new Set(),cm=closeMap();
+  const add=(id,p,c)=>{if(!id||seen.has(id)||id===S.meId)return;seen.add(id);out.push({id,p,c,d:p?(cm.has(p.id)?cm.get(p.id):99):100})};
+  S.contacts.forEach(c=>{if(deadC(c))return;const p=c.personId?byId(c.personId):null;add(p?p.id:c.id,p,c)});
+  if(S.seasonAll)S.people.forEach(p=>{if(p.alive!==false)add(p.id,p,null)});
+  return out.sort((a,b)=>a.d-b.d)}
+const seaSet=key=>new Set((S.seasons&&S.seasons[key])||[]);
+function seaPut(key,id,on){S.seasons=S.seasons||{};const a=(S.seasons[key]||[]).filter(x=>x!==id);if(on)a.push(id);if(a.length)S.seasons[key]=a;else delete S.seasons[key]}
+function seaMark(key,id,on){seaPut(key,id,on);save()}
+function seaCount(key){const st=seaSet(key),L=seaList();return{n:L.filter(x=>st.has(x.id)).length,t:L.length}}
+const seaMsg=s=>(S.greet&&S.greet[s.k])||s.msg;
+function seasonSheet(){const I=seaInfo();if(!I){toast("التقويم الهجري غير متاح على هذا الجهاز");return}
+  const s=I.s,key=s.key,rc=new Map(),rel=id=>{if(!rc.has(id))rc.set(id,relToMe(id));return rc.get(id)};
+  const when=I.cur?(I.left?"الموسم الآن، حتى "+fmtHD(I.end):"اليوم آخر أيام الموسم"):"يبدأ "+(I.days===1?"غدًا":"بعد "+nn(I.days,DAYS))+"، "+fmtHD(I.start);
+  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تهنئة ${esc(s.nm)} <span class="num">${s.y}</span></h2><div class="full">${esc(when)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+   <div class="sea-prog" id="seaProg"></div>
+   <label class="f"><span>رسالة التهنئة، تُرسل مع «واتساب»</span><textarea class="seamsg" id="seaMsg" rows="3" maxlength="700">${esc(seaMsg(s))}</textarea></label>
+   <div class="row"><button class="btn sm" type="button" id="seaCopy">نسخ الرسالة</button><button class="btn sm" type="button" id="seaDef"${S.greet&&S.greet[s.k]?"":" hidden"}>الرسالة المقترحة</button><span style="flex:1"></span><label class="chk"><input type="checkbox" id="seaAll"${S.seasonAll?" checked":""}> كل أقاربك الأحياء</label></div>
+   <div class="slist" id="seaList"></div>`,el=>{
+    const q=x=>el.querySelector(x),ta=q("#seaMsg");let tm=0;
+    const row=x=>{const p=x.p,c=x.c,nm=p?p.name:(c.name||"—"),rl=p?rel(p.id):"",ph=p?(p.phone||""):phoneOf(c),on=seaSet(key).has(x.id),f=!!p&&p.gender==="f";
+      return`<div class="srow${on?" on":""}"><span class="sn"><b>${esc(nm)}</b>${rl?`<small>${esc(rl)}</small>`:""}</span>${ph?`<a class="btn sm" href="https://wa.me/${waNum(ph)}?text=${encodeURIComponent(seaMsg(s))}" target="_blank" rel="noopener" data-sgo="${x.id}" data-kind="واتساب" data-call="${c?c.id:""}" data-pid="${p?p.id:""}">واتساب</a>`:""}<button class="btn sm${on?" soft":""}" type="button" data-smark="${x.id}" aria-pressed="${on}">${on?"✓ ":""}${f?"هنّأتُها":"هنّأتُه"}</button></div>`};
+    const draw=()=>{const L=seaList(),st=seaSet(key),n=L.filter(x=>st.has(x.id)).length,t=L.length;
+      q("#seaProg").innerHTML=t?`<div class="row"><b>هنّأت <span class="num">${n}</span> من <span class="num">${t}</span></b>${n===t?`<span class="pill good">أحسنت، هنّأت الجميع</span>`:""}</div><div class="bar" role="progressbar" aria-label="من هنّأت" aria-valuemin="0" aria-valuemax="${t}" aria-valuenow="${n}"><i style="width:${Math.round(n*100/t)}%"></i></div>`:"";
+      q("#seaList").innerHTML=t?L.map(row).join(""):`<div class="empty">${S.contacts.length?"لا أحد في جدول التواصل على قيد الحياة.":"جدول التواصل فارغ."} اختر «كل أقاربك الأحياء» لتظهر القائمة من الشجرة.</div>`};
+    draw();
+    q("[data-close]").onclick=closeSheet;
+    ta.addEventListener("input",()=>{const v=ta.value;S.greet=S.greet||{};if(v.trim()&&v.trim()!==s.msg)S.greet[s.k]=v;else delete S.greet[s.k];if(!Object.keys(S.greet).length)delete S.greet;
+      q("#seaDef").hidden=!(S.greet&&S.greet[s.k]);const t=encodeURIComponent(seaMsg(s));q("#seaList").querySelectorAll("a[data-sgo]").forEach(a=>{a.href=a.href.replace(/\?text=.*$/,"?text="+t)});clearTimeout(tm);tm=setTimeout(save,600)});
+    ta.addEventListener("change",()=>{clearTimeout(tm);save()});
+    q("#seaDef").onclick=()=>{if(S.greet){delete S.greet[s.k];if(!Object.keys(S.greet).length)delete S.greet}save();ta.value=s.msg;q("#seaDef").hidden=true;draw()};
+    q("#seaCopy").onclick=()=>copyText(seaMsg(s),"نُسخت الرسالة");
+    q("#seaAll").onchange=e=>{if(e.target.checked)S.seasonAll=true;else delete S.seasonAll;save();draw();renderToday()};
+    q("#seaList").addEventListener("click",e=>{const a=e.target.closest("a[data-sgo]");if(a){seaMark(key,a.dataset.sgo,true);setTimeout(()=>{draw();renderToday()},80);return} // the link goes on to WhatsApp; the list follows after it
+      const b=e.target.closest("[data-smark]");if(!b)return;const id=b.dataset.smark;seaMark(key,id,!seaSet(key).has(id));draw();renderToday()});
+  })}
 let confirmRm=null;
 $("#cBody").addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;const d=b.dataset;
@@ -1308,6 +1488,20 @@ $("#cBody").addEventListener("click",e=>{
 const acF=makeAC($("#fName"),{placeholder:"اسم المستفيد"});
 const acV=makeAC($("#vName"),{placeholder:"الاسم"});
 const ymNow=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")};
+const KINDS=[["s","صدقة"],["z","زكاة"],["h","هدية"],["n","نفقة"]],kindName=k=>{const x=KINDS.find(y=>y[0]===k);return x?x[1]:""};
+const kindOpts=(k,none)=>`<option value="">${none||"بلا نوع"}</option>`+KINDS.map(([v,l])=>`<option value="${v}"${v===k?" selected":""}>${l}</option>`).join("");
+function givenTo(pid,yr){let sum=0,n=0; // what you gave him in a year: his monthly transfers and the separate amounts
+  S.fixed.forEach(r=>{if(r.personId!==pid)return;r.transfers.forEach(t=>{if(t.ym.slice(0,4)===yr){sum+=t.amount;n++}})});
+  S.variable.forEach(v=>{if(v.personId===pid&&ymOf(v.date).slice(0,4)===yr){sum+=v.amount;n++}});return{sum,n}}
+let ihM=""; // the month shown in الإحسان: empty is this month, which follows the clock
+const ihCur=()=>ihM||ymNow();
+const ymAdd=(ym,k)=>{const d=new Date(+ym.slice(0,4),+ym.slice(5,7)-1+k,1);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")};
+const ymName=(ym,o)=>new Date(+ym.slice(0,4),+ym.slice(5,7)-1,15).toLocaleDateString(LOC,o||{month:"long",year:"numeric"});
+const ymDay=(ym,day)=>{const y=+ym.slice(0,4),m=+ym.slice(5,7)-1;return new Date(y,m,Math.min(day,monLen(y,m)),12).toISOString()}; // the due day in a month, at noon
+const sinceOf=r=>{let s=r.since||"";if(s)r.transfers.forEach(t=>{if(t.ym<s)s=t.ym});return s}; // the month it began, or the oldest transfer before it
+function ihLow(){let lo=ymAdd(ymNow(),-12);S.fixed.forEach(r=>r.transfers.forEach(t=>{if(t.ym<lo)lo=t.ym}));S.variable.forEach(v=>{const m=ymOf(v.date);if(m<lo)lo=m});return lo} // back a year, and further where you recorded something
+function vDateFor(){const ym=ihCur(),n=new Date();return ym===ymNow()?locD(n.toISOString()):locD(ymDay(ym,n.getDate()))} // a new amount: today, or the same day of the month you are looking at
+function vReset(){const i=$("#vDate");if(!i)return;i.max=locD(new Date().toISOString());i.value=vDateFor()}
 function isoDay(v){const m=/^\d{4}-\d{2}-(\d{2})$/.exec(v||"");return m?+m[1]:0} // the day of the month in a date the calendar gave
 function monLen(y,m){return new Date(y,m+1,0).getDate()}
 function dueDay(r){const n=new Date();return Math.min(r.day,monLen(n.getFullYear(),n.getMonth()))} // a day the month lacks (31 in a month of 30) falls on its last day
@@ -1320,47 +1514,59 @@ function gcalMonthly(r,day){ // Google Calendar: the transfer at 9 in the mornin
   const det="تذكير من تطبيق ذو القربى: صلة الرحم"+(veiled?"":"\nالمبلغ: "+(Number(r.amount)||0).toLocaleString("en-US",{maximumFractionDigits:2})+(S.currency?" "+S.currency:""));
   return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent("تحويل المبلغ الشهري: "+nameOf(r))+"&dates="+d+"T090000/"+d+"T093000"+(tz?"&ctz="+encodeURIComponent(tz):"")
     +"&recur="+encodeURIComponent(rule)+"&details="+encodeURIComponent(det)}
-$("#fDay").value=dueISO(new Date().getDate());
+$("#fDay").value=dueISO(new Date().getDate());vReset();
+$("#ihPrev").onclick=()=>{ihM=ymAdd(ihCur(),-1);vReset();renderIhsan()};
+$("#ihNext").onclick=()=>{const n=ymAdd(ihCur(),1);ihM=n>=ymNow()?"":n;vReset();renderIhsan()};
+$("#ihNow").onclick=()=>{ihM="";vReset();renderIhsan()};
 $("#fAdd").onclick=()=>{const v=acF.get(),a=numIn($("#fAmt").value),day=isoDay($("#fDay").value)||new Date().getDate();
   if(!acF.valid()){acF.input.focus();return}if(!(a>0)){$("#fAmt").focus();return}
-  S.fixed.push({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,day,transfers:[]});save();acF.clear();$("#fAmt").value="";$("#fDay").value=dueISO(new Date().getDate());fAddOpen=false;renderIhsan();toast("أُضيف المبلغ الشهري، "+dueTxt(day))};
-$("#vAdd").onclick=()=>{const v=acV.get(),a=numIn($("#vAmt").value);
+  const it={id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,day,transfers:[],since:ihCur()},kd=$("#fKind").value;if(kd)it.kind=kd; // it began in the month you were looking at
+  S.fixed.push(it);save();acF.clear();$("#fAmt").value="";$("#fKind").value="";$("#fDay").value=dueISO(new Date().getDate());fAddOpen=false;renderIhsan();toast("أُضيف المبلغ الشهري، "+dueTxt(day))};
+$("#vAdd").onclick=()=>{const v=acV.get(),a=numIn($("#vAmt").value),kd=$("#vKind").value,today=locD(new Date().toISOString());let dv=$("#vDate").value;
   if(!acV.valid()){acV.input.focus();return}if(!(a>0)){$("#vAmt").focus();return}
-  S.variable.unshift({id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,date:new Date().toISOString()});save();acV.clear();$("#vAmt").value="";vAddOpen=false;renderIhsan();toast("حُفظ المبلغ بتاريخ اليوم")};
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(dv)||dv>today)dv=today;const date=dv===today?new Date().toISOString():new Date(dv+"T12:00").toISOString(),vym=ymOf(date); // today keeps its hour; another day is at noon
+  const it={id:uid(),personId:v.personId,name:v.personId?"":v.text,amount:a,date};if(kd)it.kind=kd;
+  S.variable.unshift(it);S.variable.sort((x,y)=>y.date.localeCompare(x.date));save();acV.clear();$("#vAmt").value="";$("#vKind").value="";vAddOpen=false;
+  ihM=vym===ymNow()?"":vym;vReset();renderIhsan();toast(dv===today?"حُفظ المبلغ بتاريخ اليوم":"حُفظ المبلغ بتاريخ "+fmtD(date))};
 let fHist=null,fConfirm=null,vConfirm=null,fAddOpen=false,vAddOpen=false;
 $("#fAddT").onclick=()=>{fAddOpen=!fAddOpen;renderIhsan();if(fAddOpen)setTimeout(()=>acF.input.focus(),30)};
 $("#vAddT").onclick=()=>{vAddOpen=!vAddOpen;renderIhsan();if(vAddOpen)setTimeout(()=>acV.input.focus(),30)};
 function renderIhsan(){
-  const ym=ymNow(),yr=ym.slice(0,4);
-  $("#iMonthLbl").textContent="شهر "+new Date().toLocaleDateString(LOC,{month:"long",year:"numeric"});
+  const now=ymNow();if(ihM&&ihM>=now)ihM="";const ym=ihCur(),yr=ym.slice(0,4),past=ym!==now,mN=ymName(ym,{month:"long"}); // a month you browse stays until you come back to this one
+  $("#iMonthLbl").textContent="شهر "+ymName(ym);$("#ihPrev").disabled=ym<=ihLow();$("#ihNext").disabled=!past;$("#ihNow").hidden=!past;$("#iThM").textContent=past?mN:"هذا الشهر";
   const tg=(b,f,open,n)=>{$(f).hidden=!(open||!n);$(b).hidden=!n;$(b).textContent=open?"إلغاء":"+ أضف";$(b).setAttribute("aria-expanded",String(open))};
   tg("#fAddT","#fForm",fAddOpen,S.fixed.length);tg("#vAddT","#vForm",vAddOpen,S.variable.length);
+  const on=r=>{const s=sinceOf(r);return!s||s<=ym},fx=S.fixed.filter(on),vm=S.variable.filter(v=>ymOf(v.date)===ym); // a monthly amount from the month it began; the separate amounts of this month
   const monthF=S.fixed.reduce((s,r)=>s+r.transfers.filter(t=>t.ym===ym).reduce((a,t)=>a+t.amount,0),0);
-  const monthV=S.variable.filter(v=>ymOf(v.date)===ym).reduce((a,v)=>a+v.amount,0);
+  const monthV=vm.reduce((a,v)=>a+v.amount,0);
   const yearAll=S.fixed.reduce((s,r)=>s+r.transfers.filter(t=>t.ym.slice(0,4)===yr).reduce((a,t)=>a+t.amount,0),0)+S.variable.filter(v=>ymOf(v.date).slice(0,4)===yr).reduce((a,v)=>a+v.amount,0);
-  const pending=S.fixed.filter(r=>!r.transfers.some(t=>t.ym===ym)).reduce((a,r)=>a+r.amount,0);
-  $("#iTotals").innerHTML=[["حُوِّل هذا الشهر",monthF+monthV],["المتبقي هذا الشهر",pending],["مجموع السنة",yearAll]].map(([l,v])=>`<div class="stat"><b class="num">${money(v)}</b><span>${l}</span></div>`).join("");
+  const pending=fx.filter(r=>!r.transfers.some(t=>t.ym===ym)).reduce((a,r)=>a+r.amount,0);
+  $("#iTotals").innerHTML=[[past?"حُوِّل في "+mN:"حُوِّل هذا الشهر",monthF+monthV],[past?"لم يُسجَّل في "+mN:"المتبقي هذا الشهر",pending],[yr===now.slice(0,4)?"مجموع السنة":"مجموع "+yr,yearAll]].map(([l,v])=>`<div class="stat"><b class="num">${money(v)}</b><span>${l}</span></div>`).join("");
+  const kt={},kAdd=(k,a)=>{k=k||"o";kt[k]=(kt[k]||0)+a}; // the year by kind; amounts with no kind are «أخرى»
+  S.fixed.forEach(r=>r.transfers.forEach(t=>{if(t.ym.slice(0,4)===yr)kAdd(r.kind,t.amount)}));S.variable.forEach(v=>{if(ymOf(v.date).slice(0,4)===yr)kAdd(v.kind,v.amount)});
+  const ks=KINDS.filter(([k])=>kt[k]>0).map(([k,l])=>[l,kt[k]]);if(ks.length&&kt.o>0)ks.push(["أخرى",kt.o]);
+  const ik=$("#iKinds");ik.hidden=!ks.length;ik.innerHTML=ks.length?`<span class="sub">في <span class="num">${yr}</span>:</span>`+ks.map(([l,v])=>`<span class="kt">${l} <b class="num">${money(v)}</b></span>`).join(""):"";
   const today=new Date().getDate();
-  $("#fBody").innerHTML=S.fixed.length?S.fixed.map(r=>{
-    const t=r.transfers.find(x=>x.ym===ym);const full=nameOf(r);const due=!t&&today>=dueDay(r);
-    return `<tr><td>${nmBtn(r,full.split(" ")[0])}<div class="full">${esc(full)}</div><div class="full">التحويلات المسجلة: ${r.transfers.length}</div>
+  $("#fBody").innerHTML=fx.length?fx.map(r=>{
+    const t=r.transfers.find(x=>x.ym===ym);const full=nameOf(r);const due=!past&&!t&&today>=dueDay(r);
+    return `<tr><td>${nmBtn(r,full.split(" ")[0])}${r.kind?` <span class="ktag">${esc(kindName(r.kind))}</span>`:""}<div class="full">${esc(full)}</div><div class="full">التحويلات المسجلة: ${r.transfers.length}</div>
       <button class="btn sm" type="button" data-fedit="${r.id}" style="margin-top:4px">تعديل</button></td>
       <td data-l="المبلغ"><input type="text" inputmode="decimal" class="amt num" value="${r.amount}" data-famt="${r.id}" aria-label="المبلغ"></td>
       <td class="num" data-l="الاستحقاق">يوم ${r.day}</td>
-      <td class="wide" data-l="هذا الشهر">${t?`<span class="pill good">تم التحويل</span><div class="full num">${fmtD(t.date)} · ${money(t.amount)}</div><button class="btn sm" type="button" data-fundo="${r.id}">تراجع</button>`
-        :`<span class="pill ${due?"warn":"mute"}">${due?"مستحق":"لم يحن"}</span><br><button class="btn sm gold" type="button" data-fdone="${r.id}" style="margin-top:4px">تم التحويل</button>`}</td></tr>`;
-  }).join(""):`<tr><td colspan="4"><div class="empty">لا مبالغ شهرية بعد. أضف اسمًا ومبلغًا ويوم الاستحقاق في الأعلى.</div></td></tr>`;
-  $("#vBody").innerHTML=S.variable.length?S.variable.map(v=>{const full=nameOf(v);return`<tr><td>${nmBtn(v,full.split(" ")[0])}<div class="full">${esc(full)}</div></td>
+      <td class="wide" data-l="${past?esc(mN):"هذا الشهر"}">${t?`<span class="pill good">تم التحويل</span><div class="full num">${fmtD(t.date)} · ${money(t.amount)}</div><button class="btn sm" type="button" data-fundo="${r.id}">تراجع</button>`
+        :`<span class="pill ${past?"bad":due?"warn":"mute"}">${past?"لم يُسجَّل":due?"مستحق":"لم يحن"}</span><br><button class="btn sm gold" type="button" data-fdone="${r.id}" style="margin-top:4px">تم التحويل</button>`}</td></tr>`;
+  }).join(""):`<tr><td colspan="4"><div class="empty">${S.fixed.length?"لم تبدأ مبالغك الشهرية بعد في "+esc(mN)+".":"لا مبالغ شهرية بعد. أضف اسمًا ومبلغًا ويوم الاستحقاق في الأعلى."}</div></td></tr>`;
+  $("#vBody").innerHTML=vm.length?vm.map(v=>{const full=nameOf(v);return`<tr><td>${nmBtn(v,full.split(" ")[0])}${v.kind?` <span class="ktag">${esc(kindName(v.kind))}</span>`:""}<div class="full">${esc(full)}</div></td>
     <td data-l="المبلغ"><input type="text" inputmode="decimal" class="amt num" value="${v.amount}" data-vamt="${v.id}" aria-label="المبلغ"></td>
     <td class="num" data-l="التاريخ">${fmtD(v.date)}<div class="full">${hijri(v.date)}</div></td>
-    <td class="wide"><button class="btn sm" type="button" data-vedit="${v.id}">تعديل</button></td></tr>`}).join(""):`<tr><td colspan="4"><div class="empty">لا مبالغ متفرقة بعد. أضف اسمًا ومبلغًا في الأعلى.</div></td></tr>`;
+    <td class="wide"><button class="btn sm" type="button" data-vedit="${v.id}">تعديل</button></td></tr>`}).join(""):`<tr><td colspan="4"><div class="empty">${S.variable.length?"لا مبالغ متفرقة في "+esc(mN)+".":"لا مبالغ متفرقة بعد. أضف اسمًا ومبلغًا في الأعلى."}</div></td></tr>`;
 }
 function editFixed(id,keep){
   const r=S.fixed.find(x=>x.id===id);if(!r){closeSheet();return}
   const full=nameOf(r);
   sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل المبلغ الشهري</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
    <div class="panel" style="background:var(--bg)"><h3>المستفيد والمبلغ</h3><div class="ac" id="efName"></div>
-     <div class="grid2"><label class="f"><span>المبلغ</span><input type="text" id="efAmt" inputmode="decimal" value="${r.amount}"></label><label class="f"><span>تاريخ الاستحقاق</span><input type="date" id="efDay" value="${dueISO(r.day)}"><small id="efDayH">${dueTxt(r.day)}</small></label></div>
+     <div class="grid2"><label class="f"><span>المبلغ</span><input type="text" id="efAmt" inputmode="decimal" value="${r.amount}"></label><label class="f"><span>النوع</span><select id="efKind" style="width:100%">${kindOpts(r.kind||"")}</select></label><label class="f"><span>تاريخ الاستحقاق</span><input type="date" id="efDay" value="${dueISO(r.day)}"><small id="efDayH">${dueTxt(r.day)}</small></label></div>
      <div class="row"><button class="btn primary" type="button" id="efSave">حفظ</button><span style="flex:1"></span><a class="btn sm" id="efCal" href="${gcalMonthly(r,r.day)}" target="_blank" rel="noopener">تذكير في تقويم Google</a></div></div>
    <div class="panel" style="background:var(--bg)"><div class="row"><h3 class="grow">سجل التحويلات (${r.transfers.length})</h3><button class="btn sm soft" type="button" id="efAddT">+ تحويل سابق</button></div>
      ${r.transfers.length?r.transfers.map((t,i)=>`<div class="erow"><div class="f2"><input type="date" data-tdt="${i}" value="${locD(t.date)}" aria-label="تاريخ التحويل"><input type="text" class="amt num" data-tamt="${i}" value="${t.amount}" inputmode="decimal" aria-label="المبلغ"></div><button class="btn sm danger" type="button" data-tdel="${i}">حذف</button></div>`).join(""):`<p class="sub" style="margin:0">لا تحويلات بعد.</p>`}
@@ -1375,7 +1581,7 @@ function editFixed(id,keep){
       r.day=d;save();renderIhsan();renderToday();el.querySelector("#efDayH").textContent=dueTxt(d);el.querySelector("#efCal").href=gcalMonthly(r,d);toast("حُفظ: "+dueTxt(d))};
     el.querySelector("#efSave").onclick=()=>{const v=ac.get(),a=numIn(el.querySelector("#efAmt").value);
       if(!v.personId&&!v.text){ac.input.focus();return}if(!(a>=0)){el.querySelector("#efAmt").focus();return}
-      r.personId=v.personId;r.name=v.personId?"":v.text;r.amount=a;again();toast("حُفظ")};
+      r.personId=v.personId;r.name=v.personId?"":v.text;r.amount=a;const kd=el.querySelector("#efKind").value;if(kd)r.kind=kd;else delete r.kind;again();toast("حُفظ")};
     el.querySelector("#efAddT").onclick=()=>{const now=new Date(),d=new Date(now);d.setHours(12,0,0,0);d.setDate(1);let g=0; // month by month from the first, so the 31st does not slip back into the same month
       while(r.transfers.some(t=>t.ym===ymOf(d))&&g++<120)d.setMonth(d.getMonth()-1);
       d.setDate(d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()?now.getDate():Math.min(r.day,monLen(d.getFullYear(),d.getMonth())));
@@ -1397,7 +1603,7 @@ function editVar(id){
   const full=nameOf(v);
   sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تعديل المبلغ</h2><div class="full">${esc(full)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
    <div class="panel" style="background:var(--bg)"><div class="ac" id="evName"></div>
-     <div class="grid2"><label class="f"><span>المبلغ</span><input type="text" id="evAmt" inputmode="decimal" value="${v.amount}"></label><label class="f"><span>التاريخ</span><input type="date" id="evDate" value="${locD(v.date)}"></label></div>
+     <div class="grid2"><label class="f"><span>المبلغ</span><input type="text" id="evAmt" inputmode="decimal" value="${v.amount}"></label><label class="f"><span>النوع</span><select id="evKind" style="width:100%">${kindOpts(v.kind||"")}</select></label><label class="f"><span>التاريخ</span><input type="date" id="evDate" value="${locD(v.date)}"></label></div>
      <div class="row"><button class="btn primary" type="button" id="evSave">حفظ</button></div></div>
    <div class="row" style="justify-content:flex-end"><button class="btn danger" type="button" id="evDel">حذف المبلغ</button></div>
    <div id="evConf"></div>`,el=>{
@@ -1405,8 +1611,9 @@ function editVar(id){
     const ac=makeAC(el.querySelector("#evName"),{placeholder:"الاسم",preset:{personId:v.personId,text:full}});
     el.querySelector("#evSave").onclick=()=>{const n=ac.get(),a=numIn(el.querySelector("#evAmt").value),dv=el.querySelector("#evDate").value;
       if(!n.personId&&!n.text){ac.input.focus();return}if(!(a>=0)){el.querySelector("#evAmt").focus();return}
-      v.personId=n.personId;v.name=n.personId?"":n.text;v.amount=a;if(dv&&dv!==locD(v.date))v.date=new Date(dv+"T12:00").toISOString();
-      S.variable.sort((x,y)=>y.date.localeCompare(x.date));save();closeSheet();renderIhsan();renderToday();toast("حُفظ المبلغ")};
+      v.personId=n.personId;v.name=n.personId?"":n.text;v.amount=a;if(dv&&dv!==locD(v.date))v.date=new Date(dv+"T12:00").toISOString();const kd=el.querySelector("#evKind").value;if(kd)v.kind=kd;else delete v.kind;
+      const vym=ymOf(v.date);if(vym!==ihCur())ihM=vym>=ymNow()?"":vym; // moved to another month: the page goes with it
+      S.variable.sort((x,y)=>y.date.localeCompare(x.date));save();closeSheet();vReset();renderIhsan();renderToday();toast(vym!==ymNow()?"حُفظ المبلغ في "+ymName(vym):"حُفظ المبلغ")};
     el.querySelector("#evDel").onclick=()=>{const c=el.querySelector("#evConf");
       c.innerHTML=`<div class="confirm">حذف هذا المبلغ؟<span style="flex:1"></span><button class="btn sm" type="button" id="evNo">تراجع</button><button class="btn sm danger" type="button" id="evYes">نعم، احذف</button></div>`;
       c.querySelector("#evNo").onclick=()=>c.innerHTML="";
@@ -1415,9 +1622,9 @@ function editVar(id){
   });
 }
 $("#v-ihsan").addEventListener("click",e=>{
-  const b=e.target.closest("button");if(!b)return;const d=b.dataset;const F=id=>S.fixed.find(x=>x.id===id);const ym=ymNow();
+  const b=e.target.closest("button");if(!b)return;const d=b.dataset;const F=id=>S.fixed.find(x=>x.id===id);const ym=ihCur(),past=ym!==ymNow();
   if(d.open){openPerson(d.open);return}
-  if(d.fdone){const r=F(d.fdone);r.transfers.unshift({date:new Date().toISOString(),amount:r.amount,ym});save();toast("سُجِّل التحويل بتاريخ اليوم")}
+  if(d.fdone){const r=F(d.fdone);r.transfers.push({date:past?ymDay(ym,r.day):new Date().toISOString(),amount:r.amount,ym});r.transfers.sort((a,b)=>b.date.localeCompare(a.date));save();toast(past?"سُجِّل التحويل في "+ymName(ym):"سُجِّل التحويل بتاريخ اليوم")}
   else if(d.fundo){const r=F(d.fundo);r.transfers=r.transfers.filter(t=>t.ym!==ym);save()}
   else if(d.fedit){editFixed(d.fedit);return}
   else if(d.vedit){editVar(d.vedit);return}
@@ -1459,6 +1666,10 @@ $("#btnSettings").onclick=()=>{
     <div class="row"><input type="password" id="s-pin" inputmode="numeric" placeholder="الرمز الجديد" style="max-width:160px;direction:ltr"><button class="btn soft" type="button" id="s-pinset">${S.pinHash?"تغيير الرمز":"تفعيل القفل"}</button>${S.pinHash?'<button class="btn danger" type="button" id="s-pinoff">إلغاء القفل</button>':""}</div>
     <label class="chk"><input type="checkbox" id="s-veil" ${S.hideAmounts?"checked":""}> إخفاء مبالغ الإحسان عند الفتح</label>
   </div>
+  <div class="panel" style="background:var(--bg)"><h3>حجم الخط</h3>
+    <div class="seg2" id="s-fs" role="group" aria-label="حجم الخط">${[[1,"عادي"],[1.12,"كبير"],[1.25,"أكبر"]].map(([v,l])=>`<button type="button" data-fs="${v}" aria-pressed="${(S.fontScale||1)===v}">${l}</button>`).join("")}</div>
+    <p class="sub" style="margin:0">يكبر خط القوائم والملفات على هذا الجهاز، وبطاقات اللوحة يكبّرها زر + فيها.</p>
+  </div>
   <div class="panel" style="background:var(--bg)"><h3>العملة والعائلة والواتساب</h3>
     <div class="grid2">
       <label class="f"><span>العملة</span><input type="text" id="s-cur" value="${esc(S.currency)}"></label>
@@ -1477,6 +1688,8 @@ $("#btnSettings").onclick=()=>{
     el.querySelector("#s-pinset").onclick=()=>{const v=toLat(el.querySelector("#s-pin").value).trim();if(!/^\d{4,8}$/.test(v)){toast("الرمز من 4 إلى 8 أرقام");return}S.pinHash=hashPin(v);save();unlocked=true;closeSheet();renderAll();toast("فُعِّل القفل")};
     const off=el.querySelector("#s-pinoff");if(off)off.onclick=()=>{delete S.pinHash;save();closeSheet();renderAll();toast("أُلغي القفل")};
     el.querySelector("#s-veil").onchange=e=>{S.hideAmounts=e.target.checked;veiled=S.hideAmounts;save();renderAll()};
+    el.querySelector("#s-fs").onclick=e=>{const b=e.target.closest("[data-fs]");if(!b)return;const v=+b.dataset.fs;if(v===1)delete S.fontScale;else S.fontScale=v;save();applyFs();
+      el.querySelectorAll("#s-fs [data-fs]").forEach(x=>x.setAttribute("aria-pressed",String(+x.dataset.fs===(S.fontScale||1))));fCamKey="";renderSide()};
     el.querySelector("#s-save").onclick=()=>{S.currency=el.querySelector("#s-cur").value.trim();S.family=el.querySelector("#s-fam").value.trim();S.cc=toLat(el.querySelector("#s-cc").value).replace(/\D/g,"");save();renderAll();toast("حُفظت الإعدادات")};
     el.querySelector("#s-copy").onclick=()=>{copyText("نسخة احتياطية من «ذو القربى» بتاريخ "+fmtD(new Date().toISOString())+"\n"+bkText(),"نُسخت النسخة. الصقها في بريدك أو ملاحظاتك");S.lastBackup=new Date().toISOString();save();renderToday();bkSaid()};
     const conf=(msg,fn,where)=>{const c=el.querySelector(where||"#s-conf");c.innerHTML=`<div class="confirm">${msg}<span style="flex:1"></span><button class="btn sm" type="button" id="k-no">تراجع</button><button class="btn sm danger" type="button" id="k-yes">نعم</button></div>`;c.querySelector("#k-no").onclick=()=>c.innerHTML="";c.querySelector("#k-yes").onclick=fn;c.scrollIntoView({block:"nearest"})};
@@ -1494,8 +1707,8 @@ $("#btnSettings").onclick=()=>{
   });
 };
 $("#btnStartReal").onclick=()=>replaceAll({demo:false,schema:2,currency:S.currency||"ريال",cc:S.cc||"",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[]},"ابدأ باسمك، ثم أضف أباك وأمك",{undo:false});
-const DEV=["pinHash","hideAmounts"]; // what belongs to this phone and not to the data: a restored copy does not bring an old code with it
-function viewReset(){fUnl.clear();fOf="";fExp.clear();oCol.clear();fSibs=false;fCamKey="";fUserCam=false;fFitAll=false;focusId=S.meId||null;if(treeMode==="open")setTreeMode("fam")}
+const DEV=["pinHash","hideAmounts","fontScale"]; // what belongs to this phone and not to the data: a restored copy does not bring an old code with it
+function viewReset(){fUnl.clear();fOf="";fOfBack.length=0;fExp.clear();oCol.clear();fSibs=false;fCamKey="";fUserCam=false;fFitAll=false;focusId=S.meId||null;if(treeMode==="open")setTreeMode("fam")}
 function replaceAll(next,msg,o){o=Object.assign({undo:true,dev:true},o);const snap=JSON.stringify(S); // o.dev: this phone keeps its lock and its veil; o.undo: «تراجع» brings back what was there
   if(o.dev)DEV.forEach(k=>{if(S[k]!=null)next[k]=S[k];else delete next[k]});
   S=migrate(next);veiled=!!S.hideAmounts;viewReset();save();closeSheet();renderAll();
@@ -1553,22 +1766,22 @@ $("#ideas").addEventListener("click",e=>{const id=e.target.closest("[data-idel]"
 // ask Claude
 let sampleFn,askReady=false,turns=[],askCtl=null,hasTools=false;
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
-1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أعلى اللوحة) تجعل أي قريب في المركز: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«أنا في المركز». الأشكال: العمود الملوّن بخط سميك سلسلة الآباء من صاحب الجهة إلى أعلى جد، والبطاقة البيضاء قريب مسجّل خارج العمود، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، ولا تظهر إلا حين يُفتح القفل الصغير على خط أسرتها (الإضافة مقفلة حتى لا يُضاف أحد بالخطأ، وتُقفل كلها كلما فُتح التطبيق)، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة القريب الذي في المركز. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق الزوجة ينقل إلى عائلتها. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة.
-ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات، ثم «اجعله في المركز» و«تعديل» و«حذف». والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك.
-2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، والمبالغ المستحقة، وتذكير النسخة الاحتياطية) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
-3) الإحسان: «مبالغ شهرية» (اسم ومبلغ وتاريخ الاستحقاق يُختار من التقويم ويتكرر في اليوم نفسه كل شهر، و«تم التحويل» يسجل التحويل بتاريخ اليوم، وفي «تعديل» زر «تذكير في تقويم Google» يضيف الموعد شهريًا) و«مبالغ متفرقة» (اسم ومبلغ يُحفظ بتاريخ اليوم)، والإضافة بزر «+ أضف» فوق كل قائمة. وفي الأعلى ما حُوِّل هذا الشهر، والمتبقي هذا الشهر، ومجموع السنة، و«إخفاء المبالغ».
-الشريط العلوي: خانة البحث عن قريب (زر «الشجرة» يقفز إليه ويضيء بطاقته، و«الملف» يفتح ملفه)، و«اسأل» داخل Claude. وفي رأس الشاشة زر «اقتراحاتك» (رمز المصباح وعليه عدد الاقتراحات) و«الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا). زر الرجوع في الجوال يغلق المفتوح أولًا.`;
+1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أعلى اللوحة) تجعل أي قريب في المركز: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«أنا في المركز». الأشكال: العمود الملوّن بخط سميك سلسلة الآباء من صاحب الجهة إلى أعلى جد، والبطاقة البيضاء قريب مسجّل خارج العمود، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، ولا تظهر إلا حين يُفتح القفل الصغير على خط أسرتها (الإضافة مقفلة حتى لا يُضاف أحد بالخطأ، وتُقفل كلها كلما فُتح التطبيق)، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة القريب الذي في المركز. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق كل زوجة و«أهله» فوق كل زوج ينقل إلى عائلته: هو أسفل العمود وفوقه أبوه ثم جده، فالعمود في كل جهة يصعد بالآباء وحدهم «ادعوهم لآبائهم» والأمهات بجانب أزواجهن، وخط الزواج إذا قطعه خطان صغيران فهو طلاق، والإخوة مرتبون من الأكبر بسنة الميلاد. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة، وزر التصدير بجانبها يحفظ الجهة التي تراها صورةً أو نصًّا، أو PDF في المتصفح. وأول مرة يسألك التطبيق اسمك ثم اسم أبيك ثم اسم أمك.
+ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اجعله في المركز» و«تعديل» و«حذف». والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات بترتيبها (الأولى ثم الثانية) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
+2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، والمبالغ المستحقة، وتذكير النسخة الاحتياطية، وفي أيام رمضان والعيدين «القائمة» للتهنئة: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، و«تم التواصل» في تلك الأيام يعلّم التهنئة أيضًا، وفي غيرها سطر يعدّ الأيام إلى الموسم القادم) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة، وتحته أزرار تضيف جهة كاملة بلمسة: الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة، ويحين موعد كل مضاف حسب قربه. وفوق الجدول فرز: الكل، ومتأخر، وهذا الأسبوع. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
+3) الإحسان: في الأعلى شريط الشهر (› السابق و‹ التالي و«الشهر الحالي»)، والمجاميع والقائمتان تتبع الشهر المعروض. «مبالغ شهرية» (اسم ومبلغ ونوع وتاريخ الاستحقاق يُختار من التقويم ويتكرر في اليوم نفسه كل شهر، و«تم التحويل» يسجل التحويل في الشهر المعروض، فيُسجَّل تحويل فات في شهره، وفي «تعديل» زر «تذكير في تقويم Google» يضيف الموعد شهريًا) و«مبالغ متفرقة» (اسم ومبلغ ونوع وتاريخ يُختار من التقويم)، والإضافة بزر «+ أضف» فوق كل قائمة. الأنواع: صدقة، زكاة، هدية، نفقة، وتحت المجاميع مجموع كل نوع في السنة. وفي الأعلى ما حُوِّل في الشهر، والمتبقي، ومجموع السنة، و«إخفاء المبالغ».
+الشريط العلوي: خانة البحث عن قريب (زر «الشجرة» يقفز إليه ويضيء بطاقته، و«الملف» يفتح ملفه)، و«اسأل» داخل Claude. وفي رأس الشاشة زر «اقتراحاتك» (رمز المصباح وعليه عدد الاقتراحات) و«الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم حجم الخط (عادي أو كبير أو أكبر)، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا). زر الرجوع في الجوال يغلق المفتوح أولًا.`;
 function familyData(){
   const cmap=new Map(S.contacts.map(c=>[c.personId,c]));
-  const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id);return[p.id,nasab(p,5),p.gender==="f"?"أنثى":"ذكر",p.alive!==false?"حي":"متوفى",p.city||"",spousesOf(p).map(x=>x.name).join("، "),c&&c.log[0]?locD(c.log[0]):"",c&&c.appt?locDT(c.appt).replace("T"," "):""].join(" | ")}).join("\n");
-  const fixed=S.fixed.map(r=>`${nameOf(r)} | ${r.amount} | يوم ${r.day} | آخر تحويل ${r.transfers[0]?locD(r.transfers[0].date):"لا يوجد"}`).join("\n");
-  const vari=S.variable.slice(0,80).map(v=>`${nameOf(v)} | ${v.amount} | ${locD(v.date)}`).join("\n");
+  const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id);return[p.id,nasab(p,5),p.gender==="f"?"أنثى":"ذكر",p.alive!==false?"حي":"متوفى",p.city||"",spousesOf(p).map(x=>x.name+(isDiv(p,x)?" (طلاق)":"")).join("، "),c&&c.log[0]?locD(c.log[0]):"",c&&c.appt?locDT(c.appt).replace("T"," "):""].join(" | ")}).join("\n");
+  const fixed=S.fixed.map(r=>`${nameOf(r)} | ${r.amount} | يوم ${r.day} | ${kindName(r.kind)||"—"} | آخر تحويل ${r.transfers[0]?locD(r.transfers[0].date):"لا يوجد"}`).join("\n");
+  const vari=S.variable.slice(0,80).map(v=>`${nameOf(v)} | ${v.amount} | ${kindName(v.kind)||"—"} | ${locD(v.date)}`).join("\n");
   return`تاريخ اليوم: ${locD(new Date().toISOString())}. العملة: ${S.currency||""}.
 الأفراد (المعرّف | النسب | الجنس | الحالة | المدينة | الزوج/الزوجة | آخر تواصل | الموعد القادم):
 ${people||"لا يوجد"}
-المبالغ الشهرية (الاسم | المبلغ | يوم الاستحقاق | آخر تحويل):
+المبالغ الشهرية (الاسم | المبلغ | يوم الاستحقاق | النوع | آخر تحويل):
 ${fixed||"لا يوجد"}
-المبالغ المتفرقة (الاسم | المبلغ | التاريخ):
+المبالغ المتفرقة (الاسم | المبلغ | النوع | التاريخ):
 ${vari||"لا يوجد"}`;
 }
 const RULES=()=>`أنت مساعد داخل تطبيق «ذو القربى» لصلة الرحم. أجب بالعربية باختصار ووضوح، بلا تنسيق Markdown ثقيل. أجب عن أسئلة المستخدم عن أقاربه من البيانات أدناه فقط، ولا تخترع أشخاصًا أو تواريخ. لمعرفة صلة القرابة بين شخصين استعمل أداة kinship بمعرّفيهما إن كانت متاحة. وأجب عن أسئلة طريقة استخدام التطبيق من الدليل.
@@ -1612,19 +1825,33 @@ $("#askChips").addEventListener("click",e=>{const b=e.target.closest(".chip");if
 /* ---------- family view: you in the centre ---------- */
 let focusId=null;
 const fa=p=>p&&byId(p.father), mo=p=>p&&byId(p.mother);
-function sibsOf(p){if(!p)return[];return S.people.filter(x=>x.id!==p.id&&((p.father&&x.father===p.father)||(p.mother&&x.mother===p.mother)))}
+function sibsOf(p){if(!p)return[];return byBorn(S.people.filter(x=>x.id!==p.id&&((p.father&&x.father===p.father)||(p.mother&&x.mother===p.mother))))}
 function mk(name,g,father,mother){const id=uid();S.people.push({id,name,gender:g,father:father||"",mother:mother||"",spouse:"",spouses:[],family:"",alive:true,city:"",phone:"",born:"",notes:""});return id}
 function pc(x,role,big){if(!x)return"";const r=role||"";return`<button class="pc ${x.gender==="f"?"f":""} ${x.alive?"":"dead"} ${big?"big":""}" type="button" data-open="${x.id}">${esc(x.name)}${r?`<small>${esc(r)}${x.alive?"":(x.gender==="f"?" · رحمها الله":" · رحمه الله")}</small>`:(x.alive?"":`<small>${x.gender==="f"?"رحمها الله":"رحمه الله"}</small>`)}</button>`}
 const addB=(kind,label)=>`<button class="add" type="button" data-add="${kind}">+ ${label}</button>`;
+let onb=0; // the first run: 2 asks for your father, 3 for your mother; nothing is kept, so opening again goes on from the board
 function renderFam(){
   const host=$("#fam");if(!host)return;
-  if(!S.meId||!byId(S.meId)){
+  const me0=S.meId&&byId(S.meId);if(!me0)onb=0;
+  if(me0&&onb){const f=onb===2;
+    $("#fwrap").hidden=true;document.body.classList.remove("famfit");
+    host.innerHTML=`<div class="band" style="padding:16px"><div class="row"><h3 class="grow">${f?"ما اسم أبيك؟":"ما اسم أمك؟"}</h3><span class="onb-st">${onb} من 3</span></div><p class="sub" style="margin:0">${f?"منه تبدأ جهة أبيك: أجدادك لأبيك وأعمامك وعماتك وأبناؤهم.":"ومنها جهة أمك: أجدادك لأمك وأخوالك وخالاتك وأبناؤهم."}</p>
+      <div class="row" style="justify-content:center"><input type="text" id="onbName" placeholder="${f?"اسم أبيك الأول":"اسم أمك الأول"}" style="max-width:220px" autocomplete="off"><button class="btn primary" type="button" id="onbGo">${f?"التالي":"تم"}</button><button class="btn" type="button" id="onbSkip">تخطَّ</button></div></div>`;
+    const go=()=>{const n=$("#onbName").value.trim();if(!n){$("#onbName").focus();return}
+      if(f)me0.father=mk(n,"m");else{const id=mk(n,"f");me0.mother=id;const F=byId(me0.father);if(F)linkSpouse(F,byId(id))} // your mother is your father's wife
+      onb=f?3:0;save();renderAll();if(onb)setTimeout(()=>{const i=$("#onbName");i&&i.focus()},30)};
+    $("#onbGo").onclick=go;$("#onbName").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();go()}});
+    $("#onbSkip").onclick=()=>{onb=f?3:0;renderAll();if(onb)setTimeout(()=>{const i=$("#onbName");i&&i.focus()},30)};
+    $("#famBack").hidden=true;$("#famHead").hidden=false;$("#famTitle").textContent="عائلتي";return;
+  }
+  if(!me0){
     $("#fwrap").hidden=true;document.body.classList.remove("famfit");
     const opts=S.people.length?`<p class="sub" style="margin:0">أو اختر نفسك من الشجرة الموجودة:</p><div class="ac" id="mePick"></div>`:"";
-    host.innerHTML=`<div class="band" style="padding:16px"><h3>ابدأ شجرتك باسمك</h3><p class="sub" style="margin:0">تبدأ الشجرة منك، ثم تضيف أباك وأمك وزوجك أو زوجتك، فيصير لأقاربك ثلاث جهات: أهل أبيك، وأهل أمك، وأهل زوجك أو زوجتك. وكل قريب يُضاف بلمسة في مكانه.</p>
+    host.innerHTML=`<div class="band" style="padding:16px"><div class="row"><h3 class="grow">ابدأ شجرتك باسمك</h3><span class="onb-st">1 من 3</span></div><p class="sub" style="margin:0">تبدأ الشجرة منك، ثم تضيف أباك وأمك وزوجك أو زوجتك، فيصير لأقاربك ثلاث جهات: أهل أبيك، وأهل أمك، وأهل زوجك أو زوجتك. وكل قريب يُضاف بلمسة في مكانه.</p>
       <div class="row" style="justify-content:center"><input type="text" id="meName" placeholder="اسمك الأول" style="max-width:200px"><div class="gender-pick" id="meG"><button class="btn sm" type="button" data-g="m" aria-pressed="true">ذكر</button><button class="btn sm" type="button" data-g="f" aria-pressed="false">أنثى</button></div><button class="btn primary" type="button" id="meGo">ابدأ</button></div>${opts}</div>`;
     let g="m";host.querySelectorAll("#meG button").forEach(b=>b.onclick=()=>{g=b.dataset.g;host.querySelectorAll("#meG button").forEach(x=>x.setAttribute("aria-pressed",x===b))});
-    $("#meGo").onclick=()=>{const n=$("#meName").value.trim();if(!n){$("#meName").focus();return}S.meId=mk(n,g);S.demo=false;focusId=S.meId;save();renderAll()};
+    $("#meGo").onclick=()=>{const n=$("#meName").value.trim();if(!n){$("#meName").focus();return}S.meId=mk(n,g);S.demo=false;focusId=S.meId;onb=2;save();renderAll();setTimeout(()=>{const i=$("#onbName");i&&i.focus()},30)};
+    $("#meName").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();$("#meGo").click()}});
     if(S.people.length)makeAC($("#mePick"),{placeholder:"اكتب اسمك",allowFree:false,onPick:st=>{S.meId=st.personId;focusId=st.personId;save();renderAll()}});
     $("#famBack").hidden=true;$("#famHead").hidden=false;$("#famTitle").textContent="عائلتي";return;
   }
@@ -1634,9 +1861,9 @@ function renderFam(){
 }
 /* ---------- «عائلتي»: one wide board; the cards under it pick the side ---------- */
 const FW=88,FH=58,FG=8,FGG=18,FMG=12,FVG=50,FSW=80,FSH=36,FWS=36;
-let fSide="fa",fOf="",fSibs=false,fCamKey="",fAnchor=null,fBottomId="",fBefore=null,fReveal=null;try{fSide=localStorage.getItem(KEY+".side")||"fa"}catch(e){}
+let fSide="fa",fOf="",fSibs=false,fCamKey="",fAnchor=null,fBottomId="",fBefore=null,fReveal=null;const fOfBack=[]; // the families you came through, «أهلها» after «أهلها»try{fSide=localStorage.getItem(KEY+".side")||"fa"}catch(e){}
 const fExp=new Set(),fv={k:0,tx:0,ty:0},fLast=new Map();let fUserCam=false,fFitAll=false;
-const fUnl=new Set();let fSlotRv=null; // the families whose places to add are open: all shut when the app opens, so nobody is added by a stray touch
+const fUnl=new Set();let fSlotRv=null,fDraw=null; // the families whose places to add are open: all shut when the app opens, so nobody is added by a stray touch
 const LKC='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
   LKO='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 7.6-1.8"/></svg>';
 let treeMode="fam"; // «عائلتي» (the sides) or the open tree around any relative; the app always opens on «عائلتي»
@@ -1653,7 +1880,10 @@ function sideCount(a){if(!a)return 0;const r=topOf(a),set=new Set([r.id]),q=[r.i
   const rm=byId(r.mother);if(rm){set.add(rm.id);kids(rm.id).forEach(k=>{if(!byId(k.father)&&!set.has(k.id)){set.add(k.id);q.push(k.id)}})}
   while(q.length){const id=q.shift();if(id===S.meId)continue;if(id!==a.id)spousesOf(byId(id)).forEach(x=>set.add(x.id));kids(id).forEach(k=>{if(!set.has(k.id)){set.add(k.id);q.push(k.id)}})}
   set.delete(S.meId);return set.size}
-function setSide(s){fSide=s;fOf="";bkDone("fof");fSibs=false;fCamKey="";fFitAll=false;fUserCam=false;try{localStorage.setItem(KEY+".side",s)}catch(e){}renderSidePick();renderSide()}
+function fOfGo(id){if(!id||id===fOf)return;if(fOf)fOfBack.push(fOf);fOf=id;fSibs=false;fCamKey="";renderSide();bkPush("fof"+fOfBack.length,fOfUp)}
+function fOfUp(){fOf=fOfBack.pop()||"";fCamKey="";renderSide()} // one family back
+function fOfClear(){for(let i=fOfBack.length;i>=0;i--)bkDone("fof"+i);fOfBack.length=0;fOf=""}
+function setSide(s){fSide=s;fOfClear();fSibs=false;fCamKey="";fFitAll=false;fUserCam=false;try{localStorage.setItem(KEY+".side",s)}catch(e){}renderSidePick();renderSide()}
 function fAddFor(s){fBefore=new Set(S.people.map(x=>x.id));quickAdd(s==="fa"?"father":s==="mo"?"mother":"spouse",S.meId,true)}
 function renderSidePick(){
   const me=byId(S.meId),host=$("#sidepick");if(!me||!host)return;
@@ -1669,25 +1899,25 @@ function renderSidePick(){
 }
 $("#sidepick").addEventListener("click",e=>{const b=e.target.closest("[data-side]");if(!b)return;const s=b.dataset.side;
   if(s!==fSide||fOf)setSide(s);if(!sideAnchor(s))fAddFor(s)});
-function fTrunk(a,toSp){ // the line from the side's top ancestor down to you (or to your wife)
+function fTrunk(a,toSp,own){ // the line from the side's top ancestor down to you (or to your wife); «أهلها» (own): her fathers' line down to her and no further, since the line goes by the fathers only
   const me=byId(S.meId),up=[];let c=a,g=0;
   while(c&&g++<60&&!up.includes(c)){up.unshift(c);c=upOf(c)}
   const downTo=(from,to)=>{const p=ancPath(to.id,from.id);if(!p)return null;const ns=[to];let cur=to;
     for(const st of p){cur=byId(st==="f"?cur.father:cur.mother);if(!cur)return null;ns.push(cur)}return ns.reverse().slice(1)};
   let tail=[],endSp=toSp?a:null;
-  if(!toSp){const d=downTo(a,me);if(d)tail=d;else for(const sp of spousesOf(me)){const d2=downTo(a,sp);if(d2){tail=d2;endSp=sp;break}}}
-  return{nodes:up.concat(tail),endSp,solo:up.length===1};
+  if(!toSp&&!own){const d=downTo(a,me);if(d)tail=d;else for(const sp of spousesOf(me)){const d2=downTo(a,sp);if(d2){tail=d2;endSp=sp;break}}}
+  return{nodes:up.concat(tail),endSp,solo:up.length===1,own:!!own};
 }
 /* A unit is a person in the middle of all his (or her) marriages: the first wife on the usual side (a wife to the man's left,
    a husband to the woman's right), the second on the other side, more of them further out. Each wife's other husbands stand
    just outside her. Every marriage has its own line, and its children drop from that line, so each child hangs from both parents. */
 function fBuild(T){
-  const me=byId(S.meId),N=T.nodes,last=N.length-1,O=!!T.open,OP=T.path||new Set();let count=0;
-  const sortK=ks=>ks.length>1&&ks.every(k=>parseInt(k.born,10))?ks.slice().sort((a,b)=>parseInt(a.born,10)-parseInt(b.born,10)):ks;
+  const me=byId(S.meId),N=T.nodes,last=N.length-1,O=!!T.open,OW=!!T.own,OP=T.path||new Set();let count=0;
+  const sortK=byBorn;
   const childLbl=nx=>nx.id===S.meId?"+ أخ أو أخت":nx.id===me.father?"+ عم أو عمة":nx.id===me.mother?"+ خال أو خالة":"+ إخوة "+nx.name; // whose brothers, by name, wherever they are not yours
   const leaf=o=>Object.assign({cards:[],groups:[],mars:[]},o);
   function node(p,ti,depth,dd=-1){ // dd: generations under the centre of the open tree (-1: not under it)
-    count++;const isT=ti>=0,next=isT&&ti<last?N[ti+1]:null,fem=p.gender==="f",isC=O&&isT&&ti===last;
+    count++;const isT=ti>=0,next=isT&&ti<last?N[ti+1]:null,fem=p.gender==="f",isC=(O||OW)&&isT&&ti===last; // the centre: of the open tree, or the one whose family «أهلها» shows
     const n={id:p.id,isT,depth,cards:[],mars:[],groups:[],hubI:0,chip:null,col:false};
     const hub={t:"p",id:p.id,hub:true};
     if((!O&&isT&&p.id===S.meId&&!T.endSp)||depth>40||count>600){n.cards=[hub];return n}
@@ -1701,10 +1931,10 @@ function fBuild(T){
       const gs=kidGroups(p).filter(g=>g.kids.length);sps=fSibs&&gs.length>1?gs.filter(g=>g.other).map(g=>g.other):[]}
     else if(next){prim=byId(fem?next.father:next.mother)||null;if(!prim&&U)pslot={t:"slot",kind:fem?"father":"mother",for:next.id,label:(fem?"+ أبو ":"+ أم ")+next.name}}
     if(prim&&sps.some(x=>x.id===prim.id))sps=[prim,...sps.filter(x=>x.id!==prim.id)];
-    const list=sps.map(x=>({c:{t:"p",id:x.id,inlaw:(isT&&!isEnd&&!egoLvl&&!!prim&&x.id===prim.id)||(isC&&x.id!==S.meId)},outs:[]}));
+    const list=sps.map(x=>({c:{t:"p",id:x.id,inlaw:x.id!==S.meId},outs:[]})); // every wife and every husband leads to her family, except you
     if(pslot)list.unshift({c:pslot,outs:[]});
     if(!egoLvl&&!isEnd&&exp)list.forEach(s=>{if(s.c.t!=="p"||s.c.id===S.meId)return; // her husband before or after him, with her children from him
-      s.outs=spousesOf(byId(s.c.id)).filter(y=>y.id!==p.id&&y.id!==S.meId).map(y=>({c:{t:"p",id:y.id,step:true,of:s.c.id}}))});
+      s.outs=spousesOf(byId(s.c.id)).filter(y=>y.id!==p.id&&y.id!==S.meId).map(y=>({c:{t:"p",id:y.id,step:true,of:s.c.id,inlaw:true}}))});
     const extra=isC&&U?{t:"slot",kind:"spouse",for:p.id,label:fem?"+ زوج":"+ زوجة",w:sps.length?FWS:FSW,sm:!!sps.length}:null;
     const Ls=[],Rs=[];list.forEach((s,i)=>((fem?i%2===1:i%2===0)?Ls:Rs).push(s));
     const extraL=!!extra&&(fem?list.length%2===1:list.length%2===0);
@@ -1715,7 +1945,7 @@ function fBuild(T){
     Rs.forEach(s=>{s.i=put(s.c);s.outs.forEach(o=>{o.i=put(o.c)})});
     if(extra&&!extraL)ei=put(extra);
     n.cards=cards;n.hubI=hubI;
-    list.forEach(s=>{s.mi=n.mars.push({a:hubI,b:s.i,dash:s.c.t==="slot"})-1;s.outs.forEach(o=>{o.mi=n.mars.push({a:s.i,b:o.i,dash:false})-1})});
+    list.forEach(s=>{const sx=s.c.t==="p"?byId(s.c.id):null;s.mi=n.mars.push({a:hubI,b:s.i,dash:s.c.t==="slot",dv:isDiv(p,sx)})-1;s.outs.forEach(o=>{o.mi=n.mars.push({a:s.i,b:o.i,dash:false,dv:isDiv(sx,byId(o.c.id))})-1})});
     if(ei>=0&&Math.abs(ei-hubI)===1)n.mars.push({a:hubI,b:ei,dash:true});
     if(!exp){const nk=kids(p.id).length;if(nk)n.chip={n:nk,lab:"+"+nk,mid:true};return n} // your wife, folded: her children behind the number
     const gm=new Map(),grp=(key,a)=>{if(!gm.has(key))gm.set(key,Object.assign({kids:[]},a));return gm.get(key)};
@@ -1728,7 +1958,7 @@ function fBuild(T){
       sortK(kids(x.id)).forEach(k=>{const o=xf?k.father:k.mother;if(o===p.id)return;const oo=o?s.outs.find(y=>y.c.id===o):null;if(o&&!oo)return;
         (oo?grp("m"+oo.mi,{m:oo.mi}):grp("c"+s.i,{c:s.i})).kids.push(node(k,-1,depth+1))})});
     if(isT&&next&&!egoLvl&&!isEnd&&U){const lab=childLbl(next); // a place under every marriage on your line: the one you add hangs from his father and his mother
-      const n2=N[ti+2],nEgo=!O&&!!n2&&n2.id===S.meId&&!T.endSp,nC=O&&ti+1===last; // is the next man's left taken (by his wife, or by the place of the mother of his son)?
+      const n2=N[ti+2],nEgo=!O&&!!n2&&n2.id===S.meId&&!T.endSp,nC=(O||OW)&&ti+1===last; // is the next man's left taken (by his wife, or by the place of the mother of his son)?
       const leftBusy=next.gender!=="f"&&(nC||(!nEgo&&(spousesOf(next).length>0||(!!n2&&!byId(n2.mother)))));
       list.forEach(s=>{const g=grp("m"+s.mi,{m:s.mi}),L=leaf({leaf:"slot",kind:"child",for:p.id,other:s.c.t==="p"?s.c.id:"",label:lab,w:FSW,h:FSH});
         if(leftBusy&&g.kids.length===1&&g.kids[0].id===next.id)g.kids.unshift(L);else g.kids.push(L)})}
@@ -1784,8 +2014,9 @@ function fPos(n,x0,out,L,cls){
   n.cards.forEach((c,i)=>{const X=x0+n.cl[i],w=n.cw[i];out.push(c.t==="slot"?{t:"uslot",c,n,i,x:X,y:top+(FH-FSH)/2,w,h:FSH}:{t:"card",c,n,i,x:X,y:top,w,h:FH})});
   let lv=0; // a marriage between neighbours: a double line between them; between cards further apart: a line over the cards between
   n.mars.forEach(mr=>{const a=Math.min(mr.a,mr.b),b=Math.max(mr.a,mr.b),ym=top+FH/2;
-    if(b-a===1){const xa=x0+n.cl[a]+n.cw[a],xb=x0+n.cl[b];L.push({d:`M${xa} ${ym-2.5}H${xb}M${xa} ${ym+2.5}H${xb}`,c:lc,dash:mr.dash,w:"mar"})}
-    else{const xa=x0+n.cl[a]+n.cw[a]*.72,xb=x0+n.cl[b]+n.cw[b]*.28,yt=top-9-5*lv++;L.push({d:`M${xa} ${top}V${yt}H${xb}V${top}`,c:lc,dash:mr.dash,w:"mar"})}});
+    const dv=(x,y)=>{if(mr.dv)L.push({d:`M${x-5} ${y+5}L${x-1} ${y-5}M${x+1} ${y+5}L${x+5} ${y-5}`,c:lc,w:"mar",dv:1})}; // a divorce: two strokes across the line
+    if(b-a===1){const xa=x0+n.cl[a]+n.cw[a],xb=x0+n.cl[b];L.push({d:`M${xa} ${ym-2.5}H${xb}M${xa} ${ym+2.5}H${xb}`,c:lc,dash:mr.dash,w:"mar"});dv((xa+xb)/2,ym)}
+    else{const xa=x0+n.cl[a]+n.cw[a]*.72,xb=x0+n.cl[b]+n.cw[b]*.28,yt=top-9-5*lv++;L.push({d:`M${xa} ${top}V${yt}H${xb}V${top}`,c:lc,dash:mr.dash,w:"mar"});dv((xa+xb)/2,yt)}});
   if(n.chip){let x=cxs(hubI);if(n.chip.mid){const mi=n.cards.findIndex(c=>c.t==="p"&&c.id===S.meId);if(mi>=0){const a=Math.min(mi,hubI),b=Math.max(mi,hubI);x=x0+(n.cl[a]+n.cw[a]+n.cl[b])/2}}
     out.push({t:"chip",id:n.id,x,y:top+FH-11,lab:n.chip.lab,word:!n.chip.n})}
   if(n.col){const hx=x0+n.cl[hubI];out.push({t:"col",id:n.id,x:hubI===0&&n.cards.length>1?hx-6:hx+FW-20,y:top+FH-12})}
@@ -1806,7 +2037,7 @@ function fPos(n,x0,out,L,cls){
     n.groups.forEach(g=>g.kids.forEach(k=>{l=Math.min(l,k.x0);r=Math.max(r,k.x0+k.rw);b=Math.max(b,top+FH+FVG+FH)}));
     out.push({t:"lock",k:n.lk,pid:n.lkp||n.id,x:cxs(hubI)-11,y:y-11,w:22,h:22,fam:{l,r,t:top,b}})}
 }
-function oTrunk(c){ // from the top ancestor (by the father, else the mother) down to the centre; the line from the centre down to you stays open
+function oTrunk(c){ // from the top ancestor, by the fathers, down to the centre; the line from the centre down to you stays open
   const up=[];let x=c,g=0;while(x&&g++<60&&!up.includes(x)){up.unshift(x);x=upOf(x)}
   const path=new Set(),me=byId(S.meId);
   if(me&&me.id!==c.id){const st=ancPath(me.id,c.id);if(st){let cur=me;path.add(me.id);for(const k of st){cur=byId(k==="f"?cur.father:cur.mother);if(!cur)break;path.add(cur.id)}}}
@@ -1835,21 +2066,21 @@ function renderSide(){
   if(O){const c0=byId(focusId)||me;focusId=c0.id;renderObar(c0)}
   fSize();
   const base=O?"fa":fSide,cls=sideCls(base),fem=me.gender==="f";
-  let a=O?byId(focusId):fOf?byId(fOf):null;if(!a&&!O){fOf="";a=sideAnchor(base)}
+  let a=O?byId(focusId):fOf?byId(fOf):null;if(!a&&!O){fOf="";fOfBack.length=0;a=sideAnchor(base)}
   const key=O?"open|"+a.id:base+"|"+fOf+"|"+(a?a.id:"");
   view.className="tview fstage "+cls+(view.classList.contains("drag")?" drag":"");cap.className="fcap "+cls;
   const bt=base==="fa"?"جهة الأب":base==="mo"?"جهة الأم":fem?"الزوج وأهله":"الزوجة وأهلها";
   cap.hidden=O||!fOf;$("#toFull").hidden=!O&&!!fOf;$("#toFull").textContent=O?"عائلتي":"الشجرة المفتوحة";
   $("#toFull").setAttribute("aria-label",O?"العودة إلى عائلتي":"الشجرة المفتوحة: اجعل أي قريب في المركز");
-  if(fOf&&!O){const r=relToMe(a.id);cap.innerHTML=`<button type="button" data-fback aria-label="${esc("العودة إلى "+bt)}" title="${esc("العودة إلى "+bt)}">→</button><span title="${esc("أهل "+(r?r+" ":"")+a.name)}">أهل ${esc(a.name)}</span>`}
+  if(fOf&&!O){const r=relToMe(a.id),pv=fOfBack.length?byId(fOfBack[fOfBack.length-1]):null,bl=pv?"العودة إلى أهل "+pv.name:"العودة إلى "+bt;cap.innerHTML=`<button type="button" data-fback aria-label="${esc(bl)}" title="${esc(bl)}">→</button><span title="${esc("أهل "+(r?r+" ":"")+a.name)}">أهل ${esc(a.name)}</span>`}
   else cap.innerHTML="";
-  if(!a){world.innerHTML="";world.style.width=world.style.height="0px";fLast.clear();fCamKey="";
+  if(!a){world.innerHTML="";world.style.width=world.style.height="0px";fLast.clear();fCamKey="";fDraw=null;$("#fzExp").disabled=true;
     const t=base==="fa"?["أضف أباك","ثم يظهر هنا أجدادك لأبيك وأعمامك وعماتك وفروعهم، كلٌّ في مكانه من الشجرة."]:base==="mo"?["أضف أمك","ثم يظهر هنا أجدادك لأمك وأخوالك وخالاتك وفروعهم، كلٌّ في مكانه من الشجرة."]:fem?["أضف زوجك","ثم يظهر هنا أهله: أبوه وأمه وإخوته وأخواته."]:["أضف زوجتك","ثم يظهر هنا أهلها: أبوها وأمها وإخوتها وأخواتها."];
     emp.innerHTML=`<button class="btn primary" type="button" data-fadd="${base.startsWith("w")?"w":base}">+ ${t[0]}</button><p class="sub">${t[1]}</p>`;emp.hidden=false;return}
   emp.hidden=true;emp.innerHTML="";
   const vw=view.clientWidth,vh=view.clientHeight;if(!vw||!vh)return;
   if(!fAnchor&&key===fCamKey&&fBottomId&&fUserCam){const p=fLast.get(fBottomId);if(p)fAnchor={id:fBottomId,sx:fv.tx+p[0]*fv.k,sy:fv.ty+p[1]*fv.k}}
-  const T=O?oTrunk(a):fTrunk(a,base.startsWith("w")&&!fOf),root=fBuild(T);root.depth=0;fLay(root);
+  const T=O?oTrunk(a):fTrunk(a,base.startsWith("w")&&!fOf,!!fOf),root=fBuild(T);root.depth=0;fLay(root);
   const out=[],L=[];fPos(root,0,out,L,cls);
   const N0=T.nodes[0],rh=out.find(o=>o.t==="card"&&o.n===root&&o.c.hub);
   if(rh&&!root.ghost){const tk="^"+N0.id,cx=rh.x+FW/2;
@@ -1858,13 +2089,14 @@ function renderSide(){
   let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;
   out.forEach(o=>{const w=o.w||30,h=o.h||22;x1=Math.min(x1,o.x-8);x2=Math.max(x2,o.x+w+8);y1=Math.min(y1,o.y-14);y2=Math.max(y2,o.y+h+12)});
   const PAD=14,ox=PAD-x1,oy=PAD-y1,WW=x2-x1+PAD*2,HH=y2-y1+PAD*2;
+  fDraw={O,aId:a.id,cls,toSp:!O&&base.startsWith("w")&&!fOf,own:!O&&!!fOf,title:O?"الشجرة المفتوحة: "+a.name:fOf?"أهل "+a.name:bt};$("#fzExp").disabled=false; // nothing to export on an empty side
   fLast.clear();
   const rip=p=>p.gender==="f"?"رحمها الله":"رحمه الله";
   const html=out.map(o=>{const X=o.x+ox,Y=o.y+oy,pos=`left:${X}px;top:${Y}px;width:${o.w}px;height:${o.h}px`;
     if(o.t==="card"){const p=byId(o.c.id);if(!p)return"";const isMe=p.id===S.meId,dead=!p.alive,sw=o.c.of&&byId(o.c.of);let rl=isMe?"أنت":relToMe(p.id);if(sw&&(!rl||/^زوج/.test(rl)))rl=(p.gender==="f"?"زوجة ":"زوج ")+sw.name; // her other husband: named by her
       fLast.set(p.id,[X+FW/2,Y+FH/2]);
       const sp=!!o.c.hub&&!!o.n.isT; // on the backbone
-      const cl=["tn",sp&&!isMe?cls+" sp":"",isMe?"ctr me":"",O&&p.id===a.id&&!isMe?"oc":"",fHL===p.id?"hl":"",dead?"dead":""].filter(Boolean).join(" ");
+      const cl=["tn",sp&&!isMe?cls+" sp":"",isMe?"ctr me":"",(O||fOf)&&p.id===a.id&&!isMe?"oc":"",fHL===p.id?"hl":"",dead?"dead":""].filter(Boolean).join(" ");
       let h=`<button class="${cl}" type="button" style="${pos}" data-open="${p.id}" aria-label="${esc(p.name+(rl?"، "+rl:"")+(dead?"، "+rip(p):""))}"><b>${esc(p.name)}</b>${rl?`<small${dead?' class="one"':""}>${esc(rl)}</small>`:""}${dead?`<small class="rip">${rip(p)}</small>`:""}</button>`;
       if(o.c.inlaw){const tw=46,tx=o.i>o.n.hubI?X+FW-tw-4:X+4,f2=p.gender==="f";
         h+=`<button class="ftab" type="button" style="left:${tx}px;top:${Y-17}px;width:${tw}px" data-fof="${p.id}" aria-label="${esc((f2?"أهلها: عائلة ":"أهله: عائلة ")+p.name)}">${f2?"أهلها":"أهله"}</button>`}
@@ -1880,7 +2112,7 @@ function renderSide(){
     if(o.t==="hide")return`<button class="fpill" type="button" style="${pos}" data-fsibs="0">إخفاء الإخوة</button>`;
     return""}).join("");
   const ord=l=>l.w==="trunk"?2:l.w==="mar"?1:0;
-  const path=l=>`<path class="tl ${l.c||"n"}${l.dash?" dash":""}${l.w?" "+l.w:""}" d="${l.d}"/>`;
+  const path=l=>`<path class="tl ${l.c||"n"}${l.dash?" dash":""}${l.w?" "+l.w:""}${l.dv?" dv":""}" d="${l.d}"/>`;
   world.style.width=WW+"px";world.style.height=HH+"px";
   world.innerHTML=`<svg width="${WW}" height="${HH}" viewBox="0 0 ${WW} ${HH}" aria-hidden="true"><g transform="translate(${ox},${oy})">${L.slice().sort((p,q)=>ord(p)-ord(q)).map(path).join("")}</g></svg>`+html;
   fBottomId=T.nodes[T.nodes.length-1].id;
@@ -1956,21 +2188,94 @@ function boardGuide(){const me=byId(S.meId),fem=me&&me.gender==="f";
   ${row(`<span class="flock fa">${LKC}</span><span class="flock fa on">${LKO}</span>`,"القفل على الخط","الإضافة في اللوحة مقفلة حتى لا تضيف أحدًا بالخطأ. على خط كل أسرة قفل صغير، المسه فتظهر خانات الإضافة لتلك الأسرة وحدها، والمسه مرة أخرى فتُقفل. وتُقفل كلها كلما فتحت التطبيق.")}
   ${row(`<span class="tn fa sp dead"><b>عبدالله</b><small class="one">جدك لأبيك</small><small class="rip">رحمه الله</small></span>`,"بطاقة باهتة تحت اسمها «رحمه الله»","قريب متوفى.")}
   ${row(`<span class="tn ctr me"><b>${esc(me?me.name:"أنت")}</b><small>أنت</small></span>`,"البطاقة الخضراء الممتلئة","أنت. من عندك تبدأ كل جهة.")}
-  ${row(`<span class="tn oc"><b>عبدالله</b><small>في المركز</small></span>`,"حلقة حول البطاقة","في الشجرة المفتوحة: القريب الذي رُسمت الشجرة حوله.")}
+  ${row(`<span class="tn oc"><b>عبدالله</b><small>في المركز</small></span>`,"حلقة حول البطاقة","القريب الذي رُسمت الشجرة حوله في «الشجرة المفتوحة»، أو الذي تراه عائلته في «أهلها».")}
   ${row(sv(92,34,`<path class="tl fa" style="stroke-width:3" d="M4 6H88"/><path class="tl mo" style="stroke-width:3" d="M4 17H88"/><path class="tl in" style="stroke-width:3" d="M4 28H88"/>`),"ثلاثة ألوان","الأخضر جهة الأب، والذهبي جهة الأم، والأزرق "+(fem?"الزوج وأهله":"الزوجة وأهلها")+". اللون يقول من أي جهة تنظر.")}
-  ${row(sv(96,30,two(3,24)+`<path class="tl fa mar" d="M36 12.5H60M36 17.5H60"/>`),"خطان بين اسمين","زواج. ولكل زواج خطه، فتعرف كم زوجة لكل رجل.")}
+  ${row(sv(96,30,two(3,24)+`<path class="tl fa mar" d="M36 12.5H60M36 17.5H60"/>`),"خطان بين اسمين","زواج. ولكل زواج خطه، فتعرف كم زوجة لكل رجل. ويُرتَّبن من «تعديل» في ملفه: الأولى ثم الثانية.")}
+  ${row(sv(96,30,two(3,24)+`<path class="tl fa mar" d="M36 12.5H60M36 17.5H60"/><path class="tl fa mar dv" d="M43 20L47 10M49 20L53 10"/>`),"خط زواج يقطعه خطان صغيران","زواج انتهى بطلاق. ويبقى الأبناء نازلين من خطه.")}
   ${row(sv(96,58,two(2,20)+`<path class="tl fa mar" d="M36 9.5H60M36 14.5H60"/><path class="tl n" d="M48 12V30M22 30H74M22 30V38M74 30V38"/><rect x="8" y="38" width="28" height="18" rx="5" class="lgc n"/><rect x="60" y="38" width="28" height="18" rx="5" class="lgc n"/>`),"خط نازل من خط الزواج","أبناء ذلك الزواج، فيُعرف ابن كل أب وأم بلا التباس.")}
   ${row(`<span class="tbadge fa">+3</span>`,"رقم تحت الاسم","فرع مطوي، والرقم عدد أبنائه. المسه ليفتح الفرع، و«−» يطويه.")}
-  ${row(`<span class="ftab">أهلها</span>`,"«أهلها» فوق الزوجة","ينقلك إلى عائلتها: أبوها وأمها وإخوتها.")}
+  ${row(`<span class="ftab">أهلها</span>`,"«أهلها» فوق كل زوجة، و«أهله» فوق كل زوج","ينقلك إلى عائلتها: هي أسفل العمود، وفوقها أبوها ثم جدها، وأمها بجانب أبيها، وإخوتها حولها. فالعمود يصعد بالآباء وحدهم ولا يمر بالأمهات. وهو فوق كل زوجة وكل زوج في اللوحة إلا أنت.")}
   ${row(`<span class="fpill">+2 إخوة</span>`,"عدد إخوتك بجانبك","المسه ليظهر إخوتك وأخواتك.")}
   <h3>الأدوات</h3>
   ${row(`<span class="lgk">+</span><span class="lgk">−</span>`,"التكبير والتصغير","ويكفي أن تقرّب إصبعين أو تبعّدهما، واسحب بإصبع لتتنقل.")}
   ${row(`<span class="lgk">⤢</span>`,"الجهة كلها","يُظهر الجهة كلها في اللوحة بأكبر حجم يسعها.")}
   ${row(`<span class="lgk">⛶</span>`,"ملء الشاشة","و✕ يعيد اللوحة إلى مكانها.")}
+  ${row(`<span class="lgk">${EXPI}</span>`,"تصدير","الجهة التي تراها صورةً أو نصًّا لتشاركها مع أقاربك، أو تطبعها PDF في المتصفح.")}
   ${row(`<span class="lgk" style="font-size:12px">الشجرة المفتوحة</span>`,"الشجرة المفتوحة","اجعل أي قريب في المركز، فتظهر فوقه أجداده وبجانبه زيجاته وتحته ذريته. و«عائلتي» تعيدك إلى جهاتك.")}
   </div>`,el=>{el.querySelector("[data-close]").onclick=closeSheet});
 }
 $("#fzHelp").onclick=()=>{if(!$("#ftip").hidden)ftipShow(false);boardGuide()};$("#ftipX").onclick=()=>ftipShow(false);
+/* ---------- تصدير: the side you are looking at, as a picture, as text, or printed; without the places to add and the locks ---------- */
+const EXPI='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+function boardData(){const D=fDraw,a=D&&byId(D.aId);if(!a)return null;
+  let keep=null;try{keep=[...fUnl];fUnl.clear()}catch(e){keep=null} // drawn with every lock shut: the family, not the places to add
+  try{const T=D.O?oTrunk(a):fTrunk(a,D.toSp,D.own),root=fBuild(T);root.depth=0;fLay(root);const out=[],L=[];fPos(root,0,out,L,D.cls);
+    const vis=out.filter(o=>o.t==="card"||o.t==="chip"||(o.t==="uslot"&&o.c.off));if(!vis.length)return null;
+    let x1=1e9,x2=-1e9,y1=1e9,y2=-1e9;vis.forEach(o=>{const w=o.w||30,h=o.h||22,x=o.t==="chip"?o.x-w/2:o.x;x1=Math.min(x1,x-6);x2=Math.max(x2,x+w+6);y1=Math.min(y1,o.y-30);y2=Math.max(y2,o.y+h+6)});
+    const PAD=16;return{root,out:vis,L,ox:PAD-x1,oy:PAD-y1,WW:x2-x1+PAD*2,HH:y2-y1+PAD*2,cls:D.cls,title:D.title,O:D.O,own:!!D.own,aId:a.id}}
+  catch(e){return null}
+  finally{if(keep)keep.forEach(k=>fUnl.add(k))}}
+function boardCanvas(B){
+  const HD=56,FT=28,W0=Math.max(B.WW,320),H0=B.HH+HD+FT,k=Math.max(.5,Math.min(2,7000/W0,7000/H0)); // sharp, within what a phone can draw
+  const cv=document.createElement("canvas");cv.width=Math.round(W0*k);cv.height=Math.round(H0*k);const c=cv.getContext("2d");if(!c)throw new Error("canvas");c.scale(k,k);
+  const P={bg:"#ffffff",line:"#c9d2cb",fg:"#1d2621",mu:"#5f6b64",fa:"#23614f",mo:"#9a6b12",in:"#3b6a8f",ink:"#ffffff"},sc=P[B.cls]||P.fa; // the light colours: a picture to share and to print
+  const mix=(h,p)=>{const n=parseInt(h.slice(1),16),f=x=>Math.round(x*p+255*(1-p));return`rgb(${f(n>>16)},${f(n>>8&255)},${f(n&255)})`};
+  const FF='"IBM Plex Sans Arabic",Tahoma,sans-serif',font=(w,s)=>{c.font=w+" "+s+"px "+FF};
+  const fit=(t,max)=>{t=String(t);if(c.measureText(t).width<=max)return t;let s=t;while(s.length>1&&c.measureText(s+"…").width>max)s=s.slice(0,-1);return s.trim()+"…"};
+  const wrap=(t,max,n)=>{const w=String(t).split(/\s+/).filter(Boolean),out=[];let i=0;
+    while(i<w.length&&out.length<n){let l=w[i++];if(out.length===n-1){l=[l,...w.slice(i)].join(" ");i=w.length}else while(i<w.length&&c.measureText(l+" "+w[i]).width<=max)l+=" "+w[i++];out.push(fit(l,max))}
+    return out};
+  const rr=(x,y,w,h,r)=>{c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()};
+  c.fillStyle=P.bg;c.fillRect(0,0,W0,H0);try{c.direction="rtl"}catch(e){}c.textBaseline="middle";
+  font(600,18);c.fillStyle=sc;c.textAlign="right";c.fillText(fit(B.title,W0-32),W0-16,24);
+  font(400,12);c.fillStyle=P.mu;c.fillText(fit(B.sub||"",W0-32),W0-16,44);
+  c.save();c.translate((W0-B.WW)/2+B.ox,HD+B.oy);c.lineCap="round";c.lineJoin="round";
+  const ord=l=>l.w==="trunk"?2:l.w==="mar"?1:0;
+  B.L.slice().sort((p,q)=>ord(p)-ord(q)).forEach(l=>{const n=!l.c||l.c==="n";c.strokeStyle=n?P.mu:(P[l.c]||P.mu);c.globalAlpha=l.dash?.7:n?.6:1;
+    c.lineWidth=l.dv?1.8:l.w==="trunk"?2.6:l.w==="mar"?1.4:1.7;c.setLineDash(l.dash?[4,4]:[]);try{c.stroke(new Path2D(l.d))}catch(e){}});
+  c.globalAlpha=1;c.setLineDash([]);c.textAlign="center";
+  B.out.forEach(o=>{
+    if(o.t==="card"){const p=byId(o.c.id);if(!p)return;const isMe=p.id===S.meId,dead=p.alive===false,sp=!!o.c.hub&&!!o.n.isT&&!isMe,cx=o.x+o.w/2;
+      let rl=isMe?"أنت":relToMe(p.id);const sw=o.c.of&&byId(o.c.of);if(sw&&(!rl||/^زوج/.test(rl)))rl=(p.gender==="f"?"زوجة ":"زوج ")+sw.name;
+      rr(o.x,o.y,o.w,o.h,12);c.fillStyle=isMe?P.fa:sp?mix(sc,dead?.08:.13):P.bg;c.fill();
+      c.lineWidth=sp?3:1.6;c.strokeStyle=isMe?P.fa:sp?sc:P.line;c.setLineDash(dead&&!isMe?[4,3]:[]);c.stroke();c.setLineDash([]);
+      if((B.O||B.own)&&p.id===B.aId&&!isMe){rr(o.x-4,o.y-4,o.w+8,o.h+8,15);c.lineWidth=2.5;c.strokeStyle=P.fa;c.stroke()} // the centre of the open tree
+      const rows=[];font(sp?700:600,13.5);rows.push({t:fit(p.name,o.w-10),f:[sp?700:600,13.5],h:18,col:isMe?P.ink:dead&&!sp?P.mu:P.fg});
+      if(rl){font(400,10.5);wrap(rl,o.w-10,dead?1:2).forEach(t=>rows.push({t,f:[400,10.5],h:13,col:isMe?P.ink:P.mu}))}
+      if(dead)rows.push({t:p.gender==="f"?"رحمها الله":"رحمه الله",f:[400,10],h:12,col:isMe?P.ink:P.mu});
+      let y=o.y+o.h/2-rows.reduce((a,r)=>a+r.h,0)/2;rows.forEach(r=>{font(r.f[0],r.f[1]);c.fillStyle=r.col;c.fillText(r.t,cx,y+r.h/2);y+=r.h});return}
+    if(o.t==="chip"){font(700,11.5);const w=Math.max(26,c.measureText(o.lab).width+14);rr(o.x-w/2,o.y,w,22,11);c.fillStyle=sc;c.fill();c.fillStyle=P.ink;try{c.direction=o.word?"rtl":"ltr"}catch(e){}c.fillText(o.lab,o.x,o.y+11);try{c.direction="rtl"}catch(e){}return} // «+3» reads from the left, as on the board
+    if(o.t==="uslot"){rr(o.x,o.y,o.w,o.h,12);c.setLineDash([4,3]);c.lineWidth=1.3;c.strokeStyle=P.line;c.stroke();c.setLineDash([]);font(400,11.5);c.fillStyle=P.mu;c.fillText(fit(o.c.label,o.w-8),o.x+o.w/2,o.y+o.h/2)}});
+  c.restore();font(400,11);c.fillStyle=P.mu;c.textAlign="center";c.fillText("ذو القربى · صلة الرحم",W0/2,H0-14);
+  return cv}
+function boardText(B){const lines=[B.title+(B.sub?" ("+B.sub+")":""),""],seen=new Set(); // the side as a list: each one under his father, with his wives and their relation to you
+  const lab=p=>{const r=p.id===S.meId?"أنت":relToMe(p.id);return p.name+(r?" ("+r+")":"")+(p.alive===false?"، "+(p.gender==="f"?"رحمها الله":"رحمه الله"):"")};
+  const walk=(n,dep)=>{if(n.leaf)return;const hi=n.hubI||0,pc=n.cards.filter(x=>x.t==="p"),hub=n.cards[hi]&&n.cards[hi].t==="p"?n.cards[hi]:pc[0],p=hub?byId(hub.id):null;let d=dep;
+    if(p&&!seen.has(p.id)){seen.add(p.id);const sps=pc.filter(x=>x!==hub&&!x.step).map(x=>byId(x.id)).filter(Boolean),fem=p.gender==="f",sw=sps.length>1?(fem?"أزواجها":"زوجاته"):(fem?"زوجها":"زوجته");
+      lines.push("  ".repeat(dep)+"• "+lab(p)+(sps.length?"، "+sw+": "+sps.map(x=>x.name+(isDiv(p,x)?(x.gender==="f"?" (طليقته)":" (طليقها)"):"")).join("، "):"")+(n.chip&&n.chip.n?" (+"+n.chip.n+")":""))}
+    else d=dep-1;
+    n.groups.forEach(g=>g.kids.forEach(k=>walk(k,d+1)))};
+  walk(B.root,0);lines.push("","من تطبيق «ذو القربى»");return lines.join("\n")}
+function printImg(url,title){let pa=$("#printArea");if(!pa){pa=document.createElement("div");pa.id="printArea";document.body.appendChild(pa)}
+  pa.innerHTML=`<img src="${url}" alt="${esc(title)}">`;const im=pa.querySelector("img"),go=()=>{try{window.print()}catch(e){toast("تعذّرت الطباعة هنا")}};
+  window.addEventListener("afterprint",()=>{pa.innerHTML=""},{once:true});
+  if(im.decode)im.decode().then(go,go);else setTimeout(go,120)}
+async function exportSheet(){const B=boardData();if(!B){toast("لا شيء في اللوحة لتصديره");return}
+  const me=byId(S.meId);B.sub=[me?"من شجرة "+nasab(me,2):"",fmtD(new Date().toISOString())].filter(Boolean).join(" · ");
+  try{if(document.fonts&&document.fonts.load)await Promise.race([Promise.all(["400","600"].map(w=>document.fonts.load(w+' 14px "IBM Plex Sans Arabic"',"ذو القربى"))),new Promise(r=>setTimeout(r,1500))])}catch(e){}
+  let url="",blob=null;try{const cv=boardCanvas(B);url=cv.toDataURL("image/png");blob=await new Promise(r=>{try{cv.toBlob(r,"image/png")}catch(e){r(null)}})}catch(e){url=""}
+  const APK=!!window.DQ,canImg=!!blob&&!!(navigator.clipboard&&navigator.clipboard.write&&window.ClipboardItem&&window.isSecureContext),fn="ذو القربى - "+B.title.replace(/[\\\/:*?"<>|]+/g," ").trim()+".png";
+  sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تصدير ${esc(B.title)}</h2><div class="full">كما في اللوحة، بلا خانات الإضافة ولا الأقفال</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+   ${url?`<div class="xprev"><img src="${url}" alt="${esc("صورة "+B.title)}"></div>`:`<p class="sub" style="margin:0">تعذّر رسم الصورة على هذا الجهاز، وبقي النص.</p>`}
+   <div class="xacts">${canImg?`<button class="btn primary" type="button" id="xImg">نسخ الصورة</button>`:""}${url&&!APK?`<button class="btn${canImg?"":" primary"}" type="button" id="xPng">تنزيل الصورة</button>`:""}<button class="btn" type="button" id="xTxt">نسخ الشجرة نصًّا</button>${url&&!APK?`<button class="btn" type="button" id="xPdf">طباعة أو PDF</button>`:""}</div>
+   <p class="sub" style="margin:0">${APK?"انسخ الصورة ثم الصقها في واتساب أو غيره. وإن لم تُلصق فانسخ الشجرة نصًّا.":"في الجوال يكفي أن تضغط على الصورة مطولًا لتحفظها أو تشاركها."}</p>`,el=>{
+    const q=x=>el.querySelector(x),fail=()=>toast("تعذّر نسخ الصورة هنا. انسخ الشجرة نصًّا",null,4000);q("[data-close]").onclick=closeSheet;
+    if(q("#xImg"))q("#xImg").onclick=()=>{try{navigator.clipboard.write([new ClipboardItem({"image/png":blob})]).then(()=>toast("نُسخت الصورة. الصقها في واتساب أو غيره"),fail)}catch(e){fail()}};
+    if(q("#xPng"))q("#xPng").onclick=()=>{try{const a=document.createElement("a"),h=blob?URL.createObjectURL(blob):url;a.download=fn;a.href=h;document.body.appendChild(a);a.click();a.remove();if(blob)setTimeout(()=>URL.revokeObjectURL(h),5000);toast("بدأ التنزيل. وإن لم يبدأ فاضغط على الصورة مطولًا لحفظها",null,4000)}catch(e){toast("تعذّر التنزيل هنا")}};
+    q("#xTxt").onclick=()=>copyText(boardText(B),"نُسخت الشجرة نصًّا. الصقها في واتساب أو ملاحظاتك");
+    if(q("#xPdf"))q("#xPdf").onclick=()=>printImg(url,B.title);
+  })}
+$("#fzExp").onclick=()=>exportSheet();
 document.fonts&&document.fonts.ready.then(()=>{fCamKey="";renderSide()});
 $("#fworld").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
   const anc=id=>{if(!fUserCam)return;const p=fLast.get(id);if(p)fAnchor={id,sx:fv.tx+p[0]*fv.k,sy:fv.ty+p[1]*fv.k}};
@@ -1978,7 +2283,7 @@ $("#fworld").addEventListener("click",e=>{const b=e.target.closest("button");if(
   else if(d.fexp){anc(d.fexp);fExp.add(d.fexp);oCol.delete(d.fexp);const q=byId(d.fexp);fReveal=[d.fexp,...kids(d.fexp).map(k=>k.id),...spousesOf(q).map(x=>x.id)];renderSide()}
   else if(d.fcol){anc(d.fcol);fExp.delete(d.fcol);oCol.add(d.fcol);renderSide()}
   else if(d.fsibs){anc(S.meId);fSibs=d.fsibs==="1";if(fSibs)fReveal=[S.meId,...sibsOf(byId(S.meId)).map(x=>x.id)];renderSide()}
-  else if(d.fof){if(treeMode==="open"){oGo(d.fof);return}const t=fOfTarget(byId(d.fof));if(t.side)setSide(t.side);else if(t.of){fOf=t.of;fSibs=false;fCamKey="";renderSide();bkPush("fof",()=>{fOf="";fCamKey="";renderSide()})}}
+  else if(d.fof){if(treeMode==="open"){oGo(d.fof);return}const t=fOfTarget(byId(d.fof));if(t.side)setSide(t.side);else if(t.of)fOfGo(t.of);}
   else if(d.fslot){fBefore=new Set(S.people.map(x=>x.id));quickAdd(d.fslot,d.for,true,d.other||"")}
   else if(d.flock){const k=d.flock,on=!fUnl.has(k);
     if(on){const q=fLast.get(d.lp);if(q)fAnchor={id:d.lp,sx:fv.tx+q[0]*fv.k,sy:fv.ty+q[1]*fv.k}; // opening: nothing jumps, then the family comes into sight
@@ -1988,7 +2293,7 @@ $("#fworld").addEventListener("click",e=>{const b=e.target.closest("button");if(
   else if(d.foff)toast("الإضافة هنا مقفلة. المس القفل الذي تحتها لتفتحها",null,2600);
 });
 $("#fview").addEventListener("click",e=>{const b=e.target.closest("[data-fback],[data-fadd]");if(!b)return;
-  if(b.hasAttribute("data-fback")){fOf="";fCamKey="";renderSide();bkDone("fof")}else fAddFor(b.dataset.fadd)});
+  if(b.hasAttribute("data-fback")){const id="fof"+fOfBack.length;fOfUp();bkDone(id)}else fAddFor(b.dataset.fadd)});
 window.addEventListener("resize",()=>{const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))return; // the phone keyboard opening is not a new screen size
   if(!$("#famPanel").hidden)renderSide()});
 $("#fam").addEventListener("click",e=>{
@@ -2005,8 +2310,8 @@ $("#toFull").onclick=()=>{if(treeMode==="open")setTreeMode("fam");else oGo(S.meI
 $("#obMe").onclick=()=>oGo(S.meId);
 $("#obTop").onclick=()=>{const c=byId(focusId)||byId(S.meId),t=c&&topOf(c);if(t&&t.id!==c.id){oGo(t.id);toast("في المركز: "+t.name)}};
 const FEM_N=new Set("مريم زينب هند سعاد وداد ايمان امل امال اماني نجلاء هيفاء شيماء علياء رغد جود لمي سلمي دعاء الاء اسراء رنا دانا دينا لينا رهف شهد ابتسام الهام احلام سهام وئام اريج عبير نسرين ياسمين جيهان حنان خلود وعد روان جني مها لبني ندي ضحي سجي رؤي هدي مني ليلي سارا اسماء رحاب نوال منال تهاني بشري سلوي نجوي عفاف وصال كوثر سوسن ريم غدير عهد رزان لجين لميس ميس ريتاج تسنيم اسيل حلا ملاك غلا دلال نهي رشا ربي بتول زهراء نور فاطمه عائشه عايشه خديجه نوره ساره حصه لطيفه منيره شيخه موزه هيله رقيه صفيه سميه رحمه نعيمه جميله فريده حميده سعيده بدريه فوزيه زكيه صالحه عزيزه شريفه حليمه اميره سميره نبيله عاليه غاليه جوهره مزنه نجمه وضحه حمده لولوه غاده هاله منيره اميمه هيا نوف عنود بدور اروي ريما رانيا وفاء صفاء رجاء هناء ثناء سناء لمياء ميار ليان لين يارا تالا ديما فرح هاجر مرام ريهام عبله".split(" "));
-const MALE_T=new Set("حمزه اسامه طلحه عبيده معاويه عروه قتاده عكرمه حذيفه خزيمه جبله ثعلبه ميسره عنتره مسلمه شيبه عتبه اميه قدامه عماره سلمه عطيه حارثه عقبه كنانه".split(" "));
-function guessG(n){const raw=String(n||"").trim().split(/\s+/)[0]||"",y=norm(raw),x=y.replace(/^ال/,"");if(!x)return"";if(MALE_T.has(y)||MALE_T.has(x))return"m";if(FEM_N.has(y)||FEM_N.has(x)||/ة$/.test(raw))return"f";return""}
+const MALE_T=new Set("حمزه اسامه طلحه عبيده معاويه عروه قتاده عكرمه حذيفه خزيمه جبله ثعلبه ميسره عنتره مسلمه شيبه عتبه اميه قدامه عماره سلمه عطيه حارثه عقبه كنانه خليفه ربيعه سلامه رفاعه عباده جناده طه عبده وجيه نبيه نزيه فقيه".split(" "));
+function guessG(n){const raw=String(n||"").trim().split(/\s+/)[0]||"",y=norm(raw),x=y.replace(/^ال/,"");if(!x)return"";if(MALE_T.has(y)||MALE_T.has(x))return"m";if(FEM_N.has(y)||FEM_N.has(x)||/ة$/.test(raw)||(/ه$/.test(y)&&!/لله$/.test(y)&&x.length>2))return"f";return""}
 function quickAdd(kind,targetId,stay,preOther){
   const focus=byId(focusId);let T=targetId?byId(targetId):focus;if(!T)return;
   let base=kind,needT=null;
@@ -2125,11 +2430,11 @@ function showLock(){
 let hidAt=0,dayKey=new Date().toDateString();const LOCK_AFTER=5*60e3;
 document.addEventListener("visibilitychange",()=>{if(document.hidden){hidAt=Date.now();return} // back after a while: the code again, and «اليوم» and the month as they are now
   if(S.pinHash&&unlocked&&hidAt&&Date.now()-hidAt>LOCK_AFTER){unlocked=false;showLock()}
-  const k=new Date().toDateString();if(k!==dayKey){dayKey=k;const fd=$("#fDay");if(fd&&!$("#fForm").contains(document.activeElement))fd.value=dueISO(new Date().getDate());renderContacts();renderIhsan()}});
+  const k=new Date().toDateString();if(k!==dayKey){dayKey=k;const fd=$("#fDay");if(fd&&!$("#fForm").contains(document.activeElement))fd.value=dueISO(new Date().getDate());if(!$("#vForm").contains(document.activeElement))vReset();renderContacts();renderIhsan()}});
 $("#btnLockNow").onclick=()=>{unlocked=false;showLock()};
 $("#btnVeil").onclick=()=>{veiled=!veiled;applyVeil()};
 function applyVeil(){$("#v-ihsan").classList.toggle("veiled",veiled);$("#today").classList.toggle("veiled",veiled);$("#btnVeil").textContent=veiled?"إظهار المبالغ":"إخفاء المبالغ";$("#btnLockNow").hidden=!S.pinHash}
-const _renderAll=renderAll;renderAll=function(){_renderAll();applyVeil();showLock()};
+const _renderAll=renderAll;renderAll=function(){_renderAll();applyVeil();applyFs();showLock()};
 
 /* ---------- cloud save (per-user, private) ---------- */
 async function initRemote(){
@@ -2151,7 +2456,18 @@ async function initRemote(){
 }
 /* ---------- app update (Android app only) ---------- */
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={16:[
+const CHANGES={17:[
+  "مواسم الصلة: قبل رمضان والعيدين بأيام تظهر في «اليوم» قائمة التهنئة: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب بلمسة وتعدّلها كما تحب. وفي غير الموسم سطر يعدّ الأيام إلى الموسم القادم",
+  "جدول التواصل: أزرار تضيف جهة كاملة بلمسة (الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة)، ويحين موعد كل مضاف حسب قربه فلا يمتلئ «اليوم» دفعة واحدة. وفوق الجدول فرز: الكل، ومتأخر، وهذا الأسبوع",
+  "الإحسان: نوع لكل مبلغ (صدقة، زكاة، هدية، نفقة) ومجموع كل نوع في السنة، وشريط الشهر لتتصفح الأشهر السابقة وتسجّل تحويلًا فاتك في شهره، والمبلغ المتفرق يُختار تاريخه من التقويم",
+  "ملف كل قريب فيه مبلغه الشهري وما أعطيته هذا العام، ويُخفى مع «إخفاء المبالغ»",
+  "الزيجات: في «تعديل» ترتّب الزوجات الأولى ثم الثانية، وتعلّم الزواج الذي انتهى بطلاق، فيقطع خطه خطان صغيران وتُكتب القرابة «طليقتك» و«طليقة أبيك»",
+  "«أهلها» فوق كل زوجة و«أهله» فوق كل زوج في اللوحة، والإخوة مرتبون من الأكبر حسب سنة الميلاد",
+  "العمود يصعد بالآباء وحدهم في كل جهة وفي «أهلها»: هي ثم أبوها ثم جدها، والأم والجدة بجانب زوجيهما، ولا يمر الخط بالأمهات والجدات",
+  "تصدير: زر جديد في أدوات اللوحة يحفظ الجهة التي تراها صورةً أو نصًّا، أو PDF في المتصفح، بلا خانات الإضافة ولا الأقفال",
+  "حجم الخط في الإعدادات: عادي، كبير، أكبر",
+  "البداية أسهل: اسمك، ثم اسم أبيك، ثم اسم أمك، فتظهر جهتاك من أول دقيقة"],
+16:[
   "بياناتك محمية أكثر: إن تعذّر الحفظ على الجهاز نبّهك التطبيق لترسل نسخة احتياطية، وإن تعذّرت قراءة بيانات قديمة بقيت كما هي ولم يُكتب فوقها",
   "بعد «مسح كل البيانات» و«تحميل البيانات التجريبية» والاستعادة من نسخة زر «تراجع» يعيد بياناتك كما كانت، والاستعادة لا تغيّر رمز القفل على جهازك",
   "قفل التطبيق: يُطلب الرمز أيضًا إذا عدت بعد 5 دقائق، والأرقام العربية مثل ١٢٣٤ تُقبل، و«نسيت الرمز؟» يعيد بياناتك من نسختك الاحتياطية ولا يحذف شيئًا",
