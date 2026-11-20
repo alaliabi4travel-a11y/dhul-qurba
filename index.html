@@ -625,6 +625,11 @@ textarea.seamsg{direction:rtl;font-size:calc(15px*var(--fs,1));min-height:78px;l
 .dvk{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:6px 0;border-bottom:1px dashed var(--line);align-self:stretch;font-size:calc(13.5px*var(--fs,1))}
 .dvk span{grid-column:1;color:var(--muted)}.dvk button{grid-row:1/3;grid-column:2;align-self:center}
 .dverr{margin:0;color:var(--bad);font-size:calc(13.5px*var(--fs,1))}
+/* v21: the number of the amounts due on «الإحسان» below; the next date in a monthly row */
+nav.tabs button{position:relative}
+nav.tabs .tab-n{position:absolute;top:3px;left:calc(50% - 23px);min-width:calc(18px*var(--fs,1));height:calc(18px*var(--fs,1));padding:0 5px;box-sizing:border-box;font-size:calc(11px*var(--fs,1));box-shadow:0 0 0 2px var(--surface)}
+nav.tabs .tab-n[hidden]{display:none}
+.iwhen{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 @media print{body>*:not(#printArea){display:none!important}#printArea{display:block!important}#printArea img{display:block;width:100%;height:auto}html,body{background:#fff!important}body::before{display:none}}
 </style>
 
@@ -766,7 +771,7 @@ textarea.seamsg{direction:rtl;font-size:calc(15px*var(--fs,1));min-height:78px;l
     التواصل</button>
   <button role="tab" id="t-ihsan" aria-selected="false" data-v="v-ihsan" type="button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M9.5 11.5h5M12 9v5"/></svg>
-    الإحسان</button>
+    الإحسان<span class="badge tab-n" id="ihN" hidden>0</span></button>
 </nav>
 
 <div id="layer"></div>
@@ -794,7 +799,7 @@ window.addEventListener("load",function(){setTimeout(function(){if(window.__dqOK
 "use strict";
 /* ---------- storage ---------- */
 const KEY="dhulqurba.v1";
-const WEB_BUILD=20;
+const WEB_BUILD=21;
 let mem=null,loadBad=null,saveErr=false;
 function load(){let s=null;try{s=localStorage.getItem(KEY)}catch(e){return mem}if(!s)return mem;
   try{const d=JSON.parse(s);if(d&&typeof d==="object"&&Array.isArray(d.people))return d}catch(e){}
@@ -1038,6 +1043,7 @@ function nn(n,w){if(n===1)return w[0];if(n===2)return w[1];const m=n%100;return 
 const DAYS=["يوم واحد","يومان","أيام","يومًا","يوم"],AQ=["قريب واحد","قريبان","أقارب","قريبًا","قريب"],TIMES=["مرة واحدة","مرتان","مرات","مرة","مرة"];
 const agoD=d=>d<=0?"اليوم":d===1?"أمس":d===2?"قبل يومين":"قبل "+nn(d,DAYS);
 const lateD=d=>d<=1?"تأخرت يومًا":d===2?"تأخرت يومين":"تأخرت "+nn(d,DAYS);
+const inD=d=>d<=0?"اليوم":d===1?"غدًا":d===2?"بعد يومين":"بعد "+nn(d,DAYS); // ahead: after «بعد» two days are «يومين»
 const rip=p=>p&&p.gender==="f"?"رحمها الله":"رحمه الله";
 function nasab(p,depth=4){
   if(!p)return"";let out=p.name;let cur=p;let first=true;
@@ -1385,27 +1391,23 @@ function renderToday(){
   const live=S.contacts.filter(c=>!deadC(c));const late=live.filter(c=>dueIn(c)<0).sort((a,b)=>dueIn(a)-dueIn(b));
   const now=new Date(),end=new Date();end.setHours(23,59,59);
   const appts=live.filter(c=>c.appt&&new Date(c.appt)<=end);
-  const ym=ymNow(),day=now.getDate();
-  const dueF=S.fixed.filter(r=>day>=dueDay(r)&&!r.transfers.some(t=>t.ym===ym));
   const who=c=>c.personId&&byId(c.personId)?nmBtn(c,nameOf(c).split(" ")[0]):`<button class="nm" type="button" data-cedit="${c.id}">${esc(nameOf(c).split(" ")[0])}</button>`;
   const item=(c,extra)=>{const ph=phoneOf(c);return`<li><span class="who">${who(c)} <span class="full">${extra}</span></span>${ph?callBtns(c,null,ph,1):""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></li>`};
   const lb=S.lastBackup?daysAgo(S.lastBackup):-1,needBk=!S.demo&&S.people.length>=5&&(lb<0||lb>=30);
   const I=seaInfo(),sc=I&&I.cur?seaCount(I.cur.key):null,seaDue=!!sc&&sc.n<sc.t;
-  const total=late.length+appts.length+dueF.length+(needBk?1:0)+(seaDue?1:0);
+  const total=late.length+appts.length+(needBk?1:0)+(seaDue?1:0); // the amounts due are in «الإحسان», counted on its tab below
   $("#today").innerHTML=`<div class="row"><h2 class="grow">اليوم</h2><span class="pill ${total?"warn":"good"}">${total?total+" بانتظارك":"لا شيء متأخر"}</span></div>
   ${sc?`<h3>${esc(I.cur.hi)}</h3><ul class="today-list"><li><span class="who"><b>تهنئة ${esc(I.cur.nm)}</b> <span class="full">${sc.t?(sc.n===sc.t?"هنّأت الجميع، أحسنت":"هنّأت "+sc.n+" من "+sc.t):"اختر من تهنئهم"}</span></span><button class="btn sm primary" type="button" data-gosea>القائمة</button></li></ul>`:""}
   ${appts.length?`<h3>مواعيد اليوم</h3><ul class="today-list">${appts.map(c=>item(c,new Date(c.appt)<now?"فات موعده "+fmtDT(c.appt):"الساعة "+new Date(c.appt).toLocaleTimeString(LOC,{hour:"numeric",minute:"2-digit"}))).join("")}</ul>`:""}
   ${late.length?`<h3>تأخرتَ في التواصل معهم</h3><ul class="today-list">${late.slice(0,8).map(c=>item(c,c.log[0]?lateD(-dueIn(c))+" ("+freqName(c)+")":"لم تتواصل بعد")).join("")}</ul>`:""}
-  ${dueF.length?`<h3>مبالغ مستحقة</h3><ul class="today-list">${dueF.map(r=>`<li><span class="who">${nmBtn(r,nameOf(r).split(" ")[0])} <span class="full num">${money(r.amount)}</span></span><button class="btn sm gold" type="button" data-gofixed>الإحسان</button></li>`).join("")}</ul>`:""}
   ${needBk?`<h3>نسخة احتياطية</h3><ul class="today-list"><li><span class="who"><b>بياناتك</b> <span class="full">${lb<0?"لم تحفظ نسخة بعد":"آخر نسخة "+agoD(lb)}</span></span><button class="btn sm primary" type="button" data-gobk>أرسلها إلى بريدي</button></li></ul>`:""}
   ${!total?`<p class="sub" style="margin:0">أحسنت، كل أقاربك في الجدول ضمن موعد التواصل.</p>`:""}
-  ${I&&!I.cur?`<p class="sea-next"><button class="lnk" type="button" data-gosea>تهنئة ${esc(I.s.nm)} ${I.days===1?"غدًا":"بعد "+nn(I.days,DAYS)}</button></p>`:""}`;
+  ${I&&!I.cur?`<p class="sea-next"><button class="lnk" type="button" data-gosea>تهنئة ${esc(I.s.nm)} ${inD(I.days)}</button></p>`:""}`;
 }
 $("#today").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   if(b.dataset.open){openPerson(b.dataset.open);return}
   if(b.dataset.cedit){editContact(b.dataset.cedit);return}
   if(b.dataset.done){const r=S.contacts.find(x=>x.id===b.dataset.done);logContact(r)}
-  if("gofixed" in b.dataset){ihM="";showTab("v-ihsan");renderIhsan()}
   if("gosea" in b.dataset)seasonSheet();
   if("gobk" in b.dataset)bkMail()});
 function logContact(r,type){if(!r)return;const iso=new Date().toISOString();r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:type||"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;metaRow=r.id;
@@ -1525,7 +1527,7 @@ function seaCount(key){const st=seaSet(key),L=seaList();return{n:L.filter(x=>st.
 const seaMsg=s=>(S.greet&&S.greet[s.k])||s.msg;
 function seasonSheet(){const I=seaInfo();if(!I){toast("التقويم الهجري غير متاح على هذا الجهاز");return}
   const s=I.s,key=s.key,rc=new Map(),rel=id=>{if(!rc.has(id))rc.set(id,relToMe(id));return rc.get(id)};
-  const when=I.cur?(I.left?"الموسم الآن، حتى "+fmtHD(I.end):"اليوم آخر أيام الموسم"):"يبدأ "+(I.days===1?"غدًا":"بعد "+nn(I.days,DAYS))+"، "+fmtHD(I.start);
+  const when=I.cur?(I.left?"الموسم الآن، حتى "+fmtHD(I.end):"اليوم آخر أيام الموسم"):"يبدأ "+inD(I.days)+"، "+fmtHD(I.start);
   sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تهنئة ${esc(s.nm)} <span class="num">${s.y}</span></h2><div class="full">${esc(when)}</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
    <div class="sea-prog" id="seaProg"></div>
    <label class="f"><span>رسالة التهنئة، تُرسل مع «واتساب»</span><textarea class="seamsg" id="seaMsg" rows="3" maxlength="700">${esc(seaMsg(s))}</textarea></label>
@@ -1588,6 +1590,13 @@ function monLen(y,m){return new Date(y,m+1,0).getDate()}
 function dueDay(r){const n=new Date();return Math.min(r.day,monLen(n.getFullYear(),n.getMonth()))} // a day the month lacks (31 in a month of 30) falls on its last day
 function dueISO(day){const n=new Date(),y=n.getFullYear(),m=n.getMonth();return y+"-"+String(m+1).padStart(2,"0")+"-"+String(Math.min(day,monLen(y,m))).padStart(2,"0")} // this month's due date
 function dueTxt(d){return"يتكرر يوم "+d+" من كل شهر"+(d>28?"، وفي الشهر الأقصر آخر يوم منه":"")}
+function fixNext(r){ // this month: transferred (the next date is in the first month with nothing recorded), due (its day came), or ahead (its day is coming)
+  const now=ymNow(),d=dueDay(r),today=new Date().getDate();
+  if(r.transfers.some(t=>t.ym===now)){let ym=ymAdd(now,1);for(let i=0;i<24&&r.transfers.some(t=>t.ym===ym);i++)ym=ymAdd(ym,1);return{st:"paid",iso:ymDay(ym,r.day)}}
+  return{st:today>=d?"due":"ahead",iso:ymDay(now,r.day),days:d-today}}
+function renderIhN(){ // the number on «الإحسان» below: the monthly amounts due now
+  const b=$("#ihN"),t=$("#t-ihsan");if(!b||!t)return;const now=ymNow(),n=S.fixed.filter(r=>{const s=sinceOf(r);return(!s||s<=now)&&fixNext(r).st==="due"}).length;
+  b.textContent=n;b.hidden=!n;if(n)t.setAttribute("aria-label","الإحسان، "+nn(n,["مبلغ واحد مستحق","مبلغان مستحقان","مبالغ مستحقة","مبلغًا مستحقًا","مبلغ مستحق"]));else t.removeAttribute("aria-label")}
 function gcalMonthly(r,day){ // Google Calendar: the transfer at 9 in the morning of that day, every month, from the next due date
   const n=new Date();let y=n.getFullYear(),m=n.getMonth();if(Math.min(day,monLen(y,m))<n.getDate()){m++;if(m>11){m=0;y++}}
   const p2=v=>String(v).padStart(2,"0"),d=y+p2(m+1)+p2(Math.min(day,monLen(y,m)));let tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}
@@ -1627,18 +1636,18 @@ function renderIhsan(){
   S.fixed.forEach(r=>r.transfers.forEach(t=>{if(t.ym.slice(0,4)===yr)kAdd(r.kind,t.amount)}));S.variable.forEach(v=>{if(ymOf(v.date).slice(0,4)===yr)kAdd(v.kind,v.amount)});
   const ks=KINDS.filter(([k])=>kt[k]>0).map(([k,l])=>[l,kt[k]]);if(ks.length&&kt._>0)ks.push(["بلا تصنيف",kt._]);
   const ik=$("#iKinds");ik.hidden=!ks.length;ik.innerHTML=ks.length?`<span class="sub">في <span class="num">${yr}</span>:</span>`+ks.map(([l,v])=>`<span class="kt">${l} <b class="num">${money(v)}</b></span>`).join(""):"";
-  const today=new Date().getDate();
   const short=rs=>{const c={};rs.forEach(r=>{const w=nameOf(r).split(" ")[0];c[w]=(c[w]||0)+1});return r=>{const w=nameOf(r).split(" ");return c[w[0]]>1?w.slice(0,3).join(" "):w[0]}}; // the first name, or more of it when two in the list share it
   const kTag=r=>{const l=kindLbl(r);return l?`<span class="ktag">${esc(l)}</span>`:""},fN=short(fx),vN=short(vm),cur=S.currency||"";
   $("#fBody").innerHTML=fx.length?fx.map(r=>{ // one row: the name, the amount, the day it is due and how it stands, and ✓ beside it; the row opens the details
-    const t=r.transfers.find(x=>x.ym===ym),full=nameOf(r),due=!past&&!t&&today>=dueDay(r);
-    const st=t?`<span class="ist good">حُوِّل ${esc(fmtDs(t.date))}</span>`:`<span class="ist ${past?"bad":due?"warn":""}">${past?"لم يُسجَّل":due?"مستحق":"لم يحن"}</span>`;
-    return`<div class="irow"><button class="ibody" type="button" data-fedit="${r.id}" aria-label="${esc(full+"، "+r.amount+" "+cur+"، يوم "+r.day+"، "+(t?"حُوِّل":past?"لم يُسجَّل":due?"مستحق":"لم يحن"))}"><span class="i1"><b class="inm">${esc(fN(r))}</b>${kTag(r)}<span class="ia num">${money(r.amount)}</span></span><span class="i2"><span class="num">يوم ${r.day}</span>${st}</span></button>`
+    const t=r.transfers.find(x=>x.ym===ym),full=nameOf(r),nx=past?null:fixNext(r),due=!!nx&&nx.st==="due"; // this month: the next date beside how it stands
+    const when=nx?(due?"موعده ":"القادم ")+fmtDs(nx.iso):"يوم "+r.day,stT=t?"حُوِّل "+fmtDs(t.date):past?"لم يُسجَّل":due?(nx.days===0?"مستحق اليوم":"مستحق"):inD(nx.days);
+    return`<div class="irow"><button class="ibody" type="button" data-fedit="${r.id}" aria-label="${esc(full+"، "+r.amount+" "+cur+"، "+when+"، "+stT)}"><span class="i1"><b class="inm">${esc(fN(r))}</b>${kTag(r)}<span class="ia num">${money(r.amount)}</span></span><span class="i2"><span class="num iwhen">${esc(when)}</span><span class="ist${t?" good":past?" bad":due?" warn":""}">${esc(stT)}</span></span></button>`
       +`<button class="ichk${t?" on":due||past?" due":""}" type="button" ${t?`data-fwas="${r.id}"`:`data-fdone="${r.id}"`} aria-label="${t?"حُوِّل في "+esc(fmtDs(t.date)):"تم التحويل"}" title="${t?"حُوِّل":"تم التحويل"}">✓</button></div>`;
   }).join(""):`<div class="empty">${S.fixed.length?"لم تبدأ مبالغك الشهرية بعد في "+esc(mN)+".":"لا مبالغ شهرية بعد. أضف اسمًا ومبلغًا ويوم الاستحقاق في الأعلى."}</div>`;
   $("#vBody").innerHTML=vm.length?vm.map(v=>{const full=nameOf(v);
     return`<div class="irow"><button class="ibody" type="button" data-vedit="${v.id}" aria-label="${esc(full+"، "+v.amount+" "+cur+"، "+fmtDs(v.date))}"><span class="i1"><b class="inm">${esc(vN(v))}</b>${kTag(v)}<span class="ia num">${money(v.amount)}</span></span><span class="i2"><span class="num">${esc(fmtDs(v.date))}</span></span></button></div>`;
   }).join(""):`<div class="empty">${S.variable.length?"لا مبالغ متفرقة في "+esc(mN)+".":"لا مبالغ متفرقة بعد. أضف اسمًا ومبلغًا في الأعلى."}</div>`;
+  renderIhN();
 }
 function editFixed(id,keep){
   const r=S.fixed.find(x=>x.id===id);if(!r){closeSheet();return}
@@ -1706,7 +1715,7 @@ $("#v-ihsan").addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;const d=b.dataset;const F=id=>S.fixed.find(x=>x.id===id);const ym=ihCur(),past=ym!==ymNow();
   if(d.open){openPerson(d.open);return}
   if(d.fdone){const r=F(d.fdone),tr={date:past?ymDay(ym,r.day):new Date().toISOString(),amount:r.amount,ym};r.transfers.push(tr);r.transfers.sort((a,b)=>b.date.localeCompare(a.date));save();
-    toast(past?"سُجِّل التحويل في "+ymName(ym):"سُجِّل التحويل بتاريخ اليوم",{label:"تراجع",fn:()=>{r.transfers=r.transfers.filter(x=>x!==tr);save();renderIhsan();renderToday()}})}
+    toast(past?"سُجِّل التحويل في "+ymName(ym):"سُجِّل التحويل بتاريخ اليوم، والقادم "+fmtDs(fixNext(r).iso),{label:"تراجع",fn:()=>{r.transfers=r.transfers.filter(x=>x!==tr);save();renderIhsan();renderToday()}})}
   else if(d.fwas){const r=F(d.fwas),t=r&&r.transfers.find(x=>x.ym===ym);if(t)toast("حُوِّل في "+fmtD(t.date)+(veiled?"":" · "+t.amount+" "+(S.currency||"")),{label:"تراجع",fn:()=>{r.transfers=r.transfers.filter(x=>x!==t);save();renderIhsan();renderToday()}});return}
   else if(d.fundo){const r=F(d.fundo);r.transfers=r.transfers.filter(t=>t.ym!==ym);save()}
   else if(d.fedit){editFixed(d.fedit);return}
@@ -2037,8 +2046,8 @@ function aiChanged(){aiNow().then(m=>{if(tbPane==="p-ask")askSetup(m);if(tbPane=
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
 1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أسفل اللوحة يمينًا) تعرض شجرة أي قريب: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«شجرتي». الأشكال: العمود الملوّن بخط سميك سلسلة الآباء من صاحب الجهة إلى أعلى جد، والبطاقة البيضاء قريب مسجّل خارج العمود، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، ولا تظهر إلا في وضع التعديل: في أعلى اللوحة يمينًا قفل واحد، مقفلًا تكون اللوحة والملفات للعرض فقط بلا خانات إضافة ولا «تعديل» ولا «حذف»، ومفتوحًا يظهر ذلك كله ويصير الزر «تعديل» ويُحاط اللوح بإطار متقطع بلون الجهة، ويُقفل كلما فُتح التطبيق، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة صاحب الشجرة المعروضة. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق كل زوجة و«أهله» فوق كل زوج ينقل إلى عائلته: هو أسفل العمود وفوقه أبوه ثم جده، فالعمود في كل جهة يصعد بالآباء وحدهم «ادعوهم لآبائهم» والأمهات بجانب أزواجهن، وخط الزواج إذا قطعه خطان صغيران فهو طلاق، والإخوة مرتبون من الأكبر بسنة الميلاد. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة، وزر التصدير بجانبها يحفظ الجهة التي تراها صورةً أو نصًّا، أو PDF في المتصفح. وأول مرة يسألك التطبيق اسمك ثم اسم أبيك ثم اسم أمك.
 ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اعرض شجرته» و«تعديل» و«حذف»، و«ترتيب الزوجات» لمن له أكثر من زوجة تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة. والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات وترتيب كل زوجة باختيار مباشر (الأولى، الثانية، الثالثة) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
-2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، والمبالغ المستحقة، وتذكير النسخة الاحتياطية، وفي أيام رمضان والعيدين «القائمة» للتهنئة: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، و«تم التواصل» في تلك الأيام يعلّم التهنئة أيضًا، وفي غيرها سطر يعدّ الأيام إلى الموسم القادم) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة، وتحته أزرار تضيف جهة كاملة بلمسة: الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة، ويحين موعد كل مضاف حسب قربه. وفوق الجدول فرز: الكل، ومتأخر، وهذا الأسبوع. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
-3) الإحسان: في الأعلى شريط الشهر (› السابق و‹ التالي و«الشهر الحالي»)، والمجاميع والقائمتان تتبع الشهر المعروض. «مبالغ شهرية»: كل مبلغ سطر واحد فيه الاسم والمبلغ ويوم الاستحقاق وحاله (مستحق، لم يحن، حُوِّل، لم يُسجَّل)، وزر ✓ في السطر يسجل التحويل في الشهر المعروض فيُسجَّل تحويل فات في شهره، ولمس السطر يفتح التفاصيل: المبلغ والتصنيف وتاريخ الاستحقاق (يُختار من التقويم ويتكرر في اليوم نفسه كل شهر) وسجل التحويلات و«تذكير في تقويم Google» والحذف. «مبالغ متفرقة»: سطر لكل مبلغ فيه الاسم والمبلغ والتاريخ، ولمسه يفتح التعديل. والإضافة بزر «+ أضف» فوق كل قائمة: اسم ومبلغ وتصنيف وتاريخ. التصنيفات ثلاثة: مصاريف، علاج، أخرى (ومعها تعليق يقول ما هو)، وتحت المجاميع مجموع كل تصنيف في السنة. وفي الأعلى ما حُوِّل في الشهر، والمتبقي، ومجموع السنة، و«إخفاء المبالغ».
+2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، وتذكير النسخة الاحتياطية، وفي أيام رمضان والعيدين «القائمة» للتهنئة: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، و«تم التواصل» في تلك الأيام يعلّم التهنئة أيضًا، وفي غيرها سطر يعدّ الأيام إلى الموسم القادم) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة، وتحته أزرار تضيف جهة كاملة بلمسة: الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة، ويحين موعد كل مضاف حسب قربه. وفوق الجدول فرز: الكل، ومتأخر، وهذا الأسبوع. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
+3) الإحسان: في الأعلى شريط الشهر (› السابق و‹ التالي و«الشهر الحالي»)، والمجاميع والقائمتان تتبع الشهر المعروض. «مبالغ شهرية»: كل مبلغ سطر واحد فيه الاسم والمبلغ وموعده وحاله: في الشهر الحالي بعد التحويل «حُوِّل» ومعه «القادم» بتاريخ الشهر التالي، وقبل موعده «القادم» بتاريخه وكم بقي عليه، وإذا حلّ ولم يُحوَّل «موعده» بتاريخه و«مستحق»، وفي الأشهر السابقة يوم الاستحقاق و«حُوِّل» أو «لم يُسجَّل»، وزر ✓ في السطر يسجل التحويل في الشهر المعروض فيُسجَّل تحويل فات في شهره، ولمس السطر يفتح التفاصيل: المبلغ والتصنيف وتاريخ الاستحقاق (يُختار من التقويم ويتكرر في اليوم نفسه كل شهر) وسجل التحويلات و«تذكير في تقويم Google» والحذف. «مبالغ متفرقة»: سطر لكل مبلغ فيه الاسم والمبلغ والتاريخ، ولمسه يفتح التعديل. والإضافة بزر «+ أضف» فوق كل قائمة: اسم ومبلغ وتصنيف وتاريخ. التصنيفات ثلاثة: مصاريف، علاج، أخرى (ومعها تعليق يقول ما هو)، وتحت المجاميع مجموع كل تصنيف في السنة. وفي الأعلى ما حُوِّل في الشهر، والمتبقي، ومجموع السنة، و«إخفاء المبالغ». وعلى تبويب «الإحسان» في الأسفل رقم بعدد المبالغ الشهرية المستحقة الآن، ولا تتكرر المبالغ في «اليوم» بالتواصل.
 الشريط العلوي ثلاثة تبويبات: «بحث» وتحته خانة تبحث في كل ما كُتب في التطبيق: الأقارب بالاسم والنسب والمدينة والجوال والملاحظات وسنة الميلاد (زر «الشجرة» يقفز إلى القريب ويضيء بطاقته، و«الملف» يفتح ملفه)، وملاحظات التواصل، والإحسان بالاسم والتصنيف والمبلغ، والاقتراحات. و«اسأل Claude» تسأل فيه عن أقاربك وعن التطبيق. و«تطوير» وعليه عدد ما ينتظرك: «اقترح علي» يعطيك مقترحات لتطوير التطبيق تعتمدها أو تؤجلها أو ترفضها، و«اسألني» يسألك عن عائلتك فتجيب كتابةً أو بالصوت من مايك لوحة المفاتيح فيصير أدق، وتحتهما فكرتك أنت، و«بانتظار التنفيذ» و«انسخ التعليمات»، و«ما يعرفه التطبيق عنك». وفي رأس الشاشة «الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم حجم الخط (عادي أو كبير أو أكبر)، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا)، ثم «Claude داخل التطبيق» في تطبيق الجوال: يُلصق فيه مفتاح Claude مرة واحدة. زر الرجوع في الجوال يغلق المفتوح أولًا.`;
 function familyData(){
   const cmap=new Map(S.contacts.map(c=>[c.personId,c]));
@@ -2046,14 +2055,14 @@ function familyData(){
     return[p.id,nasab(p,5),relToMe(p.id),p.gender==="f"?"أنثى":"ذكر",p.alive!==false?"حي":"متوفى",p.born||"",p.city||"",spousesOf(p).map(x=>x.name+(isDiv(p,x)?" (طلاق)":"")).join("، "),
       l?locD(l)+(mm.type?" "+mm.type:"")+(mm.note?" ("+String(mm.note).slice(0,80)+")":""):"",c&&c.appt?locDT(c.appt).replace("T"," "):"",String(p.notes||"").replace(/\s+/g," ").slice(0,120)].join(" | ")}).join("\n");
   const outside=S.contacts.filter(c=>!(c.personId&&byId(c.personId))).slice(0,100).map(c=>`${c.name||"—"} | ${c.log[0]?locD(c.log[0]):""} | ${c.appt?locDT(c.appt).replace("T"," "):""}`).join("\n");
-  const fixed=S.fixed.map(r=>`${nameOf(r)} | ${r.amount} | يوم ${r.day} | ${kindName(r.kind)||"—"}${r.note?" ("+r.note+")":""} | آخر تحويل ${r.transfers[0]?locD(r.transfers[0].date):"لا يوجد"}`).join("\n");
+  const fixed=S.fixed.map(r=>{const x=fixNext(r);return`${nameOf(r)} | ${r.amount} | يوم ${r.day} | ${kindName(r.kind)||"—"}${r.note?" ("+r.note+")":""} | آخر تحويل ${r.transfers[0]?locD(r.transfers[0].date):"لا يوجد"} | ${x.st==="paid"?"حُوِّل هذا الشهر":x.st==="due"?"مستحق الآن":"لم يحن بعد"} | ${locD(x.iso)}`}).join("\n");
   const vari=S.variable.slice(0,80).map(v=>`${nameOf(v)} | ${v.amount} | ${kindName(v.kind)||"—"}${v.note?" ("+v.note+")":""} | ${locD(v.date)}`).join("\n");
   return`تاريخ اليوم: ${locD(new Date().toISOString())}. العملة: ${S.currency||""}.
 الأفراد (المعرّف | النسب | صلته بك | الجنس | الحالة | سنة الميلاد | المدينة | الزوج/الزوجة | آخر تواصل | الموعد القادم | ملاحظات):
 ${people||"لا يوجد"}
 في جدول التواصل وليسوا في الشجرة (الاسم | آخر تواصل | الموعد القادم):
 ${outside||"لا يوجد"}
-المبالغ الشهرية (الاسم | المبلغ | يوم الاستحقاق | التصنيف | آخر تحويل):
+المبالغ الشهرية (الاسم | المبلغ | يوم الاستحقاق | التصنيف | آخر تحويل | حاله هذا الشهر | موعده: القادم، أو الذي حلّ إن كان مستحقًا):
 ${fixed||"لا يوجد"}
 المبالغ المتفرقة (الاسم | المبلغ | التصنيف | التاريخ):
 ${vari||"لا يوجد"}`;
@@ -2736,7 +2745,12 @@ async function initRemote(){
 }
 /* ---------- app update (Android app only) ---------- */
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={20:[
+const CHANGES={21:[
+  "«مبالغ مستحقة» لم تعد مكررة في «اليوم» بالتواصل، فمكانها الإحسان وحده",
+  "على تبويب «الإحسان» في الأسفل رقم بعدد المبالغ الشهرية المستحقة، فلا يفوتك شيء",
+  "كل مبلغ شهري يظهر موعده القادم: بعد التحويل «القادم 1 ديسمبر» مثلًا، وقبل موعده «بعد 5 أيام»، وعند ✓ يقول لك الموعد القادم",
+  "تصحيح لغوي: «بعد يومين» بدل «بعد يومان»"],
+20:[
   "ثلاثة تبويبات في أعلى الشاشة: «بحث»، و«اسأل Claude»، و«تطوير»، والمفتوح منها بلون داكن",
   "البحث صار في كل ما كُتب في التطبيق: الأقارب بالاسم والنسب والمدينة والجوال والملاحظات وسنة الميلاد، وملاحظات التواصل، والإحسان بالاسم والتصنيف والمبلغ، والاقتراحات، كلٌّ في مجموعته",
   "«اسأل Claude»: تسأله عن أقاربك (صلة أي قريب بك أو بغيره، ومتى تواصلت معه، وما حُوِّل له) وعن طريقة استعمال التطبيق. وفي تطبيق الجوال يعمل بمفتاح Claude تلصقه مرة واحدة في الإعدادات",
