@@ -540,8 +540,9 @@ header.top{gap:10px}
 .mrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:7px 9px}
 .mrow .mn{flex:1;min-width:110px;display:flex;flex-direction:column;line-height:1.35}
 .mrow .mn small{font-size:calc(12px*var(--fs,1));color:var(--muted)}
-.mo2{display:flex;gap:4px}
-.mo2 .btn{min-width:34px}
+.mord{width:auto;flex:none;min-width:92px;padding:6px 8px;font-weight:600;color:var(--accent)}
+@keyframes mvd{from{background:var(--accent-soft)}}
+@media (prefers-reduced-motion:no-preference){.mrow.moved{animation:mvd 1.2s ease-out}}
 .sea-prog{display:flex;flex-direction:column;gap:6px}
 .sea-prog:empty{display:none}
 .sea-prog .bar{height:8px;border-radius:999px;background:var(--sunk);overflow:hidden}
@@ -672,7 +673,7 @@ textarea.seamsg{direction:rtl;font-size:calc(15px*var(--fs,1));min-height:78px;l
           <div class="ftip" id="ftip" hidden><p>المس أي اسم لتفتح ملفه. واللوحة للعرض فقط حتى لا تضيف أحدًا بالخطأ: المس القفل في أعلاها يمينًا فتظهر خانات الإضافة و«تعديل»، والمسه مرة أخرى ليُقفل. وزر «؟» يشرح كل شكل في اللوحة.</p><button type="button" id="ftipX" aria-label="إغلاق">✕</button></div>
         </div>
         <div class="sidepick" id="sidepick" role="tablist" aria-label="اختر الجهة"></div>
-        <div class="obar" id="obar" hidden><div class="ob-t"><small>في المركز</small><b><span id="obName"></span> <small id="obRel"></small></b></div><div class="ob-b"><button class="btn sm" type="button" id="obTop">الجد الأعلى</button><button class="btn sm" type="button" id="obMe">أنا في المركز</button></div></div>
+        <div class="obar" id="obar" hidden><div class="ob-t"><small>شجرة</small><b><span id="obName"></span> <small id="obRel"></small></b></div><div class="ob-b"><button class="btn sm" type="button" id="obTop">الجد الأعلى</button><button class="btn sm" type="button" id="obMe">شجرتي</button></div></div>
       </div>
     </div>
   </section>
@@ -771,7 +772,7 @@ window.addEventListener("load",function(){setTimeout(function(){if(window.__dqOK
 "use strict";
 /* ---------- storage ---------- */
 const KEY="dhulqurba.v1";
-const WEB_BUILD=18;
+const WEB_BUILD=19;
 let mem=null,loadBad=null,saveErr=false;
 function load(){let s=null;try{s=localStorage.getItem(KEY)}catch(e){return mem}if(!s)return mem;
   try{const d=JSON.parse(s);if(d&&typeof d==="object"&&Array.isArray(d.people))return d}catch(e){}
@@ -919,7 +920,8 @@ function spousesOf(p){if(!p)return[];const out=[];const add=x=>{if(x&&x.id!==p.i
   (p.spouses||[]).forEach(id=>add(byId(id)));kids(p.id).forEach(k=>add(byId(p.gender==="f"?k.father:k.mother)));return out}
 function linkSpouse(a,b){a.spouses=a.spouses||[];b.spouses=b.spouses||[];if(!a.spouses.includes(b.id))a.spouses.push(b.id);if(!b.spouses.includes(a.id))b.spouses.push(a.id)}
 const isDiv=(a,b)=>!!a&&!!b&&Array.isArray(a.div)&&a.div.includes(b.id); // the marriage ended in divorce
-const ordW=(x,i)=>(x.gender==="f"?["الأولى","الثانية","الثالثة","الرابعة","الخامسة"]:["الأول","الثاني","الثالث","الرابع","الخامس"])[i]||""; // the first wife, the second...
+const ordW=(x,i)=>(x.gender==="f"?["الأولى","الثانية","الثالثة","الرابعة","الخامسة","السادسة","السابعة","الثامنة","التاسعة","العاشرة"]:["الأول","الثاني","الثالث","الرابع","الخامس","السادس","السابع","الثامن","التاسع","العاشر"])[i]||"رقم "+(i+1); // the first wife, the second...
+const ordSel=(x,i,n,at)=>`<select class="mord" ${at} aria-label="${esc("ترتيب "+x.name)}">${Array.from({length:n},(_,j)=>`<option value="${j}"${j===i?" selected":""}>${ordW(x,j)}</option>`).join("")}</select>`; // her place among the wives, picked from a list
 function byBorn(ks){const yr=k=>parseInt(toLat(k.born),10)||0,at=[],w=[];ks.forEach((k,i)=>{if(yr(k)){at.push(i);w.push(k)}});if(w.length<2)return ks; // the eldest first among those whose year is known; the others keep their places
   w.sort((a,b)=>yr(a)-yr(b));const out=ks.slice();at.forEach((i,j)=>{out[i]=w[j]});return out}
 function kidGroups(p){const key=k=>p.gender==="f"?k.father:k.mother;const m=new Map();
@@ -1134,13 +1136,13 @@ function openPerson(id,keep){
   <dl class="fam-grid">
     <dt>الأب</dt><dd>${f?chip(f):slot("father","أضف الأب")||none}</dd>
     <dt>الأم</dt><dd>${m?chip(m):((p.motherName?`<span class="chip">${esc(p.motherName)}</span>`:"")+slot("mother","أضف الأم"))||none}</dd>
-    <dt>${sp.length>1?(fem?"الأزواج":"الزوجات"):spL}</dt><dd>${sp.length||ed?"":none}<div class="chips">${sp.map((x,i)=>chip(x,[sp.length>1?ordW(x,i):"",isDiv(p,x)?(x.gender==="f"?"طليقته":"طليقها"):""].filter(Boolean).join(" · "))).join("")}${slot("spouse",sp.length?(fem?"زوج آخر":"زوجة أخرى"):"أضف "+spL)}</div></dd>
+    <dt>${sp.length>1?(fem?"الأزواج":"الزوجات"):spL}</dt><dd>${sp.length||ed?"":none}<div class="chips">${sp.map((x,i)=>chip(x,[sp.length>1?ordW(x,i):"",isDiv(p,x)?(x.gender==="f"?"طليقته":"طليقها"):""].filter(Boolean).join(" · "))).join("")}${ed&&sp.length>1?`<button class="btn sm" type="button" id="pOrd">${fem?"ترتيب الأزواج":"ترتيب الزوجات"}</button>`:""}${slot("spouse",sp.length?(fem?"زوج آخر":"زوجة أخرى"):"أضف "+spL)}</div></dd>
     <dt>الأبناء${nk?` (${nk})`:""}</dt><dd>${kidsHTML||(ed?"":none)}<div class="chips">${slot("child","ابن أو بنت")}</div></dd>
     <dt>الإخوة${sib.length?` (${sib.length})`:""}</dt><dd>${sib.length||ed?"":none}<div class="chips">${sib.map(x=>chip(x,sibKind(p,x))).join("")}${slot("sib","أخ أو أخت")}</div></dd>
   </dl>
   ${det.length?`<dl class="kv">${det.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl>`:""}
   <div class="row">
-    <button class="btn soft" type="button" id="pFocus">${isMe?"أنا في المركز":fem?"اجعلها في المركز":"اجعله في المركز"}</button>
+    <button class="btn soft" type="button" id="pFocus">${isMe?"اعرض شجرتي":fem?"اعرض شجرتها":"اعرض شجرته"}</button>
     ${ed?`<button class="btn" type="button" id="pEdit">تعديل</button>`:`<button class="btn" type="button" id="pUnl">${LKC}افتح التعديل</button>`}
     ${isMe||!ed?"":`<span style="flex:1"></span><button class="btn danger" type="button" id="pDelP">حذف</button>`}
   </div>
@@ -1152,6 +1154,7 @@ function openPerson(id,keep){
     el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openPerson(b.dataset.open));
     el.querySelectorAll("[data-addrel]").forEach(b=>b.onclick=()=>quickAdd(b.dataset.addrel,p.id));
     if(q("#pEdit"))q("#pEdit").onclick=()=>editPerson(p.id);
+    if(q("#pOrd"))q("#pOrd").onclick=()=>orderSpouses(p.id);
     if(q("#pUnl"))q("#pUnl").onclick=()=>{setEdit(true,true);openPerson(p.id,true);toast("فُتح التعديل. والقفل في أعلى اللوحة يقفله",null,2400)};
     if(q("#pDelP"))q("#pDelP").onclick=()=>delAsk(p,q("#pDelBox"));
     q("#pFocus").onclick=()=>{closeSheet();showTab("v-tree");oGo(p.id,true)};
@@ -1160,6 +1163,21 @@ function openPerson(id,keep){
     if(q("#pToContact"))q("#pToContact").onclick=()=>{addContact(p.id,"");openPerson(p.id,true)};
     if(q("#pCDet"))q("#pCDet").onclick=()=>editContact(inC.id,false,p.id);
   },{keep});
+}
+function orderSpouses(id){ // the order of the marriages, picked directly: الأولى، الثانية، الثالثة. Saved at once
+  const p=byId(id);if(!p)return;const fem=p.gender==="f",ord=spousesOf(p).map(x=>x.id);
+  sheet(`<div class="hd"><h2>${fem?"ترتيب الأزواج":"ترتيب الزوجات"}</h2><button class="btn sm" type="button" data-close>تم</button></div>
+  <p class="sub" style="margin:0 0 10px">${fem?"اختر لكل زوج ترتيبه في الزواج، فيُحفظ فورًا ويظهر في الملف.":"اختر لكل زوجة ترتيبها في الزواج، فيُحفظ فورًا ويظهر في الملف."}</p>
+  <div class="mars" id="oMars"></div>`,el=>{
+    const box=el.querySelector("#oMars");
+    const draw=j=>{const n=ord.length;box.innerHTML=ord.map((sid,i)=>{const x=byId(sid);return`<div class="mrow${i===j?" moved":""}"><span class="mn"><b>${esc(x.name)}</b>${isDiv(p,x)?`<small>${x.gender==="f"?"طليقته":"طليقها"}</small>`:""}${x.alive===false?`<small>${rip(x)}</small>`:""}</span>${ordSel(x,i,n,`data-oord="${i}"`)}</div>`}).join("");
+      const f=j!=null&&box.querySelector(`[data-oord="${j}"]`);f&&f.focus()};
+    draw();
+    box.addEventListener("change",e=>{const t=e.target.closest("[data-oord]");if(!t)return;const i=+t.dataset.oord,j=+t.value;if(i===j)return;
+      const [m]=ord.splice(i,1);ord.splice(j,0,m);p.spouses=ord.slice();ord.forEach(sid=>{const x=byId(sid);if(x)linkSpouse(p,x)});
+      save();renderAll();draw(j);const x=byId(m);toast("حُفظ الترتيب: "+x.name+" "+ordW(x,j))});
+    el.querySelector("[data-close]").onclick=()=>openPerson(p.id);
+  });
 }
 function editPerson(id,preset={},focusOn){
   const p=id?byId(id):Object.assign({id:"",name:"",gender:"m",father:"",mother:"",spouse:"",spouses:[],family:"",alive:true,city:"",phone:"",born:"",notes:"",motherName:""},preset);
@@ -1197,16 +1215,15 @@ function editPerson(id,preset={},focusOn){
     const mBox=q("#e-mars"),mOrd=spousesOf(p).map(x=>x.id),mDiv=new Set((p.div||[]).filter(i=>mOrd.includes(i))); // kept here until «حفظ»
     const drawM=()=>{if(!mBox)return;const n=mOrd.length,fem=p.gender==="f";
       mBox.innerHTML=mOrd.map((sid,i)=>{const x=byId(sid),xf=x.gender==="f",dv=mDiv.has(sid);
-        return`<div class="mrow"><span class="mn"><b>${esc(x.name)}</b>${n>1?`<small>${ordW(x,i)}</small>`:""}${x.alive===false?`<small>${rip(x)}</small>`:""}</span>
-        <span class="seg2" role="group" aria-label="${esc("الزواج من "+x.name)}"><button type="button" data-mst="${sid}" data-v="0" aria-pressed="${!dv}">${xf?"زوجته":"زوجها"}</button><button type="button" data-mst="${sid}" data-v="1" aria-pressed="${dv}">${xf?"طليقته":"طليقها"}</button></span>
-        ${n>1?`<span class="mo2"><button class="btn sm" type="button" data-mup="${i}"${i?"":" disabled"} aria-label="${esc("قدّم "+x.name)}">↑</button><button class="btn sm" type="button" data-mdn="${i}"${i<n-1?"":" disabled"} aria-label="${esc("أخّر "+x.name)}">↓</button></span>`:""}</div>`}).join("")
-        +(n>1?`<p class="sub" style="margin:0">رتّبهم بترتيب الزواج: ${fem?"الأول ثم الثاني":"الأولى ثم الثانية"}. وبهذا الترتيب يُرسمون في اللوحة.</p>`:"")};
+        return`<div class="mrow"><span class="mn"><b>${esc(x.name)}</b>${x.alive===false?`<small>${rip(x)}</small>`:""}</span>${n>1?ordSel(x,i,n,`data-mord="${i}"`):""}
+        <span class="seg2" role="group" aria-label="${esc("الزواج من "+x.name)}"><button type="button" data-mst="${sid}" data-v="0" aria-pressed="${!dv}">${xf?"زوجته":"زوجها"}</button><button type="button" data-mst="${sid}" data-v="1" aria-pressed="${dv}">${xf?"طليقته":"طليقها"}</button></span></div>`}).join("")
+        +(n>1?`<p class="sub" style="margin:0">${fem?"اختر ترتيب كل زوج في الزواج: الأول ثم الثاني.":"اختر ترتيب كل زوجة في الزواج: الأولى ثم الثانية ثم الثالثة."}</p>`:"")};
     drawM();
     if(mBox)mBox.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
       if(d.mst){if(d.v==="1")mDiv.add(d.mst);else mDiv.delete(d.mst)}
-      else if(d.mup){const i=+d.mup;if(i>0)[mOrd[i-1],mOrd[i]]=[mOrd[i],mOrd[i-1]]}
-      else if(d.mdn){const i=+d.mdn;if(i<mOrd.length-1)[mOrd[i+1],mOrd[i]]=[mOrd[i],mOrd[i+1]]}
       else return;drawM()});
+    if(mBox)mBox.addEventListener("change",e=>{const t=e.target.closest("[data-mord]");if(!t)return;const i=+t.dataset.mord,j=+t.value;if(i===j)return; // she takes the place picked, the others keep their order
+      const [x]=mOrd.splice(i,1);mOrd.splice(j,0,x);drawM();const f=mBox.querySelector(`[data-mord="${j}"]`);f&&f.focus()});
     const segs=[...el.querySelectorAll("#e-alive [data-alive]")];
     segs.forEach(b=>b.onclick=()=>{alive=b.dataset.alive==="1";segs.forEach(x=>x.setAttribute("aria-pressed",String((x.dataset.alive==="1")===alive)))});
     q("#e-g").addEventListener("change",()=>{segs[1].textContent=q("#e-g").value==="f"?"متوفاة":"متوفى"});
@@ -1804,8 +1821,8 @@ $("#ideas").addEventListener("click",e=>{const id=e.target.closest("[data-idel]"
 // ask Claude
 let sampleFn,askReady=false,turns=[],askCtl=null,hasTools=false;
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
-1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أسفل اللوحة يمينًا) تجعل أي قريب في المركز: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«أنا في المركز». الأشكال: العمود الملوّن بخط سميك سلسلة الآباء من صاحب الجهة إلى أعلى جد، والبطاقة البيضاء قريب مسجّل خارج العمود، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، ولا تظهر إلا في وضع التعديل: في أعلى اللوحة يمينًا قفل واحد، مقفلًا تكون اللوحة والملفات للعرض فقط بلا خانات إضافة ولا «تعديل» ولا «حذف»، ومفتوحًا يظهر ذلك كله ويصير الزر «تعديل» ويُحاط اللوح بإطار متقطع بلون الجهة، ويُقفل كلما فُتح التطبيق، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة القريب الذي في المركز. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق كل زوجة و«أهله» فوق كل زوج ينقل إلى عائلته: هو أسفل العمود وفوقه أبوه ثم جده، فالعمود في كل جهة يصعد بالآباء وحدهم «ادعوهم لآبائهم» والأمهات بجانب أزواجهن، وخط الزواج إذا قطعه خطان صغيران فهو طلاق، والإخوة مرتبون من الأكبر بسنة الميلاد. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة، وزر التصدير بجانبها يحفظ الجهة التي تراها صورةً أو نصًّا، أو PDF في المتصفح. وأول مرة يسألك التطبيق اسمك ثم اسم أبيك ثم اسم أمك.
-ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اجعله في المركز» و«تعديل» و«حذف». والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات بترتيبها (الأولى ثم الثانية) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
+1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أسفل اللوحة يمينًا) تعرض شجرة أي قريب: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«شجرتي». الأشكال: العمود الملوّن بخط سميك سلسلة الآباء من صاحب الجهة إلى أعلى جد، والبطاقة البيضاء قريب مسجّل خارج العمود، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، ولا تظهر إلا في وضع التعديل: في أعلى اللوحة يمينًا قفل واحد، مقفلًا تكون اللوحة والملفات للعرض فقط بلا خانات إضافة ولا «تعديل» ولا «حذف»، ومفتوحًا يظهر ذلك كله ويصير الزر «تعديل» ويُحاط اللوح بإطار متقطع بلون الجهة، ويُقفل كلما فُتح التطبيق، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة صاحب الشجرة المعروضة. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق كل زوجة و«أهله» فوق كل زوج ينقل إلى عائلته: هو أسفل العمود وفوقه أبوه ثم جده، فالعمود في كل جهة يصعد بالآباء وحدهم «ادعوهم لآبائهم» والأمهات بجانب أزواجهن، وخط الزواج إذا قطعه خطان صغيران فهو طلاق، والإخوة مرتبون من الأكبر بسنة الميلاد. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة، وزر التصدير بجانبها يحفظ الجهة التي تراها صورةً أو نصًّا، أو PDF في المتصفح. وأول مرة يسألك التطبيق اسمك ثم اسم أبيك ثم اسم أمك.
+ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اعرض شجرته» و«تعديل» و«حذف»، و«ترتيب الزوجات» لمن له أكثر من زوجة تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة. والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات وترتيب كل زوجة باختيار مباشر (الأولى، الثانية، الثالثة) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
 2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، والمبالغ المستحقة، وتذكير النسخة الاحتياطية، وفي أيام رمضان والعيدين «القائمة» للتهنئة: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، و«تم التواصل» في تلك الأيام يعلّم التهنئة أيضًا، وفي غيرها سطر يعدّ الأيام إلى الموسم القادم) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة، وتحته أزرار تضيف جهة كاملة بلمسة: الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة، ويحين موعد كل مضاف حسب قربه. وفوق الجدول فرز: الكل، ومتأخر، وهذا الأسبوع. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
 3) الإحسان: في الأعلى شريط الشهر (› السابق و‹ التالي و«الشهر الحالي»)، والمجاميع والقائمتان تتبع الشهر المعروض. «مبالغ شهرية»: كل مبلغ سطر واحد فيه الاسم والمبلغ ويوم الاستحقاق وحاله (مستحق، لم يحن، حُوِّل، لم يُسجَّل)، وزر ✓ في السطر يسجل التحويل في الشهر المعروض فيُسجَّل تحويل فات في شهره، ولمس السطر يفتح التفاصيل: المبلغ والتصنيف وتاريخ الاستحقاق (يُختار من التقويم ويتكرر في اليوم نفسه كل شهر) وسجل التحويلات و«تذكير في تقويم Google» والحذف. «مبالغ متفرقة»: سطر لكل مبلغ فيه الاسم والمبلغ والتاريخ، ولمسه يفتح التعديل. والإضافة بزر «+ أضف» فوق كل قائمة: اسم ومبلغ وتصنيف وتاريخ. التصنيفات ثلاثة: مصاريف، علاج، أخرى (ومعها تعليق يقول ما هو)، وتحت المجاميع مجموع كل تصنيف في السنة. وفي الأعلى ما حُوِّل في الشهر، والمتبقي، ومجموع السنة، و«إخفاء المبالغ».
 الشريط العلوي: خانة البحث عن قريب (زر «الشجرة» يقفز إليه ويضيء بطاقته، و«الملف» يفتح ملفه)، و«اسأل» داخل Claude. وفي رأس الشاشة زر «اقتراحاتك» (رمز المصباح وعليه عدد الاقتراحات) و«الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم حجم الخط (عادي أو كبير أو أكبر)، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا). زر الرجوع في الجوال يغلق المفتوح أولًا.`;
@@ -2107,7 +2124,7 @@ function renderSide(){
   {const tp=$("#ftip");view.style.setProperty("--tiph",(tp&&!tp.hidden?tp.offsetHeight+6:0)+"px")} // the button at the bottom stands above the tip while it shows
   const bt=base==="fa"?"جهة الأب":base==="mo"?"جهة الأم":fem?"الزوج وأهله":"الزوجة وأهلها";
   cap.hidden=O||!fOf;$("#toFull").hidden=!O&&!!fOf;$("#toFull").textContent=O?"عائلتي":"الشجرة المفتوحة";
-  $("#toFull").setAttribute("aria-label",O?"العودة إلى عائلتي":"الشجرة المفتوحة: اجعل أي قريب في المركز");
+  $("#toFull").setAttribute("aria-label",O?"العودة إلى عائلتي":"الشجرة المفتوحة: شجرة أي قريب، أجداده فوقه وذريته تحته");
   if(fOf&&!O){const r=relToMe(a.id),pv=fOfBack.length?byId(fOfBack[fOfBack.length-1]):null,bl=pv?"العودة إلى أهل "+pv.name:"العودة إلى "+bt;cap.innerHTML=`<button type="button" data-fback aria-label="${esc(bl)}" title="${esc(bl)}">→</button><span title="${esc("أهل "+(r?r+" ":"")+a.name)}">أهل ${esc(a.name)}</span>`}
   else cap.innerHTML="";
   if(!a){world.innerHTML="";world.style.width=world.style.height="0px";fLast.clear();fCamKey="";fDraw=null;$("#fzExp").disabled=true;
@@ -2212,7 +2229,7 @@ function boardGuide(){const me=byId(S.meId),fem=me&&me.gender==="f";
   ${row(`<span class="tslot fa spx"><span class="sl">+ أبو محمد</span></span>`,"بطاقة منقطة تبدأ بـ«+»","مكان فارغ يظهر في وضع التعديل (القفل في أعلى اللوحة مفتوح)، المسه لتضيف القريب في موضعه. الملوّنة فوق العمود تمدّه بأبي أعلى جد، والخفيفة لغيره.")}
   ${row(`<span class="tn fa sp dead"><b>عبدالله</b><small class="one">جدك لأبيك</small><small class="rip">رحمه الله</small></span>`,"بطاقة باهتة تحت اسمها «رحمه الله»","قريب متوفى.")}
   ${row(`<span class="tn ctr me"><b>${esc(me?me.name:"أنت")}</b><small>أنت</small></span>`,"البطاقة الخضراء الممتلئة","أنت. من عندك تبدأ كل جهة.")}
-  ${row(`<span class="tn oc"><b>عبدالله</b><small>في المركز</small></span>`,"حلقة حول البطاقة","القريب الذي رُسمت الشجرة حوله في «الشجرة المفتوحة»، أو الذي تراه عائلته في «أهلها».")}
+  ${row(`<span class="tn oc"><b>عبدالله</b><small>صاحب الشجرة</small></span>`,"حلقة حول البطاقة","القريب الذي رُسمت الشجرة حوله في «الشجرة المفتوحة»، أو الذي تراه عائلته في «أهلها».")}
   ${row(sv(92,34,`<path class="tl fa" style="stroke-width:3" d="M4 6H88"/><path class="tl mo" style="stroke-width:3" d="M4 17H88"/><path class="tl in" style="stroke-width:3" d="M4 28H88"/>`),"ثلاثة ألوان","الأخضر جهة الأب، والذهبي جهة الأم، والأزرق "+(fem?"الزوج وأهله":"الزوجة وأهلها")+". اللون يقول من أي جهة تنظر.")}
   ${row(sv(96,30,two(3,24)+`<path class="tl fa mar" d="M36 12.5H60M36 17.5H60"/>`),"خطان بين اسمين","زواج. ولكل زواج خطه، فتعرف كم زوجة لكل رجل. ويُرتَّبن من «تعديل» في ملفه: الأولى ثم الثانية.")}
   ${row(sv(96,30,two(3,24)+`<path class="tl fa mar" d="M36 12.5H60M36 17.5H60"/><path class="tl fa mar dv" d="M43 20L47 10M49 20L53 10"/>`),"خط زواج يقطعه خطان صغيران","زواج انتهى بطلاق. ويبقى الأبناء نازلين من خطه.")}
@@ -2226,7 +2243,7 @@ function boardGuide(){const me=byId(S.meId),fem=me&&me.gender==="f";
   ${row(`<span class="lgk">⤢</span>`,"الجهة كلها","يُظهر الجهة كلها في اللوحة بأكبر حجم يسعها.")}
   ${row(`<span class="lgk">⛶</span>`,"ملء الشاشة","و✕ يعيد اللوحة إلى مكانها.")}
   ${row(`<span class="lgk">${EXPI}</span>`,"تصدير","الجهة التي تراها صورةً أو نصًّا لتشاركها مع أقاربك، أو تطبعها PDF في المتصفح.")}
-  ${row(`<span class="lgk" style="font-size:12px">الشجرة المفتوحة</span>`,"الشجرة المفتوحة","اجعل أي قريب في المركز، فتظهر فوقه أجداده وبجانبه زيجاته وتحته ذريته. و«عائلتي» تعيدك إلى جهاتك.")}
+  ${row(`<span class="lgk" style="font-size:12px">الشجرة المفتوحة</span>`,"الشجرة المفتوحة","اعرض شجرة أي قريب: فوقه أجداده، وبجانبه زيجاته، وتحته ذريته. و«عائلتي» تعيدك إلى جهاتك.")}
   </div>`,el=>{el.querySelector("[data-close]").onclick=closeSheet});
 }
 $("#fzHelp").onclick=()=>{if(!$("#ftip").hidden)ftipShow(false);boardGuide()};$("#ftipX").onclick=()=>ftipShow(false);
@@ -2352,7 +2369,7 @@ function applyTreeMode(){$("#famPanel").hidden=false;renderFam()}
 function oGo(id,hl){if(!byId(id))return;focusId=id;fHL=hl?id:"";oCol.clear();if(treeMode!=="open")setTreeMode("open");else{fCamKey="";fUserCam=false;fFitAll=false;renderSide()}}
 $("#toFull").onclick=()=>{if(treeMode==="open")setTreeMode("fam");else oGo(S.meId)};
 $("#obMe").onclick=()=>oGo(S.meId);
-$("#obTop").onclick=()=>{const c=byId(focusId)||byId(S.meId),t=c&&topOf(c);if(t&&t.id!==c.id){oGo(t.id);toast("في المركز: "+t.name)}};
+$("#obTop").onclick=()=>{const c=byId(focusId)||byId(S.meId),t=c&&topOf(c);if(t&&t.id!==c.id){oGo(t.id);toast("شجرة "+t.name)}};
 const FEM_N=new Set("مريم زينب هند سعاد وداد ايمان امل امال اماني نجلاء هيفاء شيماء علياء رغد جود لمي سلمي دعاء الاء اسراء رنا دانا دينا لينا رهف شهد ابتسام الهام احلام سهام وئام اريج عبير نسرين ياسمين جيهان حنان خلود وعد روان جني مها لبني ندي ضحي سجي رؤي هدي مني ليلي سارا اسماء رحاب نوال منال تهاني بشري سلوي نجوي عفاف وصال كوثر سوسن ريم غدير عهد رزان لجين لميس ميس ريتاج تسنيم اسيل حلا ملاك غلا دلال نهي رشا ربي بتول زهراء نور فاطمه عائشه عايشه خديجه نوره ساره حصه لطيفه منيره شيخه موزه هيله رقيه صفيه سميه رحمه نعيمه جميله فريده حميده سعيده بدريه فوزيه زكيه صالحه عزيزه شريفه حليمه اميره سميره نبيله عاليه غاليه جوهره مزنه نجمه وضحه حمده لولوه غاده هاله منيره اميمه هيا نوف عنود بدور اروي ريما رانيا وفاء صفاء رجاء هناء ثناء سناء لمياء ميار ليان لين يارا تالا ديما فرح هاجر مرام ريهام عبله".split(" "));
 const MALE_T=new Set("حمزه اسامه طلحه عبيده معاويه عروه قتاده عكرمه حذيفه خزيمه جبله ثعلبه ميسره عنتره مسلمه شيبه عتبه اميه قدامه عماره سلمه عطيه حارثه عقبه كنانه خليفه ربيعه سلامه رفاعه عباده جناده طه عبده وجيه نبيه نزيه فقيه".split(" "));
 function guessG(n){const raw=String(n||"").trim().split(/\s+/)[0]||"",y=norm(raw),x=y.replace(/^ال/,"");if(!x)return"";if(MALE_T.has(y)||MALE_T.has(x))return"m";if(FEM_N.has(y)||FEM_N.has(x)||/ة$/.test(raw)||(/ه$/.test(y)&&!/لله$/.test(y)&&x.length>2))return"f";return""}
@@ -2500,7 +2517,10 @@ async function initRemote(){
 }
 /* ---------- app update (Android app only) ---------- */
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={18:[
+const CHANGES={19:[
+  "ترتيب الزوجات باختيار مباشر: في ملف من له أكثر من زوجة، والتعديل مفتوح، زر «ترتيب الزوجات» تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة، فيُحفظ فورًا. وفي «تعديل» صار الاختيار نفسه بدل الأسهم",
+  "تسمية أوضح: «اجعله في المركز» صار «اعرض شجرته»، و«أنا في المركز» صار «شجرتي». والزر يفتح الشجرة حوله: أجداده فوقه، وزيجاته بجانبه، وذريته تحته"],
+18:[
   "قفل واحد في أعلى اللوحة يمينًا بدل الأقفال الصغيرة على الخطوط: مقفلًا تكون اللوحة والملفات للعرض فقط بلا خانات إضافة ولا «تعديل» ولا «حذف»، ومفتوحًا يصير «تعديل» ويُحاط اللوح بإطار متقطع بلون الجهة. ويُقفل كلما فتحت التطبيق",
   "تصنيفات الإحسان ثلاثة: مصاريف، علاج، أخرى، و«أخرى» تفتح خانة تكتب فيها ما هو. والأنواع القديمة نُقلت إليها: النفقة صارت مصاريف، والصدقة والزكاة والهدية صارت «أخرى» واسمها في التعليق، ومجموع كل تصنيف في السنة باقٍ",
   "قائمتا الإحسان مختصرتان: كل مبلغ سطر واحد فيه الاسم والمبلغ ويوم الاستحقاق وحاله، وزر ✓ في السطر نفسه يسجّل التحويل ومعه «تراجع»، ولمس السطر يفتح التفاصيل والتعديل",
@@ -2547,9 +2567,9 @@ const CHANGES={18:[
   "واتساب يعرف الرقم السوداني (09 و01) والسعودي (05)، ورمز دولتك لغيرهما في الإعدادات",
   "الإحسان: «مبالغ شهرية» و«مبالغ متفرقة»، والقائمة أولًا والإضافة بزر «+ أضف»",
   "«اقتراحاتك» زر صغير بجانب «الإعدادات»، والإعدادات تبدأ بالنسخة الاحتياطية",
-  "عربية أدق: قبل 3 أيام وقبل 11 يومًا، واجعلها في المركز، ومتوفاة، وعناوين الإضافة مثل «إضافة: أبو فلان»"],
+  "عربية أدق: قبل 3 أيام وقبل 11 يومًا، واعرض شجرتها، ومتوفاة، وعناوين الإضافة مثل «إضافة: أبو فلان»"],
 11:[
-  "«الشجرة المفتوحة» صارت بالرسم الجديد: كل زواج بخطه، وزوجات الجد وأبناؤهن ظاهرون، وتملأ الشاشة بأدوات اللوحة نفسها. تحتها «الجد الأعلى» و«أنا في المركز»، و«أهلها» يجعل الزوجة في المركز",
+  "«الشجرة المفتوحة» صارت بالرسم الجديد: كل زواج بخطه، وزوجات الجد وأبناؤهن ظاهرون، وتملأ الشاشة بأدوات اللوحة نفسها. تحتها «الجد الأعلى» و«شجرتي»، و«أهلها» يعرض عائلة الزوجة",
   "البحث يقدّم من يطابق اسمه، ويكتب سبب ظهور غيره مثل «زوجة محمد»، وزر «الشجرة» ينقلك إلى القريب ويضيء بطاقته",
   "زر الرجوع في الجوال يغلق الملف أو ملء الشاشة أو الشجرة المفتوحة أولًا، ولا يخرج من التطبيق إلا من الشاشة الرئيسية",
   "نسخة احتياطية بلمسة: «أرسلها إلى بريدي» في الإعدادات، والاستعادة بلصق الرسالة، وتذكير في «اليوم» إذا مر شهر بلا نسخة",
@@ -2566,11 +2586,11 @@ const CHANGES={18:[
   "«عائلتي» صارت لوحة واسعة تحتها ثلاث بطاقات: جهة الأب يمينًا، وجهة الأم يسارًا، والزوجة وأهلها تحتهما. المس بطاقة فتملأ جهتها اللوحة كلها",
   "كل جهة شجرة متفرعة لا أسماء مكدسة: الجد والجدة جنبًا إلى جنب، وأبناؤهما صفًّا تحتهما (أبوك وأعمامك وعماتك)، ثم أنت تحت أبويك",
   "الرقم تحت أي اسم يفتح فرعه (زوجه وأبناءه)، و«أهلها» فوق الجدة ينقلك إلى عائلتها، والخانات المنقطة تضيف في مكانها حتى جد الجد",
-  "⛶ يملأ الشاشة بالجهة والبطاقات معًا، و«الشجرة المفتوحة» باقية لمن أراد أن يجعل أي قريب في المركز"],
+  "⛶ يملأ الشاشة بالجهة والبطاقات معًا، و«الشجرة المفتوحة» باقية لمن أراد شجرة أي قريب"],
 8:[
-  "الشجرة المفتوحة: أنت في المركز، وأجدادك فوقك بلا حد، جهة أبيك يمينًا وجهة أمك يسارًا، وزوجاتك وذريتك تحتك",
+  "الشجرة المفتوحة: شجرتك، وأجدادك فوقك بلا حد، جهة أبيك يمينًا وجهة أمك يسارًا، وزوجاتك وذريتك تحتك",
   "خانة منقّطة لكل أب أو أم ناقص، حتى جد الجد وأم الجد وأجدادها، وخانات للزوجة والأبناء",
-  "أبناء كل زوجة تحتها، والرقم الذهبي فوق أي جد يجعله في المركز فتظهر ذريته كلها: الأعمام والأخوال وأبناؤهم",
+  "أبناء كل زوجة تحتها، والرقم الذهبي فوق أي جد يعرض شجرته فتظهر ذريته كلها: الأعمام والأخوال وأبناؤهم",
   "صلة كل شخص بك مكتوبة تحت اسمه في الشجرة",
   "السحب بإصبع والتقريب بإصبعين، والبحث للانتقال إلى أي قريب، و«من الجد الأعلى» لرؤية العائلة كلها"],
 7:[
