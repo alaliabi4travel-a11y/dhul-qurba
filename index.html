@@ -674,6 +674,36 @@ nav.tabs .tab-n[hidden]{display:none}
 .dnm b{font-size:calc(15px*var(--fs,1))}
 .dnm small{font-size:calc(12px*var(--fs,1));color:var(--muted)}
 .dnm:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+/* v24: the contact schedule: «كل أسبوع» and «كل شهر» due on one contact day; a row like the monthly amounts: the name and how it stands, the call, WhatsApp and ✓ */
+.csub{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:-6px;font-size:calc(13px*var(--fs,1));color:var(--muted)}
+.csub b{color:var(--fg);font-weight:600}
+.cgrp{display:flex;flex-direction:column;min-width:0}
+.cgrp+.cgrp{margin-top:16px}
+.cgh{display:flex;align-items:center;gap:8px;min-width:0}
+.cgh h3{font-size:calc(16px*var(--fs,1));font-weight:700;white-space:nowrap}
+.cgp{flex:none;font-size:calc(12px*var(--fs,1));font-weight:700;color:var(--muted);background:var(--sunk);border-radius:999px;padding:1px 9px;white-space:nowrap}
+.cgp.all{color:var(--good);background:color-mix(in srgb,var(--good) 15%,transparent)}
+.btn.cgcal{margin-inline-start:auto;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;text-decoration:none}
+.btn.cgcal svg{width:15px;height:15px;flex:none}
+.btn.cgcal.on{color:var(--muted);font-weight:500}
+.cgs{font-size:calc(12.5px*var(--fs,1));color:var(--muted);margin:2px 0 4px}
+.cgs b{color:var(--fg);font-weight:600}
+.crw{gap:6px}
+.crw .i2{gap:6px}
+.crl{flex:1;min-width:0;font-size:calc(12.5px*var(--fs,1));color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cst{font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cst.good{color:var(--good)}
+.cst.warn{color:var(--warn)}
+.cst.bad{color:var(--bad)}
+.ctag{flex:none;font-size:calc(11.5px*var(--fs,1));font-weight:600;color:var(--in);background:var(--in-soft);border-radius:999px;padding:0 7px;white-space:nowrap}
+.ctag.bad{color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,transparent)}
+.cico{flex:none;width:34px;height:34px;box-sizing:border-box;border-radius:50%;border:1.4px solid var(--line);background:var(--surface);color:var(--accent);display:grid;place-items:center;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.cico svg{width:17px;height:17px}
+.cico.wa{color:#1d8a4b}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cico.wa{color:#62cf8f}}
+:root[data-theme="dark"] .cico.wa{color:#62cf8f}
+.cico:active{background:var(--sunk)}
+.cico:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media print{body>*:not(#printArea){display:none!important}#printArea{display:block!important}#printArea img{display:block;width:100%;height:auto}html,body{background:#fff!important}body::before{display:none}}
 </style>
 
@@ -752,18 +782,16 @@ nav.tabs .tab-n[hidden]{display:none}
 
   <!-- التواصل -->
   <section class="view" id="v-contact" hidden>
-    <div class="panel" id="today"></div>
+    <div class="panel" id="today" hidden></div>
     <div class="panel">
       <div class="row"><h2 class="grow">جدول التواصل</h2><button class="btn sm soft" type="button" id="cAddT" aria-expanded="false" aria-controls="cForm">+ أضف قريبًا</button></div>
+      <div class="csub" id="cDay" hidden></div>
       <div class="cform" id="cForm" hidden>
-        <p class="sub" style="margin:0">اكتب الاسم الأول، ثم اختر القريب من الشجرة.</p>
-        <div class="row">
-          <div class="ac grow" id="cName"></div>
-          <button class="btn primary" id="cAdd" type="button">إضافة</button>
-        </div>
+        <p class="sub" style="margin:0" id="cFormSub">اكتب اسم القريب واختره من الشجرة، ثم اختر القائمة.</p>
+        <div class="ac" id="cName"></div>
+        <div class="row"><button class="btn primary" id="cAddW" type="button">+ كل أسبوع</button><button class="btn" id="cAddM" type="button">+ كل شهر</button></div>
         <div class="csides" id="cSides" hidden></div>
       </div>
-      <div class="seg2 cfilt" id="cFilt" role="group" aria-label="فرز جدول التواصل" hidden></div>
       <div class="clist" id="cBody"></div>
     </div>
   </section>
@@ -813,7 +841,7 @@ nav.tabs .tab-n[hidden]{display:none}
     ذو القربى</button>
   <button role="tab" id="t-contact" aria-selected="false" data-v="v-contact" type="button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M8 14.5l2 2 4-4"/></svg>
-    التواصل</button>
+    التواصل<span class="badge tab-n" id="coN" hidden>0</span></button>
   <button role="tab" id="t-ihsan" aria-selected="false" data-v="v-ihsan" type="button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M9.5 11.5h5M12 9v5"/></svg>
     الإحسان<span class="badge tab-n" id="ihN" hidden>0</span></button>
@@ -844,7 +872,7 @@ window.addEventListener("load",function(){setTimeout(function(){if(window.__dqOK
 "use strict";
 /* ---------- storage ---------- */
 const KEY="dhulqurba.v1";
-const WEB_BUILD=23;
+const WEB_BUILD=24;
 let mem=null,loadBad=null,saveErr=false;
 function load(){let s=null;try{s=localStorage.getItem(KEY)}catch(e){return mem}if(!s)return mem;
   try{const d=JSON.parse(s);if(d&&typeof d==="object"&&Array.isArray(d.people))return d}catch(e){}
@@ -938,13 +966,15 @@ function clean(D){ // ids, names, links that lead somewhere, no one his own ance
   const who=r=>{r.personId=by.has(str(r.personId))?str(r.personId):"";r.name=str(r.name);if(!r.personId&&!r.name.trim())r.name="بلا اسم"};
   const amt=v=>{const n=typeof v==="number"?v:numIn(v);return isFinite(n)&&n>=0?n:0};
   D.contacts=objs(D.contacts).map(c=>{c.id=rid(c);who(c);c.log=[...new Set((Array.isArray(c.log)?c.log:[]).filter(okD))].sort((a,b)=>b.localeCompare(a));
-    if(!obj(c.meta))c.meta={};c.appt=okD(c.appt)?c.appt:null;if(c.freq!=null){if([7,14,30,90].includes(+c.freq))c.freq=+c.freq;else delete c.freq}return c});
+    if(!obj(c.meta))c.meta={};c.appt=okD(c.appt)?c.appt:null;if(c.every!=="w"&&c.every!=="m"){delete c.every;const f=+c.freq;if(f===7||f===14)c.every="w";else if(f===30||f===90)c.every="m"}delete c.freq;return c}); // a frequency chosen before becomes its list
   D.fixed=objs(D.fixed).map(r=>{r.id=rid(r);who(r);r.amount=amt(r.amount);r.day=Math.min(31,Math.max(1,parseInt(toLat(r.day),10)||1));
     r.transfers=objs(r.transfers).filter(t=>okD(t.date)).map(t=>Object.assign(t,{amount:amt(t.amount),ym:/^\d{4}-\d{2}$/.test(t.ym)?t.ym:ymOf(t.date)})).sort((a,b)=>b.date.localeCompare(a.date));return r});
   D.variable=objs(D.variable).map(v=>{v.id=rid(v);who(v);v.amount=amt(v.amount);if(!okD(v.date))v.date=new Date().toISOString();return v});
   [...D.fixed,...D.variable].forEach(r=>{const w={s:"صدقة",z:"زكاة",h:"هدية"}[r.kind];if(r.kind==="n")r.kind="m";else if(w){r.kind="o";if(!(typeof r.note==="string"&&r.note.trim()))r.note=w} // the four old kinds into the three categories
     if(!["m","t","o"].includes(r.kind))delete r.kind;if(r.kind==="o"&&typeof r.note==="string"&&r.note.trim())r.note=r.note.trim().slice(0,120);else delete r.note});D.fixed.forEach(r=>{if(!/^\d{4}-\d{2}$/.test(r.since)){const m=r.transfers.map(t=>t.ym).filter(x=>/^\d{4}-\d{2}$/.test(x)).sort()[0];r.since=m||ymOf(Date.now())}}); // the kind of giving, and the month a monthly amount began: for one from before, its first transfer, else this month
   D.contacts.forEach(c=>{if(!okD(c.added))delete c.added});
+  if(D.cday!=null){const w=obj(D.cday)?D.cday.wd:null,t=obj(D.cday)?D.cday.t:"";if(Number.isInteger(w)&&w>=0&&w<7&&typeof t==="string"&&/^([01]\d|2[0-3]):[0-5]\d$/.test(t))D.cday={wd:w,t};else delete D.cday} // the contact day and its hour
+  if(D.gcal!=null){const o={};if(obj(D.gcal))["w","m"].forEach(k=>{if(typeof D.gcal[k]==="string"&&/^[0-6]\|\d\d:\d\d$/.test(D.gcal[k]))o[k]=D.gcal[k]});if(Object.keys(o).length)D.gcal=o;else delete D.gcal} // the reminder of each list sent to Google Calendar, on that day and hour
   if(D.seasons!=null){const o={};if(obj(D.seasons))Object.keys(D.seasons).forEach(k=>{if(/^[rfa]\d{4}$/.test(k)&&Array.isArray(D.seasons[k]))o[k]=[...new Set(D.seasons[k].map(str).filter(Boolean))]});D.seasons=o}
   if(D.dupNo!=null){const o=[...new Set((Array.isArray(D.dupNo)?D.dupNo:[]).map(str).map(k=>k.split("|")).filter(x=>x.length===2&&x[0]&&x[1]&&x[0]!==x[1]&&by.has(x[0])&&by.has(x[1])).map(x=>x[0]<x[1]?x[0]+"|"+x[1]:x[1]+"|"+x[0]))].slice(-3000);if(o.length)D.dupNo=o;else delete D.dupNo} // «لا» to «هل هو نفسه؟»: the two are two people
   if(D.greet!=null){if(!obj(D.greet))delete D.greet;else Object.keys(D.greet).forEach(k=>{if(!/^[rfa]$/.test(k)||typeof D.greet[k]!=="string"||!D.greet[k].trim())delete D.greet[k]})}
@@ -1098,6 +1128,7 @@ function nasab(p,depth=4){
   const fam=familyOf(p);if(fam)out+=" "+fam;return out;
 }
 const nameOf=r=>r.personId&&byId(r.personId)?nasab(byId(r.personId),3):(r.name||"—");
+const fnm=r=>{const P=r.personId&&byId(r.personId);return P?(P.name||"—"):(r.name||"—")}; // what to call him by: «عبد الله» and «أبو علي» whole, not their first word
 function copyText(t,ok){const fb=()=>{const a=document.createElement("textarea");a.value=t;a.setAttribute("readonly","");a.style.cssText="position:fixed;top:0;opacity:0";document.body.appendChild(a);a.select();let r=false;try{r=document.execCommand("copy")}catch(e){}a.remove();toast(r?ok:"تعذّر النسخ")};
   try{if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(()=>toast(ok),fb);else fb()}catch(e){fb()}}
 /* a backup is the data as base64 between two marks, so an e-mail app's line breaks or a signature after it do no harm */
@@ -1203,11 +1234,11 @@ function openPerson(id,keep){
     const lbl=groups.filter(x=>x.kids.length).length>1||(g.other&&sp.length>1)?(g.other?"من "+g.other.name:(fem?"الأب غير محدد":"الأم غير محددة")):"";
     return`<div class="kgrp">${lbl?`<span class="mgrp">${esc(lbl)}:</span>`:""}${g.kids.map(k=>chip(k)).join("")}</div>`}).join("");
   let con=""; // reaching the relative comes first: it is what the profile is for
-  if(!isMe&&!dead){const ph=p.phone||"",c=inC,last=c&&c.log[0],di=c?dueIn(c):0;
+  if(!isMe&&!dead){const ph=p.phone||"",c=inC,last=c&&c.log[0],cs=c?cState(c):null;
     con=`<section class="pcon" aria-label="التواصل">
       ${ph?`<span class="ph num">${esc(ph)}</span>`:""}
-      <div class="row">${ph?callBtns(c,p,ph,""):""}${c?`<button class="btn primary" type="button" id="pDone">تم التواصل</button>`:`<button class="btn soft" type="button" id="pToContact">${fem?"أضفها":"أضفه"} إلى التواصل</button>`}${ph||!ed?"":`<button class="slot" type="button" id="pPh">+ أضف رقم الجوال</button>`}</div>
-      ${c?`<div class="meta"><span>آخر تواصل</span><span class="pill ${!last?(di<0?"bad":"mute"):di>=3?"good":di>=0?"warn":"bad"}">${last?agoD(daysAgo(last)):"لم تتواصل بعد"}</span><span>· ${fem?"تصلها":"تصله"} ${esc(freqName(c))}</span>${c.appt?`<span>· موعدك القادم <span class="num">${fmtDT(c.appt)}</span></span>`:""}<span style="flex:1"></span><button class="lnk" type="button" id="pCDet">المواعيد والسجل</button></div>`:""}
+      <div class="row">${ph?callBtns(c,p,ph,""):""}${c?`<button class="btn primary" type="button" id="pDone">تم التواصل</button>`:`<span class="sub">${fem?"أضفها":"أضفه"} إلى التواصل:</span><button class="btn soft" type="button" data-pto="w">كل أسبوع</button><button class="btn soft" type="button" data-pto="m">كل شهر</button>`}${ph||!ed?"":`<button class="slot" type="button" id="pPh">+ أضف رقم الجوال</button>`}</div>
+      ${c?`<div class="meta"><span>آخر تواصل</span><span class="pill ${cs.st==="done"?"good":cs.st==="late"?"bad":"mute"}">${last?agoD(daysAgo(last)):"لم تتواصل بعد"}</span><span>· في «${EVERY[cs.k]}»</span>${c.appt?`<span>· موعد خاص <span class="num">${fmtDT(c.appt)}</span></span>`:""}<span style="flex:1"></span><button class="lnk" type="button" id="pCDet">المواعيد والسجل</button></div>`:""}
     </section>`}
   const gv=givenTo(p.id,String(new Date().getFullYear())),fx=S.fixed.filter(r=>r.personId===p.id),bl=veiled?" blur":""; // what you gave: hidden under the veil like the rest of the amounts
   const det=[p.city?["المدينة",esc(p.city)]:null,p.born?["سنة الميلاد",`<span class="num">${esc(p.born)}</span>`]:null,p.notes?["ملاحظات",esc(p.notes)]:null,
@@ -1244,7 +1275,7 @@ function openPerson(id,keep){
     q("#pFocus").onclick=()=>{closeSheet();showTab("v-tree");oGo(p.id,true)};
     if(q("#pPh"))q("#pPh").onclick=()=>editPerson(p.id,{},"e-ph");
     if(q("#pDone"))q("#pDone").onclick=()=>{logContact(inC);openPerson(p.id,true)};
-    if(q("#pToContact"))q("#pToContact").onclick=()=>{addContact(p.id,"");openPerson(p.id,true)};
+    el.querySelectorAll("[data-pto]").forEach(b=>b.onclick=()=>{addContact(p.id,"",false,b.dataset.pto);openPerson(p.id,true)});
     if(q("#pCDet"))q("#pCDet").onclick=()=>editContact(inC.id,false,p.id);
   },{keep});
 }
@@ -1387,13 +1418,14 @@ function relChain(xId,pId){const X=byId(xId),P=byId(pId);if(!X||!P)return"";if(x
   return`<div class="sub" style="margin:0 0 4px">${st.some(([a,b])=>spousesOf(byId(a)).includes(byId(b)))?"لا يجمعهما جد في الشجرة، ويصل بينهما الزواج:":"الطريق بينهما في الشجرة:"}</div>${nm(X)}${st.map(([a,b])=>` ← ${esc(stepW(byId(a),byId(b)))} ${nm(byId(b))}`).join("")}`}
 
 /* ---------- contact ---------- */
-const acC=makeAC($("#cName"),{placeholder:"اكتب الاسم الأول، مثل: أحمد",filter:p=>p.alive!==false});
-function addContact(personId,name,quiet){
+const acC=makeAC($("#cName"),{placeholder:"اكتب الاسم الأول، مثل: أحمد",filter:p=>p.alive!==false,onPick:st=>cPickHi(st.personId)});
+function addContact(personId,name,quiet,every){
   if(personId&&S.contacts.some(c=>c.personId===personId)){toast("موجود في الجدول");return null}
   {const pp=personId&&byId(personId);if(pp&&pp.alive===false){toast(rip(pp)+". المتوفى لا يُضاف إلى جدول التواصل، ويمكنك تسجيل صدقة عنه في الإحسان.");return null}}
-  const c={id:uid(),personId,name,log:[],appt:null};S.contacts.unshift(c);save();renderContacts();if(!quiet)toast("أُضيف إلى جدول التواصل");return c;
+  const c={id:uid(),personId,name,log:[],appt:null,added:new Date().toISOString()};c.every=every==="w"||every==="m"?every:defaultEvery(c); // in the list you chose, or the one his nearness suggests
+  S.contacts.unshift(c);save();renderContacts();if(!quiet)toast("أُضيف "+fnm(c)+" إلى «"+EVERY[c.every]+"»");return c;
 }
-let cAddOpen=false,cFilt="all";
+let cAddOpen=false;
 /* a whole side at once: the nearest, your father's side, your mother's side, your wife's family */
 function sideGroups(){const me=byId(S.meId);if(!me)return[];
   const by=new Map(S.people.map(p=>[p.id,p])),inC=new Set(S.contacts.map(c=>c.personId).filter(Boolean));
@@ -1407,27 +1439,53 @@ function sideGroups(){const me=byId(S.meId);if(!me)return[];
   const srt=a=>a.sort((p,q)=>p[1]-q[1]).map(z=>z[0]),fem=me.gender==="f",w1=sps.length>1;
   return[["near","الأقربون",srt(G.near)],["fa","جهة الأب",srt(G.fa)],["mo","جهة الأم",srt(G.mo)],["sp",fem?(w1?"أهل أزواجك":"أهل زوجك"):(w1?"أهل زوجاتك":"أهل زوجتك"),srt(G.sp)]].filter(g=>g[2].length)}
 $("#cAddT").onclick=()=>{cAddOpen=!cAddOpen;renderContacts();if(cAddOpen)setTimeout(()=>acC.input.focus(),30)};
-$("#cAdd").onclick=()=>{const v=acC.get();if(!acC.valid()){acC.input.focus();return}acC.clear();cAddOpen=false;addContact(v.personId,v.personId?"":v.text)};
-$("#cFilt").addEventListener("click",e=>{const b=e.target.closest("[data-cf]");if(!b)return;cFilt=b.dataset.cf;renderContacts()});
+function cAddAs(k){const v=acC.get();if(!acC.valid()){acC.input.focus();toast("اكتب اسم القريب أولًا");return}acC.clear();cPickHi("");cAddOpen=false;addContact(v.personId,v.personId?"":v.text,false,k)}
+function cPickHi(pid){const k=pid?defaultEvery({personId:pid}):"w";$("#cAddW").classList.toggle("primary",k==="w");$("#cAddM").classList.toggle("primary",k==="m")} // the list his nearness suggests is the bright button
+$("#cAddW").onclick=()=>cAddAs("w");$("#cAddM").onclick=()=>cAddAs("m");acC.input.addEventListener("input",()=>cPickHi(""));
 $("#cSides").addEventListener("click",e=>{const b=e.target.closest("[data-cside]");if(!b)return;const g=sideGroups().find(x=>x[0]===b.dataset.cside);if(!g)return;
-  const now=new Date().toISOString(),made=g[2].map(x=>({id:uid(),personId:x.id,name:"",log:[],appt:null,added:now})),ids=new Set(made.map(c=>c.id)); // each is due by his nearness: the nearest first
+  const now=new Date().toISOString(),made=g[2].map(x=>({id:uid(),personId:x.id,name:"",log:[],appt:null,added:now,every:defaultEvery({personId:x.id})})),ids=new Set(made.map(c=>c.id)); // each in the list his nearness suggests, due from the day he was added
   S.contacts.push(...made);cAddOpen=false;acC.clear();save();renderContacts();
   toast("أُضيف "+nn(made.length,AQ)+" إلى جدول التواصل: "+g[1],{label:"تراجع",fn:()=>{S.contacts=S.contacts.filter(c=>!ids.has(c.id));save();renderContacts()}},9000)});
 function gcalLink(title,iso){
   const s=new Date(iso),e=new Date(s.getTime()+30*6e4);const f=d=>d.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"");
   return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(title)+"&dates="+f(s)+"/"+f(e)+"&details="+encodeURIComponent("تذكير من تطبيق ذو القربى: صلة الرحم");
 }
-let openRow=null,apptRow=null,metaRow=null;
-const FREQ=[[7,"كل أسبوع"],[14,"كل أسبوعين"],[30,"كل شهر"],[90,"كل 3 أشهر"]];
+const EVERY={w:"كل أسبوع",m:"كل شهر"};
 function kinDeg(aId,bId){const ma=ancestors(aId),mb=ancestors(bId);let d=1e9;ma.forEach((ia,k)=>{const ib=mb.get(k);if(ib)d=Math.min(d,ia.d+ib.d)});return d}
-const fqMemo=new Map();
-function defaultFreq(c){ // by how close the relative is to you: parents, children and your wife every week; brothers, sisters and grandparents every two weeks; uncles and aunts every month; the rest every three months
-  const me=byId(S.meId),p=c.personId&&byId(c.personId);if(!me||!p)return 30;
-  const k=p.id+"|"+me.id+"|"+(S.updatedAt||0);if(fqMemo.has(k))return fqMemo.get(k);if(fqMemo.size>400)fqMemo.clear();
-  const d=spousesOf(me).includes(p)&&!isDiv(me,p)?1:kinDeg(me.id,p.id),v=d<=1?7:d===2?14:d===3?30:90;fqMemo.set(k,v);return v}
-const freqOf=c=>c.freq||defaultFreq(c);
-const freqName=c=>(FREQ.find(f=>f[0]===freqOf(c))||[])[1]||"";
-function dueIn(c){const last=c.log[0];if(!last)return c.added?freqOf(c)-daysAgo(c.added):-1;return freqOf(c)-daysAgo(last)} // <0 overdue; one added with a whole side is due by his nearness, from the day he was added
+const evMemo=new Map();
+function defaultEvery(c){ // the list by nearness: parents, children, your wife, brothers, sisters, grandparents and grandchildren every week; the rest every month
+  const me=byId(S.meId),p=c.personId&&byId(c.personId);if(!me||!p)return"m";
+  const k=p.id+"|"+me.id+"|"+(S.updatedAt||0);if(evMemo.has(k))return evMemo.get(k);if(evMemo.size>400)evMemo.clear();
+  const d=spousesOf(me).includes(p)&&!isDiv(me,p)?1:kinDeg(me.id,p.id),v=d<=2?"w":"m";evMemo.set(k,v);return v}
+const everyOf=c=>c.every==="w"||c.every==="m"?c.every:defaultEvery(c);
+/* the contact day: «كل أسبوع» is due on it every week, «كل شهر» on the first of it in the month; a round of a list ends on its day */
+const WDN=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+function cDay(){const c=S.cday||{};return{wd:Number.isInteger(c.wd)&&c.wd>=0&&c.wd<7?c.wd:5,t:/^([01]\d|2[0-3]):[0-5]\d$/.test(c.t||"")?c.t:"17:00"}} // Friday at five, unless you choose
+function dayAt(d,n){const x=new Date(d);x.setHours(12,0,0,0);x.setDate(x.getDate()+n);return x} // at noon, so a day stays itself
+function firstWd(y,m,wd){const t=new Date(y,m,1,12);t.setDate(1+((wd-t.getDay()+7)%7));return t}
+function cSlot(k){const {wd}=cDay(),b=dayAt(new Date(),0);if(k==="w")return dayAt(b,(wd-b.getDay()+7)%7); // the day of the list: today, or the first after it
+  let t=firstWd(b.getFullYear(),b.getMonth(),wd);if(t<b)t=firstWd(b.getFullYear(),b.getMonth()+1,wd);return t}
+const cPrev=(k,s)=>k==="w"?dayAt(s,-7):firstWd(s.getFullYear(),s.getMonth()-1,cDay().wd);
+const cNext=(k,s)=>k==="w"?dayAt(s,7):firstWd(s.getFullYear(),s.getMonth()+1,cDay().wd);
+const dKey=d=>{const x=new Date(d);return x.getFullYear()*1e4+(x.getMonth()+1)*100+x.getDate()}; // a day as a number: days are compared, not hours
+function cState(c){ // «done»: reached after the day before this round's; «late»: a whole round went by without him; else «due» on this round's day
+  const k=everyOf(c),s0=cSlot(k),p1=cPrev(k,s0),L=c.log[0]?dKey(c.log[0]):0,A=c.added?dKey(c.added):0;
+  const st=L>dKey(p1)?"done":Math.max(L,A)>dKey(cPrev(k,p1))?"due":"late";
+  return{k,st,s0,next:st==="done"?cNext(k,s0):s0,today:st!=="done"&&dKey(s0)===dKey(new Date())}}
+const fmtWD=d=>d.toLocaleDateString(LOC,{weekday:"long",day:"numeric",month:"long"}); // «الجمعة، 27 نوفمبر»
+const fmtT=t=>{const [h,m]=t.split(":").map(Number);return new Date(2026,0,1,h,m).toLocaleTimeString(LOC,{hour:"numeric",minute:"2-digit"})}; // «5:00 م»
+function gcalSlot(k){ // Google Calendar: a reminder on the contact day at its hour, repeating every week, or on the first of it in every month
+  const {wd,t}=cDay(),s=cSlot(k),[hh,mi]=t.split(":").map(Number),a=new Date(s.getFullYear(),s.getMonth(),s.getDate(),hh,mi),b=new Date(a.getTime()+30*6e4);
+  const p2=v=>String(v).padStart(2,"0"),f=d=>d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+"T"+p2(d.getHours())+p2(d.getMinutes())+"00";
+  let tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}
+  const by=["SU","MO","TU","WE","TH","FR","SA"][wd],rule=k==="w"?"RRULE:FREQ=WEEKLY;BYDAY="+by:"RRULE:FREQ=MONTHLY;BYDAY=1"+by;
+  const L=S.contacts.filter(c=>!deadC(c)&&everyOf(c)===k).map(c=>{const r=c.personId&&byId(c.personId)?relToMe(c.personId):"";return fnm(c)+(r?" ("+r+")":"")});
+  const det="تذكير من تطبيق ذو القربى: صلة الرحم.\n"+(L.length?"«"+EVERY[k]+"»: "+L.slice(0,15).join("، ")+(L.length>15?"، وغيرهم":"")+".\n":"")+"افتح التطبيق لترى من بقي، والمس ✓ لمن تواصلت معه.";
+  return"https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(k==="w"?"صلة الرحم: تواصل الأسبوع":"صلة الرحم: تواصل الشهر")+"&dates="+f(a)+"/"+f(b)+(tz?"&ctz="+encodeURIComponent(tz):"")+"&recur="+encodeURIComponent(rule)+"&details="+encodeURIComponent(det)}
+const ICO_PH='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+const ICO_WA='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path transform="translate(7.7 7.3) scale(.37)" fill="currentColor" stroke="none" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+const ICO_CAL='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+const callIco=(c,ph,first)=>`<a class="cico" href="tel:${esc(toLat(ph).replace(/[^\d+]/g,""))}" data-call="${c.id}" data-pid="${c.personId||""}" data-kind="اتصال" aria-label="${esc("اتصال ب"+first)}">${ICO_PH}</a><a class="cico wa" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener" data-call="${c.id}" data-pid="${c.personId||""}" data-kind="واتساب" aria-label="${esc("واتساب "+first)}">${ICO_WA}</a>`;
 const phoneOf=c=>{const p=c.personId&&byId(c.personId);return p&&p.phone?p.phone:""};
 // WhatsApp needs the number with its country: a number written with + or 00 keeps its own; a local one is known by its shape (05 Saudi, 09 or 01 Sudan, 01 with 11 digits Egypt), else the country in the settings
 const waNum=ph=>{const raw=toLat(ph).trim();let d=raw.replace(/\D/g,"");if(raw.startsWith("+"))return d;if(d.startsWith("00"))return d.slice(2);
@@ -1437,38 +1495,45 @@ const callBtns=(c,p,ph,sm)=>{const pid=p?p.id:(c&&c.personId)||"",cid=c?c.id:"",
   return`<a class="${k}" href="tel:${esc(toLat(ph).replace(/[^\d+]/g,""))}" data-call="${cid}" data-pid="${pid}" data-kind="اتصال">اتصال</a><a class="${k}" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener" data-call="${cid}" data-pid="${pid}" data-kind="واتساب">واتساب</a>`};
 const nmBtn=(r,label)=>r.personId&&byId(r.personId)?`<button class="nm" type="button" data-open="${r.personId}">${esc(label)}</button>`:`<b>${esc(label)}</b>`;
 const TYPES=["اتصال","زيارة","رسالة","واتساب"];
-function renderToday(){
-  const live=S.contacts.filter(c=>!deadC(c));const late=live.filter(c=>dueIn(c)<0).sort((a,b)=>dueIn(a)-dueIn(b));
-  const now=new Date(),end=new Date();end.setHours(23,59,59);
-  const appts=live.filter(c=>c.appt&&new Date(c.appt)<=end);
-  const who=c=>c.personId&&byId(c.personId)?nmBtn(c,nameOf(c).split(" ")[0]):`<button class="nm" type="button" data-cedit="${c.id}">${esc(nameOf(c).split(" ")[0])}</button>`;
+function renderToday(){ // only what needs you today, none of the schedule again: a visit set for today, the greeting in its days, the backup
+  const live=S.contacts.filter(c=>!deadC(c)),now=new Date(),end=new Date();end.setHours(23,59,59,999);
+  const appts=live.filter(c=>c.appt&&new Date(c.appt)<=end).sort((a,b)=>a.appt.localeCompare(b.appt));
+  const who=c=>c.personId&&byId(c.personId)?nmBtn(c,fnm(c)):`<button class="nm" type="button" data-cedit="${c.id}">${esc(fnm(c))}</button>`;
   const item=(c,extra)=>{const ph=phoneOf(c);return`<li><span class="who">${who(c)} <span class="full">${extra}</span></span>${ph?callBtns(c,null,ph,1):""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></li>`};
   const lb=S.lastBackup?daysAgo(S.lastBackup):-1,needBk=!S.demo&&S.people.length>=5&&(lb<0||lb>=30);
-  const I=seaInfo(),sc=I&&I.cur?seaCount(I.cur.key):null,seaDue=!!sc&&sc.n<sc.t;
-  const total=late.length+appts.length+(needBk?1:0)+(seaDue?1:0); // the amounts due are in «الإحسان», counted on its tab below
-  $("#today").innerHTML=`<div class="row"><h2 class="grow">اليوم</h2><span class="pill ${total?"warn":"good"}">${total?total+" بانتظارك":"لا شيء متأخر"}</span></div>
-  ${sc?`<h3>${esc(I.cur.hi)}</h3><ul class="today-list"><li><span class="who"><b>تهنئة ${esc(I.cur.nm)}</b> <span class="full">${sc.t?(sc.n===sc.t?"هنّأت الجميع، أحسنت":"هنّأت "+sc.n+" من "+sc.t):"اختر من تهنئهم"}</span></span><button class="btn sm primary" type="button" data-gosea>القائمة</button></li></ul>`:""}
-  ${appts.length?`<h3>مواعيد اليوم</h3><ul class="today-list">${appts.map(c=>item(c,new Date(c.appt)<now?"فات موعده "+fmtDT(c.appt):"الساعة "+new Date(c.appt).toLocaleTimeString(LOC,{hour:"numeric",minute:"2-digit"}))).join("")}</ul>`:""}
-  ${late.length?`<h3>تأخرتَ في التواصل معهم</h3><ul class="today-list">${late.slice(0,8).map(c=>item(c,c.log[0]?lateD(-dueIn(c))+" ("+freqName(c)+")":"لم تتواصل بعد")).join("")}</ul>`:""}
-  ${needBk?`<h3>نسخة احتياطية</h3><ul class="today-list"><li><span class="who"><b>بياناتك</b> <span class="full">${lb<0?"لم تحفظ نسخة بعد":"آخر نسخة "+agoD(lb)}</span></span><button class="btn sm primary" type="button" data-gobk>أرسلها إلى بريدي</button></li></ul>`:""}
-  ${!total?`<p class="sub" style="margin:0">أحسنت، كل أقاربك في الجدول ضمن موعد التواصل.</p>`:""}
-  ${I&&!I.cur?`<p class="sea-next"><button class="lnk" type="button" data-gosea>تهنئة ${esc(I.s.nm)} ${inD(I.days)}</button></p>`:""}`;
-}
+  const I=seaInfo(),sc=I&&I.cur?seaCount(I.cur.key):null;
+  const rows=appts.map(c=>item(c,new Date(c.appt)<now?"فات الموعد الخاص "+fmtDT(c.appt):"موعد خاص الساعة "+new Date(c.appt).toLocaleTimeString(LOC,{hour:"numeric",minute:"2-digit"})));
+  if(sc)rows.push(`<li><span class="who"><b>تهنئة ${esc(I.cur.nm)}</b> <span class="full">${sc.t?(sc.n===sc.t?"هنّأت الجميع، أحسنت":"هنّأت "+sc.n+" من "+sc.t):"اختر من تهنئهم"}</span></span><button class="btn sm primary" type="button" data-gosea>القائمة</button></li>`);
+  if(needBk)rows.push(`<li><span class="who"><b>نسخة احتياطية</b> <span class="full">${lb<0?"لم تحفظ نسخة بعد":"آخر نسخة "+agoD(lb)}</span></span><button class="btn sm primary" type="button" data-gobk>أرسلها إلى بريدي</button></li>`);
+  const T=$("#today");T.hidden=!rows.length;
+  T.innerHTML=rows.length?`<div class="row"><h2 class="grow">اليوم</h2><span class="sub">${esc(fmtWD(now))}</span></div><ul class="today-list">${rows.join("")}</ul>`:"";
+  renderCoN()}
+function renderCoN(){ // the number on «التواصل» below: whom to reach now, a round gone by or due today, and a visit set for today
+  const b=$("#coN"),t=$("#t-contact");if(!b||!t)return;const end=new Date();end.setHours(23,59,59,999);
+  const n=S.contacts.filter(c=>{if(deadC(c))return false;if(c.appt&&new Date(c.appt)<=end)return true;const s=cState(c);return s.st==="late"||s.today}).length;
+  b.textContent=n;b.hidden=!n;if(n)t.setAttribute("aria-label","التواصل، "+nn(n,AQ)+" بانتظارك");else t.removeAttribute("aria-label")}
 $("#today").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   if(b.dataset.open){openPerson(b.dataset.open);return}
   if(b.dataset.cedit){editContact(b.dataset.cedit);return}
   if(b.dataset.done){const r=S.contacts.find(x=>x.id===b.dataset.done);logContact(r)}
   if("gosea" in b.dataset)seasonSheet();
   if("gobk" in b.dataset)bkMail()});
-function logContact(r,type){if(!r)return;const iso=new Date().toISOString();r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:type||"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;metaRow=r.id;
+function logContact(r,type){if(!r)return;const iso=new Date().toISOString(),ap=r.appt;r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:type||"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;
   const I=seaInfo(),sk=I&&I.cur?I.cur.key:"",P=r.personId&&byId(r.personId),sid=P?P.id:r.id,sm=!!sk&&!seaSet(sk).has(sid);if(sm)seaPut(sk,sid,true); // in the days of the season, reaching him is greeting him
-  save();renderContacts();toast("سُجِّل التواصل مع "+nameOf(r).split(" ")[0]+(sm?"، وعُلِّمت "+(P&&P.gender==="f"?"تهنئتها":"تهنئته")+" ب"+I.cur.nm:""))}
+  save();renderContacts();const nm=fnm(r),re=()=>{if(P&&$(`#layer [data-pp="${P.id}"]`))openPerson(P.id,true)};
+  const undo={label:"تراجع",fn:()=>{const i=r.log.indexOf(iso);if(i<0)return;r.log.splice(i,1);if(r.meta)delete r.meta[iso];if(ap&&!r.appt)r.appt=ap;if(sm)seaPut(sk,sid,false);save();renderContacts();re()}};
+  const visit={label:"كانت زيارة",fn:()=>{const m=r.meta&&r.meta[iso];if(!m)return;m.type="زيارة";save();renderContacts();re();toast("سُجِّلت زيارة "+nm)}};
+  toast("سُجِّل التواصل مع "+nm+(sm?"، وعُلِّمت "+(P&&P.gender==="f"?"تهنئتها":"تهنئته")+" ب"+I.cur.nm:""),type?[undo]:[visit,undo],8000)}
+function unlogContact(r){if(!r||!r.log[0])return;const iso=r.log[0],mt=r.meta&&r.meta[iso],nm=fnm(r),when=agoD(daysAgo(iso)); // ✓ touched again: the last contact is taken back, with «تراجع»
+  const go=()=>{const i=r.log.indexOf(iso);if(i<0)return;r.log.splice(i,1);if(r.meta)delete r.meta[iso];save();renderContacts();
+    toast("أُلغي تواصل "+when+" مع "+nm,{label:"تراجع",fn:()=>{if(!r.log.includes(iso)){r.log.push(iso);r.log.sort((a,b)=>b.localeCompare(a))}if(mt){r.meta=r.meta||{};r.meta[iso]=mt}save();renderContacts()}})};
+  if(mt&&mt.note)toast("لتواصل "+when+" ملاحظة: «"+String(mt.note).slice(0,40)+"». تلغيه؟",[{label:"نعم، ألغِه",fn:go}],8000);else go()}
 // after «اتصال» or «واتساب», coming back to the app asks whether you reached them, so one touch logs it
 let callPend=null;
 document.addEventListener("click",e=>{const a=e.target.closest("a[data-kind]");if(a)callPend={c:a.dataset.call||"",p:a.dataset.pid||"",k:a.dataset.kind,t:Date.now()}},true);
 function askBack(){const cp=callPend;if(!cp||document.getElementById("lock"))return;const age=Date.now()-cp.t;if(age<2500)return;callPend=null;if(age>3*36e5)return;
   const P=cp.p?byId(cp.p):null,r=(cp.c&&S.contacts.find(x=>x.id===cp.c))||(P&&S.contacts.find(x=>x.personId===P.id))||null;
-  const nm=r?nameOf(r).split(" ")[0]:P?P.name:"";if(!nm||(P&&P.alive===false))return;
+  const nm=r?fnm(r):P?P.name:"";if(!nm||(P&&P.alive===false))return;
   toast("تواصلت مع "+nm+"؟",[{label:"نعم، سجّل",fn:()=>{const c=r||addContact(P.id,"",true);if(!c)return;logContact(c,cp.k);if(P&&$(`#layer [data-pp="${P.id}"]`))openPerson(P.id,true)}},{label:"لا"}],20000)}
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(askBack,400)});
 window.addEventListener("focus",()=>setTimeout(askBack,400));
@@ -1476,36 +1541,58 @@ document.addEventListener("pointerdown",()=>{if(callPend&&Date.now()-callPend.t>
 function renderContacts(){
   renderToday();
   const all=S.contacts.filter(c=>!deadC(c)),nDead=S.contacts.length-all.length,empty=!all.length;
-  const isLate=c=>dueIn(c)<0,isWeek=c=>{if(isLate(c))return false;return dueIn(c)<=7||(!!c.appt&&new Date(c.appt)<=new Date(Date.now()+7*864e5))}; // late, or due in the coming seven days
-  const fb=$("#cFilt");fb.hidden=all.length<5;if(fb.hidden)cFilt="all";
-  fb.innerHTML=fb.hidden?"":[["all","الكل",all.length],["late","متأخر",all.filter(isLate).length],["week","هذا الأسبوع",all.filter(isWeek).length]].map(([k,l,n])=>`<button type="button" data-cf="${k}" aria-pressed="${cFilt===k}">${l} <span class="num">${n}</span></button>`).join("");
-  const rows=all.filter(cFilt==="late"?isLate:cFilt==="week"?isWeek:()=>true).sort((a,b)=>dueIn(a)-dueIn(b));
   const formOn=cAddOpen||empty,gs=formOn?sideGroups():[],cs=$("#cSides");cs.hidden=!gs.length;
-  cs.innerHTML=gs.length?`<span class="sub">أو أضف جهة كاملة بلمسة:</span><div class="chips">${gs.map(([k,l,a])=>`<button class="chip csd" type="button" data-cside="${k}" aria-label="${esc("أضف "+l+": "+nn(a.length,AQ))}">${esc(l)} <b class="num">${a.length}</b></button>`).join("")}</div><p class="sub" style="margin:0">الأقربون: الوالدان والزوج والأبناء والإخوة والأجداد والأحفاد. وكل جهة إلى أبناء الأعمام والأخوال.</p>`:"";
+  cs.innerHTML=gs.length?`<span class="sub">أو أضف جهة كاملة بلمسة، كلٌّ في قائمته حسب قربه:</span><div class="chips">${gs.map(([k,l,a])=>`<button class="chip csd" type="button" data-cside="${k}" aria-label="${esc("أضف "+l+": "+nn(a.length,AQ))}">${esc(l)} <b class="num">${a.length}</b></button>`).join("")}</div><p class="sub" style="margin:0">الأقربون: الوالدان والزوج والأبناء والإخوة والأجداد والأحفاد. وكل جهة إلى أبناء الأعمام والأخوال.</p>`:"";
   $("#cForm").hidden=!formOn;$("#cAddT").hidden=empty;$("#cAddT").textContent=cAddOpen?"إلغاء":"+ أضف قريبًا";$("#cAddT").setAttribute("aria-expanded",String(cAddOpen));
-  $("#cBody").innerHTML=(rows.length?rows.map(c=>{
-    const last=c.log[0],di=dueIn(c),ph=phoneOf(c),m=c.meta||{},full=nameOf(c),first=full.split(" ")[0];
-    const inT=c.personId&&byId(c.personId),rl=inT?relToMe(c.personId):"";
-    const st=!last?`<span class="pill ${di<0?"bad":di>7?"mute":"warn"}">لم تتواصل بعد</span>`:`<span class="pill ${di>=3?"good":di>=0?"warn":"bad"}" title="${esc(freqName(c))}">${agoD(daysAgo(last))}</span>`;
-    const late=c.appt&&new Date(c.appt)<new Date(),ap=c.appt?`<span class="pill ${late?"bad":"mute"}">${late?"فات موعده":"موعد "+fmtDT(c.appt)}</span>`:"";
-    const nameB=inT?nmBtn(c,first):`<button class="nm" type="button" data-cedit="${c.id}">${esc(full)}</button>`; // a name not in the tree is shown whole
-    return`<div class="crow"><div class="cr1">${nameB}<span class="rl">${esc(inT?(rl||(full!==first?full:"")):"")}</span>${st}</div>
-      <div class="cr2">${ap}<span class="sp"></span>${ph?callBtns(c,null,ph,1):""}<button class="btn sm primary" type="button" data-done="${c.id}">تم التواصل</button></div>
-      ${metaRow===c.id&&c.log[0]?`<div class="row"><span class="sub">نوع التواصل:</span>${TYPES.map(t=>`<button class="btn sm ${(m[c.log[0]]||{}).type===t?"soft":""}" type="button" data-mtype="${t}" data-mid="${c.id}">${t}</button>`).join("")}<input type="text" class="grow" id="mn-${c.id}" placeholder="ملاحظة قصيرة (اختياري)" value="${esc((m[c.log[0]]||{}).note||"")}"><button class="btn sm primary" type="button" data-mok="${c.id}">تم</button></div>`:""}</div>`;
-  }).join(""):`<div class="empty">${empty?"الجدول فارغ. اكتب اسم قريب في الأعلى لتصله من هنا.":cFilt==="late"?"لا أحد متأخر. أحسنت.":"لا أحد يحين موعده هذا الأسبوع."}</div>`)
-  +(nDead?`<div class="sub" style="padding-top:10px">أُخفي من الجدول ${nDead===1?"قريب متوفى، رحمه الله":nDead===2?"قريبان متوفيان، رحمهما الله":nDead+" من المتوفين، رحمهم الله"}. <button class="btn sm" type="button" data-cleardead>إزالتهم من الجدول</button></div>`:"");
+  $("#cFormSub").textContent=(empty?"ضع أقاربك في قائمتين: «كل أسبوع» و«كل شهر». ":"")+"اكتب اسم القريب واختره من الشجرة، ثم اختر القائمة.";
+  const {wd,t}=cDay(),sig=wd+"|"+t,cd=$("#cDay");cd.hidden=empty;
+  cd.innerHTML=empty?"":`<span>يوم التواصل: <b>${WDN[wd]}، ${esc(fmtT(t))}</b></span><button class="lnk" type="button" data-cday>تغيير</button>`;
+  const cm=closeMap(),near=c=>c.personId&&cm.has(c.personId)?cm.get(c.personId):99,ord={late:0,due:1,done:2},tk=dKey(new Date());
+  const grp=k=>{const L=all.map(c=>({c,s:cState(c)})).filter(x=>x.s.k===k);if(!L.length)return""; // a round gone by first, then the rest, then whom you reached; the nearest first
+    L.sort((a,b)=>ord[a.s.st]-ord[b.s.st]||near(a.c)-near(b.c)||nameOf(a.c).localeCompare(nameOf(b.c),"ar"));
+    const n=L.filter(x=>x.s.st==="done").length,allD=n===L.length,s0=L[0].s.s0,isT=!allD&&dKey(s0)===tk,inCal=!!S.gcal&&S.gcal[k]===sig;
+    const pr=a=>{const q=a.length===1&&a[0].c.personId&&byId(a[0].c.personId);return a.length>1?"هم":q&&q.gender==="f"?"ها":"ه"},pend=L.filter(x=>x.s.st!=="done"); // «موعدهم»، «موعده»، «موعدها»
+    const when=allD?"أحسنت، تواصلت مع"+pr(L)+(k==="w"?" هذا الأسبوع":" هذا الشهر")+". والقادم <b>"+esc(fmtWD(cNext(k,s0)))+"</b>":"موعد"+pr(pend)+" <b>"+(isT?"اليوم":esc(fmtWD(s0)))+"</b>";
+    return`<section class="cgrp" aria-label="${EVERY[k]}"><div class="cgh"><h3>${EVERY[k]}</h3><span class="cgp${allD?" all":""}">${allD?"✓ ":""}${n} من ${L.length}</span><a class="btn sm cgcal${inCal?" on":""}" href="${esc(gcalSlot(k))}" target="_blank" rel="noopener" data-gcal="${k}">${inCal?"✓ في تقويم Google":ICO_CAL+"تقويم Google"}</a></div>
+      <div class="cgs">${when}${allD?"":" الساعة "+esc(fmtT(t))}</div>
+      ${L.map(x=>cRow(x.c,x.s)).join("")}</section>`};
+  const I=seaInfo();
+  $("#cBody").innerHTML=(empty?"":grp("w")+grp("m"))
+  +(nDead?`<div class="sub" style="padding-top:10px">أُخفي من الجدول ${nDead===1?"قريب متوفى، رحمه الله":nDead===2?"قريبان متوفيان، رحمهما الله":nDead+" من المتوفين، رحمهم الله"}. <button class="btn sm" type="button" data-cleardead>إزالتهم من الجدول</button></div>`:"")
+  +(I&&!I.cur?`<p class="sea-next"><button class="lnk" type="button" data-gosea>تهنئة ${esc(I.s.nm)} ${inD(I.days)}</button></p>`:"");
 }
+function cRow(c,s){ // one row: the name and how it stands, the call, WhatsApp, and ✓ that records it; the row opens the details
+  const full=nameOf(c),first=fnm(c),P=c.personId&&byId(c.personId),rl=P?relToMe(P.id):"",ph=phoneOf(c),last=c.log[0],ago=last?agoD(daysAgo(last)):"",hu=P&&P.gender==="f"?"ها":"ه";
+  const stT=s.st==="done"?"تواصلت "+ago:s.st==="late"?"فات موعد"+hu+" · "+(last?"آخر تواصل "+ago:"لم تتواصل بعد"):s.today?"موعد"+hu+" اليوم"+(last?" · آخر تواصل "+ago:""):last?"آخر تواصل "+ago:"لم تتواصل بعد";
+  const apL=!!c.appt&&new Date(c.appt)<new Date(),ap=c.appt?`<span class="ctag${apL?" bad":""}">${apL?"فات موعد ":"موعد "}${esc(fmtDT(c.appt))}</span>`:"",on=s.st==="done";
+  return`<div class="irow crw ${s.st}"><button class="ibody" type="button" data-cedit="${c.id}" aria-label="${esc(full+(rl?"، "+rl:"")+"، "+stT)}"><span class="i1"><b class="inm">${esc(P?first:full)}</b><span class="crl">${esc(P?(rl||(full!==first?full:"")):"")}</span></span><span class="i2"><span class="cst${on?" good":s.st==="late"?" bad":s.today?" warn":""}">${esc(stT)}</span>${ap}</span></button>`
+    +(ph?callIco(c,ph,first):"")
+    +`<button class="ichk${on?" on":s.st==="late"||s.today?" due":""}" type="button" data-ck="${c.id}" aria-pressed="${on}" aria-label="${esc(on?"تواصلت مع "+first+" "+ago+"، المس لإلغائه":"تم التواصل مع "+first)}" title="${on?"تواصلت":"تم التواصل"}">✓</button></div>`}
+function cdaySheet(keep){ // the contact day and its hour, and the two reminders for Google Calendar
+  const {wd,t}=cDay(),W=WDN[wd],sig=wd+"|"+t,g=S.gcal||{},old=(g.w&&g.w!==sig)||(g.m&&g.m!==sig);
+  sheet(`<div class="hd" data-cday-sheet><div style="flex:1;min-width:0"><h2>يوم التواصل</h2><div class="full">«كل أسبوع» كل ${W}، و«كل شهر» أول ${W} من الشهر</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+   <div class="row"><label class="f grow"><span>اليوم</span><select id="cdW">${[6,0,1,2,3,4,5].map(i=>`<option value="${i}"${i===wd?" selected":""}>${WDN[i]}</option>`).join("")}</select></label><label class="f grow"><span>الساعة</span><input type="time" id="cdT" value="${t}"></label></div>
+   <div class="panel" style="background:var(--bg)"><h3>تذكير في تقويم Google</h3>
+     <p class="sub" style="margin:0">يفتح تقويم Google بتذكير يتكرر فيه أسماء القائمة، فاضغط «حفظ» هناك ويذكّرك الجوال في وقته.</p>
+     <div class="row"><a class="btn${g.w===sig?" soft":""}" href="${esc(gcalSlot("w"))}" target="_blank" rel="noopener" data-gcal="w">${g.w===sig?"✓ ":""}كل ${W}</a><a class="btn${g.m===sig?" soft":""}" href="${esc(gcalSlot("m"))}" target="_blank" rel="noopener" data-gcal="m">${g.m===sig?"✓ ":""}أول ${W} من كل شهر</a></div>
+     ${old?`<p class="sub" style="margin:0;color:var(--warn)">غيّرت اليوم أو الساعة بعد إضافة التذكير: أضفه من جديد، واحذف القديم من تقويم Google.</p>`:""}
+   </div>`,el=>{
+    el.querySelector("[data-close]").onclick=closeSheet;
+    el.querySelector("#cdW").onchange=e=>{const w=+e.target.value;S.cday={wd:w,t:cDay().t};save();renderContacts();cdaySheet(true);toast("يوم التواصل: "+WDN[w])};
+    el.querySelector("#cdT").onchange=e=>{const v=e.target.value;if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(v))return;S.cday={wd:cDay().wd,t:v};save();renderContacts();cdaySheet(true);toast("الساعة "+fmtT(v))};
+  },{keep})}
 const locDT=iso=>{const d=new Date(iso);return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,16)};
 const locD=iso=>locDT(iso).slice(0,10);
 function editContact(id,keep,back){
   const r=S.contacts.find(x=>x.id===id);if(!r){back?openPerson(back):closeSheet();return}
-  r.meta=r.meta||{};const full=nameOf(r),first=full.split(" ")[0],inT=r.personId&&byId(r.personId);
+  r.meta=r.meta||{};const full=nameOf(r),first=fnm(r),inT=r.personId&&byId(r.personId);
+  const cs=cState(r),la=r.log[0]?agoD(daysAgo(r.log[0])):"",hu=inT&&inT.gender==="f"?"ها":"ه",stLine=cs.st==="done"?"✓ تواصلت "+la+"، وموعد"+hu+" القادم "+fmtWD(cs.next):cs.st==="late"?"فات موعد"+hu+": "+(la?"آخر تواصل "+la:"لم تتواصل بعد"):"موعد"+hu+" "+(cs.today?"اليوم":fmtWD(cs.s0))+(la?"، وآخر تواصل "+la:"");
   const base=r.appt?new Date(r.appt):(()=>{const d=new Date(Date.now()+864e5);d.setHours(19,0,0,0);return d})();
   const ret=()=>back?openPerson(back):closeSheet();
   sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>التواصل مع ${esc(first)}</h2><div class="full">${esc(full)}</div></div>${inT&&!back?`<button class="btn sm soft" type="button" id="ecOpen">الملف</button>`:""}<button class="btn sm" type="button" data-close>${back?"رجوع":"إغلاق"}</button></div>
-   <label class="f"><span>تواصل كل</span><select id="ecFreq">${FREQ.map(([v,l])=>`<option value="${v}" ${v===freqOf(r)?"selected":""}>${l}</option>`).join("")}</select></label>
-   <div class="panel" style="background:var(--bg)"><h3>الموعد القادم</h3>
-     ${r.appt?`<p class="sub" style="margin:0">الموعد الحالي: <span class="num">${fmtDT(r.appt)}</span></p>`:`<p class="sub" style="margin:0">لا يوجد موعد.</p>`}
+   <div class="f"><span>القائمة</span><div class="seg2" role="group" aria-label="القائمة">${["w","m"].map(k=>`<button type="button" data-ev="${k}" aria-pressed="${everyOf(r)===k}">${EVERY[k]}</button>`).join("")}</div><span class="sub" id="ecSt">${esc(stLine)}</span></div>
+   <div class="panel" style="background:var(--bg)"><h3>موعد خاص</h3>
+     ${r.appt?`<p class="sub" style="margin:0">الموعد الحالي: <span class="num">${fmtDT(r.appt)}</span></p>`:`<p class="sub" style="margin:0">لا يوجد موعد خاص، مثل زيارة في يوم محدد.</p>`}
      <div class="row"><input type="date" id="ecAd" value="${locD(base.toISOString())}" style="width:auto"><input type="time" id="ecAt" value="${base.toTimeString().slice(0,5)}" style="width:auto"><button class="btn sm primary" type="button" id="ecAsave">${r.appt?"تعديل الموعد":"حفظ الموعد"}</button>${r.appt?`<button class="btn sm danger" type="button" id="ecAdel">حذف الموعد</button><a class="btn sm" href="${gcalLink("تواصل مع "+full,r.appt)}" target="_blank" rel="noopener">تقويم Google</a>`:""}</div>
    </div>
    <div class="panel" style="background:var(--bg)"><div class="row"><h3 class="grow">سجل التواصل (${r.log.length})</h3><button class="btn sm soft" type="button" id="ecAddLog">+ تواصل سابق</button></div>
@@ -1521,7 +1608,7 @@ function editContact(id,keep,back){
     el.querySelector("#ecNameSave").onclick=()=>{const v=ac.get();if(!v.personId&&!v.text){ac.input.focus();return}
       if(v.personId&&S.contacts.some(c=>c!==r&&c.personId===v.personId)){toast("هذا القريب موجود في الجدول");return}
       r.personId=v.personId;r.name=v.personId?"":v.text;again();toast("حُفظ الاسم")};
-    el.querySelector("#ecFreq").onchange=e=>{r.freq=+e.target.value;save();renderContacts();toast("حُفظ")};
+    el.querySelectorAll("[data-ev]").forEach(b=>b.onclick=()=>{const k=b.dataset.ev,was=r.every;if(everyOf(r)===k)return;r.every=k;again();toast("«"+first+"» الآن في «"+EVERY[k]+"»",{label:"تراجع",fn:()=>{if(was)r.every=was;else delete r.every;again()}})});
     el.querySelector("#ecAsave").onclick=()=>{const dv=el.querySelector("#ecAd").value,tv=el.querySelector("#ecAt").value||"19:00";if(!dv)return;r.appt=new Date(dv+"T"+tv).toISOString();again();toast("حُفظ الموعد")};
     const ad=el.querySelector("#ecAdel");if(ad)ad.onclick=()=>{const old=r.appt;r.appt=null;again();toast("حُذف الموعد",{label:"تراجع",fn:()=>{r.appt=old;again()}})};
     el.querySelector("#ecAddLog").onclick=()=>{const iso=new Date().toISOString();r.log.unshift(iso);r.meta[iso]={type:"اتصال",note:""};r.log.sort((a,b)=>b.localeCompare(a));again();toast("أُضيف سطر بتاريخ الآن، عدّل تاريخه")};
@@ -1605,13 +1692,14 @@ $("#cBody").addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;const d=b.dataset;
   const c=id=>S.contacts.find(x=>x.id===id);
   if(d.open){openPerson(d.open);return}
-  if(d.done){logContact(c(d.done));return}
-  else if(d.mtype){const r=c(d.mid);r.meta[r.log[0]]=Object.assign(r.meta[r.log[0]]||{},{type:d.mtype,note:$("#mn-"+r.id).value.trim()});save()}
-  else if(d.mok){const r=c(d.mok);r.meta=r.meta||{};r.meta[r.log[0]]=Object.assign(r.meta[r.log[0]]||{type:"اتصال"},{note:$("#mn-"+r.id).value.trim()});metaRow=null;save()}
-  else if(d.cedit){editContact(d.cedit);return}
-  else if("cleardead" in d){const gone=S.contacts.filter(deadC);S.contacts=S.contacts.filter(x=>!deadC(x));save();renderContacts();toast("أُزيلوا من الجدول",{label:"تراجع",fn:()=>{S.contacts.push(...gone);save();renderContacts()}});return}
-  renderContacts();
+  if(d.ck){const r=c(d.ck);if(!r)return;if(cState(r).st==="done")unlogContact(r);else logContact(r);return}
+  if(d.cedit){editContact(d.cedit);return}
+  if("gosea" in d){seasonSheet();return}
+  if("cleardead" in d){const gone=S.contacts.filter(deadC);S.contacts=S.contacts.filter(x=>!deadC(x));save();renderContacts();toast("أُزيلوا من الجدول",{label:"تراجع",fn:()=>{S.contacts.push(...gone);save();renderContacts()}});return}
 });
+$("#cDay").addEventListener("click",e=>{if(e.target.closest("[data-cday]"))cdaySheet()});
+document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a[data-gcal]");if(!a)return;const {wd,t}=cDay();S.gcal=Object.assign({},S.gcal,{[a.dataset.gcal]:wd+"|"+t});save(); // sent to Google Calendar: its button says so, and shows again when the day changes
+  setTimeout(()=>{renderContacts();if($("#layer [data-cday-sheet]"))cdaySheet(true)},500)},true);
 
 /* ---------- ihsan ---------- */
 const acF=makeAC($("#fName"),{placeholder:"اسم المستفيد"});
@@ -2095,22 +2183,22 @@ const aiSetHTML=lead=>window.claude?`<div class="aiset"><b>${lead}</b><span clas
 function aiChanged(){aiNow().then(m=>{if(tbPane==="p-ask")askSetup(m);if(tbPane==="p-dev")renderDev()})}
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
 1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أسفل اللوحة يمينًا) تعرض شجرة أي قريب: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«شجرتي». الأشكال: العمود الملوّن بخط سميك سلسلة الآباء من صاحب الجهة إلى أعلى جد، والبطاقة بإطار رفيع قريب مسجّل خارج العمود، وخلفية كل بطاقة زرقاء خفيفة للرجل ووردية خفيفة للمرأة، وكذلك أسماء الأقارب في الملف، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، ولا تظهر إلا في وضع التعديل: في أعلى اللوحة يمينًا قفل واحد، مقفلًا تكون اللوحة والملفات للعرض فقط بلا خانات إضافة ولا «تعديل» ولا «حذف»، ومفتوحًا يظهر ذلك كله ويصير الزر «تعديل» ويُحاط اللوح بإطار متقطع بلون الجهة، ويُقفل كلما فُتح التطبيق، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة صاحب الشجرة المعروضة. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق كل زوجة و«أهله» فوق كل زوج ينقل إلى عائلته: هو أسفل العمود وفوقه أبوه ثم جده، فالعمود في كل جهة يصعد بالآباء وحدهم «ادعوهم لآبائهم» والأمهات بجانب أزواجهن، وخط الزواج إذا قطعه خطان صغيران فهو طلاق، والإخوة مرتبون من الأكبر بسنة الميلاد. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة، وزر التصدير بجانبها يحفظ الجهة التي تراها صورةً أو نصًّا، أو PDF في المتصفح. وأول مرة يسألك التطبيق اسمك ثم اسم أبيك ثم اسم أمك.
-ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اعرض شجرته» و«تعديل» و«حذف»، و«ترتيب الزوجات» لمن له أكثر من زوجة تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة. والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. وفي نافذة «إضافة» (أب أو أم أو زوجة أو ابن أو أخ): أثناء كتابة الاسم تظهر تحته الأسماء الموجودة في الشجرة بنسبها وصلتها، ولمس أحدها يربط الشخص نفسه في مكانه بدل كتابته مرة ثانية، و«حفظ» يضيف شخصًا جديدًا، وبعد الربط «تراجع». وإذا بدا اسمان مكتوبان لشخص واحد (الاسم نفسه والنسب نفسه بلا تعارض في الأب أو الأم) ظهر زر «مكرر؟» أسفل اللوحة يسارًا بعدد الاقتراحات، وفي أعلى ملف كل منهما «هل هي نفسها...؟» أو «هل هو نفسه...؟»: «نعم» يدمجهما في بطاقة واحدة تجمع النسب والزواج والأبناء والتواصل والإحسان، و«لا» يزيل الاقتراح فلا يعود، وبعدهما «تراجع». و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات وترتيب كل زوجة باختيار مباشر (الأولى، الثانية، الثالثة) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
-2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، وتذكير النسخة الاحتياطية، وفي أيام رمضان والعيدين «القائمة» للتهنئة: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، و«تم التواصل» في تلك الأيام يعلّم التهنئة أيضًا، وفي غيرها سطر يعدّ الأيام إلى الموسم القادم) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة، وتحته أزرار تضيف جهة كاملة بلمسة: الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة، ويحين موعد كل مضاف حسب قربه. وفوق الجدول فرز: الكل، ومتأخر، وهذا الأسبوع. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
+ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل والقائمة التي هو فيها، و«المواعيد والسجل»، أو «أضفه إلى التواصل» بزرين: «كل أسبوع» و«كل شهر». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اعرض شجرته» و«تعديل» و«حذف»، و«ترتيب الزوجات» لمن له أكثر من زوجة تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة. والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. وفي نافذة «إضافة» (أب أو أم أو زوجة أو ابن أو أخ): أثناء كتابة الاسم تظهر تحته الأسماء الموجودة في الشجرة بنسبها وصلتها، ولمس أحدها يربط الشخص نفسه في مكانه بدل كتابته مرة ثانية، و«حفظ» يضيف شخصًا جديدًا، وبعد الربط «تراجع». وإذا بدا اسمان مكتوبان لشخص واحد (الاسم نفسه والنسب نفسه بلا تعارض في الأب أو الأم) ظهر زر «مكرر؟» أسفل اللوحة يسارًا بعدد الاقتراحات، وفي أعلى ملف كل منهما «هل هي نفسها...؟» أو «هل هو نفسه...؟»: «نعم» يدمجهما في بطاقة واحدة تجمع النسب والزواج والأبناء والتواصل والإحسان، و«لا» يزيل الاقتراح فلا يعود، وبعدهما «تراجع». و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات وترتيب كل زوجة باختيار مباشر (الأولى، الثانية، الثالثة) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
+2) التواصل: في الأعلى «اليوم» ولا يظهر إلا عند الحاجة: موعد خاص وضعته مع قريب اليوم (ومعه «تم التواصل»)، وفي أيام رمضان والعيدين «تهنئة» و«القائمة»: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، وتسجيل التواصل في تلك الأيام يعلّم التهنئة أيضًا، وتذكير النسخة الاحتياطية. ثم «جدول التواصل»: تحته «يوم التواصل» (الجمعة الساعة 5:00 م ما لم تغيّره من «تغيير»)، ثم قائمتان: «كل أسبوع» يحين تواصلها في يوم التواصل كل أسبوع، و«كل شهر» في أول يوم مثله من الشهر (أول جمعة). فوق كل قائمة عدد من تواصلت معهم في دورتها (مثل 2 من 5)، و«التالي» بتاريخه وساعته أو «موعدهم اليوم»، وزر «تقويم Google» يفتح تقويم Google بتذكير يتكرر (كل جمعة، أو أول جمعة من كل شهر) فيه أسماء القائمة، فيضغط «حفظ» هناك فيذكّره الجوال، وبعدها يصير الزر «✓ في تقويم Google»، وإذا غيّر اليوم أو الساعة عاد الزر ليضيف التذكير الجديد ويحذف القديم من التقويم. الدورة تنتهي بيوم التواصل: من تواصلت معه بعد يوم التواصل السابق صار «تواصلت» بالأخضر، ومن مرت عليه دورة كاملة بلا تواصل «فات موعده» بالأحمر، والباقي موعده يوم التواصل القادم. يظهر أولًا من فات موعده، ثم من بقي، ثم من تواصلت معه، والأقرب فالأقرب. كل قريب سطر واحد: اسمه وصلته، وتحته حاله وآخر تواصل وموعده الخاص إن وُضع، وبجانبه زر الاتصال وزر الواتساب، ودائرة ✓ تسجل التواصل الآن (ولمسها وهي خضراء يلغي آخر تواصل)، وبعد التسجيل «كانت زيارة» و«تراجع». ولمس السطر يفتح «التواصل مع فلان»: القائمة («كل أسبوع» أو «كل شهر») وحاله، والموعد الخاص مع زر «تقويم Google»، وسجل التواصل وتعديله، و«حذف من جدول التواصل». «+ أضف قريبًا»: اكتب الاسم واختره من الشجرة، ثم «+ كل أسبوع» أو «+ كل شهر»، وتحتها أزرار تضيف جهة كاملة بلمسة: الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة. القائمة تُقترح حسب القرب: الوالدان والزوجة والأبناء والإخوة والأجداد والأحفاد «كل أسبوع»، والبقية «كل شهر». وعلى تبويب «التواصل» في الأسفل رقم بمن فات موعدهم ومن موعدهم اليوم. بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة. وفي آخر الجدول سطر يعدّ الأيام إلى موسم التهنئة القادم.
 3) الإحسان: في الأعلى شريط الشهر (› السابق و‹ التالي و«الشهر الحالي»)، والمجاميع والقائمتان تتبع الشهر المعروض. «مبالغ شهرية»: كل مبلغ سطر واحد فيه الاسم والمبلغ وموعده وحاله: في الشهر الحالي بعد التحويل «حُوِّل» ومعه «القادم» بتاريخ الشهر التالي، وقبل موعده «القادم» بتاريخه وكم بقي عليه، وإذا حلّ ولم يُحوَّل «موعده» بتاريخه و«مستحق»، وفي الأشهر السابقة يوم الاستحقاق و«حُوِّل» أو «لم يُسجَّل»، وزر ✓ في السطر يسجل التحويل في الشهر المعروض فيُسجَّل تحويل فات في شهره، ولمس السطر يفتح التفاصيل: المبلغ والتصنيف وتاريخ الاستحقاق (يُختار من التقويم ويتكرر في اليوم نفسه كل شهر) وسجل التحويلات و«تذكير في تقويم Google» والحذف. «مبالغ متفرقة»: سطر لكل مبلغ فيه الاسم والمبلغ والتاريخ، ولمسه يفتح التعديل. والإضافة بزر «+ أضف» فوق كل قائمة: اسم ومبلغ وتصنيف وتاريخ. التصنيفات ثلاثة: مصاريف، علاج، أخرى (ومعها تعليق يقول ما هو)، وتحت المجاميع مجموع كل تصنيف في السنة. وفي الأعلى ما حُوِّل في الشهر، والمتبقي، ومجموع السنة، و«إخفاء المبالغ». وعلى تبويب «الإحسان» في الأسفل رقم بعدد المبالغ الشهرية المستحقة الآن، ولا تتكرر المبالغ في «اليوم» بالتواصل.
 الشريط العلوي ثلاثة تبويبات: «بحث» وتحته خانة تبحث في كل ما كُتب في التطبيق: الأقارب بالاسم والنسب والمدينة والجوال والملاحظات وسنة الميلاد (زر «الشجرة» يقفز إلى القريب ويضيء بطاقته، و«الملف» يفتح ملفه)، وملاحظات التواصل، والإحسان بالاسم والتصنيف والمبلغ، والاقتراحات. و«اسأل Claude» تسأل فيه عن أقاربك وعن التطبيق. و«تطوير» وعليه عدد ما ينتظرك: «اقترح علي» يعطيك مقترحات لتطوير التطبيق تعتمدها أو تؤجلها أو ترفضها، و«اسألني» يسألك عن عائلتك فتجيب كتابةً أو بالصوت من مايك لوحة المفاتيح فيصير أدق، وتحتهما فكرتك أنت، و«بانتظار التنفيذ» و«انسخ التعليمات»، و«ما يعرفه التطبيق عنك». وفي رأس الشاشة «الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم حجم الخط (عادي أو كبير أو أكبر)، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا)، ثم «Claude داخل التطبيق» في تطبيق الجوال: يُلصق فيه مفتاح Claude مرة واحدة. زر الرجوع في الجوال يغلق المفتوح أولًا.`;
 function familyData(){
   const cmap=new Map(S.contacts.map(c=>[c.personId,c]));
   const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id),l=c&&c.log[0],mm=l&&c.meta&&c.meta[l]||{};
     return[p.id,nasab(p,5),relToMe(p.id),p.gender==="f"?"أنثى":"ذكر",p.alive!==false?"حي":"متوفى",p.born||"",p.city||"",spousesOf(p).map(x=>x.name+(isDiv(p,x)?" (طلاق)":"")).join("، "),
-      l?locD(l)+(mm.type?" "+mm.type:"")+(mm.note?" ("+String(mm.note).slice(0,80)+")":""):"",c&&c.appt?locDT(c.appt).replace("T"," "):"",String(p.notes||"").replace(/\s+/g," ").slice(0,120)].join(" | ")}).join("\n");
-  const outside=S.contacts.filter(c=>!(c.personId&&byId(c.personId))).slice(0,100).map(c=>`${c.name||"—"} | ${c.log[0]?locD(c.log[0]):""} | ${c.appt?locDT(c.appt).replace("T"," "):""}`).join("\n");
+      c?EVERY[everyOf(c)]+"، "+(l?locD(l)+(mm.type?" "+mm.type:"")+(mm.note?" ("+String(mm.note).slice(0,80)+")":""):"لا تواصل بعد"):"",c&&c.appt?locDT(c.appt).replace("T"," "):"",String(p.notes||"").replace(/\s+/g," ").slice(0,120)].join(" | ")}).join("\n");
+  const outside=S.contacts.filter(c=>!(c.personId&&byId(c.personId))).slice(0,100).map(c=>`${c.name||"—"} | ${EVERY[everyOf(c)]} | ${c.log[0]?locD(c.log[0]):""} | ${c.appt?locDT(c.appt).replace("T"," "):""}`).join("\n");
   const fixed=S.fixed.map(r=>{const x=fixNext(r);return`${nameOf(r)} | ${r.amount} | يوم ${r.day} | ${kindName(r.kind)||"—"}${r.note?" ("+r.note+")":""} | آخر تحويل ${r.transfers[0]?locD(r.transfers[0].date):"لا يوجد"} | ${x.st==="paid"?"حُوِّل هذا الشهر":x.st==="due"?"مستحق الآن":"لم يحن بعد"} | ${locD(x.iso)}`}).join("\n");
   const vari=S.variable.slice(0,80).map(v=>`${nameOf(v)} | ${v.amount} | ${kindName(v.kind)||"—"}${v.note?" ("+v.note+")":""} | ${locD(v.date)}`).join("\n");
-  return`تاريخ اليوم: ${locD(new Date().toISOString())}. العملة: ${S.currency||""}.
-الأفراد (المعرّف | النسب | صلته بك | الجنس | الحالة | سنة الميلاد | المدينة | الزوج/الزوجة | آخر تواصل | الموعد القادم | ملاحظات):
+  return`تاريخ اليوم: ${locD(new Date().toISOString())}. العملة: ${S.currency||""}. يوم التواصل: ${WDN[cDay().wd]} الساعة ${cDay().t}، فقائمة «كل أسبوع» يحين تواصلها كل ${WDN[cDay().wd]}، وقائمة «كل شهر» أول ${WDN[cDay().wd]} من الشهر.
+الأفراد (المعرّف | النسب | صلته بك | الجنس | الحالة | سنة الميلاد | المدينة | الزوج/الزوجة | التواصل: قائمته وآخر تواصل، وفارغ لمن ليس في جدول التواصل | موعد خاص | ملاحظات):
 ${people||"لا يوجد"}
-في جدول التواصل وليسوا في الشجرة (الاسم | آخر تواصل | الموعد القادم):
+في جدول التواصل وليسوا في الشجرة (الاسم | القائمة | آخر تواصل | موعد خاص):
 ${outside||"لا يوجد"}
 المبالغ الشهرية (الاسم | المبلغ | يوم الاستحقاق | التصنيف | آخر تحويل | حاله هذا الشهر | موعده: القادم، أو الذي حلّ إن كان مستحقًا):
 ${fixed||"لا يوجد"}
@@ -2824,7 +2912,7 @@ function dupMerge(sId,kId){ // the two records are one person: the fuller stays,
   K.alive=K.alive!==false&&G.alive!==false; // «متوفى» was written on purpose
   {const a=nTok(K.name).length,b=nTok(G.name).length;if(K.father?b<a:b>a)K.name=G.name} // with a father the first name is enough, the rest is his line
   const cK=S.contacts.find(c=>c.personId===K.id),cG=S.contacts.find(c=>c.personId===G.id);
-  if(cG){if(cK){cK.log=[...new Set([...cK.log,...cG.log])].sort((a,b)=>b.localeCompare(a));cK.meta=Object.assign({},cG.meta||{},cK.meta||{});if(!cK.appt&&cG.appt)cK.appt=cG.appt;if(cK.freq==null&&cG.freq!=null)cK.freq=cG.freq;S.contacts=S.contacts.filter(c=>c!==cG)}else cG.personId=K.id}
+  if(cG){if(cK){cK.log=[...new Set([...cK.log,...cG.log])].sort((a,b)=>b.localeCompare(a));cK.meta=Object.assign({},cG.meta||{},cK.meta||{});if(!cK.appt&&cG.appt)cK.appt=cG.appt;if(cK.every==null&&cG.every!=null)cK.every=cG.every;if(!cK.added&&cG.added)cK.added=cG.added;S.contacts=S.contacts.filter(c=>c!==cG)}else cG.personId=K.id}
   [...S.fixed,...S.variable].forEach(r=>{if(r.personId===G.id)r.personId=K.id});
   if(S.seasons)Object.keys(S.seasons).forEach(k=>{if(S.seasons[k].includes(G.id))S.seasons[k]=sw(S.seasons[k])});
   if(S.dupNo){S.dupNo=[...new Set(S.dupNo.map(x=>{const [a,b]=x.split("|"),a2=a===G.id?K.id:a,b2=b===G.id?K.id:b;return a2===b2?"":dupKey(a2,b2)}).filter(Boolean))];if(!S.dupNo.length)delete S.dupNo} // «لا» said to the other is said to him
@@ -2924,7 +3012,13 @@ async function initRemote(){
 }
 /* ---------- app update (Android app only) ---------- */
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={23:[
+const CHANGES={24:[
+  "جدول التواصل من جديد: قائمتان «كل أسبوع» و«كل شهر»، تضع فيهما القريب بلمسة، وتُقترح حسب قربه",
+  "يوم ثابت للتواصل، الجمعة 5 مساءً وتغيّره: الأسبوعي كل جمعة، والشهري أول جمعة من الشهر، وفوق كل قائمة «التالي» وعدد من تواصلت معهم",
+  "زر «تقويم Google» عند كل قائمة يضيف تذكيرًا متكررًا، فيذكّرك الجوال يوم التواصل",
+  "كل قريب سطر واحد: دائرة ✓ تسجل التواصل وتلغيه، وحاله بلونه، وزرا الاتصال والواتساب",
+  "«اليوم» لا يظهر إلا عند الحاجة ولا يكرر الجدول، وعلى تبويب «التواصل» رقم بمن موعدهم الآن"],
+23:[
   "في «إضافة»: أثناء كتابة الاسم تظهر تحته الأسماء الموجودة في الشجرة بنسبها وصلتها، فالمس الاسم ليُربط الشخص نفسه بدل كتابته مرة ثانية، و«حفظ» يبقى لإضافة شخص جديد",
   "اقتراح للأسماء المكتوبة سابقًا: إذا بدا اسمان لشخص واحد ظهر «مكرر؟» أسفل اللوحة، وفي أعلى ملف كل منهما «هل هي نفسها...؟»، فـ«نعم» يجعلهما بطاقة واحدة بنسبها وزواجها وأبنائها، و«لا» يزيل الاقتراح",
   "بعد الربط أو الدمج زر «تراجع» يعيد كل شيء كما كان"],
