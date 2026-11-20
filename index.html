@@ -645,6 +645,35 @@ nav.tabs .tab-n[hidden]{display:none}
 .lgc.sp{fill:color-mix(in srgb,var(--gm) var(--gt),var(--surface))} /* the column in the guide: fathers, so the man's shade */
 .lgx .tn.lg2{width:47px;height:50px;padding:4px 3px}
 .lgx .tn.lg2 b{font-size:12.5px}
+/* v23: who is already in the tree, under the name being typed; «مكرر؟» on the board and «هل هي نفسها؟» in the profile */
+.qsug{grid-column:1/-1;display:flex;flex-direction:column;gap:5px;margin-top:-2px}
+.qsug[hidden]{display:none}
+.qsh{margin:0;font-size:calc(12px*var(--fs,1));color:var(--muted);line-height:1.5}
+.qsr{all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:1px;min-width:0;padding:7px 11px;border:1px solid var(--line);border-radius:10px;cursor:pointer;direction:rtl;line-height:1.4;-webkit-tap-highlight-color:transparent}
+.qsr b{font-size:calc(14px*var(--fs,1));font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qsr small{font-size:calc(12px*var(--fs,1));color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qsr.gm{background:color-mix(in srgb,var(--gm) var(--gt),var(--surface))}
+.qsr.gf{background:color-mix(in srgb,var(--gf) var(--gt),var(--surface))}
+.qsr:active{filter:brightness(.95)}
+.qsr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fdup{position:absolute;left:8px;bottom:calc(8px + var(--tiph,0px));z-index:2;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid color-mix(in srgb,var(--gold) 60%,var(--line));border-radius:999px;padding:4px 6px 4px 11px;font:inherit;font-size:12.5px;font-weight:700;color:var(--fg);direction:rtl;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.08);cursor:pointer}
+.fdup[hidden],.fwrap.full .fdup{display:none}
+.fdup .badge{min-width:18px;height:18px;padding:0 5px;font-size:11px}
+.fdup:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.fstage.hasdup .fcap,.fstage.hasdup .fopen{max-width:calc(100% - 28px - var(--dupw,90px))}
+.lgx .fdup{display:inline-flex;vertical-align:middle;box-shadow:none;cursor:default}
+.dupbox{display:flex;flex-direction:column;gap:6px;border:1px solid color-mix(in srgb,var(--gold) 50%,var(--line));background:color-mix(in srgb,var(--gold) 9%,var(--surface));border-radius:12px;padding:8px 10px;margin:0 0 10px}
+.drow{display:flex;align-items:center;gap:8px}
+.dq{flex:1;min-width:0;line-height:1.55;font-size:calc(14px*var(--fs,1))}
+.dq .lnk{font-weight:700}
+.dq small{color:var(--muted);font-size:calc(12px*var(--fs,1))}
+.dbt{display:flex;gap:6px;flex:none}
+.dlist{display:flex;flex-direction:column;gap:8px}
+.dgrp{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.dnm{all:unset;cursor:pointer;display:flex;flex-direction:column;line-height:1.4;direction:rtl}
+.dnm b{font-size:calc(15px*var(--fs,1))}
+.dnm small{font-size:calc(12px*var(--fs,1));color:var(--muted)}
+.dnm:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
 @media print{body>*:not(#printArea){display:none!important}#printArea{display:block!important}#printArea img{display:block;width:100%;height:auto}html,body{background:#fff!important}body::before{display:none}}
 </style>
 
@@ -709,6 +738,7 @@ nav.tabs .tab-n[hidden]{display:none}
         <div class="tview fstage fa" id="fview" aria-label="شجرة الجهة المختارة"><div class="tworld" id="fworld"></div>
           <div class="fcap" id="fcap" hidden></div>
           <button class="fopen" type="button" id="toFull">الشجرة المفتوحة</button>
+          <button class="fdup" type="button" id="fzDup" hidden><span>مكرر؟</span><span class="badge" id="fzDupN">0</span></button>
           <div class="fempty" id="fempty" hidden></div>
           <button class="fesw" type="button" id="fzEdit" aria-pressed="false" aria-label="للعرض فقط: المس القفل لتفتح التعديل" title="للعرض فقط: المس القفل لتفتح التعديل"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button>
           <div class="tzoom"><button class="btn" type="button" id="fzIn" aria-label="تكبير">+</button><button class="btn" type="button" id="fzOut" aria-label="تصغير">−</button><button class="btn" type="button" id="fzFit" aria-label="عرض الجهة كلها">⤢</button><button class="btn" type="button" id="fzFull" aria-label="ملء الشاشة">⛶</button><button class="btn" type="button" id="fzExp" aria-label="تصدير الجهة صورة أو نصًّا"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></button><button class="btn help" type="button" id="fzHelp" aria-label="دليل اللوحة">؟</button></div>
@@ -814,7 +844,7 @@ window.addEventListener("load",function(){setTimeout(function(){if(window.__dqOK
 "use strict";
 /* ---------- storage ---------- */
 const KEY="dhulqurba.v1";
-const WEB_BUILD=22;
+const WEB_BUILD=23;
 let mem=null,loadBad=null,saveErr=false;
 function load(){let s=null;try{s=localStorage.getItem(KEY)}catch(e){return mem}if(!s)return mem;
   try{const d=JSON.parse(s);if(d&&typeof d==="object"&&Array.isArray(d.people))return d}catch(e){}
@@ -824,7 +854,8 @@ let remoteRef=null,remoteT=null,remoteReady=false;
 function persist(){mem=S;try{localStorage.setItem(KEY,JSON.stringify(S));saveErr=false;return true}catch(e){
   if(!saveErr&&!window.claude){saveErr=true;setTimeout(()=>{try{toast("تعذّر الحفظ على هذا الجهاز، فقد تضيع تعديلاتك الأخيرة إذا أُغلق التطبيق. أرسل نسخة احتياطية الآن",{label:"أرسل النسخة",fn:()=>bkMail()},15000)}catch(e2){}},0)}
   return false}}
-function save(){S.updatedAt=Date.now();persist();pushRemote()}
+var SV=0; // the number of saves: the suggestions of names written twice are worked out again after each
+function save(){S.updatedAt=Date.now();SV++;persist();pushRemote()}
 function toLat(v){return String(v==null?"":v).replace(/[\u0660-\u0669]/g,c=>c.charCodeAt(0)-0x660).replace(/[\u06F0-\u06F9]/g,c=>c.charCodeAt(0)-0x6F0)} // ١٢٣ and ۱۲۳ are 123
 function numIn(v){const t=toLat(v).replace(/\u066B/g,".").replace(/[\u066C,\s]/g,"");return t?parseFloat(t):NaN} // an amount as the phone's keyboard wrote it
 function ymOf(v){const d=new Date(v);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")} // the month on this phone's calendar, not in London
@@ -915,6 +946,7 @@ function clean(D){ // ids, names, links that lead somewhere, no one his own ance
     if(!["m","t","o"].includes(r.kind))delete r.kind;if(r.kind==="o"&&typeof r.note==="string"&&r.note.trim())r.note=r.note.trim().slice(0,120);else delete r.note});D.fixed.forEach(r=>{if(!/^\d{4}-\d{2}$/.test(r.since)){const m=r.transfers.map(t=>t.ym).filter(x=>/^\d{4}-\d{2}$/.test(x)).sort()[0];r.since=m||ymOf(Date.now())}}); // the kind of giving, and the month a monthly amount began: for one from before, its first transfer, else this month
   D.contacts.forEach(c=>{if(!okD(c.added))delete c.added});
   if(D.seasons!=null){const o={};if(obj(D.seasons))Object.keys(D.seasons).forEach(k=>{if(/^[rfa]\d{4}$/.test(k)&&Array.isArray(D.seasons[k]))o[k]=[...new Set(D.seasons[k].map(str).filter(Boolean))]});D.seasons=o}
+  if(D.dupNo!=null){const o=[...new Set((Array.isArray(D.dupNo)?D.dupNo:[]).map(str).map(k=>k.split("|")).filter(x=>x.length===2&&x[0]&&x[1]&&x[0]!==x[1]&&by.has(x[0])&&by.has(x[1])).map(x=>x[0]<x[1]?x[0]+"|"+x[1]:x[1]+"|"+x[0]))].slice(-3000);if(o.length)D.dupNo=o;else delete D.dupNo} // «لا» to «هل هو نفسه؟»: the two are two people
   if(D.greet!=null){if(!obj(D.greet))delete D.greet;else Object.keys(D.greet).forEach(k=>{if(!/^[rfa]$/.test(k)||typeof D.greet[k]!=="string"||!D.greet[k].trim())delete D.greet[k]})}
   if(D.seasonAll!=null){if(D.seasonAll===true)D.seasonAll=true;else delete D.seasonAll}
   if(D.fontScale!=null){const f=+D.fontScale;if([1.12,1.25].includes(f))D.fontScale=f;else delete D.fontScale}
@@ -1166,6 +1198,7 @@ function openPerson(id,keep){
   const chip=(x,extra)=>{const sm=[extra,x.alive===false?rip(x):""].filter(Boolean).join(" · ");return`<button class="chip ${x.gender==="f"?"gf":"gm"}${x.alive===false?" dead":""}" type="button" data-open="${x.id}">${esc(x.name)}${sm?` <small>${esc(sm)}</small>`:""}</button>`};
   const ed=fEdit,none='<span class="sub">—</span>',slot=(kind,label)=>ed?`<button class="slot" type="button" data-addrel="${kind}">+ ${esc(label)}</button>`:""; // the switch on the board shut: no places to add, no «تعديل» and no «حذف»
   const spL=fem?"الزوج":"الزوجة";
+  const dps=dupOf(p.id),dupH=dps.length?`<div class="dupbox" role="group" aria-label="اسم قد يكون مكررًا">${dps.map(o=>dupRow(p,o)).join("")}</div>`:""; // the same person written twice?
   const kidsHTML=groups.filter(g=>g.kids.length).map(g=>{
     const lbl=groups.filter(x=>x.kids.length).length>1||(g.other&&sp.length>1)?(g.other?"من "+g.other.name:(fem?"الأب غير محدد":"الأم غير محددة")):"";
     return`<div class="kgrp">${lbl?`<span class="mgrp">${esc(lbl)}:</span>`:""}${g.kids.map(k=>chip(k)).join("")}</div>`}).join("");
@@ -1181,7 +1214,7 @@ function openPerson(id,keep){
     fx.length?["مبلغ شهري",fx.map(r=>`<span class="num${bl}">${money(r.amount)}</span> يوم ${r.day}${r.kind?" · "+esc(kindLbl(r)):""}`).join("، ")]:null,
     gv.n?["الإحسان هذا العام",`<span class="num${bl}">${money(gv.sum)}</span> <span class="sub">(${nn(gv.n,TIMES)})</span>`]:null].filter(Boolean);
   sheet(`<div class="hd" data-pp="${p.id}"><div style="flex:1;min-width:0"><h2>${esc(p.name)}${dead?` <small class="rip-h">${rip(p)}</small>`:""}</h2>${nas!==p.name?`<div class="full">${esc(nas)}</div>`:""}${isMe?`<div class="relme">أنت</div>`:rel?`<div class="relme">${esc(rel)}</div>`:""}</div><button class="btn sm" type="button" data-close>إغلاق</button></div>
-  ${con}
+  ${dupH}${con}
   <dl class="fam-grid">
     <dt>الأب</dt><dd>${f?chip(f):slot("father","أضف الأب")||none}</dd>
     <dt>الأم</dt><dd>${m?chip(m):((p.motherName?`<span class="chip gf">${esc(p.motherName)}</span>`:"")+slot("mother","أضف الأم"))||none}</dd>
@@ -1202,6 +1235,8 @@ function openPerson(id,keep){
     el.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeSheet);
     el.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openPerson(b.dataset.open));
     el.querySelectorAll("[data-addrel]").forEach(b=>b.onclick=()=>quickAdd(b.dataset.addrel,p.id));
+    el.querySelectorAll("[data-dupy]").forEach(b=>b.onclick=()=>{const [s2,k2]=b.dataset.dupy.split("|"),id=dupMerge(s2,k2);if(id)openPerson(id)});
+    el.querySelectorAll("[data-dupn]").forEach(b=>b.onclick=()=>{const [s2,k2]=b.dataset.dupn.split("|");dupDismiss(s2,k2);openPerson(p.id,true)});
     if(q("#pEdit"))q("#pEdit").onclick=()=>editPerson(p.id);
     if(q("#pOrd"))q("#pOrd").onclick=()=>orderSpouses(p.id);
     if(q("#pUnl"))q("#pUnl").onclick=()=>{setEdit(true,true);openPerson(p.id,true);toast("فُتح التعديل. والقفل في أعلى اللوحة يقفله",null,2400)};
@@ -2060,7 +2095,7 @@ const aiSetHTML=lead=>window.claude?`<div class="aiset"><b>${lead}</b><span clas
 function aiChanged(){aiNow().then(m=>{if(tbPane==="p-ask")askSetup(m);if(tbPane==="p-dev")renderDev()})}
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
 1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أسفل اللوحة يمينًا) تعرض شجرة أي قريب: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«شجرتي». الأشكال: العمود الملوّن بخط سميك سلسلة الآباء من صاحب الجهة إلى أعلى جد، والبطاقة بإطار رفيع قريب مسجّل خارج العمود، وخلفية كل بطاقة زرقاء خفيفة للرجل ووردية خفيفة للمرأة، وكذلك أسماء الأقارب في الملف، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، ولا تظهر إلا في وضع التعديل: في أعلى اللوحة يمينًا قفل واحد، مقفلًا تكون اللوحة والملفات للعرض فقط بلا خانات إضافة ولا «تعديل» ولا «حذف»، ومفتوحًا يظهر ذلك كله ويصير الزر «تعديل» ويُحاط اللوح بإطار متقطع بلون الجهة، ويُقفل كلما فُتح التطبيق، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة صاحب الشجرة المعروضة. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق كل زوجة و«أهله» فوق كل زوج ينقل إلى عائلته: هو أسفل العمود وفوقه أبوه ثم جده، فالعمود في كل جهة يصعد بالآباء وحدهم «ادعوهم لآبائهم» والأمهات بجانب أزواجهن، وخط الزواج إذا قطعه خطان صغيران فهو طلاق، والإخوة مرتبون من الأكبر بسنة الميلاد. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة، وزر التصدير بجانبها يحفظ الجهة التي تراها صورةً أو نصًّا، أو PDF في المتصفح. وأول مرة يسألك التطبيق اسمك ثم اسم أبيك ثم اسم أمك.
-ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اعرض شجرته» و«تعديل» و«حذف»، و«ترتيب الزوجات» لمن له أكثر من زوجة تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة. والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات وترتيب كل زوجة باختيار مباشر (الأولى، الثانية، الثالثة) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
+ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل، و«المواعيد والسجل»، أو «أضفه إلى التواصل». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اعرض شجرته» و«تعديل» و«حذف»، و«ترتيب الزوجات» لمن له أكثر من زوجة تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة. والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. وفي نافذة «إضافة» (أب أو أم أو زوجة أو ابن أو أخ): أثناء كتابة الاسم تظهر تحته الأسماء الموجودة في الشجرة بنسبها وصلتها، ولمس أحدها يربط الشخص نفسه في مكانه بدل كتابته مرة ثانية، و«حفظ» يضيف شخصًا جديدًا، وبعد الربط «تراجع». وإذا بدا اسمان مكتوبان لشخص واحد (الاسم نفسه والنسب نفسه بلا تعارض في الأب أو الأم) ظهر زر «مكرر؟» أسفل اللوحة يسارًا بعدد الاقتراحات، وفي أعلى ملف كل منهما «هل هي نفسها...؟» أو «هل هو نفسه...؟»: «نعم» يدمجهما في بطاقة واحدة تجمع النسب والزواج والأبناء والتواصل والإحسان، و«لا» يزيل الاقتراح فلا يعود، وبعدهما «تراجع». و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات وترتيب كل زوجة باختيار مباشر (الأولى، الثانية، الثالثة) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
 2) التواصل: «اليوم» (مواعيد اليوم، ومن تأخرت عنه، وتذكير النسخة الاحتياطية، وفي أيام رمضان والعيدين «القائمة» للتهنئة: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، و«تم التواصل» في تلك الأيام يعلّم التهنئة أيضًا، وفي غيرها سطر يعدّ الأيام إلى الموسم القادم) ثم «جدول التواصل»: سطر لكل قريب فيه صلته، ومتى تواصلت معه بلون حالته، و«اتصال» و«واتساب» و«تم التواصل». «+ أضف قريبًا» يضيف قريبًا من الشجرة، وتحته أزرار تضيف جهة كاملة بلمسة: الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة، ويحين موعد كل مضاف حسب قربه. وفوق الجدول فرز: الكل، ومتأخر، وهذا الأسبوع. مدة التواصل تُقترح حسب القرب: الوالدان والأبناء كل أسبوع، والإخوة والأجداد كل أسبوعين، والأعمام والأخوال كل شهر، والأبعد كل 3 أشهر، وتُغيَّر من «المواعيد والسجل» في ملف القريب، ومنه يُوضع موعد التواصل ويُضاف إلى «تقويم Google». بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة.
 3) الإحسان: في الأعلى شريط الشهر (› السابق و‹ التالي و«الشهر الحالي»)، والمجاميع والقائمتان تتبع الشهر المعروض. «مبالغ شهرية»: كل مبلغ سطر واحد فيه الاسم والمبلغ وموعده وحاله: في الشهر الحالي بعد التحويل «حُوِّل» ومعه «القادم» بتاريخ الشهر التالي، وقبل موعده «القادم» بتاريخه وكم بقي عليه، وإذا حلّ ولم يُحوَّل «موعده» بتاريخه و«مستحق»، وفي الأشهر السابقة يوم الاستحقاق و«حُوِّل» أو «لم يُسجَّل»، وزر ✓ في السطر يسجل التحويل في الشهر المعروض فيُسجَّل تحويل فات في شهره، ولمس السطر يفتح التفاصيل: المبلغ والتصنيف وتاريخ الاستحقاق (يُختار من التقويم ويتكرر في اليوم نفسه كل شهر) وسجل التحويلات و«تذكير في تقويم Google» والحذف. «مبالغ متفرقة»: سطر لكل مبلغ فيه الاسم والمبلغ والتاريخ، ولمسه يفتح التعديل. والإضافة بزر «+ أضف» فوق كل قائمة: اسم ومبلغ وتصنيف وتاريخ. التصنيفات ثلاثة: مصاريف، علاج، أخرى (ومعها تعليق يقول ما هو)، وتحت المجاميع مجموع كل تصنيف في السنة. وفي الأعلى ما حُوِّل في الشهر، والمتبقي، ومجموع السنة، و«إخفاء المبالغ». وعلى تبويب «الإحسان» في الأسفل رقم بعدد المبالغ الشهرية المستحقة الآن، ولا تتكرر المبالغ في «اليوم» بالتواصل.
 الشريط العلوي ثلاثة تبويبات: «بحث» وتحته خانة تبحث في كل ما كُتب في التطبيق: الأقارب بالاسم والنسب والمدينة والجوال والملاحظات وسنة الميلاد (زر «الشجرة» يقفز إلى القريب ويضيء بطاقته، و«الملف» يفتح ملفه)، وملاحظات التواصل، والإحسان بالاسم والتصنيف والمبلغ، والاقتراحات. و«اسأل Claude» تسأل فيه عن أقاربك وعن التطبيق. و«تطوير» وعليه عدد ما ينتظرك: «اقترح علي» يعطيك مقترحات لتطوير التطبيق تعتمدها أو تؤجلها أو ترفضها، و«اسألني» يسألك عن عائلتك فتجيب كتابةً أو بالصوت من مايك لوحة المفاتيح فيصير أدق، وتحتهما فكرتك أنت، و«بانتظار التنفيذ» و«انسخ التعليمات»، و«ما يعرفه التطبيق عنك». وفي رأس الشاشة «الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم حجم الخط (عادي أو كبير أو أكبر)، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا)، ثم «Claude داخل التطبيق» في تطبيق الجوال: يُلصق فيه مفتاح Claude مرة واحدة. زر الرجوع في الجوال يغلق المفتوح أولًا.`;
@@ -2363,7 +2398,7 @@ function renderSide(){
   const base=O?"fa":fSide,cls=sideCls(base),fem=me.gender==="f";
   let a=O?byId(focusId):fOf?byId(fOf):null;if(!a&&!O){fOf="";fOfBack.length=0;a=sideAnchor(base)}
   const key=O?"open|"+a.id:base+"|"+fOf+"|"+(a?a.id:"");
-  view.className="tview fstage "+cls+(fEdit?" editing":"")+(view.classList.contains("drag")?" drag":"");cap.className="fcap "+cls;edPaint();
+  view.className="tview fstage "+cls+(fEdit?" editing":"")+(view.classList.contains("drag")?" drag":"");cap.className="fcap "+cls;edPaint();dupPaint();
   {const tp=$("#ftip");view.style.setProperty("--tiph",(tp&&!tp.hidden?tp.offsetHeight+6:0)+"px")} // the button at the bottom stands above the tip while it shows
   const bt=base==="fa"?"جهة الأب":base==="mo"?"جهة الأم":fem?"الزوج وأهله":"الزوجة وأهلها";
   cap.hidden=O||!fOf;$("#toFull").hidden=!O&&!!fOf;$("#toFull").textContent=O?"عائلتي":"الشجرة المفتوحة";
@@ -2415,7 +2450,8 @@ function renderSide(){
     const tip=$("#ftip"),T0=46,B1=tip&&!tip.hidden?tip.offsetHeight+14:8;let B0=B1+BB,kf=Math.min((vw-16)/WW,(vh-T0-B0)/HH); // T0: the strip at the top for the tools; B0: the tip while it shows, and the button at the bottom
     if(BB){const k2=Math.min((vw-16)/WW,(vh-T0-B1)/HH),kk=Math.max(.3,Math.min(1.2,k2)); // where the side would stand with no room kept: if nothing falls under the button at the bottom right, it keeps its size
       if(k2>=.68&&WW*kk<=vw-16&&HH*kk<=vh-T0-B1){const bt=cap.hidden?$("#toFull"):cap,tp=tip&&!tip.hidden?tip.offsetHeight+6:0,X0=vw-12-bt.offsetWidth,Y0=vh-12-tp-bt.offsetHeight,tx=(vw-WW*kk)/2,ty=T0+(vh-T0-B1-HH*kk)/2;
-        if(!out.some(o=>tx+(o.x+ox+(o.w||30))*kk>X0&&ty+(o.y+oy+(o.h||22))*kk>Y0)){kf=k2;B0=B1}}}
+        const DX=$("#fzDup").hidden?-1:20+$("#fzDup").offsetWidth; // «مكرر؟» at the bottom on the left keeps its corner too
+        if(!out.some(o=>ty+(o.y+oy+(o.h||22))*kk>Y0&&(tx+(o.x+ox+(o.w||30))*kk>X0||tx+(o.x+ox)*kk<DX))){kf=k2;B0=B1}}}
     const b=fLast.get(fBottomId)||[WW/2,HH/2];
     fv.k=kf>=.68||fFitAll?Math.max(.3,Math.min(1.2,kf)):.8; // the whole side at the largest size that fits; a very wide side opens on your line at a readable size (⤢ shows it all)
     fv.tx=WW*fv.k<=vw-16?(vw-WW*fv.k)/2:Math.min(8,Math.max(vw-8-WW*fv.k,vw/2-b[0]*fv.k));
@@ -2459,7 +2495,7 @@ function bindPZ(o){ // drag with one finger, pinch with two, wheel, zoom buttons
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&fullEl.classList.contains("full")&&!$("#layer").innerHTML)full(false)});
   return{apply,zoomAt,fit,full};
 }
-const fPZ=bindPZ({view:$("#fview"),world:$("#fworld"),st:fv,bIn:$("#fzIn"),bOut:$("#fzOut"),bFit:$("#fzFit"),bFull:$("#fzFull"),fullEl:$("#fwrap"),skip:".tzoom,.fcap,.fempty,.ftip,.fopen,.fesw",onFull:on=>{fCamKey="";renderSide();if(on)bkPush("full",()=>fPZ.full(false));else bkDone("full")},onUser:()=>{fUserCam=true;fFitAll=false},onFit:()=>{fFitAll=true;fUserCam=false;fCamKey="";renderSide()}});
+const fPZ=bindPZ({view:$("#fview"),world:$("#fworld"),st:fv,bIn:$("#fzIn"),bOut:$("#fzOut"),bFit:$("#fzFit"),bFull:$("#fzFull"),fullEl:$("#fwrap"),skip:".tzoom,.fcap,.fempty,.ftip,.fopen,.fesw,.fdup",onFull:on=>{fCamKey="";renderSide();if(on)bkPush("full",()=>fPZ.full(false));else bkDone("full")},onUser:()=>{fUserCam=true;fFitAll=false},onFit:()=>{fFitAll=true;fUserCam=false;fCamKey="";renderSide()}});
 function ftipShow(on){$("#ftip").hidden=!on;$("#fview").style.setProperty("--tiph",(on?$("#ftip").offsetHeight+6:0)+"px");if(!on)try{localStorage.setItem(KEY+".ftip","1")}catch(e){}if(!fUserCam){fCamKey="";renderSide()}}
 function boardGuide(){const me=byId(S.meId),fem=me&&me.gender==="f";
   const row=(ex,t,d)=>`<div class="lgr"><span class="lgx" aria-hidden="true">${ex}</span><p><b>${t}</b>${d}</p></div>`;
@@ -2482,6 +2518,7 @@ function boardGuide(){const me=byId(S.meId),fem=me&&me.gender==="f";
   ${row(`<span class="fpill">+2 إخوة</span>`,"عدد إخوتك بجانبك","المسه ليظهر إخوتك وأخواتك.")}
   <h3>الأدوات</h3>
   ${row(`<span class="fesw" style="position:static">${LKC}</span> <span class="fesw" style="position:static" aria-pressed="true">${LKO}<span>تعديل</span></span>`,"القفل في أعلى اللوحة يمينًا","مقفلًا تكون اللوحة والملفات للعرض فقط: لا خانات إضافة ولا «تعديل» ولا «حذف»، فلا تضيف أحدًا بالخطأ. المسه فيُفتح ويصير «تعديل» ويُحاط اللوح بإطار متقطع بلون الجهة، فتظهر خانات الإضافة، و«تعديل» و«حذف» في الملفات. والمسه مرة أخرى ليُقفل. ويُقفل كلما فتحت التطبيق.")}
+  ${row(`<span class="fdup" style="position:static"><span>مكرر؟</span><span class="badge">2</span></span>`,"«مكرر؟» أسفل اللوحة يسارًا","يظهر إذا بدا اسمان لشخص واحد: الاسم نفسه والنسب نفسه بلا تعارض، والرقم عدد الاقتراحات. المسه لترى كل اقتراح: «نعم» يجعلهما بطاقة واحدة بنسبه وزواجه وأبنائه، و«لا» يزيل الاقتراح فلا يعود. وتجده أيضًا في أعلى ملف كل منهما.")}
   ${row(`<span class="lgk">+</span><span class="lgk">−</span>`,"التكبير والتصغير","ويكفي أن تقرّب إصبعين أو تبعّدهما، واسحب بإصبع لتتنقل.")}
   ${row(`<span class="lgk">⤢</span>`,"الجهة كلها","يُظهر الجهة كلها في اللوحة بأكبر حجم يسعها.")}
   ${row(`<span class="lgk">⛶</span>`,"ملء الشاشة","و✕ يعيد اللوحة إلى مكانها.")}
@@ -2611,6 +2648,7 @@ function setTreeMode(m){const was=treeMode;if(m==="open"&&was!=="open")famFit=fF
 function applyTreeMode(){$("#famPanel").hidden=false;renderFam()}
 function oGo(id,hl){if(!byId(id))return;focusId=id;fHL=hl?id:"";oCol.clear();if(treeMode!=="open")setTreeMode("open");else{fCamKey="";fUserCam=false;fFitAll=false;renderSide()}}
 $("#toFull").onclick=()=>{if(treeMode==="open")setTreeMode("fam");else oGo(S.meId)};
+$("#fzDup").onclick=()=>dupSheet();
 $("#obMe").onclick=()=>oGo(S.meId);
 $("#obTop").onclick=()=>{const c=byId(focusId)||byId(S.meId),t=c&&topOf(c);if(t&&t.id!==c.id){oGo(t.id);toast("شجرة "+t.name)}};
 const FEM_N=new Set("مريم زينب هند سعاد وداد ايمان امل امال اماني نجلاء هيفاء شيماء علياء رغد جود لمي سلمي دعاء الاء اسراء رنا دانا دينا لينا رهف شهد ابتسام الهام احلام سهام وئام اريج عبير نسرين ياسمين جيهان حنان خلود وعد روان جني مها لبني ندي ضحي سجي رؤي هدي مني ليلي سارا اسماء رحاب نوال منال تهاني بشري سلوي نجوي عفاف وصال كوثر سوسن ريم غدير عهد رزان لجين لميس ميس ريتاج تسنيم اسيل حلا ملاك غلا دلال نهي رشا ربي بتول زهراء نور فاطمه عائشه عايشه خديجه نوره ساره حصه لطيفه منيره شيخه موزه هيله رقيه صفيه سميه رحمه نعيمه جميله فريده حميده سعيده بدريه فوزيه زكيه صالحه عزيزه شريفه حليمه اميره سميره نبيله عاليه غاليه جوهره مزنه نجمه وضحه حمده لولوه غاده هاله منيره اميمه هيا نوف عنود بدور اروي ريما رانيا وفاء صفاء رجاء هناء ثناء سناء لمياء ميار ليان لين يارا تالا ديما فرح هاجر مرام ريهام عبله".split(" "));
@@ -2651,6 +2689,7 @@ function quickAdd(kind,targetId,stay,preOther){
     <form id="qa" class="grid2">
       ${choose?`<div class="gender-pick" style="grid-column:1/-1"><button class="btn" type="button" data-g="m" aria-pressed="true">${choose[0]}</button><button class="btn" type="button" data-g="f" aria-pressed="false">${choose[1]}</button></div>`:""}
       <label class="f" style="grid-column:1/-1"><span>${multi&&!one?"الأسماء (افصل بينها بفاصلة لإضافة أكثر من واحد)":"الاسم الأول"}</span><input type="text" id="qaN" placeholder="${exN}" autocomplete="off"></label>
+      <div class="qsug" id="qaSug" role="group" aria-label="موجود في الشجرة" hidden></div>
       ${choose?`<div class="qgs" id="qaGs" hidden aria-label="المس الاسم لتغيير ${choose[0]} أو ${choose[1]}"></div>`:""}
       ${need.map(([id,l])=>`<label class="f"><span>${esc(l)}</span><input type="text" id="${id}" autocomplete="off"></label>`).join("")}
       ${base==="child"&&sps.length?`<label class="f" style="grid-column:1/-1"><span>${fem?"الأب":"الأم"}</span><select id="qaO">${sps.map((x,i)=>`<option value="${x.id}" ${(preOther?x.id===preOther:i===0&&sps.length===1)?"selected":""}>${esc(x.name)}</option>`).join("")}<option value="" ${!preOther&&sps.length>1?"selected":""}>${fem?"غير محدد":"غير محددة"}</option></select></label>`:""}
@@ -2668,7 +2707,26 @@ function quickAdd(kind,targetId,stay,preOther){
       el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.g===on)))};
     el.querySelectorAll(".gender-pick button").forEach(b=>b.onclick=()=>{g=b.dataset.g;gSet=true;gOver.clear();el.querySelectorAll(".gender-pick button").forEach(x=>x.setAttribute("aria-pressed",x===b));drawG();deadLbl()});
     const deadLbl=()=>{if(one)return;const ns=split(),gs=ns.map(gOf);el.querySelector("#qaDeadL").textContent=ns.length>1?(gs.every(x=>x==="f")?"متوفيات":"متوفون"):(gs[0]==="f"?"متوفاة":"متوفى")};
-    el.querySelector("#qaN").addEventListener("input",()=>{drawG();deadLbl()});
+    const sBox=el.querySelector("#qaSug"),tokOf=()=>{const a=el.querySelector("#qaN").value.split(multi?/[،,\n]/:/\n/);return(a[a.length-1]||"").trim()}; // the name being typed: after the last comma
+    const drawS=()=>{if(!sBox)return;const xs=needT||need.length?[]:qaCands(T,base,tokOf()),sh=xs.slice(0,3),more=xs.length-sh.length; // the people of the tree this name may be, for this place
+      sBox.hidden=!sh.length;sBox.innerHTML=sh.length?`<p class="qsh">موجود في الشجرة؟ المسه ليُربط هو نفسه، و«حفظ» يضيف شخصًا جديدًا</p>`+sh.map(x=>{const t=whoSub(x);
+        return`<button type="button" class="qsr ${x.gender==="f"?"gf":"gm"}" data-qsug="${x.id}"><b>${esc(nasab(x,3))}</b>${t?`<small>${esc(t)}</small>`:""}</button>`}).join("")+(more?`<p class="qsh">وغيرهم ${more}: اكتب اسم الأب بعد الاسم</p>`:""):""};
+    el.querySelector("#qaN").addEventListener("input",()=>{drawG();deadLbl();drawS()});
+    if(sBox)sBox.addEventListener("click",e=>{const b=e.target.closest("[data-qsug]"),x=b&&byId(b.dataset.qsug);if(!x)return; // the same person takes the place: nothing is written twice
+      const snap=JSON.stringify(S),fix=el.querySelector("#qaFix")?.checked?sibsFix:[],xf=x.gender==="f",was=nasab(x,1); // his name as you knew him, before the link
+      if(base==="spouse")linkSpouse(T,x);
+      else if(base==="father"||base==="mother"){T[base]=x.id;fix.forEach(y=>y[base]=x.id)}
+      else if(base==="child"){const o=el.querySelector("#qaO"),ov=o?o.value:"",ok2=fem?"father":"mother";x[fem?"mother":"father"]=T.id;if(ov&&!x[ok2]&&ov!==x.id)x[ok2]=ov}
+      else if(base==="sib")["father","mother"].forEach(k=>{if(T[k]&&!x[k])x[k]=T[k]});
+      if([T,x,...fix].some(y=>selfAnc(y.id))){restoreS(snap);toast("لا يصح هذا الربط: يصير الشخص من أجداد نفسه");return}
+      const inp=el.querySelector("#qaN"),parts=inp.value.split(multi?/[،,\n]/:/\n/);parts.pop();const rest=parts.map(y=>y.trim()).filter(Boolean);inp.value=rest.length?rest.join("، ")+"، ":"";
+      const role=kind==="funcle"?(xf?"عمتك":"عمك"):kind==="muncle"?(xf?"خالتك":"خالك"):base==="child"&&unc?(unc==="f"?(xf?"عمتك":"عمك"):(xf?"خالتك":"خالك"))
+        :isMeT?{spouse:xf?"زوجتك":"زوجك",father:"أبوك",mother:"أمك",child:xf?"بنتك":"ابنك",sib:xf?"أختك":"أخوك"}[base]
+        :{spouse:xf?"زوجة ":"زوج ",father:"أبو ",mother:"أم ",child:xf?"بنت ":"ابن ",sib:xf?"أخت ":"أخو "}[base]+nmT;
+      save();fBefore=null;fReveal=[x.id];fHL=x.id;renderAll();
+      toast("«"+was+"» الآن "+role,{label:"تراجع",fn:()=>{restoreS(snap);save();renderAll();const pp=$("#layer [data-pp]");if(pp&&byId(pp.dataset.pp))openPerson(pp.dataset.pp,true)}},7000);
+      if(rest.length){drawG();deadLbl();drawS();inp.focus();return}
+      if(targetId&&!stay)openPerson(T.id);else closeSheet()});
     const gBox=el.querySelector("#qaGs");if(gBox)gBox.addEventListener("click",e=>{const b=e.target.closest("[data-qg]");if(!b)return;const n=split()[+b.dataset.qg];if(n==null)return;gOver.set(n,gOf(n)==="f"?"m":"f");drawG();deadLbl()});
     el.querySelector("#qa").onsubmit=e=>{e.preventDefault();
       const names=el.querySelector("#qaN").value.split(multi?/[،,\n]+/:/\n/).map(x=>x.trim()).filter(Boolean);if(!names.length){el.querySelector("#qaN").focus();return}
@@ -2689,6 +2747,112 @@ function quickAdd(kind,targetId,stay,preOther){
   });
 }
 
+/* v23: a name typed in «إضافة» shows who already has it; two records of one person are asked about: «نعم» makes them one, «لا» drops the question */
+function nTok(s){return norm(s).replace(/(^|\s)عبد\s+(?=ال)/g,"$1عبد").split(" ").filter(w=>w&&w!=="بن"&&w!=="بنت"&&w!=="ابن"&&w!=="ابنه")} // «عبد الله» is «عبدالله»; «بن» and «بنت» are not names
+function tEq(a,b){return a===b||(a.length>3&&b.length>3&&a.replace(/^ال/,"")===b.replace(/^ال/,""))} // «الهادي» and «هادي»
+function tPre(a,b){return b.startsWith(a)||(!a.startsWith("ال")&&b.replace(/^ال/,"").startsWith(a))} // the word being typed
+function chainT(p,n,by){const out=nTok(p.name);let c=p;for(let i=0;i<(n||6)&&c;i++){c=by?by.get(c.father):byId(c.father);if(c)out.push(...nTok(c.name))}return out} // his name, then his father's, then his grandfather's
+function selfAnc(id){const p=byId(id);if(!p)return false;const seen=new Set(),q=[p.father,p.mother];while(q.length){const c=q.shift();if(!c||seen.has(c))continue;if(c===id)return true;seen.add(c);const y=byId(c);if(y)q.push(y.father,y.mother)}return false}
+function kinOf(A,B,a,b){return A.has(b.id)||B.has(a.id)||[a.father,a.mother].some(x=>x&&B.has(x))||[b.father,b.mother].some(x=>x&&A.has(x))} // a parent or child at any depth, a brother or sister, an uncle or aunt at any depth, a nephew or niece
+function kin(a,b){return!!a&&!!b&&kinOf(ancestors(a.id),ancestors(b.id),a,b)} // the blood one may not marry
+function restoreS(snap){const o=JSON.parse(snap);Object.keys(S).forEach(k=>{if(!(k in o))delete S[k]});Object.assign(S,o)}
+function linkHint(p){const f=p.gender==="f",sp=spousesOf(p)[0],k=kids(p.id)[0];return sp?(f?"زوجة ":"زوج ")+sp.name:k?(f?"أم ":"أبو ")+k.name:""}
+function dupSub(p){const f=p.gender==="f",l=linkHint(p),r=relToMe(p.id),m=byId(p.mother);return[l,r&&r!==l?r:"",m?(f?"أمها ":"أمه ")+m.name:"",p.born?"مواليد "+p.born:"",p.city||"",p.alive===false?rip(p):""].filter(Boolean).slice(0,4).join(" · ")} // two records with one name, told apart
+function whoSub(p){const r=relToMe(p.id),l=p.father?"":linkHint(p);return[l,r&&r!==l?r:"",p.alive===false?rip(p):""].filter(Boolean).join(" · ")} // a record with no father is told by its marriage or its children, and by what it is to you
+function qaCands(T,base,text){ // who in the tree the name typed may be, for this place beside T
+  const q=nTok(text);if(!T||!q.length||q[0].length<2)return[];
+  const by=new Map(S.people.map(p=>[p.id,p])),aT=ancestors(T.id),sps=spousesOf(T),fem=T.gender==="f",L=q.length-1,out=[];
+  const sib=x=>(!!T.father&&x.father===T.father)||(!!T.mother&&x.mother===T.mother);
+  const ok=x=>{if(x.id===T.id||sps.includes(x))return false;
+    if(base==="spouse")return x.gender!==T.gender&&!kinOf(aT,ancestors(x.id),T,x)&&!(x.gender==="f"&&spousesOf(x).some(h=>h.alive!==false&&!isDiv(x,h))); // not of his blood; a woman with a husband living is not given a second
+    if(base==="father"||base==="mother")return x.gender===(base==="father"?"m":"f")&&!ancestors(x.id).has(T.id)&&!sib(x); // not his child or grandchild, not his brother
+    if(base==="child")return!x[fem?"mother":"father"]&&!aT.has(x.id)&&!sib(x); // his place among the child's parents is empty
+    if(base==="sib")return(!!T.father||!!T.mother)&&!sib(x)&&!aT.has(x.id)&&!ancestors(x.id).has(T.id)&&!(T.father&&x.father)&&!(T.mother&&x.mother); // the places of T's parents are empty in him
+    return false};
+  S.people.forEach(x=>{const c=chainT(x,6,by);if(c.length<q.length)return;for(let i=0;i<L;i++)if(!tEq(q[i],c[i]))return;if(!tPre(q[L],c[L])||!ok(x))return;
+    out.push({x,s:(q.every((w,i)=>tEq(w,c[i]))?0:10)+(x.father?0:2)+(base==="spouse"&&spousesOf(x).length?1:0),n:nasab(x,3).length})});
+  return out.sort((a,b)=>a.s-b.s||a.n-b.n).map(o=>o.x)}
+function dupKey(a,b){return a<b?a+"|"+b:b+"|"+a}
+function dupW(p){return(p.id===S.meId?100:0)+(p.father?4:0)+(p.mother?2:0)+(spousesOf(p).length?1:0)+(kids(p.id).length?1:0)+(p.phone?1:0)+(p.born?1:0)+(p.city?1:0)+(S.contacts.some(c=>c.personId===p.id)?1:0)}
+var dupC=null,dupCS=null,dupCV=-1;
+function dupPairs(){ // the pairs that look like one person: the same name and the same line of fathers as far as both go, the same generation, and nothing that says two
+  if(dupC&&dupCS===S&&dupCV===SV)return dupC;
+  const by=new Map(S.people.map(p=>[p.id,p])),no=new Set(S.dupNo||[]),out=[],M=f=>{const m=new Map();return k=>{if(!m.has(k))m.set(k,f(k));return m.get(k)}};
+  const anc=M(id=>ancestors(id)),spo=M(id=>spousesOf(by.get(id))),kd=M(id=>kids(id)),ch=M(id=>chainT(by.get(id),6,by)),fam=M(id=>nTok(familyOf(by.get(id))).map(w=>w.replace(/^ال/,"")).join(" "));
+  const kinM=(a,b)=>kinOf(anc(a.id),anc(b.id),a,b),yr=p=>parseInt(toLat(p.born),10)||0,dead=p=>p.alive===false;
+  const KI=new Map();S.people.forEach(p=>[p.father,p.mother].forEach(x=>{if(x&&by.has(x)){if(!KI.has(x))KI.set(x,[]);KI.get(x).push(p.id)}}));
+  const GN=new Map(),CP=new Map();let cn=0; // the generation of each, counted from you through fathers, mothers, children and marriages: a wife is in her husband's generation
+  [S.meId,...S.people.map(p=>p.id)].forEach(id=>{if(!id||!by.has(id)||GN.has(id))return;cn++;GN.set(id,0);CP.set(id,cn);const q=[id];
+    while(q.length){const c=q.shift(),p=by.get(c),g=GN.get(c);[[p.father,-1],[p.mother,-1],...(KI.get(c)||[]).map(k=>[k,1]),...(p.spouses||[]).map(x=>[x,0])].forEach(([x,d])=>{if(x&&by.has(x)&&!GN.has(x)){GN.set(x,g+d);CP.set(x,cn);q.push(x)}})}});
+  const G=new Map();S.people.forEach(p=>{const t=ch(p.id)[0];if(!t)return;const k=p.gender+":"+t.replace(/^ال/,"");if(!G.has(k))G.set(k,[]);G.get(k).push(p)});
+  G.forEach(Lp=>{for(let i=0;i<Lp.length;i++)for(let j=i+1;j<Lp.length;j++){const a=Lp[i],b=Lp[j];
+    if(no.has(dupKey(a.id,b.id)))continue;
+    if((a.father&&b.father&&a.father!==b.father)||(a.mother&&b.mother&&a.mother!==b.mother))continue; // two fathers or two mothers: two people
+    const ca=ch(a.id),cb=ch(b.id);let m=true;for(let k=0,n=Math.min(ca.length,cb.length);k<n;k++)if(!tEq(ca[k],cb[k])){m=false;break}if(!m)continue;
+    if(fam(a.id)&&fam(b.id)&&fam(a.id)!==fam(b.id))continue;
+    if(yr(a)&&yr(b)&&Math.abs(yr(a)-yr(b))>2)continue; // one person, one year of birth
+    const gap=CP.get(a.id)===CP.get(b.id)?Math.abs(GN.get(a.id)-GN.get(b.id)):0;if(gap>1)continue; // not two generations apart
+    if(anc(a.id).has(b.id)||anc(b.id).has(a.id))continue; // a grandfather and the grandson named after him
+    const sa=spo(a.id),sb=spo(b.id);if(sa.includes(b))continue;const shared=sa.some(x=>sb.includes(x));
+    if(sa.length&&sb.length&&!shared)continue; // both married, to others
+    const pa=!!(a.father||a.mother),pb=!!(b.father||b.mother);
+    if(pa&&pb){if(dead(a)!==dead(b))continue; // two children of one father with one name, one of them departed: a brother named after him
+      if(!(a.father&&a.father===b.father)&&!(a.mother&&a.mother===b.mother)){const F=by.get(a.father||b.father),Mo=by.get(a.mother||b.mother);if(!F||!Mo||!spo(F.id).includes(Mo))continue}} // one by his father, the other by his mother: only if the two are husband and wife
+    else if(!pa&&!pb){if(!shared&&!(ca.length>1&&ca.length===cb.length))continue} // with no parents, one person only if they share a spouse, or the same full name was written for both
+    else{const st=pa?b:a,c=pa?a:b,ws=spo(st.id),ks=kd(st.id); // one of them has no parents: by his marriage, by his children, or by his full name
+      if(ws.length){if(ws.some(w=>kinM(w,c)||(yr(w)&&yr(c)&&Math.abs(yr(w)-yr(c))>30)))continue; // not of the spouse's blood, not thirty years apart
+        if(gap&&!ws.every(w=>yr(w)&&yr(c)&&Math.abs(yr(w)-yr(c))<=25))continue} // a generation apart only when the years of birth say they could marry
+      else if(ks.length){if(gap||dead(st)!==dead(c)||ks.some(k=>yr(k)&&yr(c)&&yr(k)-yr(c)<12))continue} // a father written twice: one generation, both departed or both living
+      else if((st===a?ca:cb).length<2)continue}
+    if(sa.some(w=>kinM(b,w))||sb.some(w=>kinM(a,w)))continue; // no one is married to his own blood
+    if(kd(a.id).some(k=>anc(k.id).has(b.id))||kd(b.id).some(k=>anc(k.id).has(a.id)))continue; // his child is the other's grandchild
+    const [x,y]=dupW(a)>=dupW(b)?[b,a]:[a,b];out.push({s:x.id,k:y.id})}}); // s goes into k: the fuller record stays, and you stay you
+  dupC=out;dupCS=S;dupCV=SV;return out}
+function dupOf(id){return dupPairs().filter(o=>o.s===id||o.k===id).map(o=>({o:o.s===id?o.k:o.s,s:o.s,k:o.k}))}
+function dupRow(me,o){const x=byId(o.o);if(!x)return"";const f=me.gender==="f",t=dupSub(x),nm=nasab(x,3);
+  return`<div class="drow"><span class="dq">${f?"هل هي نفسها":"هل هو نفسه"} <button class="lnk" type="button" data-open="${x.id}">${esc(nm)}</button>؟${t?` <small>${esc(t)}</small>`:""}</span><span class="dbt"><button class="btn sm primary" type="button" data-dupy="${o.s}|${o.k}" aria-label="${esc((f?"نعم، هي نفسها ":"نعم، هو نفسه ")+nm)}">نعم</button><button class="btn sm" type="button" data-dupn="${o.s}|${o.k}" aria-label="${esc((f?"لا، ليست ":"لا، ليس ")+nm)}">لا</button></span></div>`}
+function dupMerge(sId,kId){ // the two records are one person: the fuller stays, and all that pointed at the other points at him
+  let K=byId(kId),G=byId(sId);if(!K||!G||K===G||K.gender!==G.gender)return"";if(G.id===S.meId){const t=K;K=G;G=t}
+  const snap=JSON.stringify(S),sw=a=>[...new Set((a||[]).map(i=>i===G.id?K.id:i))];
+  S.people.forEach(x=>{if(x===G||x===K)return;if(x.father===G.id)x.father=K.id;if(x.mother===G.id)x.mother=K.id;
+    if((x.spouses||[]).includes(G.id))x.spouses=sw(x.spouses);if(Array.isArray(x.div)&&x.div.includes(G.id))x.div=sw(x.div)}); // in each spouse's list he takes the other's place, so the order of the marriages stays
+  ["father","mother"].forEach(k=>{if(!K[k]&&G[k])K[k]=G[k]});
+  K.spouses=[...new Set([...(K.spouses||[]),...(G.spouses||[])])].filter(i=>i!==K.id&&i!==G.id);
+  const dv=[...new Set([...(K.div||[]),...(G.div||[])])].filter(i=>i!==K.id&&i!==G.id);if(dv.length)K.div=dv;else delete K.div;
+  ["city","phone","born","family","motherName"].forEach(k=>{if(!K[k]&&G[k])K[k]=G[k]});
+  if(G.notes&&G.notes!==K.notes)K.notes=K.notes?K.notes+" · "+G.notes:G.notes;
+  K.alive=K.alive!==false&&G.alive!==false; // «متوفى» was written on purpose
+  {const a=nTok(K.name).length,b=nTok(G.name).length;if(K.father?b<a:b>a)K.name=G.name} // with a father the first name is enough, the rest is his line
+  const cK=S.contacts.find(c=>c.personId===K.id),cG=S.contacts.find(c=>c.personId===G.id);
+  if(cG){if(cK){cK.log=[...new Set([...cK.log,...cG.log])].sort((a,b)=>b.localeCompare(a));cK.meta=Object.assign({},cG.meta||{},cK.meta||{});if(!cK.appt&&cG.appt)cK.appt=cG.appt;if(cK.freq==null&&cG.freq!=null)cK.freq=cG.freq;S.contacts=S.contacts.filter(c=>c!==cG)}else cG.personId=K.id}
+  [...S.fixed,...S.variable].forEach(r=>{if(r.personId===G.id)r.personId=K.id});
+  if(S.seasons)Object.keys(S.seasons).forEach(k=>{if(S.seasons[k].includes(G.id))S.seasons[k]=sw(S.seasons[k])});
+  if(S.dupNo){S.dupNo=[...new Set(S.dupNo.map(x=>{const [a,b]=x.split("|"),a2=a===G.id?K.id:a,b2=b===G.id?K.id:b;return a2===b2?"":dupKey(a2,b2)}).filter(Boolean))];if(!S.dupNo.length)delete S.dupNo} // «لا» said to the other is said to him
+  if(S.meId===G.id)S.meId=K.id;
+  S.people=S.people.filter(x=>x!==G);
+  if(selfAnc(K.id)){restoreS(snap);toast("تعذّر الدمج: يصير الشخص من أجداد نفسه");return""}
+  if(focusId===G.id)focusId=K.id;if(fOf===G.id)fOf=K.id;for(let i=0;i<fOfBack.length;i++)if(fOfBack[i]===G.id)fOfBack[i]=K.id;
+  [fExp,oCol].forEach(st=>{if(st.has(G.id)){st.delete(G.id);st.add(K.id)}});if(fHL===G.id)fHL="";
+  if(fSide==="w:"+G.id){fSide="w:"+K.id;try{localStorage.setItem(KEY+".side",fSide)}catch(e){}}
+  save();fReveal=[K.id];fHL=K.id;renderAll();
+  toast("دُمجت البطاقتان: «"+nasab(K,2)+"»",{label:"تراجع",fn:()=>{restoreS(snap);save();renderAll();dupAgain()}},9000);
+  return K.id}
+function dupDismiss(s,k){const key=dupKey(s,k);S.dupNo=S.dupNo||[];if(!S.dupNo.includes(key))S.dupNo.push(key);save();renderAll();
+  toast("أُزيل الاقتراح",{label:"تراجع",fn:()=>{S.dupNo=(S.dupNo||[]).filter(x=>x!==key);if(!S.dupNo.length)delete S.dupNo;save();renderAll();dupAgain()}})}
+function dupAgain(){if($("#layer .dlist"))dupSheet(true);else{const pp=$("#layer [data-pp]");if(pp&&byId(pp.dataset.pp))openPerson(pp.dataset.pp,true)}} // after «تراجع», the sheet that is open shows the question again
+function dupPaint(){const b=$("#fzDup"),v=$("#fview");if(!b||!v)return;const n=dupPairs().length;b.hidden=!n;v.classList.toggle("hasdup",!!n);if(!n)return; // «مكرر؟» at the bottom of the board, with the number of questions
+  $("#fzDupN").textContent=n;b.setAttribute("aria-label","أسماء قد تكون مكررة: "+nn(n,["اقتراح واحد","اقتراحان","اقتراحات","اقتراحًا","اقتراح"]));v.style.setProperty("--dupw",b.offsetWidth+"px")}
+function dupSheet(keep){const ps=dupPairs();if(!ps.length){closeSheet();return}
+  const gs=new Map();ps.forEach(o=>{if(!gs.has(o.s))gs.set(o.s,[]);gs.get(o.s).push(o)});
+  sheet(`<div class="hd"><h2>أسماء قد تكون مكررة</h2><button class="btn sm" type="button" data-close>إغلاق</button></div>
+  <p class="sub" style="margin:0 0 10px">«نعم» يجعلهما بطاقة واحدة بنسبه وزواجه وأبنائه، و«لا» يزيل الاقتراح.</p>
+  <div class="dlist">${[...gs].map(([sid,os])=>{const x=byId(sid);if(!x)return"";const t=dupSub(x);
+    return`<div class="dgrp"><button class="dnm" type="button" data-open="${x.id}"><b>${esc(nasab(x,3))}</b>${t?`<small>${esc(t)}</small>`:""}</button>${os.map(o=>dupRow(x,{o:o.k,s:o.s,k:o.k})).join("")}</div>`}).join("")}</div>`,el=>{
+    el.querySelector("[data-close]").onclick=closeSheet;
+    el.addEventListener("click",e=>{const b=e.target.closest("[data-open],[data-dupy],[data-dupn]");if(!b)return;const d=b.dataset;
+      if(d.open){openPerson(d.open);return}
+      const [s2,k2]=(d.dupy||d.dupn).split("|");if(d.dupy){if(!dupMerge(s2,k2))return}else dupDismiss(s2,k2);
+      if(dupPairs().length)dupSheet(true);else closeSheet()})},{keep:!!keep})}
 var renderAll;renderAll=function(){$("#demoBar").hidden=!S.demo;applyTreeMode();renderContacts();renderIhsan();relUpdate();renderIdeas();gSearch()}
 /* ---------- lock & veil ---------- */
 let unlocked=false,veiled=!!S.hideAmounts;
@@ -2760,7 +2924,11 @@ async function initRemote(){
 }
 /* ---------- app update (Android app only) ---------- */
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={22:[
+const CHANGES={23:[
+  "في «إضافة»: أثناء كتابة الاسم تظهر تحته الأسماء الموجودة في الشجرة بنسبها وصلتها، فالمس الاسم ليُربط الشخص نفسه بدل كتابته مرة ثانية، و«حفظ» يبقى لإضافة شخص جديد",
+  "اقتراح للأسماء المكتوبة سابقًا: إذا بدا اسمان لشخص واحد ظهر «مكرر؟» أسفل اللوحة، وفي أعلى ملف كل منهما «هل هي نفسها...؟»، فـ«نعم» يجعلهما بطاقة واحدة بنسبها وزواجها وأبنائها، و«لا» يزيل الاقتراح",
+  "بعد الربط أو الدمج زر «تراجع» يعيد كل شيء كما كان"],
+22:[
   "تظليل خفيف يميز الرجل من المرأة: أزرق خفيف لكل رجل، ووردي خفيف لكل امرأة، في بطاقات اللوحة والشجرة المفتوحة، وفي أسماء الأقارب داخل الملف، وفي الصورة التي تشاركها",
   "بطاقات العمود بقي لون جهتها في إطارها السميك وخطها، فصارت الخلفية للرجل والمرأة في كل اللوحة"],
 21:[
