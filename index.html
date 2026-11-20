@@ -2260,20 +2260,36 @@ function printImg(url,title){let pa=$("#printArea");if(!pa){pa=document.createEl
   pa.innerHTML=`<img src="${url}" alt="${esc(title)}">`;const im=pa.querySelector("img"),go=()=>{try{window.print()}catch(e){toast("تعذّرت الطباعة هنا")}};
   window.addEventListener("afterprint",()=>{pa.innerHTML=""},{once:true});
   if(im.decode)im.decode().then(go,go);else setTimeout(go,120)}
+let dlNs=null;try{if(window.claude&&!window.DQ)window.claude.use("downloads").then(x=>{dlNs=x},()=>{})}catch(e){} // Claude's viewer saves a file only through «downloads»
+function dlSave(name,data,ok){if(!dlNs){toast("تعذّر الحفظ هنا");return}
+  dlNs.save({filename:name,data}).then(()=>toast(ok),e=>{const c=e&&e.code;if(c==="declined")return;toast(c==="rate_limited"?"انتظر قليلًا ثم أعد المحاولة":"تعذّر الحفظ هنا")})}
+const b64u8=u=>{const s=atob(String(u).split(",")[1]||""),a=new Uint8Array(s.length);for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return a};
+function pdfOf(cv){ // one A4 page, the picture of the board centred on it
+  const W=cv.width,H=cv.height,jp=b64u8(cv.toDataURL("image/jpeg",.92)),land=W>H,PW=land?841.89:595.28,PH=land?595.28:841.89,m=24,k=Math.min((PW-2*m)/W,(PH-2*m)/H),dw=W*k,dh=H*k;
+  const f=n=>n.toFixed(2),enc=new TextEncoder(),parts=[],offs=[];let len=0;const put=p=>{const u=typeof p==="string"?enc.encode(p):p;parts.push(u);len+=u.length};
+  const obj=(n,s,bin)=>{offs[n]=len;put(n+" 0 obj\n"+s);if(bin){put(bin);put("\nendstream")}put("\nendobj\n")};
+  const cs=`q ${f(dw)} 0 0 ${f(dh)} ${f((PW-dw)/2)} ${f((PH-dh)/2)} cm /Im0 Do Q`;
+  put("%PDF-1.4\n%âãÏÓ\n");
+  obj(1,"<</Type/Catalog/Pages 2 0 R>>");obj(2,"<</Type/Pages/Kids[3 0 R]/Count 1>>");
+  obj(3,`<</Type/Page/Parent 2 0 R/MediaBox[0 0 ${f(PW)} ${f(PH)}]/Resources<</XObject<</Im0 4 0 R>>>>/Contents 5 0 R>>`);
+  obj(4,`<</Type/XObject/Subtype/Image/Width ${W}/Height ${H}/ColorSpace/DeviceRGB/BitsPerComponent 8/Filter/DCTDecode/Length ${jp.length}>>\nstream\n`,jp);
+  obj(5,`<</Length ${cs.length}>>\nstream\n${cs}\nendstream`);
+  const xr=len;put("xref\n0 6\n0000000000 65535 f \n"+[1,2,3,4,5].map(n=>String(offs[n]).padStart(10,"0")+" 00000 n \n").join("")+`trailer\n<</Size 6/Root 1 0 R>>\nstartxref\n${xr}\n%%EOF\n`);
+  const out=new Uint8Array(len);let o=0;parts.forEach(u=>{out.set(u,o);o+=u.length});return out}
 async function exportSheet(){const B=boardData();if(!B){toast("لا شيء في اللوحة لتصديره");return}
   const me=byId(S.meId);B.sub=[me?"من شجرة "+nasab(me,2):"",fmtD(new Date().toISOString())].filter(Boolean).join(" · ");
   try{if(document.fonts&&document.fonts.load)await Promise.race([Promise.all(["400","600"].map(w=>document.fonts.load(w+' 14px "IBM Plex Sans Arabic"',"ذو القربى"))),new Promise(r=>setTimeout(r,1500))])}catch(e){}
-  let url="",blob=null;try{const cv=boardCanvas(B);url=cv.toDataURL("image/png");blob=await new Promise(r=>{try{cv.toBlob(r,"image/png")}catch(e){r(null)}})}catch(e){url=""}
-  const APK=!!window.DQ,canImg=!!blob&&!!(navigator.clipboard&&navigator.clipboard.write&&window.ClipboardItem&&window.isSecureContext),fn="ذو القربى - "+B.title.replace(/[\\\/:*?"<>|]+/g," ").trim()+".png";
+  let url="",blob=null,cv0=null;try{const cv=boardCanvas(B);cv0=cv;url=cv.toDataURL("image/png");blob=await new Promise(r=>{try{cv.toBlob(r,"image/png")}catch(e){r(null)}})}catch(e){url=""}
+  const APK=!!window.DQ,VW=!!window.claude&&!APK,canSave=!!url&&!APK&&(!VW||!!dlNs),canImg=!!blob&&!!(navigator.clipboard&&navigator.clipboard.write&&window.ClipboardItem&&window.isSecureContext),fn="ذو القربى - "+B.title.replace(/[\\\/:*?"<>|]+/g," ").trim()+".png";
   sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تصدير ${esc(B.title)}</h2><div class="full">كما في اللوحة، بلا خانات الإضافة ولا الأقفال</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
    ${url?`<div class="xprev"><img src="${url}" alt="${esc("صورة "+B.title)}"></div>`:`<p class="sub" style="margin:0">تعذّر رسم الصورة على هذا الجهاز، وبقي النص.</p>`}
-   <div class="xacts">${canImg?`<button class="btn primary" type="button" id="xImg">نسخ الصورة</button>`:""}${url&&!APK?`<button class="btn${canImg?"":" primary"}" type="button" id="xPng">تنزيل الصورة</button>`:""}<button class="btn" type="button" id="xTxt">نسخ الشجرة نصًّا</button>${url&&!APK?`<button class="btn" type="button" id="xPdf">طباعة أو PDF</button>`:""}</div>
-   <p class="sub" style="margin:0">${APK?"انسخ الصورة ثم الصقها في واتساب أو غيره. وإن لم تُلصق فانسخ الشجرة نصًّا.":"في الجوال يكفي أن تضغط على الصورة مطولًا لتحفظها أو تشاركها."}</p>`,el=>{
+   <div class="xacts">${canImg?`<button class="btn primary" type="button" id="xImg">نسخ الصورة</button>`:""}${canSave?`<button class="btn${canImg?"":" primary"}" type="button" id="xPng">تنزيل الصورة</button>`:""}<button class="btn" type="button" id="xTxt">نسخ الشجرة نصًّا</button>${canSave?`<button class="btn" type="button" id="xPdf">${VW?"تنزيل PDF":"طباعة أو PDF"}</button>`:""}</div>
+   <p class="sub" style="margin:0">${APK?"انسخ الصورة ثم الصقها في واتساب أو غيره. وإن لم تُلصق فانسخ الشجرة نصًّا.":VW?(canSave?"«تنزيل الصورة» و«تنزيل PDF» يحفظان الملف بعد موافقتك.":"انسخ الصورة أو الشجرة نصًّا لتشاركها."):"في الجوال يكفي أن تضغط على الصورة مطولًا لتحفظها أو تشاركها."}</p>`,el=>{
     const q=x=>el.querySelector(x),fail=()=>toast("تعذّر نسخ الصورة هنا. انسخ الشجرة نصًّا",null,4000);q("[data-close]").onclick=closeSheet;
     if(q("#xImg"))q("#xImg").onclick=()=>{try{navigator.clipboard.write([new ClipboardItem({"image/png":blob})]).then(()=>toast("نُسخت الصورة. الصقها في واتساب أو غيره"),fail)}catch(e){fail()}};
-    if(q("#xPng"))q("#xPng").onclick=()=>{try{const a=document.createElement("a"),h=blob?URL.createObjectURL(blob):url;a.download=fn;a.href=h;document.body.appendChild(a);a.click();a.remove();if(blob)setTimeout(()=>URL.revokeObjectURL(h),5000);toast("بدأ التنزيل. وإن لم يبدأ فاضغط على الصورة مطولًا لحفظها",null,4000)}catch(e){toast("تعذّر التنزيل هنا")}};
+    if(q("#xPng"))q("#xPng").onclick=()=>{if(VW){dlSave(fn,blob||b64u8(url),"حُفظت الصورة");return}try{const a=document.createElement("a"),h=blob?URL.createObjectURL(blob):url;a.download=fn;a.href=h;document.body.appendChild(a);a.click();a.remove();if(blob)setTimeout(()=>URL.revokeObjectURL(h),5000);toast("بدأ التنزيل. وإن لم يبدأ فاضغط على الصورة مطولًا لحفظها",null,4000)}catch(e){toast("تعذّر التنزيل هنا")}};
     q("#xTxt").onclick=()=>copyText(boardText(B),"نُسخت الشجرة نصًّا. الصقها في واتساب أو ملاحظاتك");
-    if(q("#xPdf"))q("#xPdf").onclick=()=>printImg(url,B.title);
+    if(q("#xPdf"))q("#xPdf").onclick=()=>{if(VW){let pdf=null;try{pdf=pdfOf(cv0)}catch(e){}if(pdf)dlSave(fn.replace(/\.png$/,".pdf"),pdf,"حُفظ ملف PDF");else toast("تعذّر إنشاء PDF هنا");return}printImg(url,B.title)};
   })}
 $("#fzExp").onclick=()=>exportSheet();
 document.fonts&&document.fonts.ready.then(()=>{fCamKey="";renderSide()});
