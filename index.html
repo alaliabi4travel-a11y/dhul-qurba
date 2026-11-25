@@ -230,6 +230,10 @@ nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-4p
 @media (min-width:700px){.overlay{align-items:center}.sheet{border-radius:16px}}
 .sheet .hd{display:flex;align-items:flex-start;gap:8px}
 .sheet .hd h2{flex:1}
+.sheet .hd .navb{flex:none;white-space:nowrap;padding-inline:10px}
+.sheet .hd .hback{max-width:9.5em;display:inline-flex;gap:4px;align-items:center;background:var(--accent-soft,#e6f0ec);border-color:transparent;color:var(--accent)}
+.sheet .hd .hback .nb-n{overflow:hidden;text-overflow:ellipsis;font-size:12.5px}
+.obar .ob-b #obBack{background:var(--accent-soft,#e6f0ec);border-color:transparent;color:var(--accent)}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:calc(14px*var(--fs,1))}
 .kv dt{color:var(--muted)}
 .kv dd{margin:0}
@@ -775,7 +779,7 @@ nav.tabs .tab-n[hidden]{display:none}
           <div class="ftip" id="ftip" hidden><p>المس أي اسم لتفتح ملفه. واللوحة للعرض فقط حتى لا تضيف أحدًا بالخطأ: المس القفل في أعلاها يمينًا فتظهر خانات الإضافة و«تعديل»، والمسه مرة أخرى ليُقفل. وزر «؟» يشرح كل شكل في اللوحة.</p><button type="button" id="ftipX" aria-label="إغلاق">✕</button></div>
         </div>
         <div class="sidepick" id="sidepick" role="tablist" aria-label="اختر الجهة"></div>
-        <div class="obar" id="obar" hidden><div class="ob-t"><small>شجرة</small><b><span id="obName"></span> <small id="obRel"></small></b></div><div class="ob-b"><button class="btn sm" type="button" id="obTop">الجد الأعلى</button><button class="btn sm" type="button" id="obMe">شجرتي</button></div></div>
+        <div class="obar" id="obar" hidden><div class="ob-t"><small>شجرة</small><b><span id="obName"></span> <small id="obRel"></small></b></div><div class="ob-b"><button class="btn sm" type="button" id="obBack" hidden>→ رجوع</button><button class="btn sm" type="button" id="obTop">الجد الأعلى</button><button class="btn sm" type="button" id="obMe">شجرتي</button></div></div>
       </div>
     </div>
   </section>
@@ -874,7 +878,7 @@ window.addEventListener("load",function(){setTimeout(function(){if(window.__dqOK
 "use strict";
 /* ---------- storage ---------- */
 const KEY="dhulqurba.v1";
-const WEB_BUILD=25;
+const WEB_BUILD=26;
 let mem=null,loadBad=null,saveErr=false;
 function load(){let s=null;try{s=localStorage.getItem(KEY)}catch(e){return mem}if(!s)return mem;
   try{const d=JSON.parse(s);if(d&&typeof d==="object"&&Array.isArray(d.people))return d}catch(e){}
@@ -898,7 +902,8 @@ function pushRemote(){if(!remoteRef||!remoteReady)return;clearTimeout(remoteT);s
 const uid=()=>Math.random().toString(36).slice(2,10);
 /* the phone's back button closes what is open (a sheet, the drop-down, full screen, the open tree, another tab) before it leaves the app */
 /* one guard entry in the history stands for everything open; each back press closes the top one and puts the guard back while more is open */
-const BK=[];let bkPend=false;const BKON=(()=>{try{return!!window.DQ||window.top===window}catch(e){return false}})();
+const BK=[];let bkPend=false;const pHist=[],oHist=[];let curPP=""; // pHist: the relatives behind the open sheet; oHist: the people behind the open tree
+const BKON=(()=>{try{return!!window.DQ||window.top===window}catch(e){return false}})();
 const bkOnG=()=>{try{return!!(history.state&&history.state.dq)}catch(e){return false}};
 function bkArm(){if(BK.length&&!bkPend&&!bkOnG()){try{history.pushState({dq:1},"")}catch(e){}}}
 function bkPush(id,close){if(!BKON||BK.some(b=>b.id===id))return;BK.push({id,close});bkArm()}
@@ -1205,15 +1210,32 @@ function generationOf(p){let g=1,c=p,guard=0;while(c&&c.father&&byId(c.father)&&
 function renderStats(){if(!document.getElementById("stats"))return}
 const relToMe=id=>id===S.meId?"أنت":(byId(S.meId)?shortRel(S.meId,id):"");
 /* ---------- sheet ---------- */
+/* the trail inside the sheets: each relative opened from another's profile (or a form opened from it) goes on pHist;
+   «→» and the phone's back go one step back to the one before; «⌂ الشجرة» closes everything and shows the main tree */
 function sheet(html,onMount,opts){
-  const prev=$("#layer .sheet"),keep=opts&&opts.keep&&prev?prev.scrollTop:null;bkPush("sheet",()=>closeSheet());
+  const prev=$("#layer .sheet"),keep=opts&&opts.keep&&prev?prev.scrollTop:null;
+  const pp=(String(html).match(/^\s*<div class="hd" data-pp="([^"]+)"/)||[])[1]||"";
+  if(!prev){pHist.length=0;curPP=""}
+  if(keep==null){if(pp&&pHist[pHist.length-1]===pp)pHist.pop();else if(curPP&&curPP!==pp)pHist.push(curPP)}
+  curPP=pp;bkPush("sheet",()=>sheetBack());
   $("#layer").innerHTML=`<div class="overlay"><div class="sheet${keep!=null?" noanim":""}" role="dialog" aria-modal="true">${html}</div></div>`;
   const ov=$("#layer .overlay");ov.addEventListener("click",e=>{if(e.target===ov)closeSheet()});
-  const sh=$("#layer .sheet");onMount&&onMount(sh);
+  const sh=$("#layer .sheet");onMount&&onMount(sh);navBtns(sh,pp);
   if(keep!=null){sh.scrollTop=keep}else{const f=$("#layer .sheet [data-close]");f&&f.focus({preventScroll:true})}
 }
-function closeSheet(){$("#layer").innerHTML="";bkDone("sheet")}
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#layer").innerHTML)closeSheet()});
+function closeSheet(){$("#layer").innerHTML="";pHist.length=0;curPP="";bkDone("sheet")}
+function sheetBack(){while(pHist.length&&!byId(pHist[pHist.length-1]))pHist.pop(); // one step back: the relative before, else closed
+  if(pHist.length)openPerson(pHist[pHist.length-1]);else closeSheet()}
+function navBtns(sh,pp){const hd=sh.querySelector(".hd");if(!hd)return;
+  const pv=pHist.length?byId(pHist[pHist.length-1]):null;
+  if(pv){const b=document.createElement("button");b.type="button";b.className="btn sm navb hback";b.setAttribute("aria-label","رجوع إلى "+pv.name);b.title="رجوع إلى "+pv.name;
+    b.innerHTML=`<span aria-hidden="true">→</span> <span class="nb-n">${esc(pv.name)}</span>`;b.onclick=sheetBack;hd.insertBefore(b,hd.firstChild)}
+  if(pp||pv){const h=document.createElement("button");h.type="button";h.className="btn sm navb";h.title="الرجوع إلى الشجرة الأساسية";h.setAttribute("aria-label","الرجوع إلى الشجرة الأساسية");
+    h.innerHTML=`<span aria-hidden="true">⌂</span> الشجرة`;h.onclick=goHome;const c=hd.querySelector("[data-close]");c?hd.insertBefore(h,c):hd.appendChild(h)}}
+function goHome(){ // the main tree, as it opens: no sheet, no drop-down, no family of another, not the open tree
+  closeSheet();if(tbPane)tbShow("");showTab("v-tree");fOfClear();fSibs=false;oHistClear();
+  if(treeMode==="open")setTreeMode("fam");focusId=S.meId||null;fCamKey="";fUserCam=false;renderSide();window.scrollTo(0,0)}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#layer").innerHTML)sheetBack()});
 
 function relLabel(p,o){return relation(o.id,p.id)}
 function setAlive(p,alive){
@@ -2482,7 +2504,7 @@ function oTrunk(c){ // from the top ancestor, by the fathers, down to the centre
   if(me&&me.id!==c.id){const st=ancPath(me.id,c.id);if(st){let cur=me;path.add(me.id);for(const k of st){cur=byId(k==="f"?cur.father:cur.mother);if(!cur)break;path.add(cur.id)}}}
   return{nodes:up,endSp:null,solo:up.length===1,open:true,path}}
 function renderObar(c){const r=c.id===S.meId?"أنت":relToMe(c.id),t=topOf(c);
-  $("#obName").textContent=c.name;$("#obRel").textContent=r?"· "+r:"";$("#obMe").hidden=c.id===S.meId;$("#obTop").hidden=!t||t.id===c.id}
+  $("#obName").textContent=c.name;$("#obRel").textContent=r?"· "+r:"";$("#obMe").hidden=c.id===S.meId;{const pv=oHist.length?byId(oHist[oHist.length-1]):null,b=$("#obBack");b.hidden=!pv;if(pv){b.title=b.ariaLabel="رجوع إلى "+pv.name}}$("#obTop").hidden=!t||t.id===c.id}
 function fOfTarget(x){if(!x)return{};const me=byId(S.meId);
   const chain=a=>{const st=new Set();let c=a,g=0;while(c&&g++<60&&!st.has(c.id)){st.add(c.id);c=upOf(c)}return st};
   if(byId(me.father)&&chain(byId(me.father)).has(x.id))return{side:"fa"};
@@ -2512,7 +2534,7 @@ function renderSide(){
   const bt=base==="fa"?"جهة الأب":base==="mo"?"جهة الأم":fem?"الزوج وأهله":"الزوجة وأهلها";
   cap.hidden=O||!fOf;$("#toFull").hidden=!O&&!!fOf;$("#toFull").textContent=O?"عائلتي":"الشجرة المفتوحة";
   $("#toFull").setAttribute("aria-label",O?"العودة إلى عائلتي":"الشجرة المفتوحة: شجرة أي قريب، أجداده فوقه وذريته تحته");
-  if(fOf&&!O){const r=relToMe(a.id),pv=fOfBack.length?byId(fOfBack[fOfBack.length-1]):null,bl=pv?"العودة إلى أهل "+pv.name:"العودة إلى "+bt;cap.innerHTML=`<button type="button" data-fback aria-label="${esc(bl)}" title="${esc(bl)}">→</button><span title="${esc("أهل "+(r?r+" ":"")+a.name)}">أهل ${esc(a.name)}</span>`}
+  if(fOf&&!O){const r=relToMe(a.id),pv=fOfBack.length?byId(fOfBack[fOfBack.length-1]):null,bl=pv?"العودة إلى أهل "+pv.name:"العودة إلى "+bt;cap.innerHTML=`<button type="button" data-fback aria-label="${esc(bl)}" title="${esc(bl)}">→</button>${fOfBack.length?`<button type="button" data-fhome aria-label="الرجوع إلى الشجرة الأساسية" title="الرجوع إلى الشجرة الأساسية">⌂</button>`:""}<span title="${esc("أهل "+(r?r+" ":"")+a.name)}">أهل ${esc(a.name)}</span>`}
   else cap.innerHTML="";
   if(!a){world.innerHTML="";world.style.width=world.style.height="0px";fLast.clear();fCamKey="";fDraw=null;$("#fzExp").disabled=true;
     const t=base==="fa"?["أضف أباك","ثم يظهر هنا أجدادك لأبيك وأعمامك وعماتك وفروعهم، كلٌّ في مكانه من الشجرة."]:base==="mo"?["أضف أمك","ثم يظهر هنا أجدادك لأمك وأخوالك وخالاتك وفروعهم، كلٌّ في مكانه من الشجرة."]:fem?["أضف زوجك","ثم يظهر هنا أهله: أبوه وأمه وإخوته وأخواته."]:["أضف زوجتك","ثم يظهر هنا أهلها: أبوها وأمها وإخوتها وأخواتها."];
@@ -2745,7 +2767,7 @@ $("#fworld").addEventListener("click",e=>{const b=e.target.closest("button");if(
   else if(d.fslot){fBefore=new Set(S.people.map(x=>x.id));quickAdd(d.fslot,d.for,true,d.other||"")}
   else if(d.foff)toast("اللوحة للعرض فقط. المس القفل في أعلاها يمينًا لتضيف",null,2600);
 });
-$("#fview").addEventListener("click",e=>{const b=e.target.closest("[data-fback],[data-fadd]");if(!b)return;
+$("#fview").addEventListener("click",e=>{const b=e.target.closest("[data-fback],[data-fadd],[data-fhome]");if(!b)return;if(b.hasAttribute("data-fhome")){fOfClear();fSibs=false;fCamKey="";renderSide();return}
   if(b.hasAttribute("data-fback")){const id="fof"+fOfBack.length;fOfUp();bkDone(id)}else{if(!fEdit)setEdit(true,true);fAddFor(b.dataset.fadd)}});
 window.addEventListener("resize",()=>{const a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))return; // the phone keyboard opening is not a new screen size
   if(!$("#famPanel").hidden)renderSide()});
@@ -2756,12 +2778,15 @@ $("#fam").addEventListener("click",e=>{
 $("#famBack").onclick=()=>{focusId=S.meId;renderFam()};
 let famFit=false; // «⤢» on «عائلتي» stays when you come back from the open tree
 function setTreeMode(m){const was=treeMode;if(m==="open"&&was!=="open")famFit=fFitAll;treeMode=m;fCamKey="";fFitAll=m!=="open"&&was==="open"&&famFit;fUserCam=false;
-  if(m==="open"){if(was!=="open"){oCol.clear();bkPush("open",()=>setTreeMode("fam"))}}else bkDone("open");applyTreeMode()}
+  if(m==="open"){if(was!=="open"){oCol.clear();oHistClear();bkPush("open",()=>setTreeMode("fam"))}}else{oHistClear();bkDone("open")}applyTreeMode()}
 function applyTreeMode(){$("#famPanel").hidden=false;renderFam()}
-function oGo(id,hl){if(!byId(id))return;focusId=id;fHL=hl?id:"";oCol.clear();if(treeMode!=="open")setTreeMode("open");else{fCamKey="";fUserCam=false;fFitAll=false;renderSide()}}
+function oHistClear(){for(let i=oHist.length;i>0;i--)bkDone("og"+i);oHist.length=0}
+function oBack(){let id;while(oHist.length&&!byId(id=oHist.pop()));if(id&&byId(id)){focusId=id;fHL="";oCol.clear();fCamKey="";fUserCam=false;fFitAll=false;renderSide()}}
+function oGo(id,hl){if(!byId(id))return;if(treeMode==="open"&&focusId&&focusId!==id&&byId(focusId)){oHist.push(focusId);bkPush("og"+oHist.length,oBack)}focusId=id;fHL=hl?id:"";oCol.clear();if(treeMode!=="open")setTreeMode("open");else{fCamKey="";fUserCam=false;fFitAll=false;renderSide()}}
 $("#toFull").onclick=()=>{if(treeMode==="open")setTreeMode("fam");else oGo(S.meId)};
 $("#fzDup").onclick=()=>dupSheet();
 $("#obMe").onclick=()=>oGo(S.meId);
+$("#obBack").onclick=()=>{const n=oHist.length;oBack();bkDone("og"+n)};
 $("#obTop").onclick=()=>{const c=byId(focusId)||byId(S.meId),t=c&&topOf(c);if(t&&t.id!==c.id){oGo(t.id);toast("شجرة "+t.name)}};
 const FEM_N=new Set("مريم زينب هند سعاد وداد ايمان امل امال اماني نجلاء هيفاء شيماء علياء رغد جود لمي سلمي دعاء الاء اسراء رنا دانا دينا لينا رهف شهد ابتسام الهام احلام سهام وئام اريج عبير نسرين ياسمين جيهان حنان خلود وعد روان جني مها لبني ندي ضحي سجي رؤي هدي مني ليلي سارا اسماء رحاب نوال منال تهاني بشري سلوي نجوي عفاف وصال كوثر سوسن ريم غدير عهد رزان لجين لميس ميس ريتاج تسنيم اسيل حلا ملاك غلا دلال نهي رشا ربي بتول زهراء نور فاطمه عائشه عايشه خديجه نوره ساره حصه لطيفه منيره شيخه موزه هيله رقيه صفيه سميه رحمه نعيمه جميله فريده حميده سعيده بدريه فوزيه زكيه صالحه عزيزه شريفه حليمه اميره سميره نبيله عاليه غاليه جوهره مزنه نجمه وضحه حمده لولوه غاده هاله منيره اميمه هيا نوف عنود بدور اروي ريما رانيا وفاء صفاء رجاء هناء ثناء سناء لمياء ميار ليان لين يارا تالا ديما فرح هاجر مرام ريهام عبله".split(" "));
 const MALE_T=new Set("حمزه اسامه طلحه عبيده معاويه عروه قتاده عكرمه حذيفه خزيمه جبله ثعلبه ميسره عنتره مسلمه شيبه عتبه اميه قدامه عماره سلمه عطيه حارثه عقبه كنانه خليفه ربيعه سلامه رفاعه عباده جناده طه عبده وجيه نبيه نزيه فقيه".split(" "));
@@ -3038,7 +3063,11 @@ async function initRemote(){
 }
 /* ---------- app update (Android app only) ---------- */
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={25:[
+const CHANGES={26:["سهم «→» أعلى ملف القريب يرجعك خطوة واحدة إلى القريب الذي جئت منه، لا إلى البداية، ومعه اسمه",
+  "زر «⌂ الشجرة» في الملف يغلق كل شيء ويرجعك إلى الشجرة الأساسية",
+  "في الشجرة المفتوحة زر «→ رجوع» إلى الشخص السابق، وفي «أهل فلان» زر «⌂» إلى الشجرة الأساسية",
+  "زر الرجوع في الجوال يتبع الطريق نفسه خطوة خطوة"],
+25:[
   "النسخة الاحتياطية صارت ملفًّا: «شاركها» إلى Drive أو بريدك أو واتساب، أو «احفظها في الجوال»، وتعود بـ«استعادة من ملف». والبريد واللصق باقيان كما كانا",
   "التصدير في تطبيق الجوال: «مشاركة الصورة» إلى واتساب وغيره، و«حفظ الصورة» في ملفات الجوال، و«مشاركة PDF»",
   "القريب الذي ليس في الشجرة صار له رقم جوال في جدول التواصل، فيظهر له زرا الاتصال والواتساب، و«أضفه إلى الشجرة» ينقله إليها برقمه وسجله",
