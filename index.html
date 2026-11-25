@@ -856,11 +856,13 @@ window.addEventListener("load",function(){setTimeout(function(){if(window.__dqOK
   d.style.cssText="position:fixed;inset:0;z-index:99;background:#f3f5f2;color:#1d2621;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;font:16px/1.6 'IBM Plex Sans Arabic',sans-serif";
   var bs="font:inherit;font-weight:600;border:0;border-radius:12px;padding:10px 18px;min-width:220px;cursor:pointer;";
   d.innerHTML='<b style="font-size:22px;color:#23614f">ذو القربى</b><p style="margin:0;max-width:320px">تعذّر تشغيل هذه النسخة. بياناتك محفوظة على الجهاز ولم يُمسح منها شيء.</p>'
+    +((function(){try{return window.DQ&&typeof window.DQ.rollback==="function"&&window.DQ.canRollback()}catch(e){return false}})()?'<button type="button" id="dqbB" style="'+bs+'background:#23614f;color:#fff">ارجع إلى النسخة السابقة</button>':'')
     +(window.DQ?'<button type="button" id="dqbU" style="'+bs+'background:#23614f;color:#fff">تحديث التطبيق</button>':'<button type="button" id="dqbR" style="'+bs+'background:#23614f;color:#fff">أعد فتح الصفحة</button>')
     +'<button type="button" id="dqbC" style="'+bs+'background:#dcebe4;color:#23614f">انسخ بياناتك</button><p id="dqbM" style="margin:0;font-size:14px;color:#5f6b64"></p>';
   document.body.appendChild(d);var m=document.getElementById("dqbM");
   window.dqUpd=function(st){m.textContent=st==="done"?"نُزِّل التحديث، يُعاد فتح التطبيق":st==="latest"?"لا يوجد تحديث أحدث بعد. حاول بعد قليل":"تعذّر التحديث. تأكد من الاتصال بالإنترنت"};
   var u=document.getElementById("dqbU");if(u)u.onclick=function(){m.textContent="يحدّث...";try{window.DQ.update()}catch(e){m.textContent="تعذّر التحديث"}};
+  var bb=document.getElementById("dqbB");if(bb)bb.onclick=function(){m.textContent="يرجع إلى النسخة السابقة...";try{window.DQ.rollback()}catch(e){m.textContent="تعذّر الرجوع"}};
   var r=document.getElementById("dqbR");if(r)r.onclick=function(){location.reload()};
   document.getElementById("dqbC").onclick=function(){var t="";try{t=localStorage.getItem("dhulqurba.v1")||""}catch(e){}
     var a=document.createElement("textarea");a.value=t;a.style.cssText="position:fixed;top:0;opacity:0";document.body.appendChild(a);a.select();var ok=false;try{ok=document.execCommand("copy")}catch(e){}a.remove();
@@ -872,7 +874,7 @@ window.addEventListener("load",function(){setTimeout(function(){if(window.__dqOK
 "use strict";
 /* ---------- storage ---------- */
 const KEY="dhulqurba.v1";
-const WEB_BUILD=24;
+const WEB_BUILD=25;
 let mem=null,loadBad=null,saveErr=false;
 function load(){let s=null;try{s=localStorage.getItem(KEY)}catch(e){return mem}if(!s)return mem;
   try{const d=JSON.parse(s);if(d&&typeof d==="object"&&Array.isArray(d.people))return d}catch(e){}
@@ -880,7 +882,7 @@ function load(){let s=null;try{s=localStorage.getItem(KEY)}catch(e){return mem}i
   return null}
 let remoteRef=null,remoteT=null,remoteReady=false;
 function persist(){mem=S;try{localStorage.setItem(KEY,JSON.stringify(S));saveErr=false;return true}catch(e){
-  if(!saveErr&&!window.claude){saveErr=true;setTimeout(()=>{try{toast("تعذّر الحفظ على هذا الجهاز، فقد تضيع تعديلاتك الأخيرة إذا أُغلق التطبيق. أرسل نسخة احتياطية الآن",{label:"أرسل النسخة",fn:()=>bkMail()},15000)}catch(e2){}},0)}
+  if(!saveErr&&!window.claude){saveErr=true;setTimeout(()=>{try{toast("تعذّر الحفظ على هذا الجهاز، فقد تضيع تعديلاتك الأخيرة إذا أُغلق التطبيق. أرسل نسخة احتياطية الآن",{label:"احفظ نسخة",fn:()=>bkGo()},15000)}catch(e2){}},0)}
   return false}}
 var SV=0; // the number of saves: the suggestions of names written twice are worked out again after each
 function save(){S.updatedAt=Date.now();SV++;persist();pushRemote()}
@@ -965,7 +967,7 @@ function clean(D){ // ids, names, links that lead somewhere, no one his own ance
   const seen=new Set(),rid=x=>{let i=str(x.id).trim();if(!i||seen.has(i))i=uid();seen.add(i);return i};
   const who=r=>{r.personId=by.has(str(r.personId))?str(r.personId):"";r.name=str(r.name);if(!r.personId&&!r.name.trim())r.name="بلا اسم"};
   const amt=v=>{const n=typeof v==="number"?v:numIn(v);return isFinite(n)&&n>=0?n:0};
-  D.contacts=objs(D.contacts).map(c=>{c.id=rid(c);who(c);c.log=[...new Set((Array.isArray(c.log)?c.log:[]).filter(okD))].sort((a,b)=>b.localeCompare(a));
+  D.contacts=objs(D.contacts).map(c=>{c.id=rid(c);who(c);if(c.phone!=null){c.phone=toLat(str(c.phone)).trim();if(c.personId){const P=by.get(c.personId);if(P&&!P.phone)P.phone=c.phone;c.phone=""}if(!c.phone)delete c.phone} // a number on the row only for one outside the tree;c.log=[...new Set((Array.isArray(c.log)?c.log:[]).filter(okD))].sort((a,b)=>b.localeCompare(a));
     if(!obj(c.meta))c.meta={};c.appt=okD(c.appt)?c.appt:null;if(c.every!=="w"&&c.every!=="m"){delete c.every;const f=+c.freq;if(f===7||f===14)c.every="w";else if(f===30||f===90)c.every="m"}delete c.freq;return c}); // a frequency chosen before becomes its list
   D.fixed=objs(D.fixed).map(r=>{r.id=rid(r);who(r);r.amount=amt(r.amount);r.day=Math.min(31,Math.max(1,parseInt(toLat(r.day),10)||1));
     r.transfers=objs(r.transfers).filter(t=>okD(t.date)).map(t=>Object.assign(t,{amount:amt(t.amount),ym:/^\d{4}-\d{2}$/.test(t.ym)?t.ym:ymOf(t.date)})).sort((a,b)=>b.date.localeCompare(a.date));return r});
@@ -1144,6 +1146,19 @@ function bkMail(){const now=new Date().toISOString(),txt=bkText(),when=fmtD(now)
   if(href.length>120000){copyText(body,"النسخة كبيرة على رابط البريد، فنسختها لك. الصقها في رسالة إلى نفسك")}
   else{const a=document.createElement("a");a.href=href;if(!window.DQ){a.target="_blank";a.rel="noopener"}document.body.appendChild(a);a.click();a.remove()}
   S.lastBackup=now;save();renderToday()}
+const u8b64=u=>{let b="";for(let i=0;i<u.length;i+=8192)b+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(b)};
+const APKF=()=>{try{return!!(window.DQ&&typeof window.DQ.share==="function")}catch(e){return false}}; // the Android app 2.1 and later: files go out through the phone's share and save
+function bkFile(){const now=new Date().toISOString();return{name:"dhul-qurba-backup-"+locD(now)+".txt",text:"نسخة احتياطية من «ذو القربى» بتاريخ "+fmtD(now)+" ("+S.people.length+" في الشجرة).\nلاستعادتها: الإعدادات ثم «نسخة احتياطية» ثم «استعادة من ملف»، أو الصق هذا النص كله واضغط «استعادة من النص الملصق».\n\n"+bkText()}}
+function fileOut(name,mime,u8,how,ok){ // how: "share" or "save"; through the Android app, Claude's viewer, or the browser's download
+  if(APKF()){let r=false;try{r=how==="save"?window.DQ.save(name,mime,u8b64(u8)):window.DQ.share(name,mime,u8b64(u8))}catch(e){}if(!r)toast(how==="save"?"تعذّر الحفظ هنا":"تعذّرت المشاركة هنا");return r}
+  if(dlNs){dlSave(name,u8,ok||"حُفظ الملف");return true}
+  try{const bl=new Blob([u8],{type:mime}),h=URL.createObjectURL(bl),a=document.createElement("a");a.href=h;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(h),5000);toast(ok||"بدأ التنزيل");return true}catch(e){toast("تعذّر التنزيل هنا");return false}}
+window.dqSaved=ok=>toast(ok?"حُفظ الملف في الجوال":"لم يُحفظ الملف"); // the Android app answers after its «save as»
+function bkOut(how){const f=bkFile(),ok=fileOut(f.name,"text/plain",new TextEncoder().encode(f.text),how,"حُفظت النسخة في ملف");if(ok){S.lastBackup=new Date().toISOString();save();renderToday()}return ok}
+function bkGo(){if(APKF()||!window.DQ)return bkOut("share");bkMail()} // the reminders: a file wherever one can go out, else the e-mail as before
+const bkGoL=()=>APKF()?"شارك النسخة":window.DQ?"أرسلها إلى بريدي":"نزّل النسخة";
+function pickText(cb){const i=document.createElement("input");i.type="file";i.style.display="none";document.body.appendChild(i); // a backup file chosen from the phone
+  i.onchange=()=>{const f=i.files&&i.files[0];i.remove();if(!f)return;const rd=new FileReader();rd.onload=()=>cb(String(rd.result||""));rd.onerror=()=>toast("تعذّرت قراءة الملف");rd.readAsText(f)};i.click()}
 let toastT;function toast(m,act,ms){clearTimeout(toastT);let t=$(".toast");if(!t){t=document.createElement("div");t.className="toast";t.setAttribute("role","status");document.body.appendChild(t)}
   t.textContent=m;(Array.isArray(act)?act:act?[act]:[]).forEach(a=>{const b=document.createElement("button");b.type="button";b.className="tact";b.textContent=a.label;b.onclick=()=>{t.hidden=true;a.fn&&a.fn()};t.appendChild(b)});
   t.hidden=false;toastT=setTimeout(()=>t.hidden=true,ms||(act?6000:2200))}
@@ -1211,7 +1226,7 @@ function delPerson(p){ // takes him out of the tree; his children stay, without 
   const snap=JSON.stringify(S),nm=p.name;
   S.people.forEach(x=>{if(x.father===p.id)x.father="";if(x.mother===p.id)x.mother="";x.spouses=(x.spouses||[]).filter(i=>i!==p.id)});
   S.people=S.people.filter(x=>x.id!==p.id);
-  [...S.contacts,...S.fixed,...S.variable].forEach(r=>{if(r.personId===p.id){r.name=nasab(p,3);r.personId=""}});
+  [...S.contacts,...S.fixed,...S.variable].forEach(r=>{if(r.personId===p.id){r.name=nasab(p,3);r.personId="";if(p.phone&&S.contacts.includes(r))r.phone=p.phone}});
   if(S.meId===p.id)S.meId="";if(focusId===p.id)focusId=S.meId;
   save();closeSheet();renderAll();
   toast(`حُذف «${nm}»`,[{label:"تراجع",fn:()=>{const o=JSON.parse(snap);Object.keys(S).forEach(k=>{if(!(k in o))delete S[k]});Object.assign(S,o);save();renderAll();toast(`رجع «${nm}» إلى الشجرة`)}}],9000)}
@@ -1439,7 +1454,7 @@ function sideGroups(){const me=byId(S.meId);if(!me)return[];
   const srt=a=>a.sort((p,q)=>p[1]-q[1]).map(z=>z[0]),fem=me.gender==="f",w1=sps.length>1;
   return[["near","الأقربون",srt(G.near)],["fa","جهة الأب",srt(G.fa)],["mo","جهة الأم",srt(G.mo)],["sp",fem?(w1?"أهل أزواجك":"أهل زوجك"):(w1?"أهل زوجاتك":"أهل زوجتك"),srt(G.sp)]].filter(g=>g[2].length)}
 $("#cAddT").onclick=()=>{cAddOpen=!cAddOpen;renderContacts();if(cAddOpen)setTimeout(()=>acC.input.focus(),30)};
-function cAddAs(k){const v=acC.get();if(!acC.valid()){acC.input.focus();toast("اكتب اسم القريب أولًا");return}acC.clear();cPickHi("");cAddOpen=false;addContact(v.personId,v.personId?"":v.text,false,k)}
+function cAddAs(k){const v=acC.get();if(!acC.valid()){acC.input.focus();toast("اكتب اسم القريب أولًا");return}acC.clear();cPickHi("");cAddOpen=false;const c=addContact(v.personId,v.personId?"":v.text,false,k);if(c&&!v.personId)setTimeout(()=>{editContact(c.id);const i=$("#ecPh");i&&i.focus()},250)} // one outside the tree: his number next
 function cPickHi(pid){const k=pid?defaultEvery({personId:pid}):"w";$("#cAddW").classList.toggle("primary",k==="w");$("#cAddM").classList.toggle("primary",k==="m")} // the list his nearness suggests is the bright button
 $("#cAddW").onclick=()=>cAddAs("w");$("#cAddM").onclick=()=>cAddAs("m");acC.input.addEventListener("input",()=>cPickHi(""));
 $("#cSides").addEventListener("click",e=>{const b=e.target.closest("[data-cside]");if(!b)return;const g=sideGroups().find(x=>x[0]===b.dataset.cside);if(!g)return;
@@ -1486,7 +1501,7 @@ const ICO_PH='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="cu
 const ICO_WA='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path transform="translate(7.7 7.3) scale(.37)" fill="currentColor" stroke="none" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
 const ICO_CAL='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
 const callIco=(c,ph,first)=>`<a class="cico" href="tel:${esc(toLat(ph).replace(/[^\d+]/g,""))}" data-call="${c.id}" data-pid="${c.personId||""}" data-kind="اتصال" aria-label="${esc("اتصال ب"+first)}">${ICO_PH}</a><a class="cico wa" href="https://wa.me/${waNum(ph)}" target="_blank" rel="noopener" data-call="${c.id}" data-pid="${c.personId||""}" data-kind="واتساب" aria-label="${esc("واتساب "+first)}">${ICO_WA}</a>`;
-const phoneOf=c=>{const p=c.personId&&byId(c.personId);return p&&p.phone?p.phone:""};
+const phoneOf=c=>{const p=c.personId&&byId(c.personId);return p?(p.phone||""):(c.phone||"")}; // from the tree, or kept on the row for one outside it
 // WhatsApp needs the number with its country: a number written with + or 00 keeps its own; a local one is known by its shape (05 Saudi, 09 or 01 Sudan, 01 with 11 digits Egypt), else the country in the settings
 const waNum=ph=>{const raw=toLat(ph).trim();let d=raw.replace(/\D/g,"");if(raw.startsWith("+"))return d;if(d.startsWith("00"))return d.slice(2);
   if(d.startsWith("0")){const n=d.slice(1);if(/^5\d{8}$/.test(n))return"966"+n;if(/^[19]\d{8}$/.test(n))return"249"+n;if(/^1\d{9}$/.test(n))return"20"+n;return(S.cc||"966")+n}
@@ -1504,7 +1519,7 @@ function renderToday(){ // only what needs you today, none of the schedule again
   const I=seaInfo(),sc=I&&I.cur?seaCount(I.cur.key):null;
   const rows=appts.map(c=>item(c,new Date(c.appt)<now?"فات الموعد الخاص "+fmtDT(c.appt):"موعد خاص الساعة "+new Date(c.appt).toLocaleTimeString(LOC,{hour:"numeric",minute:"2-digit"})));
   if(sc)rows.push(`<li><span class="who"><b>تهنئة ${esc(I.cur.nm)}</b> <span class="full">${sc.t?(sc.n===sc.t?"هنّأت الجميع، أحسنت":"هنّأت "+sc.n+" من "+sc.t):"اختر من تهنئهم"}</span></span><button class="btn sm primary" type="button" data-gosea>القائمة</button></li>`);
-  if(needBk)rows.push(`<li><span class="who"><b>نسخة احتياطية</b> <span class="full">${lb<0?"لم تحفظ نسخة بعد":"آخر نسخة "+agoD(lb)}</span></span><button class="btn sm primary" type="button" data-gobk>أرسلها إلى بريدي</button></li>`);
+  if(needBk)rows.push(`<li><span class="who"><b>نسخة احتياطية</b> <span class="full">${lb<0?"لم تحفظ نسخة بعد":"آخر نسخة "+agoD(lb)}</span></span><button class="btn sm primary" type="button" data-gobk>${bkGoL()}</button></li>`);
   const T=$("#today");T.hidden=!rows.length;
   T.innerHTML=rows.length?`<div class="row"><h2 class="grow">اليوم</h2><span class="sub">${esc(fmtWD(now))}</span></div><ul class="today-list">${rows.join("")}</ul>`:"";
   renderCoN()}
@@ -1517,8 +1532,8 @@ $("#today").addEventListener("click",e=>{const b=e.target.closest("button");if(!
   if(b.dataset.cedit){editContact(b.dataset.cedit);return}
   if(b.dataset.done){const r=S.contacts.find(x=>x.id===b.dataset.done);logContact(r)}
   if("gosea" in b.dataset)seasonSheet();
-  if("gobk" in b.dataset)bkMail()});
-function logContact(r,type){if(!r)return;const iso=new Date().toISOString(),ap=r.appt;r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:type||"اتصال",note:""};if(r.appt&&new Date(r.appt)<=new Date(Date.now()+864e5))r.appt=null;
+  if("gobk" in b.dataset)bkGo()});
+function logContact(r,type){if(!r)return;const iso=new Date().toISOString(),ap=r.appt;r.log.unshift(iso);r.meta=r.meta||{};r.meta[iso]={type:type||"اتصال",note:""};if(r.appt){const e=new Date();e.setHours(23,59,59,999);if(new Date(r.appt)<=e)r.appt=null} // a visit set for today or before is done; one for tomorrow stays
   const I=seaInfo(),sk=I&&I.cur?I.cur.key:"",P=r.personId&&byId(r.personId),sid=P?P.id:r.id,sm=!!sk&&!seaSet(sk).has(sid);if(sm)seaPut(sk,sid,true); // in the days of the season, reaching him is greeting him
   save();renderContacts();const nm=fnm(r),re=()=>{if(P&&$(`#layer [data-pp="${P.id}"]`))openPerson(P.id,true)};
   const undo={label:"تراجع",fn:()=>{const i=r.log.indexOf(iso);if(i<0)return;r.log.splice(i,1);if(r.meta)delete r.meta[iso];if(ap&&!r.appt)r.appt=ap;if(sm)seaPut(sk,sid,false);save();renderContacts();re()}};
@@ -1591,6 +1606,7 @@ function editContact(id,keep,back){
   const ret=()=>back?openPerson(back):closeSheet();
   sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>التواصل مع ${esc(first)}</h2><div class="full">${esc(full)}</div></div>${inT&&!back?`<button class="btn sm soft" type="button" id="ecOpen">الملف</button>`:""}<button class="btn sm" type="button" data-close>${back?"رجوع":"إغلاق"}</button></div>
    <div class="f"><span>القائمة</span><div class="seg2" role="group" aria-label="القائمة">${["w","m"].map(k=>`<button type="button" data-ev="${k}" aria-pressed="${everyOf(r)===k}">${EVERY[k]}</button>`).join("")}</div><span class="sub" id="ecSt">${esc(stLine)}</span></div>
+   ${inT?"":`<div class="panel" style="background:var(--bg)"><h3>رقم الجوال</h3><p class="sub" style="margin:0">«${esc(first)}» ليس في الشجرة، فرقمه يُحفظ هنا.</p><div class="row"><input type="text" id="ecPh" inputmode="tel" value="${esc(r.phone||"")}" placeholder="مثل 0501234567" aria-label="رقم الجوال" style="direction:ltr;text-align:right;flex:1;min-width:0;width:auto"><button class="btn sm primary" type="button" id="ecPhSave">حفظ الرقم</button></div><div class="row"><button class="btn sm soft" type="button" id="ecToTree">أضفه إلى الشجرة</button><span class="sub">ينتقل إليها باسمه ورقمه وسجله، ثم تختار أباه أو أمه.</span></div></div>`}
    <div class="panel" style="background:var(--bg)"><h3>موعد خاص</h3>
      ${r.appt?`<p class="sub" style="margin:0">الموعد الحالي: <span class="num">${fmtDT(r.appt)}</span></p>`:`<p class="sub" style="margin:0">لا يوجد موعد خاص، مثل زيارة في يوم محدد.</p>`}
      <div class="row"><input type="date" id="ecAd" value="${locD(base.toISOString())}" style="width:auto"><input type="time" id="ecAt" value="${base.toTimeString().slice(0,5)}" style="width:auto"><button class="btn sm primary" type="button" id="ecAsave">${r.appt?"تعديل الموعد":"حفظ الموعد"}</button>${r.appt?`<button class="btn sm danger" type="button" id="ecAdel">حذف الموعد</button><a class="btn sm" href="${gcalLink("تواصل مع "+full,r.appt)}" target="_blank" rel="noopener">تقويم Google</a>`:""}</div>
@@ -1602,12 +1618,14 @@ function editContact(id,keep,back){
    <div class="row" style="justify-content:flex-end"><button class="btn danger" type="button" id="ecDel">حذف من جدول التواصل</button></div>
    <div id="ecConf"></div>`,el=>{
     const again=()=>{save();renderContacts();editContact(id,true,back)};
+    const phS=el.querySelector("#ecPhSave");if(phS)phS.onclick=()=>{const v=toLat(el.querySelector("#ecPh").value).trim();if(v)r.phone=v;else delete r.phone;again();toast(v?"حُفظ الرقم":"حُذف الرقم")};
+    const toT=el.querySelector("#ecToTree");if(toT)toT.onclick=()=>{const nm=String(r.name||"").trim()||"بلا اسم",nid=mk(nm,guessG(nm)||"m"),P=byId(nid);if(r.phone){P.phone=r.phone;delete r.phone}r.personId=nid;r.name="";save();renderAll();editPerson(nid,{},"e-f");toast("أُضيف «"+nm+"» إلى الشجرة. اختر أباه أو أمه ليتصل بعائلته، أو غيّر جنسه",null,6000)};
     el.querySelector("[data-close]").onclick=ret;
     const eo=el.querySelector("#ecOpen");if(eo)eo.onclick=()=>openPerson(r.personId);
     const ac=makeAC(el.querySelector("#ecName"),{placeholder:"اسم القريب",filter:p=>p.alive!==false,preset:{personId:r.personId,text:full}});
     el.querySelector("#ecNameSave").onclick=()=>{const v=ac.get();if(!v.personId&&!v.text){ac.input.focus();return}
       if(v.personId&&S.contacts.some(c=>c!==r&&c.personId===v.personId)){toast("هذا القريب موجود في الجدول");return}
-      r.personId=v.personId;r.name=v.personId?"":v.text;again();toast("حُفظ الاسم")};
+      if(v.personId&&r.phone){const P=byId(v.personId);if(P&&!P.phone)P.phone=r.phone;delete r.phone}r.personId=v.personId;r.name=v.personId?"":v.text;again();toast("حُفظ الاسم")};
     el.querySelectorAll("[data-ev]").forEach(b=>b.onclick=()=>{const k=b.dataset.ev,was=r.every;if(everyOf(r)===k)return;r.every=k;again();toast("«"+first+"» الآن في «"+EVERY[k]+"»",{label:"تراجع",fn:()=>{if(was)r.every=was;else delete r.every;again()}})});
     el.querySelector("#ecAsave").onclick=()=>{const dv=el.querySelector("#ecAd").value,tv=el.querySelector("#ecAt").value||"19:00";if(!dv)return;r.appt=new Date(dv+"T"+tv).toISOString();again();toast("حُفظ الموعد")};
     const ad=el.querySelector("#ecAdel");if(ad)ad.onclick=()=>{const old=r.appt;r.appt=null;again();toast("حُذف الموعد",{label:"تراجع",fn:()=>{r.appt=old;again()}})};
@@ -1883,11 +1901,12 @@ function openSettings(go,o){o=o||{}; // go: the panel to show, o.keep: the same 
     +(bad?`<div class="confirm"><span>بيانات قديمة تعذّرت قراءتها، محفوظة كما هي.</span><span style="flex:1"></span><button class="btn sm" type="button" id="s-badCopy">انسخها</button><button class="btn sm danger" type="button" id="s-badDel">احذفها</button></div>`:"");
   sheet(`<div class="hd"><h2>الإعدادات</h2><button class="btn sm" type="button" data-close>إغلاق</button></div>
   <div class="panel" style="background:var(--bg)"><h3>نسخة احتياطية</h3>
-    <p class="sub" style="margin:0">بياناتك محفوظة على هذا الجهاز وحده، فإن حُذف التطبيق ضاعت. أرسل نسخة إلى بريدك كل شهر، وإن احتجتها فالصقها هنا واضغط «استعادة».</p>
+    <p class="sub" style="margin:0">بياناتك محفوظة على هذا الجهاز وحده، فإن حُذف التطبيق ضاعت. احفظ نسخة كل شهر في Drive أو بريدك، وإن احتجتها فاستعدها من ملفها أو الصق نصها هنا.</p>
     <p class="sub bk-last" id="s-last" style="margin:0">${lb<0?"لم تحفظ نسخة بعد.":"آخر نسخة: "+fmtD(S.lastBackup)+" ("+agoD(lb)+")"}</p>
-    <div class="row"><button class="btn primary" type="button" id="s-mail">أرسلها إلى بريدي</button><button class="btn" type="button" id="s-copy">انسخها</button></div>
+    <div class="row">${APKF()?`<button class="btn primary" type="button" id="s-bkshare">شاركها</button><button class="btn" type="button" id="s-bksave">احفظها في الجوال</button><button class="btn" type="button" id="s-mail">أرسلها إلى بريدي</button>`:window.DQ?`<button class="btn primary" type="button" id="s-mail">أرسلها إلى بريدي</button>`:`<button class="btn primary" type="button" id="s-bksave">نزّلها ملفًّا</button><button class="btn" type="button" id="s-mail">أرسلها إلى بريدي</button>`}<button class="btn" type="button" id="s-copy">انسخها</button></div>
+    ${window.DQ&&!APKF()?`<p class="sub" style="margin:0">ثبّت تطبيق الجوال 2.1 لتحفظ النسخة ملفًّا وتشاركها.</p>`:""}
     <textarea id="s-json" spellcheck="false" placeholder="لاستعادة نسخة: الصق رسالتها هنا"></textarea>
-    <div class="row"><button class="btn soft" type="button" id="s-import">استعادة من النص الملصق</button></div>
+    <div class="row">${window.DQ&&!APKF()?"":`<button class="btn soft" type="button" id="s-file">استعادة من ملف</button>`}<button class="btn soft" type="button" id="s-import">استعادة من النص الملصق</button></div>
     <div id="s-iconf"></div>
     ${extraRows}<div id="s-xconf"></div>
   </div>
@@ -1915,6 +1934,7 @@ function openSettings(go,o){o=o||{}; // go: the panel to show, o.keep: the same 
     const ta=el.querySelector("#s-json");
     const bkSaid=()=>{const l=el.querySelector("#s-last");if(l)l.textContent="آخر نسخة: "+fmtD(S.lastBackup)+" (اليوم)"};
     el.querySelector("#s-mail").onclick=()=>{bkMail();bkSaid()};
+    {const b1=el.querySelector("#s-bkshare");if(b1)b1.onclick=()=>{if(bkOut("share"))bkSaid()};const b2=el.querySelector("#s-bksave");if(b2)b2.onclick=()=>{if(bkOut("save"))bkSaid()}}
     el.querySelector("[data-close]").onclick=closeSheet;
     el.querySelector("#s-pinset").onclick=()=>{const v=toLat(el.querySelector("#s-pin").value).trim();if(!/^\d{4,8}$/.test(v)){toast("الرمز من 4 إلى 8 أرقام");return}S.pinHash=hashPin(v);save();unlocked=true;closeSheet();renderAll();toast("فُعِّل القفل")};
     const off=el.querySelector("#s-pinoff");if(off)off.onclick=()=>{delete S.pinHash;save();closeSheet();renderAll();toast("أُلغي القفل")};
@@ -1924,8 +1944,9 @@ function openSettings(go,o){o=o||{}; // go: the panel to show, o.keep: the same 
     el.querySelector("#s-save").onclick=()=>{S.currency=el.querySelector("#s-cur").value.trim();S.family=el.querySelector("#s-fam").value.trim();S.cc=toLat(el.querySelector("#s-cc").value).replace(/\D/g,"");save();renderAll();toast("حُفظت الإعدادات")};
     el.querySelector("#s-copy").onclick=()=>{copyText("نسخة احتياطية من «ذو القربى» بتاريخ "+fmtD(new Date().toISOString())+"\n"+bkText(),"نُسخت النسخة. الصقها في بريدك أو ملاحظاتك");S.lastBackup=new Date().toISOString();save();renderToday();bkSaid()};
     const conf=(msg,fn,where)=>{const c=el.querySelector(where||"#s-conf");c.innerHTML=`<div class="confirm">${msg}<span style="flex:1"></span><button class="btn sm" type="button" id="k-no">تراجع</button><button class="btn sm danger" type="button" id="k-yes">نعم</button></div>`;c.querySelector("#k-no").onclick=()=>c.innerHTML="";c.querySelector("#k-yes").onclick=fn;c.scrollIntoView({block:"nearest"})};
-    el.querySelector("#s-import").onclick=()=>{let d;try{d=bkParse(ta.value)}catch(e){toast("النص الملصق ليس نسخة احتياطية صالحة");return}
-      conf("ستحل النسخة الملصقة ("+d.people.length+" في الشجرة) محل بياناتك الحالية ("+S.people.length+"). أستعيدها؟",()=>{try{replaceAll(Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},d),"استُعيدت البيانات")}catch(e){toast("تعذّرت الاستعادة من هذا النص")}},"#s-iconf")};
+    const imp=(t,src)=>{let d;try{d=bkParse(t)}catch(e){toast(src==="f"?"هذا الملف ليس نسخة احتياطية من «ذو القربى»":"النص الملصق ليس نسخة احتياطية صالحة");return}
+      conf("ستحل النسخة "+(src==="f"?"التي في الملف":"الملصقة")+" ("+d.people.length+" في الشجرة) محل بياناتك الحالية ("+S.people.length+"). أستعيدها؟",()=>{try{replaceAll(Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},d),"استُعيدت البيانات")}catch(e){toast("تعذّرت الاستعادة من هذا النص")}},"#s-iconf")};
+    el.querySelector("#s-import").onclick=()=>imp(ta.value,"t");{const sf=el.querySelector("#s-file");if(sf)sf.onclick=()=>pickText(t=>imp(t,"f"))}
     el.querySelector("#s-demo").onclick=()=>conf("ستحل البيانات التجريبية محل بياناتك الحالية.",()=>replaceAll(sample(),"حُمّلت البيانات التجريبية"));
     el.querySelector("#s-wipe").onclick=()=>conf("مسح الشجرة والتواصل والإحسان كلها؟",()=>replaceAll({demo:false,schema:2,currency:S.currency||"ريال",cc:S.cc||"",family:"",people:[],contacts:[],fixed:[],variable:[],ideas:S.ideas||[],dev:devKeep()},"مُسحت البيانات"));
     const sa=el.querySelector("#s-asideGo");if(sa)sa.onclick=()=>conf("تعود البيانات الموضوعة جانبًا، وتوضع بياناتك الحالية مكانها فلا يضيع شيء. ويُطلب رمزها إن كان لها رمز. أأعيدها؟",()=>{let o=null;try{o=JSON.parse(localStorage.getItem(KEY+".aside"))}catch(e){}if(!o||!Array.isArray(o.people)){toast("تعذّرت قراءتها");return}
@@ -2186,7 +2207,7 @@ const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوا�
 ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل والقائمة التي هو فيها، و«المواعيد والسجل»، أو «أضفه إلى التواصل» بزرين: «كل أسبوع» و«كل شهر». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اعرض شجرته» و«تعديل» و«حذف»، و«ترتيب الزوجات» لمن له أكثر من زوجة تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة. والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. وفي نافذة «إضافة» (أب أو أم أو زوجة أو ابن أو أخ): أثناء كتابة الاسم تظهر تحته الأسماء الموجودة في الشجرة بنسبها وصلتها، ولمس أحدها يربط الشخص نفسه في مكانه بدل كتابته مرة ثانية، و«حفظ» يضيف شخصًا جديدًا، وبعد الربط «تراجع». وإذا بدا اسمان مكتوبان لشخص واحد (الاسم نفسه والنسب نفسه بلا تعارض في الأب أو الأم) ظهر زر «مكرر؟» أسفل اللوحة يسارًا بعدد الاقتراحات، وفي أعلى ملف كل منهما «هل هي نفسها...؟» أو «هل هو نفسه...؟»: «نعم» يدمجهما في بطاقة واحدة تجمع النسب والزواج والأبناء والتواصل والإحسان، و«لا» يزيل الاقتراح فلا يعود، وبعدهما «تراجع». و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات وترتيب كل زوجة باختيار مباشر (الأولى، الثانية، الثالثة) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
 2) التواصل: في الأعلى «اليوم» ولا يظهر إلا عند الحاجة: موعد خاص وضعته مع قريب اليوم (ومعه «تم التواصل»)، وفي أيام رمضان والعيدين «تهنئة» و«القائمة»: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، وتسجيل التواصل في تلك الأيام يعلّم التهنئة أيضًا، وتذكير النسخة الاحتياطية. ثم «جدول التواصل»: تحته «يوم التواصل» (الجمعة الساعة 5:00 م ما لم تغيّره من «تغيير»)، ثم قائمتان: «كل أسبوع» يحين تواصلها في يوم التواصل كل أسبوع، و«كل شهر» في أول يوم مثله من الشهر (أول جمعة). فوق كل قائمة عدد من تواصلت معهم في دورتها (مثل 2 من 5)، و«التالي» بتاريخه وساعته أو «موعدهم اليوم»، وزر «تقويم Google» يفتح تقويم Google بتذكير يتكرر (كل جمعة، أو أول جمعة من كل شهر) فيه أسماء القائمة، فيضغط «حفظ» هناك فيذكّره الجوال، وبعدها يصير الزر «✓ في تقويم Google»، وإذا غيّر اليوم أو الساعة عاد الزر ليضيف التذكير الجديد ويحذف القديم من التقويم. الدورة تنتهي بيوم التواصل: من تواصلت معه بعد يوم التواصل السابق صار «تواصلت» بالأخضر، ومن مرت عليه دورة كاملة بلا تواصل «فات موعده» بالأحمر، والباقي موعده يوم التواصل القادم. يظهر أولًا من فات موعده، ثم من بقي، ثم من تواصلت معه، والأقرب فالأقرب. كل قريب سطر واحد: اسمه وصلته، وتحته حاله وآخر تواصل وموعده الخاص إن وُضع، وبجانبه زر الاتصال وزر الواتساب، ودائرة ✓ تسجل التواصل الآن (ولمسها وهي خضراء يلغي آخر تواصل)، وبعد التسجيل «كانت زيارة» و«تراجع». ولمس السطر يفتح «التواصل مع فلان»: القائمة («كل أسبوع» أو «كل شهر») وحاله، والموعد الخاص مع زر «تقويم Google»، وسجل التواصل وتعديله، و«حذف من جدول التواصل». «+ أضف قريبًا»: اكتب الاسم واختره من الشجرة، ثم «+ كل أسبوع» أو «+ كل شهر»، وتحتها أزرار تضيف جهة كاملة بلمسة: الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة. القائمة تُقترح حسب القرب: الوالدان والزوجة والأبناء والإخوة والأجداد والأحفاد «كل أسبوع»، والبقية «كل شهر». وعلى تبويب «التواصل» في الأسفل رقم بمن فات موعدهم ومن موعدهم اليوم. بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة. وفي آخر الجدول سطر يعدّ الأيام إلى موسم التهنئة القادم.
 3) الإحسان: في الأعلى شريط الشهر (› السابق و‹ التالي و«الشهر الحالي»)، والمجاميع والقائمتان تتبع الشهر المعروض. «مبالغ شهرية»: كل مبلغ سطر واحد فيه الاسم والمبلغ وموعده وحاله: في الشهر الحالي بعد التحويل «حُوِّل» ومعه «القادم» بتاريخ الشهر التالي، وقبل موعده «القادم» بتاريخه وكم بقي عليه، وإذا حلّ ولم يُحوَّل «موعده» بتاريخه و«مستحق»، وفي الأشهر السابقة يوم الاستحقاق و«حُوِّل» أو «لم يُسجَّل»، وزر ✓ في السطر يسجل التحويل في الشهر المعروض فيُسجَّل تحويل فات في شهره، ولمس السطر يفتح التفاصيل: المبلغ والتصنيف وتاريخ الاستحقاق (يُختار من التقويم ويتكرر في اليوم نفسه كل شهر) وسجل التحويلات و«تذكير في تقويم Google» والحذف. «مبالغ متفرقة»: سطر لكل مبلغ فيه الاسم والمبلغ والتاريخ، ولمسه يفتح التعديل. والإضافة بزر «+ أضف» فوق كل قائمة: اسم ومبلغ وتصنيف وتاريخ. التصنيفات ثلاثة: مصاريف، علاج، أخرى (ومعها تعليق يقول ما هو)، وتحت المجاميع مجموع كل تصنيف في السنة. وفي الأعلى ما حُوِّل في الشهر، والمتبقي، ومجموع السنة، و«إخفاء المبالغ». وعلى تبويب «الإحسان» في الأسفل رقم بعدد المبالغ الشهرية المستحقة الآن، ولا تتكرر المبالغ في «اليوم» بالتواصل.
-الشريط العلوي ثلاثة تبويبات: «بحث» وتحته خانة تبحث في كل ما كُتب في التطبيق: الأقارب بالاسم والنسب والمدينة والجوال والملاحظات وسنة الميلاد (زر «الشجرة» يقفز إلى القريب ويضيء بطاقته، و«الملف» يفتح ملفه)، وملاحظات التواصل، والإحسان بالاسم والتصنيف والمبلغ، والاقتراحات. و«اسأل Claude» تسأل فيه عن أقاربك وعن التطبيق. و«تطوير» وعليه عدد ما ينتظرك: «اقترح علي» يعطيك مقترحات لتطوير التطبيق تعتمدها أو تؤجلها أو ترفضها، و«اسألني» يسألك عن عائلتك فتجيب كتابةً أو بالصوت من مايك لوحة المفاتيح فيصير أدق، وتحتهما فكرتك أنت، و«بانتظار التنفيذ» و«انسخ التعليمات»، و«ما يعرفه التطبيق عنك». وفي رأس الشاشة «الإعدادات»: النسخة الاحتياطية أولًا («أرسلها إلى بريدي» بلمسة، والاستعادة بلصق الرسالة)، ثم قفل التطبيق، ثم حجم الخط (عادي أو كبير أو أكبر)، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا)، ثم «Claude داخل التطبيق» في تطبيق الجوال: يُلصق فيه مفتاح Claude مرة واحدة. زر الرجوع في الجوال يغلق المفتوح أولًا.`;
+الشريط العلوي ثلاثة تبويبات: «بحث» وتحته خانة تبحث في كل ما كُتب في التطبيق: الأقارب بالاسم والنسب والمدينة والجوال والملاحظات وسنة الميلاد (زر «الشجرة» يقفز إلى القريب ويضيء بطاقته، و«الملف» يفتح ملفه)، وملاحظات التواصل، والإحسان بالاسم والتصنيف والمبلغ، والاقتراحات. و«اسأل Claude» تسأل فيه عن أقاربك وعن التطبيق. و«تطوير» وعليه عدد ما ينتظرك: «اقترح علي» يعطيك مقترحات لتطوير التطبيق تعتمدها أو تؤجلها أو ترفضها، و«اسألني» يسألك عن عائلتك فتجيب كتابةً أو بالصوت من مايك لوحة المفاتيح فيصير أدق، وتحتهما فكرتك أنت، و«بانتظار التنفيذ» و«انسخ التعليمات»، و«ما يعرفه التطبيق عنك». وفي رأس الشاشة «الإعدادات»: النسخة الاحتياطية أولًا («شاركها» ملفًّا إلى Drive أو البريد أو واتساب، و«احفظها في الجوال»، و«أرسلها إلى بريدي»، والاستعادة من الملف أو بلصق النص)، ثم قفل التطبيق، ثم حجم الخط (عادي أو كبير أو أكبر)، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا)، ثم «Claude داخل التطبيق» في تطبيق الجوال: يُلصق فيه مفتاح Claude مرة واحدة. زر الرجوع في الجوال يغلق المفتوح أولًا.`;
 function familyData(){
   const cmap=new Map(S.contacts.map(c=>[c.personId,c]));
   const people=S.people.slice(0,600).map(p=>{const c=cmap.get(p.id),l=c&&c.log[0],mm=l&&c.meta&&c.meta[l]||{};
@@ -2698,12 +2719,15 @@ async function exportSheet(){const B=boardData();if(!B){toast("لا شيء في 
   const me=byId(S.meId);B.sub=[me?"من شجرة "+nasab(me,2):"",fmtD(new Date().toISOString())].filter(Boolean).join(" · ");
   try{if(document.fonts&&document.fonts.load)await Promise.race([Promise.all(["400","600"].map(w=>document.fonts.load(w+' 14px "IBM Plex Sans Arabic"',"ذو القربى"))),new Promise(r=>setTimeout(r,1500))])}catch(e){}
   let url="",blob=null,cv0=null;try{const cv=boardCanvas(B);cv0=cv;url=cv.toDataURL("image/png");blob=await new Promise(r=>{try{cv.toBlob(r,"image/png")}catch(e){r(null)}})}catch(e){url=""}
-  const APK=!!window.DQ,VW=!!window.claude&&!APK,canSave=!!url&&!APK&&(!VW||!!dlNs),canImg=!!blob&&!!(navigator.clipboard&&navigator.clipboard.write&&window.ClipboardItem&&window.isSecureContext),fn="ذو القربى - "+B.title.replace(/[\\\/:*?"<>|]+/g," ").trim()+".png";
+  const APK=!!window.DQ,VW=!!window.claude&&!APK,canSave=!!url&&!APK&&(!VW||!!dlNs),canImg=!APKF()&&!!blob&&!!(navigator.clipboard&&navigator.clipboard.write&&window.ClipboardItem&&window.isSecureContext),fn="ذو القربى - "+B.title.replace(/[\\\/:*?"<>|]+/g," ").trim()+".png";
   sheet(`<div class="hd"><div style="flex:1;min-width:0"><h2>تصدير ${esc(B.title)}</h2><div class="full">كما في اللوحة، بلا خانات الإضافة ولا الأقفال</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
    ${url?`<div class="xprev"><img src="${url}" alt="${esc("صورة "+B.title)}"></div>`:`<p class="sub" style="margin:0">تعذّر رسم الصورة على هذا الجهاز، وبقي النص.</p>`}
-   <div class="xacts">${canImg?`<button class="btn primary" type="button" id="xImg">نسخ الصورة</button>`:""}${canSave?`<button class="btn${canImg?"":" primary"}" type="button" id="xPng">تنزيل الصورة</button>`:""}<button class="btn" type="button" id="xTxt">نسخ الشجرة نصًّا</button>${canSave?`<button class="btn" type="button" id="xPdf">${VW?"تنزيل PDF":"طباعة أو PDF"}</button>`:""}</div>
-   <p class="sub" style="margin:0">${APK?"انسخ الصورة ثم الصقها في واتساب أو غيره. وإن لم تُلصق فانسخ الشجرة نصًّا.":VW?(canSave?"«تنزيل الصورة» و«تنزيل PDF» يحفظان الملف بعد موافقتك.":"انسخ الصورة أو الشجرة نصًّا لتشاركها."):"في الجوال يكفي أن تضغط على الصورة مطولًا لتحفظها أو تشاركها."}</p>`,el=>{
+   <div class="xacts">${APKF()&&url?`<button class="btn primary" type="button" id="xShI">مشاركة الصورة</button><button class="btn" type="button" id="xSvI">حفظ الصورة</button><button class="btn" type="button" id="xShP">مشاركة PDF</button>`:""}${canImg?`<button class="btn primary" type="button" id="xImg">نسخ الصورة</button>`:""}${canSave?`<button class="btn${canImg?"":" primary"}" type="button" id="xPng">تنزيل الصورة</button>`:""}<button class="btn" type="button" id="xTxt">نسخ الشجرة نصًّا</button>${canSave?`<button class="btn" type="button" id="xPdf">${VW?"تنزيل PDF":"طباعة أو PDF"}</button>`:""}</div>
+   <p class="sub" style="margin:0">${APKF()?"«مشاركة الصورة» ترسلها إلى واتساب أو غيره، و«حفظ الصورة» تضعها في ملفات الجوال. وتُرسل الشجرة نصًّا أيضًا.":APK?"انسخ الصورة ثم الصقها في واتساب أو غيره. وإن لم تُلصق فانسخ الشجرة نصًّا.":VW?(canSave?"«تنزيل الصورة» و«تنزيل PDF» يحفظان الملف بعد موافقتك.":"انسخ الصورة أو الشجرة نصًّا لتشاركها."):"في الجوال يكفي أن تضغط على الصورة مطولًا لتحفظها أو تشاركها."}</p>`,el=>{
     const q=x=>el.querySelector(x),fail=()=>toast("تعذّر نسخ الصورة هنا. انسخ الشجرة نصًّا",null,4000);q("[data-close]").onclick=closeSheet;
+    if(q("#xShI"))q("#xShI").onclick=()=>fileOut(fn,"image/png",b64u8(url),"share");
+    if(q("#xSvI"))q("#xSvI").onclick=()=>fileOut(fn,"image/png",b64u8(url),"save");
+    if(q("#xShP"))q("#xShP").onclick=()=>{let pdf=null;try{pdf=pdfOf(cv0)}catch(e){}if(pdf)fileOut(fn.replace(/\.png$/,".pdf"),"application/pdf",pdf,"share");else toast("تعذّر إنشاء PDF هنا")};
     if(q("#xImg"))q("#xImg").onclick=()=>{try{navigator.clipboard.write([new ClipboardItem({"image/png":blob})]).then(()=>toast("نُسخت الصورة. الصقها في واتساب أو غيره"),fail)}catch(e){fail()}};
     if(q("#xPng"))q("#xPng").onclick=()=>{if(VW){dlSave(fn,blob||b64u8(url),"حُفظت الصورة");return}try{const a=document.createElement("a"),h=blob?URL.createObjectURL(blob):url;a.download=fn;a.href=h;document.body.appendChild(a);a.click();a.remove();if(blob)setTimeout(()=>URL.revokeObjectURL(h),5000);toast("بدأ التنزيل. وإن لم يبدأ فاضغط على الصورة مطولًا لحفظها",null,4000)}catch(e){toast("تعذّر التنزيل هنا")}};
     q("#xTxt").onclick=()=>copyText(boardText(B),"نُسخت الشجرة نصًّا. الصقها في واتساب أو ملاحظاتك");
@@ -2966,6 +2990,7 @@ function showLock(){
   d.innerHTML=`<form class="box"><div class="brand">ذو القربى</div><p class="sub" style="margin:0">أدخل الرمز لفتح التطبيق</p><input type="password" id="pinIn" inputmode="numeric" autocomplete="off" aria-label="الرمز"><button class="btn primary" type="submit" style="width:100%">فتح</button><p class="sub" id="pinErr" style="margin:0;color:var(--bad)" hidden>الرمز غير صحيح</p>
     <button class="lnk" type="button" id="pinForgot" aria-expanded="false">نسيت الرمز؟</button>
     <div class="pinhelp" id="pinHelp" hidden><p class="sub" style="margin:0">الصق آخر نسخة احتياطية أرسلتها إلى بريدك، فتعود بياناتك منها بلا رمز. وما على هذا الجهاز يوضع جانبًا ولا يُحذف، فإن تذكرت الرمز أعدته من الإعدادات.</p>
+      ${window.DQ&&!APKF()?"":`<button class="btn" type="button" id="pinBkFile" style="width:100%">اختر ملف النسخة</button>`}
       <textarea id="pinBk" spellcheck="false" placeholder="الصق رسالة النسخة الاحتياطية هنا" aria-label="النسخة الاحتياطية"></textarea>
       <button class="btn soft" type="button" id="pinBkGo" style="width:100%">استعادة النسخة</button>
       <button class="btn" type="button" id="pinNew" style="width:100%">لا نسخة عندي: ابدأ من جديد</button></div></form>`;
@@ -2976,6 +3001,7 @@ function showLock(){
     inp.value="";if(++pinTries>=5){pinTries=0;pinWait=Date.now()+30000;say("أخطأت 5 مرات. انتظر 30 ثانية ثم أعد المحاولة")}else say("الرمز غير صحيح")});
   d.querySelector("#pinForgot").onclick=e=>{const h=d.querySelector("#pinHelp");h.hidden=!h.hidden;e.target.setAttribute("aria-expanded",String(!h.hidden))};
   const aside=()=>{try{localStorage.setItem(KEY+".aside",JSON.stringify(S));return true}catch(e){return false}}; // the locked data stays on the phone, under its code
+  if(d.querySelector("#pinBkFile"))d.querySelector("#pinBkFile").onclick=()=>pickText(t=>{d.querySelector("#pinBk").value=t;d.querySelector("#pinBkGo").click()});
   d.querySelector("#pinBkGo").onclick=()=>{let dd;try{dd=bkParse(d.querySelector("#pinBk").value)}catch(e){say("النص الملصق ليس نسخة احتياطية صالحة");return}
     if(!aside()){say("تعذّر وضع البيانات الحالية جانبًا، فلم يُغيَّر شيء");return}
     const n=migrate(Object.assign({currency:"ريال",family:"",contacts:[],fixed:[],variable:[]},dd));delete n.pinHash;S=n;veiled=!!S.hideAmounts;save();open();viewReset();renderAll();toast("استُعيدت بياناتك من النسخة، وأُلغي الرمز")};
@@ -3012,7 +3038,14 @@ async function initRemote(){
 }
 /* ---------- app update (Android app only) ---------- */
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={24:[
+const CHANGES={25:[
+  "النسخة الاحتياطية صارت ملفًّا: «شاركها» إلى Drive أو بريدك أو واتساب، أو «احفظها في الجوال»، وتعود بـ«استعادة من ملف». والبريد واللصق باقيان كما كانا",
+  "التصدير في تطبيق الجوال: «مشاركة الصورة» إلى واتساب وغيره، و«حفظ الصورة» في ملفات الجوال، و«مشاركة PDF»",
+  "القريب الذي ليس في الشجرة صار له رقم جوال في جدول التواصل، فيظهر له زرا الاتصال والواتساب، و«أضفه إلى الشجرة» ينقله إليها برقمه وسجله",
+  "إصلاح: تسجيل التواصل اليوم لم يعد يحذف موعد زيارة الغد",
+  "إذا تعطلت نسخة جديدة رجع التطبيق إلى السابقة وحده، وفي شاشة الخلل زر «ارجع إلى النسخة السابقة»",
+  "الحفظ والمشاركة والرجوع تعمل في تطبيق الجوال 2.1، فثبّته إن لم تفعل"],
+24:[
   "جدول التواصل من جديد: قائمتان «كل أسبوع» و«كل شهر»، تضع فيهما القريب بلمسة، وتُقترح حسب قربه",
   "يوم ثابت للتواصل، الجمعة 5 مساءً وتغيّره: الأسبوعي كل جمعة، والشهري أول جمعة من الشهر، وفوق كل قائمة «التالي» وعدد من تواصلت معهم",
   "زر «تقويم Google» عند كل قائمة يضيف تذكيرًا متكررًا، فيذكّرك الجوال يوم التواصل",
@@ -3144,7 +3177,7 @@ if(window.DQ){
 renderAll();
 initRemote();
 if(loadBad!=null)setTimeout(()=>toast("تعذّرت قراءة بياناتك المحفوظة، فبقيت كما هي جانبًا ولم يُكتب فوقها. استعد نسختك الاحتياطية من الإعدادات",{label:"الإعدادات",fn:()=>$("#btnSettings").click()},16000),700);
-window.__dqOK=1;
+window.__dqOK=1;try{if(window.DQ&&typeof window.DQ.ok==="function")window.DQ.ok()}catch(e){} // the Android app keeps this version: it started
 })();
 </script>
 </body></html>
