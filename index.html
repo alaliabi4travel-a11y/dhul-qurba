@@ -253,6 +253,7 @@ nav.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:-4p
 #btnUpd.has::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--brick);flex:none}
 @media (prefers-reduced-motion:no-preference){#btnUpd.has::before{animation:dqpulse 1.6s ease-in-out infinite}@keyframes dqpulse{50%{opacity:.25}}}
 #btnUpd.ok{background:var(--accent-soft);color:var(--accent);border-color:transparent;font-weight:600}
+.fsum{font-size:calc(12.5px*var(--fs,1));color:var(--muted);margin-top:3px}.fsum .num{font-weight:600}
 .relme{color:var(--accent);font-weight:600;font-size:calc(14px*var(--fs,1));margin-top:2px}
 .seg2{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--bg)}
 .seg2 button{all:unset;cursor:pointer;padding:5px 12px;font-size:calc(13px*var(--fs,1));font-weight:500;color:var(--muted)}
@@ -1266,6 +1267,8 @@ function openPerson(id,keep){
   const chip=(x,extra)=>{const sm=[extra,x.alive===false?rip(x):""].filter(Boolean).join(" · ");return`<button class="chip ${x.gender==="f"?"gf":"gm"}${x.alive===false?" dead":""}" type="button" data-open="${x.id}">${esc(x.name)}${sm?` <small>${esc(sm)}</small>`:""}</button>`};
   const ed=fEdit,none='<span class="sub">—</span>',slot=(kind,label)=>ed?`<button class="slot" type="button" data-addrel="${kind}">+ ${esc(label)}</button>`:""; // the switch on the board shut: no places to add, no «تعديل» and no «حذف»
   const spL=fem?"الزوج":"الزوجة";
+  const kb=kids(p.id),nb=kb.filter(x=>x.gender!=="f").length,ng=kb.length-nb; // his family in a few words, under his name: «3 أولاد · بنتان»
+  const fsum=[nb?nn(nb,["ولد واحد","ولدان","أولاد","ولدًا","ولد"]):"",ng?nn(ng,["بنت واحدة","بنتان","بنات","بنتًا","بنت"]):""].filter(Boolean).map(t=>`<span class="num">${esc(t)}</span>`).join(" · ");
   const dps=dupOf(p.id),dupH=dps.length?`<div class="dupbox" role="group" aria-label="اسم قد يكون مكررًا">${dps.map(o=>dupRow(p,o)).join("")}</div>`:""; // the same person written twice?
   const kidsHTML=groups.filter(g=>g.kids.length).map(g=>{
     const lbl=groups.filter(x=>x.kids.length).length>1||(g.other&&sp.length>1)?(g.other?"من "+g.other.name:(fem?"الأب غير محدد":"الأم غير محددة")):"";
@@ -1281,7 +1284,7 @@ function openPerson(id,keep){
   const det=[p.city?["المدينة",esc(p.city)]:null,p.born?["سنة الميلاد",`<span class="num">${esc(p.born)}</span>`]:null,p.notes?["ملاحظات",esc(p.notes)]:null,
     fx.length?["مبلغ شهري",fx.map(r=>`<span class="num${bl}">${money(r.amount)}</span> يوم ${r.day}${r.kind?" · "+esc(kindLbl(r)):""}`).join("، ")]:null,
     gv.n?["الإحسان هذا العام",`<span class="num${bl}">${money(gv.sum)}</span> <span class="sub">(${nn(gv.n,TIMES)})</span>`]:null].filter(Boolean);
-  sheet(`<div class="hd" data-pp="${p.id}"><div style="flex:1;min-width:0"><h2>${esc(p.name)}${dead?` <small class="rip-h">${rip(p)}</small>`:""}</h2>${nas!==p.name?`<div class="full">${esc(nas)}</div>`:""}${isMe?`<div class="relme">أنت</div>`:rel?`<div class="relme">${esc(rel)}</div>`:""}</div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+  sheet(`<div class="hd" data-pp="${p.id}"><div style="flex:1;min-width:0"><h2>${esc(p.name)}${dead?` <small class="rip-h">${rip(p)}</small>`:""}</h2>${nas!==p.name?`<div class="full">${esc(nas)}</div>`:""}${fsum?`<div class="fsum">${fsum}</div>`:""}${isMe?`<div class="relme">أنت</div>`:rel?`<div class="relme">${esc(rel)}</div>`:""}</div><button class="btn sm" type="button" data-close>إغلاق</button></div>
   ${dupH}${con}
   <dl class="fam-grid">
     <dt>الأب</dt><dd>${f?chip(f):slot("father","أضف الأب")||none}</dd>
@@ -3063,7 +3066,8 @@ async function initRemote(){
 }
 /* ---------- app update (Android app only) ---------- */
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={26:["سهم «→» أعلى ملف القريب يرجعك خطوة واحدة إلى القريب الذي جئت منه، لا إلى البداية، ومعه اسمه",
+const CHANGES={26:["تحت اسم القريب في ملفه ملخص صغير لأسرته، مثل «3 أولاد · بنتان»",
+  "سهم «→» أعلى ملف القريب يرجعك خطوة واحدة إلى القريب الذي جئت منه، لا إلى البداية، ومعه اسمه",
   "زر «⌂ الشجرة» في الملف يغلق كل شيء ويرجعك إلى الشجرة الأساسية",
   "في الشجرة المفتوحة زر «→ رجوع» إلى الشخص السابق، وفي «أهل فلان» زر «⌂» إلى الشجرة الأساسية",
   "زر الرجوع في الجوال يتبع الطريق نفسه خطوة خطوة"],
