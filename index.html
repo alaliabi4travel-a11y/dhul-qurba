@@ -526,6 +526,14 @@ header.top{gap:10px}
 .csides[hidden],.cfilt[hidden],.kinds[hidden]{display:none}
 .chip.csd{cursor:pointer;font:inherit;font-size:calc(13px*var(--fs,1));padding:4px 12px;color:var(--accent);background:var(--accent-soft);border-color:transparent;font-weight:600}
 .chip.csd b{font-weight:700;margin-inline-start:2px}
+.kgrs{display:flex;flex-direction:column;gap:6px}
+.kgr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 0;border-top:1px solid var(--line)}
+.kgrs .kgr:first-child{border-top:0}
+.kgr .chip{cursor:pointer;font:inherit;font-size:calc(13px*var(--fs,1));padding:4px 12px}
+.kpick{display:flex;flex-direction:column;gap:2px;max-height:50vh;overflow:auto}
+.kpick .chk{padding:6px 2px;border-top:1px solid var(--line)}
+.kpick .chk:first-child{border-top:0}
+.kpick input{width:18px;height:18px;accent-color:var(--accent)}
 .cfilt{align-self:flex-start}
 .cfilt button .num{opacity:.75;font-weight:600}
 .mbar{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:6px 8px}
@@ -905,7 +913,7 @@ body.famfit main{padding-bottom:calc(var(--navh,72px) + 22px + env(safe-area-ins
   <section class="view" id="v-contact" hidden>
     <div class="panel" id="today" hidden></div>
     <div class="panel">
-      <div class="row"><h2 class="grow">جدول <em>التواصل</em></h2><button class="btn sm soft" type="button" id="cAddT" aria-expanded="false" aria-controls="cForm">+ أضف قريبًا</button></div>
+      <div class="row"><h2 class="grow">جدول <em>التواصل</em></h2><button class="btn sm" type="button" id="cEditT" hidden>تعديل</button><button class="btn sm soft" type="button" id="cAddT" aria-expanded="false" aria-controls="cForm">+ أضف قريبًا</button></div>
       <div class="csub" id="cDay" hidden></div>
       <div class="cform" id="cForm" hidden>
         <p class="sub" style="margin:0" id="cFormSub">اكتب اسم القريب واختره من الشجرة، ثم اختر القائمة.</p>
@@ -995,7 +1003,7 @@ window.addEventListener("load",function(){setTimeout(function(){if(window.__dqOK
 "use strict";
 /* ---------- storage ---------- */
 const KEY="dhulqurba.v1";
-const WEB_BUILD=27;
+const WEB_BUILD=28;
 let mem=null,loadBad=null,saveErr=false;
 function load(){let s=null;try{s=localStorage.getItem(KEY)}catch(e){return mem}if(!s)return mem;
   try{const d=JSON.parse(s);if(d&&typeof d==="object"&&Array.isArray(d.people))return d}catch(e){}
@@ -1598,11 +1606,58 @@ function sideGroups(){const me=byId(S.meId);if(!me)return[];
     let dw=99;mw.forEach(m=>{dw=Math.min(dw,deg(m,mb).d)});if(!isSp&&dw<=2)G.sp.push([x,dw+1])});
   const srt=a=>a.sort((p,q)=>p[1]-q[1]).map(z=>z[0]),fem=me.gender==="f",w1=sps.length>1;
   return[["near","الأقربون",srt(G.near)],["fa","جهة الأب",srt(G.fa)],["mo","جهة الأم",srt(G.mo)],["sp",fem?(w1?"أهل أزواجك":"أهل زوجك"):(w1?"أهل زوجاتك":"أهل زوجتك"),srt(G.sp)]].filter(g=>g[2].length)}
+/* by kinship: brothers and sisters, your father's brothers and sisters, your mother's, and the rest; for adding, a plan and removing a whole group at once */
+const KIN=[["par","الوالدان"],["sp","الزوجة"],["kid","الأبناء والبنات"],["sib","الإخوة والأخوات"],["gp","الأجداد والجدات"],["gk","الأحفاد"],["am","الأعمام والعمات"],["kh","الأخوال والخالات"],["oth","بقية الأقارب"]];
+const KIN_TOP=new Set(["par","sp","kid","sib","gp","gk"]); // «الأهم»
+function kinKind(pid){const me=byId(S.meId),p=pid&&byId(pid);if(!me||!p)return"oth";
+  const sibOf=(a,b)=>!!a&&!!b&&a.id!==b.id&&((!!a.father&&a.father===b.father)||(!!a.mother&&a.mother===b.mother));
+  const F=me.father&&byId(me.father),M=me.mother&&byId(me.mother);
+  if(p===F||p===M)return"par";if(spousesOf(me).includes(p))return"sp";if(p.father===me.id||p.mother===me.id)return"kid";
+  if(sibOf(p,me))return"sib";if([F,M].some(x=>x&&(p.id===x.father||p.id===x.mother)))return"gp";
+  if([p.father,p.mother].some(id=>{const x=id&&byId(id);return x&&(x.father===me.id||x.mother===me.id)}))return"gk";
+  if(sibOf(p,F))return"am";if(sibOf(p,M))return"kh";return"oth"}
+const kinLbl=k=>{const me=byId(S.meId),f=me&&me.gender==="f";if(k==="sp")return f?"الزوج":spousesOf(me||{}).length>1?"الزوجات":"الزوجة";return(KIN.find(x=>x[0]===k)||[])[1]||""};
+function kinAddGroups(){ // who is not yet in the table, by kinship
+  const inC=new Set(S.contacts.map(c=>c.personId).filter(Boolean)),L=S.people.filter(x=>x.id!==S.meId&&x.alive!==false&&!inC.has(x.id)&&!isDiv(byId(S.meId)||{},x)),by={};
+  L.forEach(x=>{const k=kinKind(x.id);(by[k]=by[k]||[]).push(x)});
+  const top=L.filter(x=>KIN_TOP.has(kinKind(x.id)));
+  return[["top","الأهم",top],["sib",kinLbl("sib"),by.sib||[]],["am",kinLbl("am"),by.am||[]],["kh",kinLbl("kh"),by.kh||[]],["all","الجميع",L]].filter(g=>g[2].length)}
+function addGroup(lbl,people,every){ // each in the list you chose, or the one his nearness suggests, due from the day he was added
+  if(!people.length)return;const now=new Date().toISOString(),made=people.map(x=>({id:uid(),personId:x.id,name:"",log:[],appt:null,added:now,every:every||defaultEvery({personId:x.id})})),ids=new Set(made.map(c=>c.id));
+  S.contacts.push(...made);cAddOpen=false;acC.clear();save();renderContacts();
+  toast("أُضيف "+nn(made.length,AQ)+" إلى جدول التواصل: "+lbl+(every?"، «"+EVERY[every]+"»":""),{label:"تراجع",fn:()=>{S.contacts=S.contacts.filter(c=>!ids.has(c.id));save();renderContacts()}},9000)}
+function removeContacts(ids,lbl){ // whole or some, with «تراجع» that puts each back in its place with its record
+  const before=S.contacts.slice(),n=S.contacts.filter(c=>ids.has(c.id)).length;if(!n)return;
+  S.contacts=S.contacts.filter(c=>!ids.has(c.id));save();renderContacts();
+  toast("حُذف "+nn(n,AQ)+" من جدول التواصل"+(lbl?": "+lbl:""),{label:"تراجع",fn:()=>{S.contacts=before;save();renderContacts();if($("#layer [data-cedit-sheet]"))cEditSheet(true)}},10000)}
+function cEditSheet(keep){ // the table as a whole: a plan for each kinship group, removing a group, everyone, or the ones you tick
+  const L=S.contacts.filter(c=>!deadC(c));if(!L.length){closeSheet();return}
+  const kk=c=>c.personId&&byId(c.personId)?kinKind(c.personId):"oth",G=KIN.map(([k])=>[k,kinLbl(k),L.filter(c=>kk(c)===k)]).filter(g=>g[2].length);
+  const seg=(key,arr)=>`<div class="seg2" role="group" aria-label="القائمة">${["w","m"].map(e=>`<button type="button" data-gev="${e}" data-g="${key}" aria-pressed="${arr.every(c=>everyOf(c)===e)}">${EVERY[e]}</button>`).join("")}</div>`;
+  const row=(key,l,arr)=>`<div class="kgr"><span class="grow"><b>${esc(l)}</b> <span class="num sub">${arr.length}</span></span>${seg(key,arr)}<button class="btn sm danger" type="button" data-gdel="${key}">${key==="all"?"حذف الجميع":"حذف"}</button></div>`;
+  const cm=closeMap(),near=c=>c.personId&&cm.has(c.personId)?cm.get(c.personId):99,P=L.slice().sort((a,b)=>near(a)-near(b)||nameOf(a).localeCompare(nameOf(b),"ar"));
+  sheet(`<div class="hd" data-cedit-sheet><div style="flex:1;min-width:0"><h2>تعديل الجدول</h2><div class="full">${nn(L.length,AQ)} في الجدول</div></div><button class="btn sm" type="button" data-close>إغلاق</button></div>
+   <div class="panel" style="background:var(--bg)"><h3>حسب الصلة</h3><p class="sub" style="margin:0">ضع خطة لكل جماعة: «كل أسبوع» أو «كل شهر» لهم جميعًا بلمسة، أو احذفهم معًا.</p>
+     ${G.map(g=>row(g[0],g[1],g[2])).join("")}${row("all","الجميع",L)}</div>
+   <div class="panel" style="background:var(--bg)"><div class="row"><h3 class="grow">حذف أفراد</h3><button class="btn sm danger" type="button" id="cxDel" disabled>حذف المحدد</button></div>
+     <div class="kpick">${P.map(c=>{const r=c.personId&&byId(c.personId)?relToMe(c.personId):"";return`<label class="chk"><input type="checkbox" data-cx="${c.id}"> <b>${esc(fnm(c))}</b> <span class="sub">${esc(r)} · ${EVERY[everyOf(c)]}</span></label>`}).join("")}</div></div>`,el=>{
+    el.querySelector("[data-close]").onclick=closeSheet;
+    const grpOf=k=>k==="all"?L:(G.find(g=>g[0]===k)||[,,[]])[2],lblOf=k=>k==="all"?"الجميع":kinLbl(k);
+    el.querySelectorAll("[data-gev]").forEach(b=>b.onclick=()=>{const a=grpOf(b.dataset.g),e=b.dataset.gev;a.forEach(c=>c.every=e);save();renderContacts();cEditSheet(true);toast(lblOf(b.dataset.g)+": «"+EVERY[e]+"»")});
+    el.querySelectorAll("[data-gdel]").forEach(b=>b.onclick=()=>{const a=grpOf(b.dataset.gdel);
+      if(!b.dataset.sure){b.dataset.sure="1";b.textContent="تأكيد: احذف "+a.length;return} // a second touch, so a group is not lost by a slip
+      removeContacts(new Set(a.map(c=>c.id)),lblOf(b.dataset.gdel));cEditSheet(true)});
+    const cx=el.querySelector("#cxDel"),picked=()=>[...el.querySelectorAll("[data-cx]:checked")].map(i=>i.dataset.cx);
+    el.querySelectorAll("[data-cx]").forEach(i=>i.onchange=()=>{const n=picked().length;cx.disabled=!n;cx.textContent=n?"حذف المحدد ("+n+")":"حذف المحدد"});
+    cx.onclick=()=>{const a=picked();if(!a.length)return;removeContacts(new Set(a));cEditSheet(true)};
+  },{keep})}
+$("#cEditT").onclick=()=>cEditSheet();
 $("#cAddT").onclick=()=>{cAddOpen=!cAddOpen;renderContacts();if(cAddOpen)setTimeout(()=>acC.input.focus(),30)};
 function cAddAs(k){const v=acC.get();if(!acC.valid()){acC.input.focus();toast("اكتب اسم القريب أولًا");return}acC.clear();cPickHi("");cAddOpen=false;const c=addContact(v.personId,v.personId?"":v.text,false,k);if(c&&!v.personId)setTimeout(()=>{editContact(c.id);const i=$("#ecPh");i&&i.focus()},250)} // one outside the tree: his number next
 function cPickHi(pid){const k=pid?defaultEvery({personId:pid}):"w";$("#cAddW").classList.toggle("primary",k==="w");$("#cAddM").classList.toggle("primary",k==="m")} // the list his nearness suggests is the bright button
 $("#cAddW").onclick=()=>cAddAs("w");$("#cAddM").onclick=()=>cAddAs("m");acC.input.addEventListener("input",()=>cPickHi(""));
-$("#cSides").addEventListener("click",e=>{const b=e.target.closest("[data-cside]");if(!b)return;const g=sideGroups().find(x=>x[0]===b.dataset.cside);if(!g)return;
+$("#cSides").addEventListener("click",e=>{const kb=e.target.closest("[data-ckin]");if(kb){const g=kinAddGroups().find(x=>x[0]===kb.dataset.ckin);if(g)addGroup(g[1],g[2],kb.dataset.ev||"");return}
+  const b=e.target.closest("[data-cside]");if(!b)return;const g=sideGroups().find(x=>x[0]===b.dataset.cside);if(!g)return;
   const now=new Date().toISOString(),made=g[2].map(x=>({id:uid(),personId:x.id,name:"",log:[],appt:null,added:now,every:defaultEvery({personId:x.id})})),ids=new Set(made.map(c=>c.id)); // each in the list his nearness suggests, due from the day he was added
   S.contacts.push(...made);cAddOpen=false;acC.clear();save();renderContacts();
   toast("أُضيف "+nn(made.length,AQ)+" إلى جدول التواصل: "+g[1],{label:"تراجع",fn:()=>{S.contacts=S.contacts.filter(c=>!ids.has(c.id));save();renderContacts()}},9000)});
@@ -1701,9 +1756,10 @@ document.addEventListener("pointerdown",()=>{if(callPend&&Date.now()-callPend.t>
 function renderContacts(){
   renderToday();
   const all=S.contacts.filter(c=>!deadC(c)),nDead=S.contacts.length-all.length,empty=!all.length;
-  const formOn=cAddOpen||empty,gs=formOn?sideGroups():[],cs=$("#cSides");cs.hidden=!gs.length;
-  cs.innerHTML=gs.length?`<span class="sub">أو أضف جهة كاملة بلمسة، كلٌّ في قائمته حسب قربه:</span><div class="chips">${gs.map(([k,l,a])=>`<button class="chip csd" type="button" data-cside="${k}" aria-label="${esc("أضف "+l+": "+nn(a.length,AQ))}">${esc(l)} <b class="num">${a.length}</b></button>`).join("")}</div><p class="sub" style="margin:0">الأقربون: الوالدان والزوج والأبناء والإخوة والأجداد والأحفاد. وكل جهة إلى أبناء الأعمام والأخوال.</p>`:"";
-  $("#cForm").hidden=!formOn;$("#cAddT").hidden=empty;$("#cAddT").textContent=cAddOpen?"إلغاء":"+ أضف قريبًا";$("#cAddT").setAttribute("aria-expanded",String(cAddOpen));
+  const formOn=cAddOpen||empty,gs=formOn?sideGroups().filter(g=>g[0]!=="near"):[],ks=formOn?kinAddGroups():[],cs=$("#cSides");cs.hidden=!gs.length&&!ks.length;
+  const kin=ks.map(([k,l,a])=>`<div class="kgr"><span class="grow"><b>${esc(l)}</b> <span class="num sub">${a.length}</span></span><button class="chip csd" type="button" data-ckin="${k}" aria-label="${esc("أضف "+l+" كلٌّ حسب قربه: "+nn(a.length,AQ))}">+ أضف</button><button class="chip" type="button" data-ckin="${k}" data-ev="w" aria-label="${esc("أضف "+l+" كل أسبوع")}">أسبوع</button><button class="chip" type="button" data-ckin="${k}" data-ev="m" aria-label="${esc("أضف "+l+" كل شهر")}">شهر</button></div>`).join("");
+  cs.innerHTML=(ks.length?`<span class="sub">أو أضف جماعة كاملة بلمسة: «+ أضف» يضع كلًّا في قائمته حسب قربه، أو اختر «أسبوع» أو «شهر» لهم جميعًا.</span><div class="kgrs">${kin}</div><p class="sub" style="margin:0">الأهم: الوالدان والزوجة والأبناء والإخوة والأجداد والأحفاد.</p>`:"")+(gs.length?`<span class="sub">أو جهة كاملة إلى أبناء الأعمام والأخوال:</span><div class="chips">${gs.map(([k,l,a])=>`<button class="chip csd" type="button" data-cside="${k}" aria-label="${esc("أضف "+l+": "+nn(a.length,AQ))}">${esc(l)} <b class="num">${a.length}</b></button>`).join("")}</div>`:"");
+  $("#cForm").hidden=!formOn;$("#cAddT").hidden=empty;$("#cEditT").hidden=empty||cAddOpen;$("#cAddT").textContent=cAddOpen?"إلغاء":"+ أضف قريبًا";$("#cAddT").setAttribute("aria-expanded",String(cAddOpen));
   $("#cFormSub").textContent=(empty?"ضع أقاربك في قائمتين: «كل أسبوع» و«كل شهر». ":"")+"اكتب اسم القريب واختره من الشجرة، ثم اختر القائمة.";
   const {wd,t}=cDay(),sig=wd+"|"+t,cd=$("#cDay");cd.hidden=empty;
   cd.innerHTML=empty?"":`<span>يوم التواصل: <b>${WDN[wd]}، ${esc(fmtT(t))}</b></span><button class="lnk" type="button" data-cday>تغيير</button>`;
@@ -2356,7 +2412,7 @@ function aiChanged(){aiNow().then(m=>{if(tbPane==="p-ask")askSetup(m);if(tbPane=
 const APP_GUIDE=`دليل التطبيق «ذو القربى»: ثلاث قوائم سفلية.
 1) ذو القربى: «عائلتي» لوحة تملأ الشاشة تحتها سطر من ثلاثة أقسام: جهة الأب، وجهة الأم، والزوجة وأهلها (للمرأة: الزوج وأهله)، وفي كل قسم عدد أقاربه. لمس القسم يملأ اللوحة بشجرة تلك الجهة، وفيها خطك من الجد الأعلى إليك. «الشجرة المفتوحة» (زرها أسفل اللوحة يمينًا) تعرض شجرة أي قريب: أجداده فوقه، وزيجاته بجانبه، وذريته تحته، وتحتها «الجد الأعلى» و«شجرتي». الأشكال: العمود الملوّن بخط سميك سلسلة الآباء من صاحب الجهة إلى أعلى جد، والبطاقة بإطار رفيع قريب مسجّل خارج العمود، وخلفية كل بطاقة زرقاء خفيفة للرجل ووردية خفيفة للمرأة، وكذلك أسماء الأقارب في الملف، والمنقطة التي تبدأ بـ«+» مكان فارغ للإضافة في موضعه، ولا تظهر إلا في وضع التعديل: في أعلى اللوحة يمينًا قفل واحد، مقفلًا تكون اللوحة والملفات للعرض فقط بلا خانات إضافة ولا «تعديل» ولا «حذف»، ومفتوحًا يظهر ذلك كله ويصير الزر «تعديل» ويُحاط اللوح بإطار متقطع بلون الجهة، ويُقفل كلما فُتح التطبيق، والباهتة تحت اسمها «رحمه الله» متوفى، والخضراء الممتلئة أنت، والحلقة حول البطاقة صاحب الشجرة المعروضة. الأخضر جهة الأب، والذهبي جهة الأم، والأزرق الزوجة وأهلها. كل زواج بخطين، والأبناء ينزلون من خط أبيهم وأمهم، والرقم تحت الاسم فرع مطوي فيه أبناؤه، و«أهلها» فوق كل زوجة و«أهله» فوق كل زوج ينقل إلى عائلته: هو أسفل العمود وفوقه أبوه ثم جده، فالعمود في كل جهة يصعد بالآباء وحدهم «ادعوهم لآبائهم» والأمهات بجانب أزواجهن، وخط الزواج إذا قطعه خطان صغيران فهو طلاق، والإخوة مرتبون من الأكبر بسنة الميلاد. زر «؟» أعلى اللوحة يفتح «دليل اللوحة» بكل شكل وكل أداة. السحب بإصبع والتقريب بإصبعين، و⤢ يُظهر الجهة كلها، و⛶ يملأ الشاشة، وزر التصدير بجانبها يحفظ الجهة التي تراها صورةً أو نصًّا، أو PDF في المتصفح. وأول مرة يسألك التطبيق اسمك ثم اسم أبيك ثم اسم أمك.
 ملف القريب يُفتح بلمس اسمه في أي مكان. يبدأ بالتواصل: الجوال، و«اتصال» و«واتساب» و«تم التواصل»، وآخر تواصل والقائمة التي هو فيها، و«المواعيد والسجل»، أو «أضفه إلى التواصل» بزرين: «كل أسبوع» و«كل شهر». ثم أبوه وأمه وزوجاته وأبناؤه وإخوته، كل اسم يفتح ملفه والمنقّط يضيف. ثم المدينة وسنة الميلاد والملاحظات والمبلغ الشهري له وما أعطيته هذا العام، ثم «اعرض شجرته» و«تعديل» و«حذف»، و«ترتيب الزوجات» لمن له أكثر من زوجة تختار فيه لكل زوجة الأولى أو الثانية أو الثالثة. والحذف يسألك أولًا، وبعده «تراجع» إن حذفت بالخطأ. وفي نافذة «إضافة» (أب أو أم أو زوجة أو ابن أو أخ): أثناء كتابة الاسم تظهر تحته الأسماء الموجودة في الشجرة بنسبها وصلتها، ولمس أحدها يربط الشخص نفسه في مكانه بدل كتابته مرة ثانية، و«حفظ» يضيف شخصًا جديدًا، وبعد الربط «تراجع». وإذا بدا اسمان مكتوبان لشخص واحد (الاسم نفسه والنسب نفسه بلا تعارض في الأب أو الأم) ظهر زر «مكرر؟» أسفل اللوحة يسارًا بعدد الاقتراحات، وفي أعلى ملف كل منهما «هل هي نفسها...؟» أو «هل هو نفسه...؟»: «نعم» يدمجهما في بطاقة واحدة تجمع النسب والزواج والأبناء والتواصل والإحسان، و«لا» يزيل الاقتراح فلا يعود، وبعدهما «تراجع». و«ما صلته بقريب آخر؟» يجيب بالصلة، أو بالطريق عبر الزواج إذا لم يجمعهما جد. وفي «تعديل»: الاسم والجنس والجوال والمدينة وسنة الميلاد والحالة (على قيد الحياة أو متوفى) والملاحظات والنسب، والزيجات وترتيب كل زوجة باختيار مباشر (الأولى، الثانية، الثالثة) وحال كل زواج (قائم أو طلاق)، وفي آخرها «هذا أنا» و«حذف من الشجرة» أيضًا. القرابة تُكتب بدقة: عمك لأب، عمك لأم، زوجة جدك، ابن زوجة جدك، زوج أمك، طليقتك، طليقة أبيك.
-2) التواصل: في الأعلى «اليوم» ولا يظهر إلا عند الحاجة: موعد خاص وضعته مع قريب اليوم (ومعه «تم التواصل»)، وفي أيام رمضان والعيدين «تهنئة» و«القائمة»: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، وتسجيل التواصل في تلك الأيام يعلّم التهنئة أيضًا، وتذكير النسخة الاحتياطية. ثم «جدول التواصل»: تحته «يوم التواصل» (الجمعة الساعة 5:00 م ما لم تغيّره من «تغيير»)، ثم قائمتان: «كل أسبوع» يحين تواصلها في يوم التواصل كل أسبوع، و«كل شهر» في أول يوم مثله من الشهر (أول جمعة). فوق كل قائمة عدد من تواصلت معهم في دورتها (مثل 2 من 5)، و«التالي» بتاريخه وساعته أو «موعدهم اليوم»، وزر «تقويم Google» يفتح تقويم Google بتذكير يتكرر (كل جمعة، أو أول جمعة من كل شهر) فيه أسماء القائمة، فيضغط «حفظ» هناك فيذكّره الجوال، وبعدها يصير الزر «✓ في تقويم Google»، وإذا غيّر اليوم أو الساعة عاد الزر ليضيف التذكير الجديد ويحذف القديم من التقويم. الدورة تنتهي بيوم التواصل: من تواصلت معه بعد يوم التواصل السابق صار «تواصلت» بالأخضر، ومن مرت عليه دورة كاملة بلا تواصل «فات موعده» بالأحمر، والباقي موعده يوم التواصل القادم. يظهر أولًا من فات موعده، ثم من بقي، ثم من تواصلت معه، والأقرب فالأقرب. كل قريب سطر واحد: اسمه وصلته، وتحته حاله وآخر تواصل وموعده الخاص إن وُضع، وبجانبه زر الاتصال وزر الواتساب، ودائرة ✓ تسجل التواصل الآن (ولمسها وهي خضراء يلغي آخر تواصل)، وبعد التسجيل «كانت زيارة» و«تراجع». ولمس السطر يفتح «التواصل مع فلان»: القائمة («كل أسبوع» أو «كل شهر») وحاله، والموعد الخاص مع زر «تقويم Google»، وسجل التواصل وتعديله، و«حذف من جدول التواصل». «+ أضف قريبًا»: اكتب الاسم واختره من الشجرة، ثم «+ كل أسبوع» أو «+ كل شهر»، وتحتها أزرار تضيف جهة كاملة بلمسة: الأقربون، وجهة الأب، وجهة الأم، وأهل الزوجة. القائمة تُقترح حسب القرب: الوالدان والزوجة والأبناء والإخوة والأجداد والأحفاد «كل أسبوع»، والبقية «كل شهر». وعلى تبويب «التواصل» في الأسفل رقم بمن فات موعدهم ومن موعدهم اليوم. بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة. وفي آخر الجدول سطر يعدّ الأيام إلى موسم التهنئة القادم.
+2) التواصل: في الأعلى «اليوم» ولا يظهر إلا عند الحاجة: موعد خاص وضعته مع قريب اليوم (ومعه «تم التواصل»)، وفي أيام رمضان والعيدين «تهنئة» و«القائمة»: من هنّأت ومن بقي، ورسالة جاهزة تُرسل بالواتساب، وتسجيل التواصل في تلك الأيام يعلّم التهنئة أيضًا، وتذكير النسخة الاحتياطية. ثم «جدول التواصل»: تحته «يوم التواصل» (الجمعة الساعة 5:00 م ما لم تغيّره من «تغيير»)، ثم قائمتان: «كل أسبوع» يحين تواصلها في يوم التواصل كل أسبوع، و«كل شهر» في أول يوم مثله من الشهر (أول جمعة). فوق كل قائمة عدد من تواصلت معهم في دورتها (مثل 2 من 5)، و«التالي» بتاريخه وساعته أو «موعدهم اليوم»، وزر «تقويم Google» يفتح تقويم Google بتذكير يتكرر (كل جمعة، أو أول جمعة من كل شهر) فيه أسماء القائمة، فيضغط «حفظ» هناك فيذكّره الجوال، وبعدها يصير الزر «✓ في تقويم Google»، وإذا غيّر اليوم أو الساعة عاد الزر ليضيف التذكير الجديد ويحذف القديم من التقويم. الدورة تنتهي بيوم التواصل: من تواصلت معه بعد يوم التواصل السابق صار «تواصلت» بالأخضر، ومن مرت عليه دورة كاملة بلا تواصل «فات موعده» بالأحمر، والباقي موعده يوم التواصل القادم. يظهر أولًا من فات موعده، ثم من بقي، ثم من تواصلت معه، والأقرب فالأقرب. كل قريب سطر واحد: اسمه وصلته، وتحته حاله وآخر تواصل وموعده الخاص إن وُضع، وبجانبه زر الاتصال وزر الواتساب، ودائرة ✓ تسجل التواصل الآن (ولمسها وهي خضراء يلغي آخر تواصل)، وبعد التسجيل «كانت زيارة» و«تراجع». ولمس السطر يفتح «التواصل مع فلان»: القائمة («كل أسبوع» أو «كل شهر») وحاله، والموعد الخاص مع زر «تقويم Google»، وسجل التواصل وتعديله، و«حذف من جدول التواصل». «+ أضف قريبًا»: اكتب الاسم واختره من الشجرة، ثم «+ كل أسبوع» أو «+ كل شهر»، وتحتها جماعات تُضاف بلمسة: الأهم (الوالدان والزوجة والأبناء والإخوة والأجداد والأحفاد)، والإخوة والأخوات، والأعمام والعمات، والأخوال والخالات، والجميع، ولكل منها «+ أضف» (كلٌّ حسب قربه) و«أسبوع» و«شهر»، ثم الجهات: جهة الأب، وجهة الأم، وأهل الزوجة. وزر «تعديل» فوق الجدول يفتح «تعديل الجدول»: لكل جماعة في الجدول (الوالدان، الإخوة، الأعمام، الأخوال، ...) خطة «كل أسبوع» أو «كل شهر» بلمسة وزر «حذف» (يُلمس مرتين للتأكيد)، و«حذف الجميع»، و«حذف أفراد» بتحديدهم ثم «حذف المحدد»، ومع كل حذف «تراجع». القائمة تُقترح حسب القرب: الوالدان والزوجة والأبناء والإخوة والأجداد والأحفاد «كل أسبوع»، والبقية «كل شهر». وعلى تبويب «التواصل» في الأسفل رقم بمن فات موعدهم ومن موعدهم اليوم. بعد «اتصال» أو «واتساب» يسأل التطبيق عند العودة «تواصلت مع فلان؟» فيُسجَّل بلمسة. وفي آخر الجدول سطر يعدّ الأيام إلى موسم التهنئة القادم.
 3) الإحسان: في الأعلى شريط الشهر (› السابق و‹ التالي و«الشهر الحالي»)، والمجاميع والقائمتان تتبع الشهر المعروض. «مبالغ شهرية»: كل مبلغ سطر واحد فيه الاسم والمبلغ وموعده وحاله: في الشهر الحالي بعد التحويل «حُوِّل» ومعه «القادم» بتاريخ الشهر التالي، وقبل موعده «القادم» بتاريخه وكم بقي عليه، وإذا حلّ ولم يُحوَّل «موعده» بتاريخه و«مستحق»، وفي الأشهر السابقة يوم الاستحقاق و«حُوِّل» أو «لم يُسجَّل»، وزر ✓ في السطر يسجل التحويل في الشهر المعروض فيُسجَّل تحويل فات في شهره، ولمس السطر يفتح التفاصيل: المبلغ والتصنيف وتاريخ الاستحقاق (يُختار من التقويم ويتكرر في اليوم نفسه كل شهر) وسجل التحويلات و«تذكير في تقويم Google» والحذف. «مبالغ متفرقة»: سطر لكل مبلغ فيه الاسم والمبلغ والتاريخ، ولمسه يفتح التعديل. والإضافة بزر «+ أضف» فوق كل قائمة: اسم ومبلغ وتصنيف وتاريخ. التصنيفات ثلاثة: مصاريف، علاج، أخرى (ومعها تعليق يقول ما هو)، وتحت المجاميع مجموع كل تصنيف في السنة. وفي الأعلى ما حُوِّل في الشهر، والمتبقي، ومجموع السنة، و«إخفاء المبالغ». وعلى تبويب «الإحسان» في الأسفل رقم بعدد المبالغ الشهرية المستحقة الآن، ولا تتكرر المبالغ في «اليوم» بالتواصل.
 الشريط العلوي ثلاثة تبويبات: «بحث» وتحته خانة تبحث في كل ما كُتب في التطبيق: الأقارب بالاسم والنسب والمدينة والجوال والملاحظات وسنة الميلاد (زر «الشجرة» يقفز إلى القريب ويضيء بطاقته، و«الملف» يفتح ملفه)، وملاحظات التواصل، والإحسان بالاسم والتصنيف والمبلغ، والاقتراحات. و«اسأل Claude» تسأل فيه عن أقاربك وعن التطبيق. و«تطوير» وعليه عدد ما ينتظرك: «اقترح علي» يعطيك مقترحات لتطوير التطبيق تعتمدها أو تؤجلها أو ترفضها، و«اسألني» يسألك عن عائلتك فتجيب كتابةً أو بالصوت من مايك لوحة المفاتيح فيصير أدق، وتحتهما فكرتك أنت، و«بانتظار التنفيذ» و«انسخ التعليمات»، و«ما يعرفه التطبيق عنك». وفي رأس الشاشة «الإعدادات»: النسخة الاحتياطية أولًا («شاركها» ملفًّا إلى Drive أو البريد أو واتساب، و«احفظها في الجوال»، و«أرسلها إلى بريدي»، والاستعادة من الملف أو بلصق النص)، ثم قفل التطبيق، ثم حجم الخط (عادي أو كبير أو أكبر)، ثم العملة واسم العائلة ورمز الدولة للواتساب (يُعرف الرقم الذي يبدأ بـ05 سعوديًّا، و09 أو 01 سودانيًّا)، ثم «Claude داخل التطبيق» في تطبيق الجوال: يُلصق فيه مفتاح Claude مرة واحدة. زر الرجوع في الجوال يغلق المفتوح أولًا.`;
 function familyData(){
@@ -3192,7 +3248,9 @@ async function initRemote(){
 }
 /* ---------- app update (Android app only) ---------- */
 const UPD_BASE="https://raw.githubusercontent.com/alaliabi4travel-a11y/dhul-qurba/main/";
-const CHANGES={27:["مظهر جديد كليًّا: ليل أخضر داكن بتوهّج نعناعي، وخط عربي عريض واضح، وأزرار وبطاقات مستديرة، وشريط سفلي عائم",
+const CHANGES={28:["جدول التواصل: أضف جماعة كاملة بلمسة: الأهم، والإخوة والأخوات، والأعمام والعمات، والأخوال والخالات، أو الجميع، كلٌّ حسب قربه أو «كل أسبوع» أو «كل شهر» لهم جميعًا",
+  "زر «تعديل» فوق الجدول: خطة لكل جماعة (كل أسبوع أو كل شهر)، وحذف جماعة كاملة مثل الأعمام، أو حذف الجميع، أو تحديد أفراد وحذفهم، ومع كل حذف «تراجع»"],
+  27:["مظهر جديد كليًّا: ليل أخضر داكن بتوهّج نعناعي، وخط عربي عريض واضح، وأزرار وبطاقات مستديرة، وشريط سفلي عائم",
   "اختر المظهر من الإعدادات: «ليلي» أو «نهاري» أو «حسب الجهاز»"],
 26:["تحت اسم القريب في ملفه ملخص صغير لأسرته، مثل «3 أولاد · بنتان»",
   "سهم «→» أعلى ملف القريب يرجعك خطوة واحدة إلى القريب الذي جئت منه، لا إلى البداية، ومعه اسمه",
